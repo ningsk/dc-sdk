@@ -1,0 +1,23 @@
+{
+  "name": "earth3d",
+  "version": "1.0.0",
+  "description": "基于cesium的三维sdk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ningsk/earth3d.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ningsk/earth3d/issues"
+  },
+  "homepage": "https://github.com/ningsk/earth3d#readme",
+  "dependencies": {
+    "cesium": "^1.72.0",
+    "leaflet": "^1.6.0"
+  }
+}
