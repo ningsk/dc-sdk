@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/ningsk/earth3d#readme",
   "dependencies": {
-    "cesium": "^1.72.0",
+    "cesium": "1.57",
     "leaflet": "^1.6.0"
   }
 }

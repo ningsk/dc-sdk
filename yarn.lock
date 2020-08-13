@@ -2,12 +2,19 @@
 # yarn lockfile v1
 
 
-cesium@^1.72.0:
-  version "1.72.0"
-  resolved "https://registry.npm.taobao.org/cesium/download/cesium-1.72.0.tgz#dee5da9bfe7313226b6f91dfd8de1541bdc59026"
-  integrity sha1-3uXam/5zEyJrb5Hf2N4VQb3FkCY=
+cesium@1.57:
+  version "1.57.0"
+  resolved "https://registry.npm.taobao.org/cesium/download/cesium-1.57.0.tgz#de5c6a8b2735ffcc41f8e41240811c71e8346842"
+  integrity sha1-3lxqiyc1/8xB+OQSQIEcceg0aEI=
+  dependencies:
+    requirejs "^2.3.2"
 
 leaflet@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npm.taobao.org/leaflet/download/leaflet-1.6.0.tgz#aecbb044b949ec29469eeb31c77a88e2f448f308"
   integrity sha1-rsuwRLlJ7ClGnusxx3qI4vRI8wg=
+
+requirejs@^2.3.2:
+  version "2.3.6"
+  resolved "https://registry.npm.taobao.org/requirejs/download/requirejs-2.3.6.tgz#e5093d9601c2829251258c0b9445d4d19fa9e7c9"
+  integrity sha1-5Qk9lgHCgpJRJYwLlEXU0Z+p58k=
