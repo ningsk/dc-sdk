@@ -4,11 +4,455 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 09:14:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-13 14:30:44
+ * @LastEditTime: 2020-08-14 16:42:16
  */
+
+ // 从plot的标号默认值 F12打印 拷贝，方便读取
+ const configDefVal = {
+  "label": {
+    "edittype": "label",
+    "name": "文字",
+    "style": {
+      "text": "文字",
+      "color": "#ffffff",
+      "opacity": 1,
+      "font_family": "楷体",
+      "font_size": 30,
+      "border": true,
+      "border_color": "#000000",
+      "border_width": 3,
+      "background": false,
+      "background_color": "#000000",
+      "background_opacity": 0.5,
+      "font_weight": "normal",
+      "font_style": "normal",
+      "scaleByDistance": false,
+      "scaleByDistance_far": 1000000,
+      "scaleByDistance_farValue": 0.1,
+      "scaleByDistance_near": 1000,
+      "scaleByDistance_nearValue": 1,
+      "distanceDisplayCondition": false,
+      "distanceDisplayCondition_far": 10000,
+      "distanceDisplayCondition_near": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "point": {
+    "edittype": "point",
+    "name": "点标记",
+    "style": {
+      "pixelSize": 10,
+      "color": "#3388ff",
+      "opacity": 1,
+      "outline": true,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6,
+      "outlineWidth": 2,
+      "scaleByDistance": false,
+      "scaleByDistance_far": 1000000,
+      "scaleByDistance_farValue": 0.1,
+      "scaleByDistance_near": 1000,
+      "scaleByDistance_nearValue": 1,
+      "distanceDisplayCondition": false,
+      "distanceDisplayCondition_far": 10000,
+      "distanceDisplayCondition_near": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "imagepoint": {
+    "edittype": "imagepoint",
+    "name": "图标点标记",
+    "style": {
+      "image": "",
+      "opacity": 1,
+      "scale": 1,
+      "rotation": 0,
+      "scaleByDistance": false,
+      "scaleByDistance_far": 1000000,
+      "scaleByDistance_farValue": 0.1,
+      "scaleByDistance_near": 1000,
+      "scaleByDistance_nearValue": 1,
+      "distanceDisplayCondition": false,
+      "distanceDisplayCondition_far": 10000,
+      "distanceDisplayCondition_near": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "model": {
+    "edittype": "model",
+    "name": "模型",
+    "style": {
+      "modelUrl": "",
+      "scale": 1,
+      "heading": 0,
+      "pitch": 0,
+      "roll": 0,
+      "fill": false,
+      "color": "#3388ff",
+      "opacity": 1,
+      "silhouette": false,
+      "silhouetteColor": "#ffffff",
+      "silhouetteSize": 2,
+      "silhouetteAlpha": 0.8
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "polyline": {
+    "edittype": "polyline",
+    "name": "线",
+    "position": {
+      "minCount": 2
+    },
+    "style": {
+      "lineType": "solid",
+      "color": "#3388ff",
+      "width": 4,
+      "clampToGround": false,
+      "outline": false,
+      "outlineColor": "#ffffff",
+      "outlineWidth": 2,
+      "opacity": 1,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "polylineVolume": {
+    "edittype": "polylineVolume",
+    "name": "管道线",
+    "position": {
+      "height": true,
+      "minCount": 2
+    },
+    "style": {
+      "color": "#00FF00",
+      "radius": 10,
+      "shape": "pipeline",
+      "outline": false,
+      "outlineColor": "#ffffff",
+      "opacity": 1
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "polygon": {
+    "edittype": "polygon",
+    "name": "面",
+    "position": {
+      "height": true,
+      "minCount": 3
+    },
+    "style": {
+      "fill": true,
+      "color": "#3388ff",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6,
+      "clampToGround": false,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "polygon_clampToGround": {
+    "edittype": "polygon_clampToGround",
+    "name": "贴地面",
+    "position": {
+      "height": false,
+      "minCount": 3
+    },
+    "style": {
+      "color": "#ffff00",
+      "opacity": 0.6,
+      "clampToGround": true,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "extrudedPolygon": {
+    "edittype": "extrudedPolygon",
+    "name": "拉伸面",
+    "position": {
+      "height": true,
+      "minCount": 3
+    },
+    "style": {
+      "fill": true,
+      "color": "#00FF00",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6,
+      "extrudedHeight": 100,
+      "perPositionHeight": true,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "rectangle": {
+    "edittype": "rectangle",
+    "name": "矩形",
+    "position": {
+      "height": false,
+      "minCount": 2,
+      "maxCount": 2
+    },
+    "style": {
+      "height": 0,
+      "fill": true,
+      "color": "#3388ff",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6,
+      "rotation": 0,
+      "clampToGround": false,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "rectangle_clampToGround": {
+    "edittype": "rectangle_clampToGround",
+    "name": "贴地矩形",
+    "position": {
+      "height": false,
+      "minCount": 2,
+      "maxCount": 2
+    },
+    "style": {
+      "color": "#ffff00",
+      "opacity": 0.6,
+      "rotation": 0,
+      "clampToGround": true,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "rectangleImg": {
+    "edittype": "rectangleImg",
+    "name": "贴地图片",
+    "position": {
+      "height": false,
+      "minCount": 2,
+      "maxCount": 2
+    },
+    "style": {
+      "image": "",
+      "opacity": 1,
+      "rotation": 0,
+      "clampToGround": true,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "extrudedRectangle": {
+    "edittype": "extrudedRectangle",
+    "name": "拉伸矩形",
+    "position": {
+      "height": false,
+      "minCount": 2,
+      "maxCount": 2
+    },
+    "style": {
+      "extrudedHeight": 40,
+      "height": 0,
+      "fill": true,
+      "color": "#00FF00",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6,
+      "rotation": 0,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "ellipse": {
+    "edittype": "ellipse",
+    "name": "椭圆",
+    "position": {
+      "height": false
+    },
+    "style": {
+      "semiMinorAxis": 200,
+      "semiMajorAxis": 200,
+      "height": 0,
+      "fill": true,
+      "color": "#3388ff",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6,
+      "rotation": 0,
+      "clampToGround": false,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "ellipse_clampToGround": {
+    "edittype": "ellipse_clampToGround",
+    "name": "椭圆",
+    "position": {
+      "height": false
+    },
+    "style": {
+      "semiMinorAxis": 200,
+      "semiMajorAxis": 200,
+      "color": "#ffff00",
+      "opacity": 0.6,
+      "rotation": 0,
+      "clampToGround": true,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "extrudedEllipse": {
+    "edittype": "extrudedEllipse",
+    "name": "圆柱体",
+    "position": {
+      "height": false
+    },
+    "style": {
+      "semiMinorAxis": 200,
+      "semiMajorAxis": 200,
+      "extrudedHeight": 200,
+      "height": 0,
+      "fill": true,
+      "color": "#00FF00",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6,
+      "rotation": 0,
+      "zIndex": 0
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "ellipsoid": {
+    "edittype": "ellipsoid",
+    "name": "球体",
+    "style": {
+      "extentRadii": 200,
+      "widthRadii": 200,
+      "heightRadii": 200,
+      "fill": true,
+      "color": "#00FF00",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  },
+  "wall": {
+    "edittype": "wall",
+    "name": "墙体",
+    "position": {
+      "height": true,
+      "minCount": 2
+    },
+    "style": {
+      "extrudedHeight": 40,
+      "fill": true,
+      "color": "#00FF00",
+      "opacity": 0.6,
+      "outline": true,
+      "outlineWidth": 1,
+      "outlineColor": "#ffffff",
+      "outlineOpacity": 0.6
+    },
+    "attr": {
+      "id": "",
+      "name": "",
+      "remark": ""
+    }
+  }
+};
+
+  // 地形构造
+const _ellipsoid = new Cesium.EllipsoidTerrainProvider({
+  ellipsoid: Cesium.Ellipsoid.WGS84
+});
 
 import * as Cesium from 'cesium';
 import { win } from 'leaflet/src/core/Browser';
+
+import { Util as util} from 'leaflet'
+import { formatNum } from 'leaflet/src/core/Util';
+
 
 class Util {
   static isNumber(obj) {
@@ -219,10 +663,6 @@ class Util {
     //TODO 待定
   }
   
-  // 地形构造
-  var _ellipsoid = new Cesium.EllipsoidTerrainProvider({
-    ellipsoid: Cesium.Ellipsoid.WGS84
-  });
   
   static getEllipsoidTerrain() {
     return _ellipsoid;
@@ -371,7 +811,138 @@ class Util {
   
     return result;
   }
+
+  /**
+   * 剔除与默认值相同的值
+   */
+  static removeGeoJsonDefVal(geojson) {
+    if (!geojson.properties || !geojson.properties.type) return geojson;
+    var type = geojson.properties.edittype || geojson.properties.type;
+    var def = configDefVal[type];
+    if (!def) return geojson;
+    var newGeoJson = util.clone(geojson);
+    if (geojson.properties.style) {
+      var newStyle = {};
+      for (var i in geojson.properties.style) {
+        var val = geojson.properties.style[i];
+        if (val == null) {
+          continue;
+        }
+        var valDef = def.style[i];
+        if (valDef === val) continue;
+        newStyle[i] = val;
+      }
+      newGeoJson.properties.style = newStyle;
+    }
+
+    if (geojson.properties.attr) {
+      var newAttr = {};
+      for (var i in geojson.properties.attr) {
+        var val = geojson.properties.attr[i];
+        if (val == null) continue;
+        var valDef = def.attr[i];
+        if (valDef === val) continue;
+        newAttr[i] = val;
+      }
+      newGeoJson.properties.attr = newAttr;
+    }
+    return newGeoJson;
+  }
+
+
+  static addGeoJsonDefVal(properties) {
+    // 赋默认值
+    var def = configDefVal[properties.edittype || properties.type];
+    if (def) {
+      properties.style = properties.style || {};
+      for (var key in def.style) {
+        var val = properties.style[key];
+        if (val != null) continue;
+        properties.style[key] = def.style[key]; 
+      }
+      properties.attr = properties.attr || {};
+      for (var key in def.attr) {
+        var val = properties.attr[key];
+        if (val != null) continue;
+        properties.attr[key] = def.attr[key];
+      }
+    }
+    return properties;
+
+  }
+
+  /**
+   * cesium坐标 转经纬度坐标[用于转geojson]
+   * @param {Array} 数组
+   */
+  static cartesians2lonlats(positions) {
+    var coordinates = [];
+    for (var i = 0, len = positions.length; i < len; i++) {
+      var point = this.cartesian2lonlat(positions[i]);
+      coordinates.push(point);
+    }
+    return coordinates;
+  }
+
+  /**
+   * 经纬度坐标转cesium坐标
+   */
+  static lonlat2cartesian(coord, defHeight) {
+    return Cesium.Cartesian3.fromDegrees(coords[0], coords[1], coords[2] || defHeight || 0);
+  }
+
+  /**
+   * 经纬度坐标转cesium坐标
+   */
+  static lonlats2cartesians(coords, defHeight) {
+    var arr = [];
+    for (var i = 0, len = coords.length; i < len; i++) {
+      var item = coords[i];
+      if (isArray(item[0])) arr.push(this.lonlats2cartesians(item, defHeight));
+      else arr.push(this.lonlat2cartesian(item, defHeight));
+    }
+    return arr;
+  }
+
+  /**
+   * Cesium坐标 转 经纬度坐标 [用于geojson]
+   */
+  static cartesian2lonlat(cartesian) {
+    var carto = Cesium.Cartographic.fromCartesian(cartesian);
+    if (carto == null) return {};
+    var x = formatNum(Cesium.Math.toDegrees(carto.longitude), 6);
+    var y = formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
+    var z = formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
+    return [x, y, z];
+  }
+
+  /**
+   * geojson 转 entity
+   */
+  static getPositionByGeoJSON(geojson, defHeight) {
+    var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson;
+    var coords = geometry ? geometry.coordinates : null;
+    if (!coords && !geometry) {
+      return null;
+    }
+    switch(geometry.type) {
+      case 'Point':
+        return this.lonlat2cartesian(coords, defHeight);
+      case 'MultiPoint':
+        return this.lonlats2cartesians(coords, defHeight);
+      case 'LineString':
+        return this.lonlats2cartesians(coords, defHeight);
+      case 'MultiLineString':
+      case 'Polygon':
+        return this.lonlats2cartesians(coords[0], defHeight);
+      case 'MultiPolygon':
+        return this.lonlats2cartesians(coords[0][0], defHeight);
+      default:
+        throw new Error('Invalid GeoJson object.');
+    }
+  }
+
+
 } 
 
-export default Util
-
+export default Util;

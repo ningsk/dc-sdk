@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 14:23:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-14 10:58:18
+ * @LastEditTime: 2020-08-15 11:07:52
  */
 
- import Cesium from 'cesium';
+import Cesium from 'cesium';
 import { extend } from 'leaflet/src/core/Util';
 
- class Position {
+ class Point {
    /**
     * 格式化
     * @param {*} num 数字
@@ -325,3 +325,4 @@ import { extend } from 'leaflet/src/core/Util';
 
  }
 
+ export default Point;

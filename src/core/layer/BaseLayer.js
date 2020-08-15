@@ -2,19 +2,21 @@
  * @Description: 
  * @version: 
  * @Author: 宁四凯
- * @Date: 2020-08-13 08:40:24
+ * @Date: 2020-08-15 08:41:02
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-14 11:29:48
+ * @LastEditTime: 2020-08-15 08:47:01
  */
-import  {Class} from 'leaflet'
-import {Util} from '../utils'
-export var BaseLayer = Class.extend({
-  config: {}, //  配置的config信息
-  viewer: null,
-  initialize: function initialize(cfg, viewer) {
+import {Util as util} from '../utils'
+
+class BaseLayer {
+  constructor(cfg, viewer) {
     this.viewer = viewer;
     this.config = cfg;
     this.name = cfg.name;
+    this.hasOpacity = false;
+    this._opacity = 1;
+    this.visible = null;
+    this.hasZIndex = false;
     if (this.config.hasOwnProperty('alpha')) {
       this._opacity = Number(this.config.alpha);
     } else if (this.config.hasOwnProperty('opacity')) {
@@ -33,21 +35,22 @@ export var BaseLayer = Class.extend({
     if (cfg.visible && cfg.flyTo) {
       this.centerAt(0);
     }
-  },
-  create: function() {
+  }
+
+  create() {
     
   },
-  showError: function(title, error) {
+  showError(title, error) {
     if (!error) error = '未知错误';
     if (this.viewer) this.viewer.cesiumWidget.showErrorPanel(title, undefined, error);
     console.log('layer错误:' + title + error);
-  },
-  // 显示隐藏控制
-  _visible: null,
-  getVisible: function() {
+  }
+
+  getVisible() {
     return this._visible;
-  },
-  setVisible: function(val) {
+  }
+
+  setVisible(val) {
     if (this._visible != null && this._visible == val) return;
     this._visible = val;
     if (val) {
@@ -59,46 +62,50 @@ export var BaseLayer = Class.extend({
     } else {
       this.remove();
     }
-  },
+  }
+
   // 添加
-  add: function() {
+  add() {
     this._visible = true;
     if (this.config.onAdd) {
       this.config.onAdd();
     }
-  },
-  remove: function() {
+  }
+
+  remove() {
     this._visible = false;
     if (this.config.onRemove) {
       this.config.onRemove();
     }
-  },
+  }
+
   // 定位到数据区域
-  centerAt: function(duration) {
+  centerAt(duration) {
     if (this.config.extent || this.config.center) {
       this.viewer.mars.centerAt(this.config.extent || this.config.center, {
         duration: duration,
         isWgs84: true
       });
     }
-  },
-  hasOpacity:false,
-  _opacity: 1,
+  }
+
   // 设置透明度
-  setOpacity: function(value) {
+  setOpacity(value) {
     if (this.config.onSetOpacity) {
       this.config.onSetOpacity(value);
     }
-  },
-  hasZIndex: false,
+  }
+
   // 设置叠加顺序
-  setZIndex: function(value) {
+  setZIndex(value) {
     if (this.config.onSetZIndex) {
       this.config.onSetZIndex(value);
     }
-  },
-  destroy: function() {
-    this.setVisible(false);
   }
   
-})
+  destroy() {
+    this.setVisible(false);
+  }
+}
+
+export default BaseLayer;
