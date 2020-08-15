@@ -2,12 +2,32 @@
 # yarn lockfile v1
 
 
+"@terraformer/arcgis@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.npm.taobao.org/@terraformer/arcgis/download/@terraformer/arcgis-2.0.7.tgz#617e6056a64b7328d4827702d64d0ccfc2e96d17"
+  integrity sha1-YX5gVqZLcyjUgncC1k0Mz8LpbRc=
+  dependencies:
+    "@terraformer/common" "^2.0.7"
+
+"@terraformer/common@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.npm.taobao.org/@terraformer/common/download/@terraformer/common-2.0.7.tgz#bec626f331b9f0cc3aefb16f9f88e2d3684107ff"
+  integrity sha1-vsYm8zG58Mw677Fvn4ji02hBB/8=
+
 cesium@1.57:
   version "1.57.0"
   resolved "https://registry.npm.taobao.org/cesium/download/cesium-1.57.0.tgz#de5c6a8b2735ffcc41f8e41240811c71e8346842"
   integrity sha1-3lxqiyc1/8xB+OQSQIEcceg0aEI=
   dependencies:
     requirejs "^2.3.2"
+
+esri-leaflet@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.npm.taobao.org/esri-leaflet/download/esri-leaflet-2.5.0.tgz#ab800a57903fabdf7d9d84715b55546f976a3683"
+  integrity sha1-q4AKV5A/q999nYRxW1VUb5dqNoM=
+  dependencies:
+    "@terraformer/arcgis" "^2.0.7"
+    tiny-binary-search "^1.0.3"
 
 leaflet@^1.6.0:
   version "1.6.0"
@@ -18,3 +38,8 @@ requirejs@^2.3.2:
   version "2.3.6"
   resolved "https://registry.npm.taobao.org/requirejs/download/requirejs-2.3.6.tgz#e5093d9601c2829251258c0b9445d4d19fa9e7c9"
   integrity sha1-5Qk9lgHCgpJRJYwLlEXU0Z+p58k=
+
+tiny-binary-search@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npm.taobao.org/tiny-binary-search/download/tiny-binary-search-1.0.3.tgz#9d52e3d16dd1171eb74486caf704ba08c0c62186"
+  integrity sha1-nVLj0W3RFx63RIbK9wS6CMDGIYY=

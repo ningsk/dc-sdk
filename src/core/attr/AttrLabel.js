@@ -8,7 +8,7 @@ const { CornerType } = require("cesium");
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:25:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 13:08:49
+ * @LastEditTime: 2020-08-15 13:16:01
  */
 class AttrLabel {
 
@@ -163,3 +163,5 @@ class AttrLabel {
   }
 
 }
+
+export default AttrLabel;

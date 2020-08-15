@@ -19,5 +19,8 @@
   "dependencies": {
     "cesium": "1.57",
     "leaflet": "^1.6.0"
+  },
+  "devDependencies": {
+    "esri-leaflet": "^2.5.0"
   }
 }

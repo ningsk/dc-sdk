@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 09:14:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-14 16:42:16
+ * @LastEditTime: 2020-08-15 13:30:10
  */
 
  // 从plot的标号默认值 F12打印 拷贝，方便读取
@@ -461,6 +461,10 @@ class Util {
   
   static isString(str) {
     return typeof str == "string" && str.constructor == String;
+  }
+
+  static isArray(arr) {
+    return Array.isArray(arr);
   }
   
   static alert(msg, title) {
