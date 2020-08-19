@@ -18,6 +18,8 @@
   "homepage": "https://github.com/ningsk/earth3d#readme",
   "dependencies": {
     "cesium": "1.57",
+    "echarts": "^4.8.0",
+    "jquery": "^3.5.1",
     "leaflet": "^1.6.0"
   },
   "devDependencies": {
