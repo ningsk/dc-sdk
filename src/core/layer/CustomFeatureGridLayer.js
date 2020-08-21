@@ -9,7 +9,7 @@ import $ from 'jquery';
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:54:59
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 10:10:50
+ * @LastEditTime: 2020-08-21 10:54:19
  */
 export default class CustomFeatureGridLayer extends FeatureGridLayer{
   
@@ -304,7 +304,7 @@ export default class CustomFeatureGridLayer extends FeatureGridLayer{
     }
   },
   //外部配置的symbol
-  setConfigSymbol: function setConfigSymbol(entity, symbol) {
+  setConfigSymbol(entity, symbol) {
     var attr = entity.properties;
     var styleOpt = symbol.styleOptions;
 

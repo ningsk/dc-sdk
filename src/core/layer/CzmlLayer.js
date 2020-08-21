@@ -4,10 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:22:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 09:04:41
+ * @LastEditTime: 2020-08-21 11:06:57
  */
-const { default: BaseLayer } = require("./BaseLayer");
 
-class CzmlLayer extends BaseLayer {
+import GeoJsonLayer from "./GeoJsonLayer";
+
+class CzmlLayer extends GeoJsonLayer {
   
 }
+
+export default CzmlLayer;
