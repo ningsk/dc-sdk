@@ -1,10 +1,10 @@
 /*
- * @Description: 
+ * @Description: 图层封装基类
  * @version: 
  * @Author: 宁四凯
  * @Date: 2020-08-15 08:41:02
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 08:47:01
+ * @LastEditTime: 2020-08-21 08:56:39
  */
 import {Util as util} from '../utils'
 

@@ -4,12 +4,12 @@ import $ from 'jquery';
 import { AttrPolyline, AttrPolygon, AttrLabel, AttrBillboard } from "../attr";
 
 /*
- * @Description: 
+ * @Description: GeoJson格式数据图层
  * @version: 
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:22:51
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-19 13:52:20
+ * @LastEditTime: 2020-08-21 09:06:06
  */
 export default class GeoJsonLayer extends BaseLayer{
   constructor(cfg, viewer) {

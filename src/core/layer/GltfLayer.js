@@ -1,10 +1,10 @@
 /*
- * @Description: 
+ * @Description: Gltf小模型图层
  * @version: 
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:10:46
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 11:20:48
+ * @LastEditTime: 2020-08-21 09:05:49
  */
 const { default: BaseLayer } = require("./BaseLayer");
 

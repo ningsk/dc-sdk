@@ -2,12 +2,12 @@ import BaseLayer from "./BaseLayer";
 import Layer from './Layer';
 import Cesium from 'cesium';
 /*
- * @Description: 
+ * @Description: 瓦片底图图层
  * @version: 
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:22:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 14:37:12
+ * @LastEditTime: 2020-08-21 09:05:21
  */
 
 class TileLayer extends BaseLayer{
