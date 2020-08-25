@@ -6,11 +6,11 @@ import Cesium from 'cesium';
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:42:11
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-24 10:09:53
+ * @LastEditTime: 2020-08-25 15:26:08
  */
 class AttrPoint {
   //属性赋值到entity
-  function style2Entity(style, entityAttr) {
+  static style2Entity(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       //默认值
@@ -90,7 +90,7 @@ class AttrPoint {
   }
 
   //获取entity的坐标
-  function getPositions(entity) {
+  static getPositions(entity) {
     return [entity.position.getValue()];
   }
 
