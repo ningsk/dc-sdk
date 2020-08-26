@@ -8,7 +8,7 @@ import { EditEllipsoid } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:25
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 11:02:26
+ * @LastEditTime: 2020-08-26 13:57:14
  */
 class DrawEllipsoid extends DrawPolyline {
   type = "ellipsoid";
