@@ -1,36 +1,34 @@
-
-import Cesium from 'cesium';
-import { AttrPoint } from '../attr';
-import DrawBase from './DrawBase';
-import {Point} from '../point';
-import { EditPoint } from '../edit';
+import Cesium from "cesium";
+import { AttrPoint } from "../attr";
+import DrawBase from "./DrawBase";
+import { Point } from "../point";
+import { EditPoint } from "../edit";
 
 /*
- * @Description: 
- * @version: 
+ * @Description: 绘制点
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-25 15:37:47
+ * @LastEditTime: 2020-08-25 17:55:17
  */
-class DrawPoint extends DrawBase{
+class DrawPoint extends DrawBase {
+  type = "point";
 
-  type = 'point';
-  
   constructor(opts) {
-    super(opts)
+    super(opts);
   }
 
   // 根据attribute参数创建Entity
   createFeature(attribute) {
-    this._position_draw = null;
+    this._positions_draw = null;
     var that = this;
     var addAttr = {
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
       point: AttrPoint.style2Entity(attribute.style),
-      attribute: attribute
+      attribute: attribute,
     };
 
     this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
@@ -44,9 +42,13 @@ class DrawPoint extends DrawBase{
   bindEvent() {
     var _this = this;
     this.getHandler().setInputAction((event) => {
-      var point = Point.getCurrentMousePosition(_this.viewer.scene, event.position, _this.entity);
+      var point = Point.getCurrentMousePosition(
+        _this.viewer.scene,
+        event.position,
+        _this.entity
+      );
       if (point) {
-        _this._position_draw = point;
+        _this._positions_draw = point;
         _this.disable();
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -67,7 +69,6 @@ class DrawPoint extends DrawBase{
     this.entity.editing = this.getEditClass(this.entity); // 绑定编辑对象
     this.entity.position = this.getDrawPosition();
   }
-
 }
 
-export DrawPoint;
+export default DrawPoint;

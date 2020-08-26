@@ -1,26 +1,26 @@
 /*
- * @Description: 
- * @version: 
+ * @Description:
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:01:47
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-08-25 14:51:45
  */
 
-import Cesium from 'cesium';
+import Cesium from "cesium";
 // Tooltip来源存疑
-import { Tooltip } from 'leaflet';
+import { Tooltip } from "leaflet";
 
-import { Util } from '../utils';
+import { Util } from "../utils";
 
-import { EventType } from '../event';
+import { EventType } from "../event";
 
 class DrawBase {
   type = null;
   dataSource = null;
 
   // 坐标位置相关
-  _position_draw = null;
+  _positions_draw = null;
 
   constructor(opts) {
     this.viewer = opts.viewer;
@@ -34,7 +34,6 @@ class DrawBase {
     }
 
     this.tooltip = opts.tooltip || new Tooltip(this.viewer.container);
-
   }
 
   fire(type, data, propagate) {
@@ -62,13 +61,11 @@ class DrawBase {
 
     this.fire(EventType.DrawStart, {
       drawtype: this.type,
-      entity: this.entity
+      entity: this.entity,
     });
 
     return this.entity;
-
   }
-
 
   // 释放绘制
   disable(hasWB) {
@@ -88,7 +85,6 @@ class DrawBase {
       if (this.primitives && this.primitives.contains(this.entity)) {
         this.primitives.remove(this.entity);
       }
-
     } else {
       this.entity.inProgress = false;
       this.finish();
@@ -100,28 +96,26 @@ class DrawBase {
 
       this.fire(EventType.DrawCreated, {
         drawtype: this.type,
-        entity: this.entity
+        entity: this.entity,
       });
-
     }
 
     this.destroyHandler();
-    this._position_draw = null;
+    this._positions_draw = null;
     this.entity = null;
     this.tooltip.setVisible(false);
 
     return this;
-
   }
 
-  createFeature(attribute) {
-
-  }
+  createFeature(attribute) {}
 
   // ============ 事件相关 ===================
   getHandler() {
     if (!this.handler || this.handler.isDestroyed()) {
-      this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+      this.handler = new Cesium.ScreenSpaceEventHandler(
+        this.viewer.scene.canvas
+      );
     }
     return this.handler;
   }
@@ -132,17 +126,14 @@ class DrawBase {
   }
 
   setCursor(val) {
-    this.viewer._container.style.cursor = val ? 'crosshair': '';
+    this.viewer._container.style.cursor = val ? "crosshair" : "";
   }
-
 
   // 绑定鼠标事件
-  bindEvent() {
-
-  }
+  bindEvent() {}
 
   getDrawPosition() {
-    return this._position_draw;
+    return this._positions_draw;
   }
 
   // 绑定属性到编辑对象
@@ -174,7 +165,7 @@ class DrawBase {
   // 属性转entity
   attributeToEntity(attribute, positions) {
     var entity = this.createFeature(attribute);
-    this._position_draw = positions;
+    this._positions_draw = positions;
     this.updateAttrForDrawing(true);
     this.finish();
     return entity;
@@ -189,15 +180,14 @@ class DrawBase {
 
   // 绑定外部entity到标绘
   bindExtraEntity(entity, attribute) {
-    if (attribute && attribute.style) this.style2Entity(attribute.style, entity);
+    if (attribute && attribute.style)
+      this.style2Entity(attribute.style, entity);
 
-    this._position_draw = this.getPositions(entity);
+    this._positions_draw = this.getPositions(entity);
     this.updateAttrForDrawing(true);
     this.finish();
     return entity;
   }
-
 }
-
 
 export default DrawBase;
