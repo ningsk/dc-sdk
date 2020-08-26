@@ -322,7 +322,7 @@ export default class CustomFeatureGridLayer extends FeatureGridLayer{
     this._opacity = styleOpt.opacity || 1; //透明度
 
     if (entity.polygon) {
-      AttrPolygon.style2entity(styleOpt, entity.polygon);
+      AttrPolygon.style2Entity(styleOpt, entity.polygon);
       //加上线宽
       if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
         entity.polygon.outline = false;
@@ -352,7 +352,7 @@ export default class CustomFeatureGridLayer extends FeatureGridLayer{
       AttrPolyline.style2Entity(styleOpt, entity.polyline);
     } else if (entity.billboard) {
       entity.billboard.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-      AttrBillboard.style2entity(styleOpt, entity.billboard);
+      AttrBillboard.style2Entity(styleOpt, entity.billboard);
   
 
       //加上文字标签 

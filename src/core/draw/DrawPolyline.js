@@ -6,13 +6,16 @@ import { EventType } from "../event";
 import { Tooltip } from "leaflet";
 import { EditPolyline } from "../edit";
 
+const def_minPointNum = 2;
+const def_maxPointNum = 9999;
+
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:11
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 08:36:21
+ * @LastEditTime: 2020-08-26 13:52:09
  */
 class DrawPolyline extends DrawBase {
   type = "polyline";

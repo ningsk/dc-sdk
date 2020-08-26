@@ -1,8 +1,8 @@
 import { Util } from "../utils";
-import Cesium from 'cesium';
+import Cesium from "cesium";
 /*
- * @Description: 
- * @version: 
+ * @Description:
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:42:11
  * @LastEditors: 宁四凯
@@ -36,20 +36,25 @@ class AttrPoint {
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium.Color.fromCssColorString(value || "#FFFF00").withAlpha(style.outlineOpacity ||
-            style.opacity || 1.0);
+          entityAttr.outlineColor = new Cesium.Color.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.color = new CesiumColor.fromCssColorString(value || "#FFFF00").withAlpha(Number(style.opacity ||
-            1.0));
+          entityAttr.color = new CesiumColor.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(Number(style.opacity || 1.0));
           break;
         case "scaleByDistance":
           //是否按视距缩放
           if (value) {
-            entityAttr.scaleByDistance = new Cesium.NearFarScalar(Number(style.scaleByDistance_near || 1000),
-              Number(style.scaleByDistance_nearValue || 1.0), Number(style.scaleByDistance_far || 1000000), Number(style
-                .scaleByDistance_farValue || 0.1));
+            entityAttr.scaleByDistance = new Cesium.NearFarScalar(
+              Number(style.scaleByDistance_near || 1000),
+              Number(style.scaleByDistance_nearValue || 1.0),
+              Number(style.scaleByDistance_far || 1000000),
+              Number(style.scaleByDistance_farValue || 0.1)
+            );
           } else {
             entityAttr.scaleByDistance = null;
           }
@@ -57,8 +62,10 @@ class AttrPoint {
         case "distanceDisplayCondition":
           //是否按视距显示
           if (value) {
-            entityAttr.distanceDisplayCondition = new Cesium2.DistanceDisplayCondition(Number(style.distanceDisplayCondition_near ||
-              0), Number(style.distanceDisplayCondition_far || 100000));
+            entityAttr.distanceDisplayCondition = new Cesium2.DistanceDisplayCondition(
+              Number(style.distanceDisplayCondition_near || 0),
+              Number(style.distanceDisplayCondition_far || 100000)
+            );
           } else {
             entityAttr.distanceDisplayCondition = null;
           }
@@ -70,10 +77,12 @@ class AttrPoint {
               entityAttr.heightReference = Cesium.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference =
+                Cesium.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
-              entityAttr.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+              entityAttr.heightReference =
+                Cesium.HeightReference.RELATIVE_TO_GROUND;
               break;
             default:
               entityAttr.heightReference = value;
@@ -109,8 +118,8 @@ class AttrPoint {
       properties: entity.attribute || {},
       geometry: {
         type: "Point",
-        coordinates: coordinates[0]
-      }
+        coordinates: coordinates[0],
+      },
     };
   }
 }

@@ -1,23 +1,22 @@
 /*
- * @Description: 
- * @version: 
+ * @Description:
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:49:52
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-08-24 10:02:26
  */
 
-import Cesium from 'cesium'; 
-import { Util } from '../utils';
+import Cesium from "cesium";
+import { Util } from "../utils";
 
 class AttrEllipsoid {
-
   static style2Entity(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
-      //默认值 
+      //默认值
       entityAttr = {
-        fill: true
+        fill: true,
       };
     }
 
@@ -36,20 +35,26 @@ class AttrEllipsoid {
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium.Color.fromCssColorString(value || "#FFFF00").withAlpha(style.outlineOpacity ||
-            style.opacity || 1.0);
+          entityAttr.outlineColor = new Cesium.Color.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium.Color.fromCssColorString(value || "#FFFF00").withAlpha(Number(
-            style.opacity || 1.0));
+          entityAttr.material = new Cesium.Color.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(Number(style.opacity || 1.0));
           break;
         case "extentRadii":
           //球体长宽高半径
           var extentRadii = style.extentRadii || 100;
           var widthRadii = style.widthRadii || 100;
           var heightRadii = style.heightRadii || 100;
-          entityAttr.radii = new Cesium.Cartesian3(extentRadii, widthRadii, heightRadii);
+          entityAttr.radii = new Cesium.Cartesian3(
+            extentRadii,
+            widthRadii,
+            heightRadii
+          );
           break;
       }
     }
@@ -59,7 +64,7 @@ class AttrEllipsoid {
       entityAttr.material = Cesium.Color.fromRandom({
         minimumGreen: 0.75,
         maximumBlue: 0.75,
-        alpha: Number(style.opacity || 1.0)
+        alpha: Number(style.opacity || 1.0),
       });
     }
 
@@ -86,11 +91,10 @@ class AttrEllipsoid {
       properties: entity.attribute || {},
       geometry: {
         type: "Point",
-        coordinates: coordinates[0]
-      }
-    }
+        coordinates: coordinates[0],
+      },
+    };
   }
-
 }
 
 export default AttrEllipsoid;

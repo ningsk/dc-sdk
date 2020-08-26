@@ -1,19 +1,18 @@
 /*
- * @Description: 
- * @version: 
+ * @Description:
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:37:50
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-08-15 14:42:51
  */
 
- import Cesium from 'cesium';
-import { Util } from '../utils';
+import Cesium from "cesium";
+import { Util } from "../utils";
 
 class AttrPolylineVolume {
-  
   // 赋值到entity
-  static style2entity(style, entityAttr) {
+  static style2Entity(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       //默认值
@@ -35,18 +34,20 @@ class AttrPolylineVolume {
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium.Color.fromCssColorString(value || "#FFFF00").withAlpha(style.outlineOpacity ||
-            style.opacity || 1.0);
+          entityAttr.outlineColor = new Cesium.Color.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium.Color.fromCssColorString(value || "#FFFF00").withAlpha(Number(
-            style.opacity || 1.0));
+          entityAttr.material = new Cesium.Color.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(Number(style.opacity || 1.0));
           break;
       }
     }
 
-    //管道样式 
+    //管道样式
     style.radius = style.radius || 10;
     switch (style.shape) {
       default:
@@ -63,7 +64,7 @@ class AttrPolylineVolume {
 
     return entityAttr;
   }
-  //管道形状1【内空管道】 radius整个管道的外半径 
+  //管道形状1【内空管道】 radius整个管道的外半径
   static getCorridorShape1(radius) {
     var hd = radius / 3;
     var startAngle = 0;
@@ -72,16 +73,26 @@ class AttrPolylineVolume {
     var pss = [];
     for (var i = startAngle; i <= endAngle; i++) {
       var radians = _Cesium2.default.Math.toRadians(i);
-      pss.push(new _Cesium2.default.Cartesian2(radius * Math.cos(radians), radius * Math.sin(radians)));
+      pss.push(
+        new _Cesium2.default.Cartesian2(
+          radius * Math.cos(radians),
+          radius * Math.sin(radians)
+        )
+      );
     }
     for (var i = endAngle; i >= startAngle; i--) {
       var radians = _Cesium2.default.Math.toRadians(i);
-      pss.push(new _Cesium2.default.Cartesian2((radius - hd) * Math.cos(radians), (radius - hd) * Math.sin(radians)));
+      pss.push(
+        new _Cesium2.default.Cartesian2(
+          (radius - hd) * Math.cos(radians),
+          (radius - hd) * Math.sin(radians)
+        )
+      );
     }
     return pss;
   }
 
-  //管道形状2【圆柱体】 radius整个管道的外半径 
+  //管道形状2【圆柱体】 radius整个管道的外半径
   static getCorridorShape2(radius) {
     var startAngle = 0;
     var endAngle = 360;
@@ -89,7 +100,12 @@ class AttrPolylineVolume {
     var pss = [];
     for (var i = startAngle; i <= endAngle; i++) {
       var radians = Cesium.Math.toRadians(i);
-      pss.push(new Cesium.Cartesian2(radius * Math.cos(radians), radius * Math.sin(radians)));
+      pss.push(
+        new Cesium.Cartesian2(
+          radius * Math.cos(radians),
+          radius * Math.sin(radians)
+        )
+      );
     }
     return pss;
   }
@@ -102,14 +118,18 @@ class AttrPolylineVolume {
     var pss = new Array(length);
     for (var i = 0; i < length; i++) {
       var r = i % 2 === 0 ? radius : radius / 3;
-      pss[i] = new Cesium.Cartesian2(Math.cos(i * angle) * r, Math.sin(i * angle) * r);
+      pss[i] = new Cesium.Cartesian2(
+        Math.cos(i * angle) * r,
+        Math.sin(i * angle) * r
+      );
     }
     return pss;
   }
 
   //获取entity的坐标
   static getPositions(entity) {
-    if (entity._positions_draw && entity._positions_draw.length > 0) return entity._positions_draw; //取绑定的数据
+    if (entity._positions_draw && entity._positions_draw.length > 0)
+      return entity._positions_draw; //取绑定的数据
 
     return entity.polylineVolume.positions.getValue();
   }
@@ -129,11 +149,10 @@ class AttrPolylineVolume {
       properties: entity.attribute || {},
       geometry: {
         type: "LineString",
-        coordinates: coordinates
-      }
+        coordinates: coordinates,
+      },
     };
-  }  
-
+  }
 }
 
 export default AttrPolylineVolume;

@@ -1,18 +1,17 @@
 const { CustomFeatureGridLayer } = require(".");
 const { default: Transform } = require("../transfrom/Transform");
 const { AttrBillboard, AttrPoint } = require("../attr");
-import $  from 'jquery';
-import Cesium from 'cesium';
+import $ from "jquery";
+import Cesium from "cesium";
 /*
- * @Description: 
- * @version: 
+ * @Description:
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-21 14:00:31
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-08-21 15:40:43
  */
-class POILayer extends CustomFeatureGridLayer{
-  
+class POILayer extends CustomFeatureGridLayer {
   constructor(cfg, viewer) {
     super(cfg, viewer);
     this._keys = null;
@@ -21,10 +20,15 @@ class POILayer extends CustomFeatureGridLayer{
 
   getKey() {
     if (!this._keys) {
-      this._keys = this.config.key || ["c95467d0ed2a3755836e37dc27369f97", "4320dda936d909d73ab438b4e29cf2a2",
-        "e64a96ed7e361cbdc0ebaeaf3818c564", "df3247b7df64434adecb876da94755d7",
-        "d4375ec477cb0a473c448fb1f83be781", "13fdd7b2b90a9d326ae96867ebcc34ce",
-        "c34502450ae556f42b21760faf6695a0", "57f8ebe12797a73fc5b87f5d4ef859b1"
+      this._keys = this.config.key || [
+        "c95467d0ed2a3755836e37dc27369f97",
+        "4320dda936d909d73ab438b4e29cf2a2",
+        "e64a96ed7e361cbdc0ebaeaf3818c564",
+        "df3247b7df64434adecb876da94755d7",
+        "d4375ec477cb0a473c448fb1f83be781",
+        "13fdd7b2b90a9d326ae96867ebcc34ce",
+        "c34502450ae556f42b21760faf6695a0",
+        "57f8ebe12797a73fc5b87f5d4ef859b1",
       ];
       var thisidx = this._key_index++ % this._keys.length;
       return this._keys[thisidx];
@@ -32,8 +36,14 @@ class POILayer extends CustomFeatureGridLayer{
   }
 
   getDataForGrid(opts, callback) {
-    var jwd1 = Transform.transformWGSToGcj([opts.rectangle.xmin, opts.rectangle.ymax]); // 加偏
-    var jwd2 = Transform.transformWGSToGcj([opts.rectangle.xmax, opts.rectangle.ymin]); // 加偏
+    var jwd1 = Transform.transformWGSToGcj([
+      opts.rectangle.xmin,
+      opts.rectangle.ymax,
+    ]); // 加偏
+    var jwd2 = Transform.transformWGSToGcj([
+      opts.rectangle.xmax,
+      opts.rectangle.ymin,
+    ]); // 加偏
     var polygon = jwd1[0] + "," + jwd1[1] + "|" + jwd2[0] + "," + jwd2[1];
 
     var filter = this.config.filter || {};
@@ -45,13 +55,13 @@ class POILayer extends CustomFeatureGridLayer{
 
     var that = this;
     $.ajax({
-      url: 'http://restapi.amap.com/v3/place/polygon',
-      type: 'get',
-      dataType: 'json',
-      timeout: '5000',
+      url: "http://restapi.amap.com/v3/place/polygon",
+      type: "get",
+      dataType: "json",
+      timeout: "5000",
       data: filter,
-      success: function(data) {
-        if (data.infocode !== '10000') {
+      success: function (data) {
+        if (data.infocode !== "10000") {
           console.log("POI 请求失败(" + data.infocode + "):" + data.info);
           return;
         }
@@ -59,34 +69,49 @@ class POILayer extends CustomFeatureGridLayer{
         var arrData = data.pois;
         callback(arrData);
       },
-      error: function(data) {
+      error: function (data) {
         console.log("POI 请求出错(" + data.status + "):" + data.statusText);
-      }
-
+      },
     });
   }
 
   // 根据数据创造entity
   createEntity(opts, attributes) {
-    var inHtml = "<div>名称：" + attributes.name + "</div>" + "<div>地址：" + attributes.address + "</div>" +
-      "<div>区域：" + attributes.pname + attributes.cityname + attributes.adname + "</div>" + "<div>类别：" +
-      attributes.type + "</div>";
+    var inHtml =
+      "<div>名称：" +
+      attributes.name +
+      "</div>" +
+      "<div>地址：" +
+      attributes.address +
+      "</div>" +
+      "<div>区域：" +
+      attributes.pname +
+      attributes.cityname +
+      attributes.adname +
+      "</div>" +
+      "<div>类别：" +
+      attributes.type +
+      "</div>";
 
     var arrJwd = attributes.location.split(",");
     arrJwd = Transform.transformGcjToWGS(arrJwd); // 纠偏
     var lnglat = this.viewer.mars.point2map({
       x: arrJwd[0],
-      y: arrJwd[1]
+      y: arrJwd[1],
     });
 
     var entityOptions = {
       name: attributes.name,
-      position: Cesium.Cartesian3.fromDegrees(lnglat.x, lnglat.y, this.config.height || 3),
+      position: Cesium.Cartesian3.fromDegrees(
+        lnglat.x,
+        lnglat.y,
+        this.config.height || 3
+      ),
       popup: {
         html: inHtml,
-        anchor: [0, -15]
+        anchor: [0, -15],
       },
-      properties: attributes
+      properties: attributes,
     };
 
     var symbol = this.config.symbol;
@@ -104,16 +129,18 @@ class POILayer extends CustomFeatureGridLayer{
       styleOpt = styleOpt || {};
 
       if (styleOpt.image) {
-        entityOptions.billboard = AttrBillboard.style2entity(styleOpt);
-        entityOptions.billboard.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+        entityOptions.billboard = AttrBillboard.style2Entity(styleOpt);
+        entityOptions.billboard.heightReference =
+          Cesium.HeightReference.RELATIVE_TO_GROUND;
       } else {
-        entityOptions.point =  AttrPoint.style2Entity(styleOpt);
+        entityOptions.point = AttrPoint.style2Entity(styleOpt);
       }
 
-      //加上文字标签 
+      //加上文字标签
       if (styleOpt.label) {
         entityOptions.label = AttrLabel.style2Entity(styleOpt.label);
-        entityOptions.label.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+        entityOptions.label.heightReference =
+          Cesium.HeightReference.RELATIVE_TO_GROUND;
         entityOptions.label.text = attributes.name;
       }
     } else {
@@ -124,29 +151,30 @@ class POILayer extends CustomFeatureGridLayer{
         outlineColor: new Cesium.Color.fromCssColorString("#ffffff"),
         outlineWidth: 2,
         heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
-        scaleByDistance: new Cesium.NearFarScalar(1000, 1, 20000, 0.5)
+        scaleByDistance: new Cesium.NearFarScalar(1000, 1, 20000, 0.5),
       };
       entityOptions.label = {
         text: attributes.name,
-        font: 'normal small-caps normal 16px 楷体',
+        font: "normal small-caps normal 16px 楷体",
         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
         fillColor: Cesium.Color.AZURE,
         outlineColor: Cesium.Color.BLACK,
         outlineWidth: 2,
         horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        pixelOffset: new Cesium.Cartesian2(0, -15), //偏移量   
-        heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, //是地形上方的高度 
+        pixelOffset: new Cesium.Cartesian2(0, -15), //偏移量
+        heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND, //是地形上方的高度
         scaleByDistance: new Cesium.NearFarScalar(1000, 1, 5000, 0.8),
-        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 5000)
+        distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
+          0.0,
+          5000
+        ),
       };
     }
 
     var entity = this.dataSource.entities.add(entityOptions);
     return entity;
-      
   }
-
 }
 
 export default POILayer;

@@ -11,7 +11,7 @@ import Cesium from "cesium";
 import { Util } from "../utils";
 
 class AttrPolygon {
-  static style2entity(style, entityAttr) {
+  static style2Entity(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       //默认值

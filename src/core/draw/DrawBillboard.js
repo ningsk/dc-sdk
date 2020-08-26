@@ -25,7 +25,7 @@ class DrawBillboard extends DrawPoint {
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      billboard: AttrBillboard.style2entity(attribute.style),
+      billboard: AttrBillboard.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -34,7 +34,7 @@ class DrawBillboard extends DrawPoint {
   }
 
   style2Entity(style, entity) {
-    return AttrBillboard.style2entity(style, entity.billboard);
+    return AttrBillboard.style2Entity(style, entity.billboard);
   }
 
   getAttrClass() {

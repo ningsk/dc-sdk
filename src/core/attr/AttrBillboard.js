@@ -12,7 +12,7 @@ import { Util } from "../utils";
 
 class AttrBillboard {
   // 属性赋值到entity
-  static style2entity(style, entityAttr) {
+  static style2Entity(style, entityAttr) {
     style = style || {};
 
     if (entityAttr == null) {

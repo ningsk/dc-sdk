@@ -10,7 +10,7 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:52:40
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-25 17:35:42
+ * @LastEditTime: 2020-08-26 13:28:36
  */
 class EditBase {
 
@@ -81,9 +81,8 @@ class EditBase {
   finish() {}
 
   // 拖拽点事件
-  bind event() {
+  bindEvent() {
     var _this = this;
-
     var scratchBoundingSphere = new Cesium.BoundingSphere();
     var zOffset = new Cesium.Cartesian3();
     var draggerHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);

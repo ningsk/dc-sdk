@@ -1,17 +1,17 @@
 import BaseLayer from "./BaseLayer";
 import { Util } from "../utils";
-import $ from 'jquery';
+import $ from "jquery";
 import { AttrPolyline, AttrPolygon, AttrLabel, AttrBillboard } from "../attr";
 
 /*
  * @Description: GeoJson格式数据图层
- * @version: 
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:22:51
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-08-21 09:06:06
  */
-export default class GeoJsonLayer extends BaseLayer{
+export default class GeoJsonLayer extends BaseLayer {
   constructor(cfg, viewer) {
     super(cfg, viewer);
     this.dataSource = null;
@@ -24,7 +24,7 @@ export default class GeoJsonLayer extends BaseLayer{
   // 添加
   add() {
     if (this.dataSource) {
-      this.viewer.dataSources.add(this.dataSource); 
+      this.viewer.dataSources.add(this.dataSource);
     } else {
       this.queryData();
     }
@@ -40,7 +40,7 @@ export default class GeoJsonLayer extends BaseLayer{
     if (this.config.extent || this.config.center) {
       this.viewer.mars.centerAt(this.config.extent || this.config.center, {
         duration: duration,
-        isWgs84: true
+        isWgs84: true,
       });
     } else {
       if (this.dataSource == null) {
@@ -48,7 +48,7 @@ export default class GeoJsonLayer extends BaseLayer{
       }
       // this.viewer.zoomTo(this.dataSource.entities.values);
       this.viewer.flyTo(this.dataSource.entities.values, {
-        duration: duration
+        duration: duration,
       });
     }
   }
@@ -60,23 +60,35 @@ export default class GeoJsonLayer extends BaseLayer{
     let entities = this.dataSource.entities.values;
     for (let i = 0, len = entities.length; i < len; i++) {
       let entity = entities[i];
-      if (entity.polygon && entity.polygon.material && entity.polygon.material.color) {
+      if (
+        entity.polygon &&
+        entity.polygon.material &&
+        entity.polygon.material.color
+      ) {
         this._updateEntityAlpha(entity.polygon.material.color, this._opacity);
         if (entity.polygon.outlineColor) {
           this._updateEntityAlpha(entity.polygon.outlineColor, this._opacity);
         }
       }
 
-      if (entity.polyline && entity.polyline.material && entity.polyline.material.color) {
+      if (
+        entity.polyline &&
+        entity.polyline.material &&
+        entity.polyline.material.color
+      ) {
         this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
       }
 
       if (entity.billboard) {
-        entity.billboard.color = new Cesium.Color.fromCssColorString('#FFFFFF').withAlpha(this._opacity);
+        entity.billboard.color = new Cesium.Color.fromCssColorString(
+          "#FFFFFF"
+        ).withAlpha(this._opacity);
       }
 
       if (entity.model) {
-        entity.model.color = new Cesium.Color.fromCssColorString('#FFFFFF').withAlpha(this._opacity);
+        entity.model.color = new Cesium.Color.fromCssColorString(
+          "#FFFFFF"
+        ).withAlpha(this._opacity);
       }
 
       if (entity.label) {
@@ -91,24 +103,25 @@ export default class GeoJsonLayer extends BaseLayer{
         }
       }
     }
-
   }
 
   _updateEntityAlpha(color, opacity) {
-    let newColor = color.getValue().withAlpha(opacity)
+    let newColor = color.getValue().withAlpha(opacity);
     color.setValue(newColor);
   }
 
   queryData() {
     let that = this;
     let dataSource = Cesium.GeoJsonDataSource.load(this.config.url, {
-      clampToGround: this.config.clampToGround
+      clampToGround: this.config.clampToGround,
     });
-    dataSource.then((dataSource) => {
-      that.showResult(dataSource);
-    }).otherwise((error) => {
-      that.showError("服务出错", error);
-    });
+    dataSource
+      .then((dataSource) => {
+        that.showResult(dataSource);
+      })
+      .otherwise((error) => {
+        that.showError("服务出错", error);
+      });
   }
 
   showResult(dataSource) {
@@ -120,22 +133,26 @@ export default class GeoJsonLayer extends BaseLayer{
     }
     // ================= 设置样式 ================
     let entities = this.dataSource.entities.values;
-    for (let i = 0, len = entities.length; i <len; i++) {
+    for (let i = 0, len = entities.length; i < len; i++) {
       let entity = entities[i];
       // 样式
       if (this.config.symbol) {
-        if (this.config.symbol == 'default') this.setDefSymbol(entity);
+        if (this.config.symbol == "default") this.setDefSymbol(entity);
         else this.setConfigSymbol(entity, this.config.symbol);
       }
       // popup弹窗
       if (this.config.columns || this.config.popup) {
         entity.popup = {
-          html: (entity)=> {
+          html: (entity) => {
             let attr = that.getEntityAttr(entity);
             if (Util.isString(attr)) return attr;
-            else return that.viewer.mars.popup.getPopupForConfig(that.config, attr);
+            else
+              return that.viewer.mars.popup.getPopupForConfig(
+                that.config,
+                attr
+              );
           },
-          anchor: that.config.popupAnchor || [0, 15]
+          anchor: that.config.popupAnchor || [0, 15],
         };
       }
 
@@ -144,18 +161,21 @@ export default class GeoJsonLayer extends BaseLayer{
           html: (entity) => {
             let attr = that.getEntityAttr(entity);
             if (Util.isString(attr)) return attr;
-            else return that.viewer.mars.popup.getPopupForConfig({
-              popup: that.config.tooltip
-            }, attr);
+            else
+              return that.viewer.mars.popup.getPopupForConfig(
+                {
+                  popup: that.config.tooltip,
+                },
+                attr
+              );
           },
-          anchor: that.config.tooltipAnchor || [0, -15]
+          anchor: that.config.tooltipAnchor || [0, -15],
         };
       }
 
       if (that.config.click) {
         entity.click = that.config.click;
       }
-
     }
   }
 
@@ -172,7 +192,7 @@ export default class GeoJsonLayer extends BaseLayer{
         color = Cesium.Color.fromRandom({
           minimumGreen: 0.75,
           maximumBlue: 0.75,
-          alpha: this._opacity
+          alpha: this._opacity,
         });
         this.colorHash[name] = color;
       }
@@ -187,7 +207,7 @@ export default class GeoJsonLayer extends BaseLayer{
         color = Cesium.Color.fromRandom({
           minimumGreen: 0.75,
           maximumBlue: 0.75,
-          alpha: this._opacity
+          alpha: this._opacity,
         });
         this.colorHash[name] = color;
       }
@@ -219,22 +239,22 @@ export default class GeoJsonLayer extends BaseLayer{
       AttrPolyline.style2Entity(styleOpt, entity.polyline);
     }
     if (entity.polygon) {
-      AttrPolygon.style2entity(styleOpt, entity.polygon);
+      AttrPolygon.style2Entity(styleOpt, entity.polygon);
       // 加上线宽
       if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
         entity.polygon.outline = false;
         let newOpt = {
-          "color": styleOpt.outlineColor,
-          "width": styleOpt.outlineWidth,
-          "opacity": styleOpt.outlineOpacity,
-          "lineType": "solid",
-          "clampToGround": true,
-          "outliine": false
+          color: styleOpt.outlineColor,
+          width: styleOpt.outlineWidth,
+          opacity: styleOpt.outlineOpacity,
+          lineType: "solid",
+          clampToGround: true,
+          outliine: false,
         };
         let polyline = AttrPolyline.style2Entity(newOpt);
         polyline.positions = entity.polygon.hierarchy._value.positions;
         this.dataSource._entityCollection.add({
-          polyline: polyline
+          polyline: polyline,
         });
       }
 
@@ -247,26 +267,25 @@ export default class GeoJsonLayer extends BaseLayer{
     }
 
     if (entity.label) {
-      styleOpt.heightReference = styleOpt.heightReference || Cesium.HeightReference.RELATIVE_TO_GROUND;
+      styleOpt.heightReference =
+        styleOpt.heightReference || Cesium.HeightReference.RELATIVE_TO_GROUND;
       AttrLabel.style2Entity(styleOpt, entity.label);
     }
 
     if (entity.billboard) {
-      styleOpt.heightReference = styleOpt.heightReference || Cesium.HeightReference.RELATIVE_TO_GROUND;
-      AttrBillboard.style2entity(styleOpt, entity.billboard);
+      styleOpt.heightReference =
+        styleOpt.heightReference || Cesium.HeightReference.RELATIVE_TO_GROUND;
+      AttrBillboard.style2Entity(styleOpt, entity.billboard);
       // 加上文字标签
       if (styleOpt.label && styleOpt.label.field) {
-        styleOpt.label.heightReference = styleOpt.label.heightReference || Cesium.HeightReference.RELATIVE_TO_GROUND;
+        styleOpt.label.heightReference =
+          styleOpt.label.heightReference ||
+          Cesium.HeightReference.RELATIVE_TO_GROUND;
         entity.label = AttrLabel.style2Entity(styleOpt.label);
         entity.label.text = attr[styleOpt.label.field] || "";
       }
     }
 
     entity.attribute = styleOpt;
-
   }
-
-  
-
-
 }
