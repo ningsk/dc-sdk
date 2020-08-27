@@ -6,9 +6,12 @@ import EditPolyline from "./EditPolyline";
  * @Author: 宁四凯
  * @Date: 2020-08-26 15:09:56
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 16:43:16
+ * @LastEditTime: 2020-08-27 10:19:44
  */
 class EditCorridor extends EditPolyline {
+  constructor(entity, viewer, dataSource) {
+    super(entity, viewer, dataSource);
+  }
   //修改坐标会回调，提高显示的效率
   changePositionsToCallback() {
     //var that = this;

@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 14:31:32
+ * @LastEditTime: 2020-08-27 10:20:32
  */
 
 import DrawPolyline from "./DrawPolyline.js";
@@ -22,6 +22,10 @@ class DrawWall extends DrawPolyline {
   _maxPointNum = def_maxPointNum; //最多允许点的个数
   maximumHeights = null;
   minimumHeights = null;
+
+  constructor(opts) {
+    super(opts);
+  }
 
   createFeature(attribute) {
     this._positions_draw = [];

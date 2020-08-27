@@ -10,9 +10,12 @@ import { Tooltip } from "leaflet";
  * @Author: 宁四凯
  * @Date: 2020-08-26 11:00:14
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 16:40:34
+ * @LastEditTime: 2020-08-27 10:19:52
  */
 class EditEllipsoid extends EditBase {
+  constructor(entity, viewer, dataSource) {
+    super(entity, viewer, dataSource);
+  }
   _positions_draw = null;
   //修改坐标会回调，提高显示的效率
   changePositionsToCallback() {

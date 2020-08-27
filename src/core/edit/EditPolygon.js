@@ -9,9 +9,14 @@ import { Tooltip } from "leaflet";
  * @Author: 宁四凯
  * @Date: 2020-08-27 09:13:45
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 10:13:17
+ * @LastEditTime: 2020-08-27 10:20:02
  */
 class EditPolygon extends EditPolyline {
+
+  constructor(entity, viewer, dataSource) {
+    super(entity, viewer, dataSource);
+  }
+
   changePositionsToCallback() {
     var that = this;
     this._positions_draw =

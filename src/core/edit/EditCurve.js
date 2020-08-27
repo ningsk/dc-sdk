@@ -10,6 +10,9 @@ import { AttrPolyline } from "../attr";
  * @LastEditTime: 2020-08-26 16:42:37
  */
 class EditCurve extends EditPolyline {
+	constructor(entity, viewer, dataSource) {
+    super(entity, viewer, dataSource);
+  }
   //修改坐标会回调，提高显示的效率
 	changePositionsToCallback() {
 		var that = this;

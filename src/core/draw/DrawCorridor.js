@@ -8,7 +8,7 @@ import { EditCorridor } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-26 15:05:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 15:12:46
+ * @LastEditTime: 2020-08-27 10:21:11
  */
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;
@@ -18,6 +18,10 @@ class DrawCorridor extends DrawPolyline {
   //坐标位置相关
   _minPointNum = def_minPointNum; //至少需要点的个数
   _maxPointNum = def_maxPointNum; //最多允许点的个数
+
+  constructor(opts) {
+    super(opts);
+  }
 
   //根据attribute参数创建Entity
   createFeature(attribute) {
