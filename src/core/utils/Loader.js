@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 13:13:58
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-20 14:05:33
+ * @LastEditTime: 2020-08-27 14:48:49
  */
 
 import { isWindow } from "jquery";
@@ -98,7 +98,7 @@ function loadItem(url, list, setting, callback) {
   // 如果加载的url为空，就直接成功返回
   if (!url) {
     setTimeout(()=>{
-      onFinishLoading();
+      onFinishLoading(list, callback);
     });
     return;
   }
@@ -113,7 +113,7 @@ function loadItem(url, list, setting, callback) {
 
 // 每次资源下载完成后，检验是否结束整个list下载过程
 // 若已经完成所有下载，执行回调函数
-function onFinishLoading() {
+function onFinishLoading(list, callback) {
   var urlIndex = list.indexOf(url);
   if (urlIndex > -1) {
     list.splice(urlIndex, 1);

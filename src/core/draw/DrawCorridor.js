@@ -8,7 +8,7 @@ import { EditCorridor } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-26 15:05:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 10:21:11
+ * @LastEditTime: 2020-08-27 13:50:39
  */
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;
@@ -76,3 +76,5 @@ class DrawCorridor extends DrawPolyline {
     }, false);
   }
 }
+
+export default DrawCorridor;
