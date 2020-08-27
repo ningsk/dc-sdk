@@ -10,7 +10,7 @@ import { EditPoint } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-25 17:55:17
+ * @LastEditTime: 2020-08-27 08:27:36
  */
 class DrawPoint extends DrawBase {
   type = "point";

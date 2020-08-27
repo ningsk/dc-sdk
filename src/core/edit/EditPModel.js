@@ -11,7 +11,7 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-26 13:57:57
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 15:34:19
+ * @LastEditTime: 2020-08-27 08:47:31
  */
 class EditPModel extends EditBase {
   constructor(entity, viewer, dataSource) {
@@ -156,6 +156,8 @@ class EditPModel extends EditBase {
     //});
   }
   destroyDraggers() {
+    super.destroyDraggers();
+
     if (this.entityAngle) {
       this.dataSource.entities.remove(this.entityAngle);
       delete this.entityAngle;
