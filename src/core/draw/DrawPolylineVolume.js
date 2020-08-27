@@ -21,6 +21,10 @@ class DrawPolylineVolume extends DrawPolyline {
   _minPointNum = def_minPointNum; // 至少需要点的个数
   _maxPointNum = def_maxPointNum; // 最多允许点的个数
 
+  constructor(opts) {
+    super(opts);
+  }
+
   // 根据attribute参数创建Entity
   createFeature(attribute) {
     this._positions_draw = [];

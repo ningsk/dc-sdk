@@ -16,6 +16,10 @@ class DrawRectangle extends DrawPolyline {
   _minPointNum = 2; // 至少需要点的个数
   _maxPointNum = 2; // 最多允许点的个数
 
+  constructor(opts) {
+    super(opts);
+  }
+
   getRectangle() {
     let positions = this.getDrawPosition();
     if (positions.length < 2) return null;

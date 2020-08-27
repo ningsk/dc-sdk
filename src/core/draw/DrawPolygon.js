@@ -20,6 +20,10 @@ class DrawPolygon extends DrawPolyline {
   _minPointNum = def_minPointNum; // 至少需要点的个数
   _maxPointNum = def_maxPointNum; // 最多允许点的个数
 
+  constructor(opts) {
+    super(opts);
+  }
+
   createFeature(attribute) {
     this._positions_draw = [];
     if (attribute.config) {
