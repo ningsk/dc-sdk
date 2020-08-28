@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:01:20
+ * @LastEditTime: 2020-08-28 09:43:09
  */
 import { Tooltip } from "../utils";
 
@@ -364,7 +364,7 @@ class Draw {
     if (isClear) {
       this.clearDraw();
     }
-    var arrthis = [];
+    var arrThis = [];
     var jsonFeatures = jsonObjs.features;
 
     for (var i = 0, len = jsonFeatures.length; i < len; i++) {
@@ -416,12 +416,12 @@ class Draw {
         }
       }
 
-      arrthis.push(entity);
+      arrThis.push(entity);
     }
 
-    if (isFly) this.viewer.flyTo(arrthis);
+    if (isFly) this.viewer.flyTo(arrThis);
 
-    return arrthis;
+    return arrThis;
   }
 
   //属性转entity
@@ -477,8 +477,8 @@ class Draw {
   //获取实体的经纬度值 坐标数组
   getCoordinates(entity) {
     var type = entity.attribute.type;
-    var coor = this.drawCtrl[type].getCoordinates(entity);
-    return coor;
+    var coordinate = this.drawCtrl[type].getCoordinates(entity);
+    return coordinate;
   }
   //获取实体的坐标数组
   getPositions(entity) {
@@ -494,3 +494,5 @@ class Draw {
     if (this.viewer.dataSources.contains(this.dataSource)) this.viewer.dataSources.remove(this.dataSource, true);
   }
 }
+
+export default Draw;

@@ -1,8 +1,7 @@
 import EditBase from "./EditBase";
 import Cesium from "cesium";
-import { Dragger } from "../utils";
+import { Dragger, Tooltip } from "../utils";
 import { Point } from "../point";
-import { Tooltip } from "../utils";
 
 /*
  * @Description:
@@ -10,7 +9,7 @@ import { Tooltip } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-26 11:00:14
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:04:23
+ * @LastEditTime: 2020-08-28 09:21:23
  */
 class EditEllipsoid extends EditBase {
   constructor(entity, viewer, dataSource) {

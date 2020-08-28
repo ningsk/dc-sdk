@@ -1,7 +1,6 @@
 import EditPolyline from "./EditPolyline";
 import { Point } from "../point";
-import { Dragger } from "../utils";
-import { Tooltip } from "../utils";
+import { Dragger, Tooltip } from "../utils";
 
 /*
  * @Description:
@@ -9,7 +8,7 @@ import { Tooltip } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-25 18:02:18
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 10:19:36
+ * @LastEditTime: 2020-08-28 09:21:01
  */
 class EditCircle extends EditPolyline {
   constructor(entity, viewer, dataSource) {

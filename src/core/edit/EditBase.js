@@ -1,7 +1,6 @@
-import { Util, Dragger } from "../utils";
+import { Util, Dragger, Tooltip } from "../utils";
 import { EventType } from "../event";
 import { CesiumWidget } from "cesium";
-import { Tooltip } from "../utils";
 import { Point } from "../point";
 
 /*
@@ -10,7 +9,7 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:52:40
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:02:54
+ * @LastEditTime: 2020-08-28 09:20:29
  */
 class EditBase {
 

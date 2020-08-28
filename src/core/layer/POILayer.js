@@ -1,15 +1,15 @@
-const { CustomFeatureGridLayer } = require(".");
-const { default: Transform } = require("../transfrom/Transform");
-const { AttrBillboard, AttrPoint } = require("../attr");
+import CustomFeatureGridLayer from "./CustomFeatureGridLayer";
+import { AttrBillboard, AttrPoint } from "../attr";
 import $ from "jquery";
 import Cesium from "cesium";
+import { PointConvert } from "../point";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-21 14:00:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 15:40:43
+ * @LastEditTime: 2020-08-28 10:04:41
  */
 class POILayer extends CustomFeatureGridLayer {
   constructor(cfg, viewer) {
@@ -36,14 +36,8 @@ class POILayer extends CustomFeatureGridLayer {
   }
 
   getDataForGrid(opts, callback) {
-    var jwd1 = Transform.transformWGSToGcj([
-      opts.rectangle.xmin,
-      opts.rectangle.ymax,
-    ]); // 加偏
-    var jwd2 = Transform.transformWGSToGcj([
-      opts.rectangle.xmax,
-      opts.rectangle.ymin,
-    ]); // 加偏
+    var jwd1 = PointConvert.wgs2gcj([opts.rectangle.xmin, opts.rectangle.ymax]); // 加偏
+    var jwd2 = PointConvert.wgs2gcj([opts.rectangle.xmax, opts.rectangle.ymin]); // 加偏
     var polygon = jwd1[0] + "," + jwd1[1] + "|" + jwd2[0] + "," + jwd2[1];
 
     var filter = this.config.filter || {};

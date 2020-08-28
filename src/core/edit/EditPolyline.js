@@ -1,6 +1,5 @@
 import EditBase from "./EditBase";
-import { Dragger } from "../utils";
-import { Tooltip } from "leaflet";
+import { Dragger, Tooltip } from "../utils";
 
 /*
  * @Description:
@@ -8,7 +7,7 @@ import { Tooltip } from "leaflet";
  * @Author: 宁四凯
  * @Date: 2020-08-26 08:32:51
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 15:22:51
+ * @LastEditTime: 2020-08-28 09:18:19
  */
 class EditPolyline extends EditBase {
   constructor(entity, viewer, dataSource) {

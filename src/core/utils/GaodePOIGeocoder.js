@@ -1,12 +1,12 @@
 import Util from "./Util";
-import Transform from '../transfrom/Transform';
+import { PointConvert } from "../point";
 /*
  * @Description: 
  * @version: 
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:08:08
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-20 14:22:54
+ * @LastEditTime: 2020-08-28 10:01:37
  */
 class GaodePOIGeocoder {
   
@@ -55,7 +55,7 @@ class GaodePOIGeocoder {
 
       return results.pois.map((resultObject) => {
         let arrjwd = resultObject.location.split(",");
-        arrjwd = Transform.transformGcjToWGS(arrjwd); // 纠偏
+        arrjwd = PointConvert.gcj2wgs(arrjwd); // 纠偏
         let lnglat = that.viewer.mars.point2map({
           x: arrjwd[0],
           y: arrjwd[1]

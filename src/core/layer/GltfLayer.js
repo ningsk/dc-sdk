@@ -1,10 +1,10 @@
 /*
  * @Description: Gltf小模型图层
- * @version: 
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:10:46
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 09:05:49
+ * @LastEditTime: 2020-08-28 09:40:14
  */
 const { default: BaseLayer } = require("./BaseLayer");
 
@@ -16,7 +16,7 @@ class GltfLayer extends BaseLayer {
   }
 
   // 添加
-  add() { 
+  add() {
     if (this.model) {
       this.viewer.entities.add(this.model);
     } else {
@@ -35,13 +35,13 @@ class GltfLayer extends BaseLayer {
     if (this.config.extent || this.config.center) {
       this.viewer.mars.centerAt(this.config.extent || this.config.center, {
         duration: duration,
-        isWgs84: true
+        isWgs84: true,
       });
     } else {
       var cfg = this.config.position;
       this.viewer.mars.centerAt(cfg, {
         duration: duration,
-        isWgs84: true
+        isWgs84: true,
       });
     }
   }
@@ -54,15 +54,25 @@ class GltfLayer extends BaseLayer {
     var pitch = Cesium.Math.toRadians(cfg.pitch || 0);
     var roll = Cesium.Math.toRadians(cfg.roll || 0);
     var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-    var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
-  
+    var orientation = Cesium.Transforms.headingPitchRollQuaternion(
+      position,
+      hpr
+    );
+
     var modelopts = {
-      uri: this.config.url
+      uri: this.config.url,
     };
 
     for (var key in this.config) {
-      if (key == "url" || key == "name" || key == "position" || key == "center" || key == "tooltip" || key ==
-        "popup") continue;
+      if (
+        key == "url" ||
+        key == "name" ||
+        key == "position" ||
+        key == "center" ||
+        key == "tooltip" ||
+        key == "popup"
+      )
+        continue;
       modelopts[key] = this.config[key];
     }
 
@@ -73,14 +83,16 @@ class GltfLayer extends BaseLayer {
       model: modelopts,
       _config: this.config,
       tooltip: this.config.tooltip,
-      popup: this.config.popup
+      popup: this.config.popup,
     });
-
   }
 
   setOpacity(value) {
     if (this.model == null) return;
-    this.model.model.color = new Cesium.Color.fromCssColorString("#FFFFFF").withAlpha(value);
+    this.model.model.color = new Cesium.Color.fromCssColorString(
+      "#FFFFFF"
+    ).withAlpha(value);
   }
-
 }
+
+export default GltfLayer;
