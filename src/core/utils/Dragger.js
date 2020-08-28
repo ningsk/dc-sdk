@@ -1,14 +1,13 @@
 /*
- * @Descripttion: 
+ * @Description: 
  * @version: 
  * @Author: 宁四凯
  * @Date: 2020-08-25 16:17:18
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-25 16:53:57
+ * @LastEditTime: 2020-08-28 09:06:54
  */
 
-//TODO Tooltip 来源不是leaflet
-import { Tooltip } from "leaflet";
+import { Tooltip } from "./index";
 import Cesium from 'cesium';
 
  

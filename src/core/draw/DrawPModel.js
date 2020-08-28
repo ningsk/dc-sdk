@@ -2,7 +2,7 @@ import DrawBase from "./DrawBase";
 import Cesium from "cesium";
 import { AttrModel } from "../attr";
 import { Point } from "../point";
-import { Tooltip } from "leaflet";
+import { Tooltip } from "../utils";
 import { EditPModel } from "../edit";
 /*
  * @Description:
@@ -10,7 +10,7 @@ import { EditPModel } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:41
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 10:25:36
+ * @LastEditTime: 2020-08-28 09:02:18
  */
 class DrawPModel extends DrawBase {
   type = "point";

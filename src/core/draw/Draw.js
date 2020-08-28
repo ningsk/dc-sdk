@@ -4,9 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 16:55:39
+ * @LastEditTime: 2020-08-28 09:01:20
  */
-import { Tooltip } from "leaflet";
+import { Tooltip } from "../utils";
 
 import {
   DrawPoint,

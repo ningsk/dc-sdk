@@ -1,7 +1,7 @@
 import EditPolyline from "./EditPolyline";
 import { Point } from "../point";
 import { Dragger } from "../utils";
-import { Tooltip } from "leaflet";
+import { Tooltip } from "../utils";
 
 /*
  * @Description:

@@ -1,7 +1,6 @@
 import EditBase from "./EditBase";
 import Cesium from "cesium";
-import { Dragger } from "../utils";
-import { Tooltip } from "leaflet";
+import { Dragger, Tooltip } from "../utils";
 import { AttrCircle } from "../attr";
 import { Point } from "../point";
 
@@ -11,7 +10,7 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-26 13:57:57
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 08:47:31
+ * @LastEditTime: 2020-08-28 09:05:50
  */
 class EditPModel extends EditBase {
   constructor(entity, viewer, dataSource) {

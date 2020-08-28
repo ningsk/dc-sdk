@@ -3,7 +3,7 @@ import { AttrPolyline } from "../attr";
 import Cesium from "cesium";
 import { Point } from "../point";
 import { EventType } from "../event";
-import { Tooltip } from "leaflet";
+import { Tooltip } from "../utils";
 import { EditPolyline } from "../edit";
 
 const def_minPointNum = 2;
@@ -15,7 +15,7 @@ const def_maxPointNum = 9999;
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:11
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 13:52:09
+ * @LastEditTime: 2020-08-28 09:02:46
  */
 class DrawPolyline extends DrawBase {
   type = "polyline";
