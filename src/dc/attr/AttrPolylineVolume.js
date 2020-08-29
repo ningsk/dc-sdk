@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:37:50
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 14:42:51
+ * @LastEditTime: 2020-08-29 09:45:33
  */
 
 import Cesium from "cesium";
@@ -136,14 +136,14 @@ class AttrPolylineVolume {
 
   //获取entity的坐标（geojson规范的格式）
   static getCoordinates(entity) {
-    var positions = getPositions(entity);
+    var positions = this.getPositions(entity);
     var coordinates = Util.cartesians2lonlats(positions);
     return coordinates;
   }
 
   //entity转geojson
   static toGeoJSON(entity) {
-    var coordinates = getCoordinates(entity);
+    var coordinates = this.getCoordinates(entity);
     return {
       type: "Feature",
       properties: entity.attribute || {},
