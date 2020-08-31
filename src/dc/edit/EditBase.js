@@ -9,7 +9,7 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:52:40
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:20:29
+ * @LastEditTime: 2020-08-31 09:07:38
  */
 class EditBase {
 
@@ -136,7 +136,6 @@ class EditBase {
             if (dragger.onDrag) {
               dragger.onDrag(dragger, newPosition, position);
             }
-
             _this.updateAttrForEditing();
             break;
           default: 

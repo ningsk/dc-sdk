@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:43:09
+ * @LastEditTime: 2020-08-31 09:01:50
  */
 import { Tooltip } from "../utils";
 
@@ -223,7 +223,7 @@ class Draw {
           var tooltip = _this.tooltip;
           setTimeout(() => {
             // Edit中的MOUSE_MOVE会关闭提示，延迟执行。
-            Tooltip.showAt(event.endPosition, Tooltip.message.edit.start);
+            tooltip.showAt(event.endPosition, Tooltip.message.edit.start);
           }, 100);
         }
       }
