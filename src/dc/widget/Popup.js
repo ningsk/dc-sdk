@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:24:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-31 14:35:37
+ * @LastEditTime: 2020-09-01 09:06:46
  */
 
-import Cesium, { destroyObject } from "cesium";
+import Cesium from "cesium";
 import $ from "jquery";
 import { Point } from "../point";
 import EsriUtil, { _updateMapAttribution } from "esri-leaflet/src/Util";
@@ -371,15 +371,155 @@ class Popup {
   // 格式化Popup或Tooltip格式化字符串
   getPopup(cfg, attr, title) {
     if (!attr) return false;
+
     title = title || "";
-    if (L.Util.isArray(cfg)) {
-      // 数组
-      var countSok = 0;
+
+    if (_leaflet2.default.Util.isArray(cfg)) {
+      //数组
+      var countsok = 0;
+      var inhtml =
+        '<div class="mars-popup-titile">' +
+        title +
+        '</div><div class="mars-popup-content" >';
+      for (var i = 0; i < cfg.length; i++) {
+        var thisfield = cfg[i];
+
+        var col = thisfield.field;
+        if (
+          _typeof(attr[col]) === "object" &&
+          attr[col].hasOwnProperty("getValue")
+        )
+          attr[col] = attr[col].getValue();
+        if (typeof attr[col] === "function") continue;
+
+        if (thisfield.type == "details") {
+          //详情按钮
+          var showval = _jquery2.default.trim(attr[col || "OBJECTID"]);
+          if (
+            showval == null ||
+            showval == "" ||
+            showval == "Null" ||
+            showval == "Unknown"
+          )
+            continue;
+
+          inhtml +=
+            '<div style="text-align: center;padding: 10px 0;"><button type="button" onclick="' +
+            thisfield.calback +
+            "('" +
+            showval +
+            '\');" " class="btn btn-info  btn-sm">' +
+            (thisfield.name || "查看详情") +
+            "</button></div>";
+          continue;
+        }
+
+        var showval = _jquery2.default.trim(attr[col]);
+        if (
+          showval == null ||
+          showval == "" ||
+          showval == "Null" ||
+          showval == "Unknown" ||
+          showval == "0" ||
+          showval.length == 0
+        )
+          continue;
+
+        if (thisfield.format) {
+          //格式化
+          try {
+            showval = eval(thisfield.format + "(" + showval + ")");
+          } catch (e) {
+            console.log("getPopupByConfig error:" + thisfield.format);
+          }
+        }
+        if (thisfield.unit) {
+          showval += thisfield.unit;
+        }
+
+        inhtml +=
+          "<div><label>" + thisfield.name + "</label>" + showval + "</div>";
+        countsok++;
+      }
+      inhtml += "</div>";
+
+      if (countsok == 0) return false;
+      return inhtml;
+    } else if (
+      (typeof cfg === "undefined" ? "undefined" : _typeof(cfg)) === "object"
+    ) {
+      //对象,type区分逻辑
+      switch (cfg.type) {
+        case "iframe":
+          var _url = _util.template(cfg.url, attr);
+
+          var inhtml =
+            '<iframe id="ifarm" src="' +
+            _url +
+            '"  style="width:' +
+            (cfg.width || "300") +
+            "px;height:" +
+            (cfg.height || "300") +
+            'px;overflow:hidden;margin:0;" scrolling="no" frameborder="0" ></iframe>';
+          return inhtml;
+          break;
+        case "javascript":
+          //回调方法
+          return eval(cfg.calback + "(" + JSON.stringify(attr) + ")");
+          break;
+      }
+    } else if (cfg == "all") {
+      //全部显示
+      var countsok = 0;
       var inhtml =
         '<div class="mars-popup-title">' +
         title +
         '</div><div class="mars-popup-content" >';
+      for (var col in attr) {
+        if (
+          col == "Shape" ||
+          col == "FID" ||
+          col == "OBJECTID" ||
+          col == "_definitionChanged" ||
+          col == "_propertyNames"
+        )
+          continue; //不显示的字段
+
+        if (col.substr(0, 1) == "_") {
+          col = col.substring(1); //cesium 内部属性
+        }
+
+        if (
+          typeof attr[col] === "object" &&
+          attr[col].hasOwnProperty("getValue")
+        )
+          attr[col] = attr[col].getValue();
+        if (typeof attr[col] === "function") continue;
+
+        var showval = $.trim(attr[col]);
+        if (
+          showval == null ||
+          showval == "" ||
+          showval == "Null" ||
+          showval == "Unknown" ||
+          showval == "0" ||
+          showval.length == 0
+        )
+          continue; //不显示空值，更美观友好
+
+        inhtml += "<div><label>" + col + "</label>" + showval + "</div>";
+        countsok++;
+      }
+      inhtml += "</div>";
+
+      if (countsok == 0) return false;
+      return inhtml;
+    } else {
+      //格式化字符串
+      return this.template(cfg, attr);
     }
+
+    return false;
   }
 }
 
