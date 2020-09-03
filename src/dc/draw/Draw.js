@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-31 09:01:50
+ * @LastEditTime: 2020-09-02 13:36:59
  */
 import { Tooltip } from "../utils";
 
@@ -30,6 +30,7 @@ import {
 import { EventType } from "../event";
 
 import { Util as DrawUtil } from "../utils";
+import Event from "../event/Event";
 
 /*
  * @Description:
@@ -42,7 +43,7 @@ import { Util as DrawUtil } from "../utils";
 export * from "./EventType";
 export * from "./Events";
 
-class Draw {
+class Draw extends Event{
   dataSource = null;
   primitives = null;
   drawCtrl = null;
@@ -52,6 +53,7 @@ class Draw {
   _hasEdit = null;
 
   constructor(viewer, options) {
+    super();
     console.log("draw initialize");
     this.viewer = viewer;
     this.options = options || {};

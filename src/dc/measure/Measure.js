@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-02 13:26:08
+ * @LastEditTime: 2020-09-02 13:38:07
  */
 
 import Cesium from "cesium";
@@ -34,7 +34,7 @@ const _labelAttr = {
 export var  Measure = function(opts) {
     var that = this;
     var viewer = opts.viewer;
-    that.thisType = ""; // 当前正在绘制的类别
+    var thisType = ""; // 当前正在绘制的类别
     if (opts.label) {
       for (var key in opts.label) {
         _labelAttr[key] = opts.label[key];
@@ -44,9 +44,9 @@ export var  Measure = function(opts) {
       hasEdit: false,
     });
 
-    drawControl.options(DrawEventType.DRAW_ADD_POINT, (e) => {
+    drawControl.on(DrawEventType.DRAW_ADD_POINT, (e) => {
       var entity = e.entity;
-      switch (that.thisType) {
+      switch thisType) {
         case "length":
         case "section":
           that.workLength.showAddPointLength(entity);
@@ -120,7 +120,7 @@ export var  Measure = function(opts) {
 
     drawControl.on(DrawEventType.DRAW_CREATED, (e) => {
       var entity = e.entity;
-      switch (that.thisType) {
+      switch (thisType) {
         case "length":
         case "section":
           that.workLength.showDrawEnd(entity);
@@ -147,7 +147,7 @@ export var  Measure = function(opts) {
 
     var measureLength = (options) => {
       endLastDraw();
-      that.thisType = "length";
+      thisType = "length";
       options = options || {};
       options.type = that.thisType;
       if (!options.hasOwnProperty("terrain")) {
@@ -158,7 +158,7 @@ export var  Measure = function(opts) {
 
     var measureSection = (options) => {
       endLastDraw();
-      that.thisType = "section";
+      thisType = "section";
       options = options || {};
       options.type = that.thisType;
       options.terrain = true;
@@ -167,7 +167,7 @@ export var  Measure = function(opts) {
 
     var measureArea = (options) => {
       endLastDraw();
-      that.thisType = "area";
+      thisType = "area";
       options = options || {};
       options.type = that.thisType;
       that.workArea.start(options);
@@ -175,7 +175,7 @@ export var  Measure = function(opts) {
 
     var measureVolume = (options) => {
       endLastDraw();
-      that.thisType = "volume";
+      thisType = "volume";
       options = options || {};
       options.type = that.thisType;
       that.workVolume.start(options);
@@ -185,11 +185,11 @@ export var  Measure = function(opts) {
       endLastDraw();
       options = options || {};
       if (options.hasOwnProperty("isSuper") && !options.isSuper) {
-        that.thisType = "height";
+      thisType = "height";
         options.type = that.thisType;
         that.workHeight.start(options);
       } else {
-        that.thisType = "super_height";
+        thisType = "super_height";
         options.type = that.thisType;
         that.workSuperHeight.start(options);
       }
@@ -198,7 +198,7 @@ export var  Measure = function(opts) {
     // 如果上次未完成绘制就单击了新的，清除之前未完成的
     var measureAngle = (options) => {
       endLastDraw();
-      that.thisType = "angle";
+      thisType = "angle";
       options = options || {};
       options.type = that.thisType;
       that.workAngle.start(options);
@@ -215,7 +215,7 @@ export var  Measure = function(opts) {
     };
 
     var clearMeasure = () => {
-      that.thisType = "";
+      thisType = "";
       endLastDraw();
       // dataSource.entities.removeAll();
       drawControl.deleteAll();

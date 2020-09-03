@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 13:13:58
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 14:48:49
+ * @LastEditTime: 2020-09-02 14:00:52
  */
 
 import { isWindow } from "jquery";
@@ -172,13 +172,13 @@ function ready(node, callback) {
 // sync  用作异步下载，顺序执行，保证下载的js按照数组顺序执行
 class Loader {
   
-  async(list, callback) {
+  static async(list, callback) {
     ready(document, () => {
       doInit(list, {}, callback);
     })
   }
 
-  sync(list, callback) {
+  static sync(list, callback) {
     ready(document, () => {
       doInit(list, {sync: true}, callback);
     });
