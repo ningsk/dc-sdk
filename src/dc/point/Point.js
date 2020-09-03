@@ -4,11 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 14:23:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 11:07:52
+ * @LastEditTime: 2020-09-03 13:34:21
  */
 
 import Cesium from 'cesium';
-import { extend } from 'leaflet/src/core/Util';
 
  class Point {
    /**

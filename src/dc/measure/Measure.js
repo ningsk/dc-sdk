@@ -10,7 +10,7 @@
 import Cesium from "cesium";
 import { Draw } from "../draw";
 import { DrawEventType } from "../event";
-import { AttrLabel, AttrPolygon } from "../attr";
+import { Label, Polygon } from "../attr";
 import { Util } from "../utils";
 import { Point } from "../point";
 
@@ -269,7 +269,7 @@ export var  Measure = function(opts) {
       start: (options) => {
         this.options = options;
         // 线段总长label
-        var entityAttr = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           show: false,
@@ -301,7 +301,7 @@ export var  Measure = function(opts) {
       // 绘制增加一个点后，显示该分段的长度
       showAddPointLength: (entity) => {
         var positions = drawControl.getPositions(entity);
-        var entityAttr = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           show: true,
@@ -535,7 +535,7 @@ export var  Measure = function(opts) {
       // 开始绘制
       start: (options) => {
         this.options = options;
-        var entityAttr = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           show: false,
@@ -576,7 +576,7 @@ export var  Measure = function(opts) {
           this.totalLabel.label.show = false;
           return;
         }
-        var polygon = AttrPolygon.toGeoJSON(entity);
+        var polygon = Polygon.toGeoJSON(entity);
         var area = turf.area(polygon);
         var areaStr = formatArea(area, this.options.unit);
         // 求中心点
@@ -627,7 +627,7 @@ export var  Measure = function(opts) {
       },
       start: (options) => {
         this.options = options;
-        var entityAttr = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           show: false,
@@ -857,7 +857,7 @@ export var  Measure = function(opts) {
       // 开始绘制
       start: (options) => {
         this.options = options;
-        var entityAttr = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.RIGHT,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           show: false
@@ -935,7 +935,7 @@ export var  Measure = function(opts) {
       // 开始绘制
       start: (options) => {
         this.options = options;
-        var entityAttr = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.RIGHT,
           verticalOrigin: Cesium.verticalOrigin.CENTER,
           show: false
@@ -948,7 +948,7 @@ export var  Measure = function(opts) {
             type: this.options.type
           }
         });
-        var entityAttr2 = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr2 = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           show: false
@@ -1157,7 +1157,7 @@ export var  Measure = function(opts) {
       // 开始绘制
       start: (options) => {
         this.options = options;
-        var entityAttr = AttrLabel.style2Entity(_labelAttr, {
+        var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           show: false

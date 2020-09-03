@@ -1,5 +1,5 @@
 import Cesium from "cesium";
-import { AttrPoint } from "../attr";
+import { Point } from "../attr";
 import DrawBase from "./DrawBase";
 import { Point } from "../point";
 import { EditPoint } from "../edit";
@@ -27,7 +27,7 @@ class DrawPoint extends DrawBase {
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      point: AttrPoint.style2Entity(attribute.style),
+      point: Point.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -36,7 +36,7 @@ class DrawPoint extends DrawBase {
   }
 
   style2Entity(style, entity) {
-    return AttrPoint.style2Entity(style, entity.point);
+    return Point.style2Entity(style, entity.point);
   }
 
   bindEvent() {

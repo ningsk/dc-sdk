@@ -1,27 +1,36 @@
-const { Util } = require("../utils");
-import Cesium from "cesium";
+import { Util } from "../utils";
+
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
- * @Date: 2020-08-24 10:02:53
+ * @Date: 2020-08-26 08:49:17
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 14:29:31
+ * @LastEditTime: 2020-08-26 09:04:22
  */
-class AttrWall {
-  //属性赋值到entity
+class Circle {
   static style2Entity(style, entityAttr) {
     style = style || {};
-
-    if (!entityAttr) {
+    if (entityAttr == null) {
+      // 默认值
       entityAttr = {
         fill: true,
       };
     }
 
+    // 贴地时，剔除高度相关属性
+    if (style.clampToGround) {
+      if (style.hasOwnProperty("height")) {
+        delete style.height;
+      }
+      if (style.hasOwnProperty("extrudeHeight")) {
+        delete style.extrudedHeight;
+      }
+    }
     //Style赋值值Entity
     for (var key in style) {
       var value = style[key];
+
       switch (key) {
         default:
           //直接赋值
@@ -42,6 +51,25 @@ class AttrWall {
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
+        case "rotation":
+          //旋转角度
+          entityAttr.rotation = Cesium.Math.toRadians(value);
+          break;
+        case "height":
+          entityAttr.height = Number(value);
+          if (style.extrudedHeight)
+            entityAttr.extrudedHeight =
+              Number(style.extrudedHeight) + Number(value);
+          break;
+        case "extrudedHeight":
+          entityAttr.extrudedHeight =
+            Number(entityAttr.height || style.height || 0) + Number(value);
+          break;
+        case "radius":
+          //半径（圆）
+          entityAttr.semiMinorAxis = Number(value);
+          entityAttr.semiMajorAxis = Number(value);
+          break;
       }
     }
 
@@ -59,7 +87,7 @@ class AttrWall {
 
   //获取entity的坐标
   static getPositions(entity) {
-    return entity.wall.positions.getValue();
+    return [entity.position.getValue()];
   }
 
   //获取entity的坐标（geojson规范的格式）
@@ -76,11 +104,11 @@ class AttrWall {
       type: "Feature",
       properties: entity.attribute || {},
       geometry: {
-        type: "LineString",
-        coordinates: coordinates,
+        type: "Point",
+        coordinates: coordinates[0],
       },
     };
   }
 }
 
-export default AttrWall;
+export default Circle;

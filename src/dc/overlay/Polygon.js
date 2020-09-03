@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 13:23:55
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 13:39:02
+ * @LastEditTime: 2020-09-03 13:23:20
  */
 
 import Cesium from "cesium";
 import { Util } from "../utils";
 
-class AttrPolygon {
+class Polygon {
   static style2Entity(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
@@ -105,4 +105,4 @@ class AttrPolygon {
   }
 }
 
-export default AttrPolygon;
+export default Polygon;

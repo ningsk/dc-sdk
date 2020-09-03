@@ -1,20 +1,19 @@
+import { Util } from "../utils";
+import Cesium from "cesium";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
- * @Date: 2020-08-15 14:49:52
+ * @Date: 2020-08-24 10:02:53
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-24 10:02:26
+ * @LastEditTime: 2020-09-03 13:21:30
  */
-
-import Cesium from "cesium";
-import { Util } from "../utils";
-
-class AttrEllipsoid {
+class Wall {
+  //属性赋值到entity
   static style2Entity(style, entityAttr) {
     style = style || {};
-    if (entityAttr == null) {
-      //默认值
+
+    if (!entityAttr) {
       entityAttr = {
         fill: true,
       };
@@ -30,8 +29,6 @@ class AttrEllipsoid {
           break;
         case "opacity": //跳过扩展其他属性的参数
         case "outlineOpacity":
-        case "widthRadii":
-        case "heightRadii":
           break;
         case "outlineColor":
           //边框颜色
@@ -44,17 +41,6 @@ class AttrEllipsoid {
           entityAttr.material = new Cesium.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
-          break;
-        case "extentRadii":
-          //球体长宽高半径
-          var extentRadii = style.extentRadii || 100;
-          var widthRadii = style.widthRadii || 100;
-          var heightRadii = style.heightRadii || 100;
-          entityAttr.radii = new Cesium.Cartesian3(
-            extentRadii,
-            widthRadii,
-            heightRadii
-          );
           break;
       }
     }
@@ -71,30 +57,30 @@ class AttrEllipsoid {
     return entityAttr;
   }
 
-  // 获取entity的坐标
+  //获取entity的坐标
   static getPositions(entity) {
-    return [entity.position.getValue()];
+    return entity.wall.positions.getValue();
   }
 
-  // 获取entity的坐标（geojso规范的格式）
+  //获取entity的坐标（geojson规范的格式）
   static getCoordinates(entity) {
     var positions = this.getPositions(entity);
     var coordinates = Util.cartesians2lonlats(positions);
     return coordinates;
   }
 
-  // entity转geojson
-  static toGeoJson(entity) {
+  //entity转geojson
+  static toGeoJSON(entity) {
     var coordinates = this.getCoordinates(entity);
     return {
       type: "Feature",
       properties: entity.attribute || {},
       geometry: {
-        type: "Point",
-        coordinates: coordinates[0],
+        type: "LineString",
+        coordinates: coordinates,
       },
     };
   }
 }
 
-export default AttrEllipsoid;
+export default Wall;

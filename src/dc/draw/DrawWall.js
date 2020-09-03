@@ -8,7 +8,7 @@
  */
 
 import DrawPolyline from "./DrawPolyline.js";
-import { AttrWall } from "../attr/index.js";
+import { Wall } from "../attr/index.js";
 import { EditWall } from "../edit/index.js";
 import Cesium from "cesium";
 
@@ -43,7 +43,7 @@ class DrawWall extends DrawPolyline {
 
     var that = this;
     var addAttr = {
-      wall: AttrWall.style2Entity(attribute.style),
+      wall: Wall.style2Entity(attribute.style),
       attribute: attribute,
     };
     addAttr.wall.positions = new Cesium.CallbackProperty(function (time) {
@@ -61,7 +61,7 @@ class DrawWall extends DrawPolyline {
   }
 
   style2Entity(style, entity) {
-    return AttrWall.style2Entity(style, entity.wall);
+    return Wall.style2Entity(style, entity.wall);
   }
   getMaximumHeights(entity) {
     return this.maximumHeights;
@@ -92,7 +92,7 @@ class DrawWall extends DrawPolyline {
   }
   //获取属性处理类
   getAttrClass() {
-    return AttrWall;
+    return Wall;
   }
   //图形绘制结束后调用
   finish() {

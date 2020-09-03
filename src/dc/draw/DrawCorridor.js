@@ -1,6 +1,6 @@
 import DrawPolyline from "./DrawPolyline";
 import Cesium from "cesium";
-import { AttrCorridor } from "../attr";
+import { Corridor } from "../attr";
 import { EditCorridor } from "../edit";
 /*
  * @Description:
@@ -37,7 +37,7 @@ class DrawCorridor extends DrawPolyline {
 
     var that = this;
     var addAttr = {
-      corridor: AttrCorridor.style2Entity(attribute.style),
+      corridor: Corridor.style2Entity(attribute.style),
       attribute: attribute,
     };
     addAttr.corridor.positions = new Cesium.CallbackProperty((time) => {
@@ -50,7 +50,7 @@ class DrawCorridor extends DrawPolyline {
     return this.entity;
   }
   style2Entity(style, entity) {
-    return AttrCorridor.style2Entity(style, entity.corridor);
+    return Corridor.style2Entity(style, entity.corridor);
   }
   updateAttrForDrawing() {}
   //获取编辑对象
@@ -62,7 +62,7 @@ class DrawCorridor extends DrawPolyline {
   }
   //获取属性处理类
   getAttrClass() {
-    return AttrCorridor;
+    return Corridor;
   }
   //图形绘制结束后调用
   finish() {

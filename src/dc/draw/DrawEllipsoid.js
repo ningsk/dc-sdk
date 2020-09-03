@@ -1,6 +1,6 @@
 import DrawPolyline from "./DrawPolyline";
 import Cesium from "cesium";
-import { AttrEllipsoid } from "../attr";
+import { Ellipsoid } from "../attr";
 import { EditEllipsoid } from "../edit";
 /*
  * @Description:
@@ -33,13 +33,13 @@ class DrawEllipsoid extends DrawPolyline {
       position: new Cesium.CallbackProperty((time) => {
         return that.getShowPosition();
       }),
-      ellipsoid: AttrEllipsoid.style2Entity(attribute.style),
+      ellipsoid: Ellipsoid.style2Entity(attribute.style),
       attribute: attribute,
     };
   }
 
   style2Entity(style, entity) {
-    return AttrEllipsoid.style2Entity(style, entity.ellipsoid);
+    return Ellipsoid.style2Entity(style, entity.ellipsoid);
   }
 
   updateAttrForDrawing(isLoad) {
@@ -137,7 +137,7 @@ class DrawEllipsoid extends DrawPolyline {
 
   // 获取属性处理类
   getAttrClass() {
-    return AttrEllipsoid;
+    return Ellipsoid;
   }
 
   // 图形绘制结束后调用

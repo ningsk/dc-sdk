@@ -1,5 +1,5 @@
 import EditPolyline from "./EditPolyline";
-import { AttrPolyline } from "../attr";
+import { Polyline } from "../attr";
 
 /*
  * @Description:
@@ -31,7 +31,7 @@ class EditCurve extends EditPolyline {
 			return;
 		}
 	
-		this._positions_show = AttrPolyline.line2curve(this._positions_draw);
+		this._positions_show = Polyline.line2curve(this._positions_draw);
 		this.entity._positions_show = this._positions_show;
 	},
 	//图形编辑结束后调用

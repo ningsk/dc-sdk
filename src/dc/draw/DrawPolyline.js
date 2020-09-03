@@ -1,5 +1,5 @@
 import DrawBase from "./DrawBase";
-import { AttrPolyline } from "../attr";
+import { Polyline } from "../attr";
 import Cesium from "cesium";
 import { Point } from "../point";
 import { EventType } from "../event";
@@ -42,7 +42,7 @@ class DrawPolyline extends DrawBase {
 
     var that = this;
     var addAttr = {
-      polyline: AttrPolyline.style2Entity(attribute.style),
+      polyline: Polyline.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -56,7 +56,7 @@ class DrawPolyline extends DrawBase {
   }
 
   style2Entity(style, entity) {
-    return AttrPolyline.style2Entity(style, entity.polyline);
+    return Polyline.style2Entity(style, entity.polyline);
   }
 
   // 绑定鼠标事件
@@ -214,7 +214,7 @@ class DrawPolyline extends DrawBase {
 
   // 获取属性处理类
   getAttrClass() {
-    return AttrPolyline;
+    return Polyline;
   }
 
   finish() {

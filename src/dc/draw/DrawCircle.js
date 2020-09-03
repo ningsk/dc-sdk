@@ -1,6 +1,6 @@
 import DrawPolyline from "./DrawPolyline";
 import Cesium from "cesium";
-import { AttrCircle } from "../attr";
+import { Circle } from "../attr";
 import { EditCircle } from "../edit";
 
 /*
@@ -44,7 +44,7 @@ class DrawCircle extends DrawPolyline {
       position: new Cesium.CallbackProperty((time) => {
         return that.getShowPosition();
       }, false),
-      ellipse: AttrCircle.style2Entity(attribute.style),
+      ellipse: Circle.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -53,7 +53,7 @@ class DrawCircle extends DrawPolyline {
   }
 
   style2Entity(style, entity) {
-    return AttrCircle.style2Entity(style, entity.ellipse);
+    return Circle.style2Entity(style, entity.ellipse);
   }
 
   updateAttrForDrawing(isLoad) {
@@ -170,7 +170,7 @@ class DrawCircle extends DrawPolyline {
 
   // 获取属性处理类
   getAttrClass() {
-    return AttrCircle;
+    return Circle;
   }
 
   // 图形绘制结束后调用

@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:37:50
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-29 09:45:33
+ * @LastEditTime: 2020-09-03 13:22:22
  */
 
 import Cesium from "cesium";
 import { Util } from "../utils";
 
-class AttrPolylineVolume {
+class PolylineVolume {
   // 赋值到entity
   static style2Entity(style, entityAttr) {
     style = style || {};
@@ -155,4 +155,4 @@ class AttrPolylineVolume {
   }
 }
 
-export default AttrPolylineVolume;
+export default PolylineVolume;

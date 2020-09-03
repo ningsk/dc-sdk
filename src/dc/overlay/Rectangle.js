@@ -6,9 +6,9 @@ import { Util } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:49:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-24 09:54:46
+ * @LastEditTime: 2020-09-03 13:21:57
  */
-class AttrRectangle {
+class Rectangle {
 
   static style2Entity(style, entityAttr) {
     style = style || {};
@@ -114,4 +114,4 @@ class AttrRectangle {
   
 }
 
-export default AttrRectangle;
+export default Rectangle;

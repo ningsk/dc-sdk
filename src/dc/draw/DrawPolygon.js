@@ -1,5 +1,5 @@
 import DrawPolyline from "./DrawPolyline";
-import { AttrPolygon } from "../attr";
+import { Polygon } from "../attr";
 import { Point } from "../point";
 import { EditPolygon } from "../edit";
 
@@ -36,7 +36,7 @@ class DrawPolygon extends DrawPolyline {
 
     var that = this;
     var addAttr = {
-      polygon: AttrPolygon.style2Entity(attribute.style),
+      polygon: Polygon.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -55,7 +55,7 @@ class DrawPolygon extends DrawPolyline {
   }
 
   style2Entity(style, entity) {
-    return AttrPolygon.style2Entity(style, entity.polygon);
+    return Polygon.style2Entity(style, entity.polygon);
   }
 
   bindOutline(entity) {
@@ -113,7 +113,7 @@ class DrawPolygon extends DrawPolyline {
 
   // 获取属性处理类
   getAttrClass() {
-    return AttrPolygon;
+    return Polygon;
   }
 
   // 图形绘制结束后调用

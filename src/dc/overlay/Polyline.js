@@ -7,9 +7,9 @@ import { Util } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:34:00
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 10:27:12
+ * @LastEditTime: 2020-09-03 13:22:53
  */
-class AttrPolyline {
+class Polyline {
   static style2Entity(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
@@ -132,4 +132,4 @@ class AttrPolyline {
   }
 }
 
-export default AttrPolyline;
+export default Polyline;

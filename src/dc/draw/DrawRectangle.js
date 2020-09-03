@@ -31,7 +31,7 @@ class DrawRectangle extends DrawPolyline {
 
     let that = this;
     let addAttr = {
-      rectangle: AttrRectangle.style2Entity(attribute.style),
+      rectangle: Rectangle.style2Entity(attribute.style),
       attribute: attribute,
     };
     addAttr.rectangle.coordinates = new Cesium.CallbackProperty(function (
@@ -53,7 +53,7 @@ class DrawRectangle extends DrawPolyline {
     return this.entity;
   }
   style2Entity(style, entity) {
-    return AttrRectangle.style2Entity(style, entity.rectangle);
+    return Rectangle.style2Entity(style, entity.rectangle);
   }
   bindOutline(entity) {
     //是否显示：边线宽度大于1时
@@ -112,7 +112,7 @@ class DrawRectangle extends DrawPolyline {
   }
   //获取属性处理类
   getAttrClass() {
-    return AttrRectangle;
+    return Rectangle;
   }
   //图形绘制结束后调用
   finish() {

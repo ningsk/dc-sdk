@@ -1,7 +1,7 @@
 import EditBase from "./EditBase";
 import Cesium from "cesium";
 import { Dragger, Tooltip } from "../utils";
-import { AttrCircle } from "../attr";
+import { Circle } from "../attr";
 import { Point } from "../point";
 
 /*
@@ -79,7 +79,7 @@ class EditPModel extends EditBase {
       position: new Cesium.CallbackProperty(function (time) {
         return that.entity.position;
       }, false),
-      ellipse: AttrCircle.style2Entity({
+      ellipse: Circle.style2Entity({
         fill: false,
         outline: true,
         outlineColor: "#ffff00",

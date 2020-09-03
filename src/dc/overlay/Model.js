@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:36:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-24 09:31:40
+ * @LastEditTime: 2020-09-03 13:24:23
  */
 
 import Cesium from "cesium";
 import { Util } from "../utils";
 
-class AttrModel {
+class Model {
   static style2Entity(style, entityAttr) {
     style = style || {};
 
@@ -111,4 +111,4 @@ class AttrModel {
 
 }
 
-export default AttrModel;
+export default Model;

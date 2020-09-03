@@ -1,6 +1,6 @@
 import FeatureGridLayer from "./FeatureGridLayer";
 import Cesium from 'cesium';
-import { AttrPolygon, AttrPolyline, AttrBillboard, AttrLabel } from "../attr";
+import { Polygon, Polyline, Billboard, Label } from "../attr";
 import { Util } from "../utils";
 import $ from 'jquery';
 /*
@@ -322,7 +322,7 @@ export default class CustomFeatureGridLayer extends FeatureGridLayer{
     this._opacity = styleOpt.opacity || 1; //透明度
 
     if (entity.polygon) {
-      AttrPolygon.style2Entity(styleOpt, entity.polygon);
+      Polygon.style2Entity(styleOpt, entity.polygon);
       //加上线宽
       if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
         entity.polygon.outline = false;
@@ -334,7 +334,7 @@ export default class CustomFeatureGridLayer extends FeatureGridLayer{
           "lineType": "solid",
           "outline": false
         };
-        var polyline =  AttrPolyline.style2Entity(newopt);
+        var polyline =  Polyline.style2Entity(newopt);
         polyline.positions = entity.polygon.hierarchy._value.positions;
         this.dataSource.entities.add({
           polyline: polyline
@@ -349,17 +349,17 @@ export default class CustomFeatureGridLayer extends FeatureGridLayer{
         entity.polygon.extrudedHeight = floor * height;
       }
     } else if (entity.polyline) {
-      AttrPolyline.style2Entity(styleOpt, entity.polyline);
+      Polyline.style2Entity(styleOpt, entity.polyline);
     } else if (entity.billboard) {
       entity.billboard.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-      AttrBillboard.style2Entity(styleOpt, entity.billboard);
+      Billboard.style2Entity(styleOpt, entity.billboard);
   
 
       //加上文字标签 
       if (styleOpt.label && styleOpt.label.field) {
         styleOpt.label.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
 
-        entity.label = AttrLabel.style2Entity(styleOpt.label);
+        entity.label = Label.style2Entity(styleOpt.label);
         entity.label.text = attr[styleOpt.label.field];
       }
     }

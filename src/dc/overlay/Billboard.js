@@ -1,20 +1,27 @@
-import { Util } from "../utils";
-import Cesium from "cesium";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
- * @Date: 2020-08-19 08:42:11
+ * @Date: 2020-08-15 13:14:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-25 15:26:08
+ * @LastEditTime: 2020-09-03 13:19:48
  */
-class AttrPoint {
-  //属性赋值到entity
+
+import Cesium from "cesium";
+import { Util } from "../utils";
+
+class Billboard {
+  // 属性赋值到entity
   static style2Entity(style, entityAttr) {
     style = style || {};
+
     if (entityAttr == null) {
-      //默认值
-      entityAttr = {};
+      //默认
+      entityAttr = {
+        scale: 1,
+        horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+      };
     }
 
     //Style赋值值Entity
@@ -25,26 +32,22 @@ class AttrPoint {
           //直接赋值
           entityAttr[key] = value;
           break;
-        case "opacity": //跳过扩展其他属性的参数
-        case "outlineOpacity":
-        case "scaleByDistance_near":
+        case "scaleByDistance_near": //跳过扩展其他属性的参数
         case "scaleByDistance_nearValue":
         case "scaleByDistance_far":
         case "scaleByDistance_farValue":
         case "distanceDisplayCondition_far":
         case "distanceDisplayCondition_near":
           break;
-        case "outlineColor":
-          //边框颜色
-          entityAttr.outlineColor = new Cesium.Color.fromCssColorString(
-            value || "#FFFF00"
-          ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
+        case "opacity":
+          //透明度
+          entityAttr.color = new Cesium.Color.fromCssColorString(
+            "#FFFFFF"
+          ).withAlpha(Number(value || 1.0));
           break;
-        case "color":
-          //填充颜色
-          entityAttr.color = new CesiumColor.fromCssColorString(
-            value || "#FFFF00"
-          ).withAlpha(Number(style.opacity || 1.0));
+        case "rotation":
+          //旋转角度
+          entityAttr.rotation = Cesium.Math.toRadians(value);
           break;
         case "scaleByDistance":
           //是否按视距缩放
@@ -62,7 +65,7 @@ class AttrPoint {
         case "distanceDisplayCondition":
           //是否按视距显示
           if (value) {
-            entityAttr.distanceDisplayCondition = new Cesium2.DistanceDisplayCondition(
+            entityAttr.distanceDisplayCondition = new Cesium.DistanceDisplayCondition(
               Number(style.distanceDisplayCondition_near || 0),
               Number(style.distanceDisplayCondition_far || 100000)
             );
@@ -92,9 +95,6 @@ class AttrPoint {
       }
     }
 
-    //无边框时，需设置宽度为0
-    if (!style.outline) entityAttr.outlineWidth = 0.0;
-
     return entityAttr;
   }
 
@@ -105,14 +105,14 @@ class AttrPoint {
 
   //获取entity的坐标（geojson规范的格式）
   static getCoordinates(entity) {
-    var positions = this.getPositions(entity);
+    var positions = getPositions(entity);
     var coordinates = Util.cartesians2lonlats(positions);
     return coordinates;
   }
 
   //entity转geojson
   static toGeoJSON(entity) {
-    var coordinates = this.getCoordinates(entity);
+    var coordinates = getCoordinates(entity);
     return {
       type: "Feature",
       properties: entity.attribute || {},
@@ -124,4 +124,4 @@ class AttrPoint {
   }
 }
 
-export default AttrPoint;
+export default Billboard;

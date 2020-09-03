@@ -1,5 +1,5 @@
 import Cesium from "cesium";
-import { AttrPoint, AttrBillboard } from "../attr";
+import { Point, Billboard } from "../attr";
 import DrawPoint from "./DrawPoint";
 
 /*
@@ -25,7 +25,7 @@ class DrawBillboard extends DrawPoint {
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      billboard: AttrBillboard.style2Entity(attribute.style),
+      billboard: Billboard.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -34,11 +34,11 @@ class DrawBillboard extends DrawPoint {
   }
 
   style2Entity(style, entity) {
-    return AttrBillboard.style2Entity(style, entity.billboard);
+    return Billboard.style2Entity(style, entity.billboard);
   }
 
   getAttrClass() {
-    return AttrBillboard;
+    return Billboard;
   }
 }
 

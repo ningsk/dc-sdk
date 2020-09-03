@@ -8,9 +8,9 @@ const { CornerType } = require("cesium");
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:25:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 13:16:01
+ * @LastEditTime: 2020-09-03 13:24:49
  */
-class AttrLabel {
+class Label {
   // 属性赋值到entity
   static style2Entity(style, entityAttr) {
     style = style || {};
@@ -185,4 +185,4 @@ class AttrLabel {
   }
 }
 
-export default AttrLabel;
+export default Label;

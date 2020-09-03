@@ -1,5 +1,5 @@
 import DrawPolyline from "./DrawPolyline";
-import { AttrPolyline } from "../attr";
+import { Polyline } from "../attr";
 import { EditCurve } from "../edit";
 
 /*
@@ -27,7 +27,7 @@ class DrawCurve extends DrawPolyline {
       this._positions_show = this._positions_draw;
       return;
     }
-    this._positions_show = AttrPolyline.line2curve(this._positions_draw);
+    this._positions_show = Polyline.line2curve(this._positions_draw);
   }
 
   // 获取编辑对象

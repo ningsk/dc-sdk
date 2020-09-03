@@ -1,6 +1,6 @@
 import DrawBase from "./DrawBase";
 import Cesium from "cesium";
-import { AttrModel } from "../attr";
+import { Model } from "../attr";
 import { Point } from "../point";
 import { Tooltip } from "../utils";
 import { EditPModel } from "../edit";
@@ -64,7 +64,7 @@ class DrawPModel extends DrawBase {
 
   style2Entity(style, entity) {
     entity.modelMatrix = this.getModelMatrix(style, entity.position);
-    return AttrModel.style2Entity(style, entity);
+    return Model.style2Entity(style, entity);
   }
 
   bindEvent() {
@@ -107,7 +107,7 @@ class DrawPModel extends DrawBase {
   }
 
   getAttrClass() {
-    return AttrModel;
+    return Model;
   }
 
   // 图形绘制结束后，更新属性

@@ -9,7 +9,7 @@
 
 import Cesium from "cesium";
 import DrawPoint from "./DrawPoint";
-import { AttrLabel } from "../attr";
+import { Label } from "../attr";
 
 class DrawLabel extends DrawPoint {
   type = "label";
@@ -25,7 +25,7 @@ class DrawLabel extends DrawPoint {
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      label: AttrLabel.style2Entity(attribute.style),
+      label: Label.style2Entity(attribute.style),
       attribute: attribute,
     };
     this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
@@ -33,11 +33,11 @@ class DrawLabel extends DrawPoint {
   }
 
   style2Entity(style, entity) {
-    return AttrLabel.style2Entity(style, entity.label);
+    return Label.style2Entity(style, entity.label);
   }
 
   getAttrClass() {
-    return AttrLabel;
+    return Label;
   }
 }
 

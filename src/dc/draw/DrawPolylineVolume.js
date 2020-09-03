@@ -1,7 +1,7 @@
 import DrawPolyline from "./DrawPolyline";
 import Cesium from "cesium";
 import { EditPolylineVolume } from "../edit";
-import { AttrPolylineVolume } from "../attr";
+import { PolylineVolume } from "../attr";
 
 /*
  * @Description:
@@ -56,7 +56,7 @@ class DrawPolylineVolume extends DrawPolyline {
   }
 
   style2Entity(style, entity) {
-    return AttrPolylineVolume.style2Entity(style, entity.polylineVolume);
+    return PolylineVolume.style2Entity(style, entity.polylineVolume);
   }
   updateAttrForDrawing() {}
   //获取编辑对象
@@ -68,7 +68,7 @@ class DrawPolylineVolume extends DrawPolyline {
   }
   //获取属性处理类
   getAttrClass() {
-    return AttrPolylineVolume;
+    return PolylineVolume;
   }
   //图形绘制结束后调用
   finish() {

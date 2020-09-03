@@ -1,5 +1,5 @@
 import DrawPoint from "./DrawPoint";
-import { AttrModel } from "../attr";
+import { Model } from "../attr";
 
 /*
  * @Description:
@@ -24,7 +24,7 @@ class DrawModel extends DrawPoint {
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      model: AttrModel.style2Entity(attribute.style),
+      model: Model.style2Entity(attribute.style),
       attribute: attribute,
     };
     this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
@@ -33,7 +33,7 @@ class DrawModel extends DrawPoint {
 
   style2Entity(style, entity) {
     this.updateOrientation(style, entity);
-    return AttrModel.style2Entity(style, entity.model);
+    return Model.style2Entity(style, entity.model);
   }
 
   updateAttrForDrawing() {
@@ -55,7 +55,7 @@ class DrawModel extends DrawPoint {
   }
 
   getAttrClass() {
-    return AttrModel;
+    return Model;
   }
 }
 

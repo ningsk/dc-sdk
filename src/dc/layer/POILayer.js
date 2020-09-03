@@ -1,5 +1,5 @@
 import CustomFeatureGridLayer from "./CustomFeatureGridLayer";
-import { AttrBillboard, AttrPoint } from "../attr";
+import { Billboard, Point } from "../attr";
 import $ from "jquery";
 import Cesium from "cesium";
 import { PointConvert } from "../point";
@@ -123,16 +123,16 @@ class POILayer extends CustomFeatureGridLayer {
       styleOpt = styleOpt || {};
 
       if (styleOpt.image) {
-        entityOptions.billboard = AttrBillboard.style2Entity(styleOpt);
+        entityOptions.billboard = Billboard.style2Entity(styleOpt);
         entityOptions.billboard.heightReference =
           Cesium.HeightReference.RELATIVE_TO_GROUND;
       } else {
-        entityOptions.point = AttrPoint.style2Entity(styleOpt);
+        entityOptions.point = Point.style2Entity(styleOpt);
       }
 
       //加上文字标签
       if (styleOpt.label) {
-        entityOptions.label = AttrLabel.style2Entity(styleOpt.label);
+        entityOptions.label = Label.style2Entity(styleOpt.label);
         entityOptions.label.heightReference =
           Cesium.HeightReference.RELATIVE_TO_GROUND;
         entityOptions.label.text = attributes.name;
