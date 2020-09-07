@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-02 13:38:07
+ * @LastEditTime: 2020-09-07 09:28:14
  */
 
 import Cesium from "cesium";
@@ -13,6 +13,16 @@ import { DrawEventType } from "../event";
 import { Label, Polygon } from "../attr";
 import { Util } from "../utils";
 import { Point } from "../point";
+
+import {
+  area,
+  centerOfMass,
+  point,
+  rhumbBearing,
+  destination
+} from 'turf';
+
+
 
 const _labelAttr = {
   color: "#ffffff",
@@ -577,10 +587,10 @@ export var  Measure = function(opts) {
           return;
         }
         var polygon = Polygon.toGeoJSON(entity);
-        var area = turf.area(polygon);
+        var area = area(polygon);
         var areaStr = formatArea(area, this.options.unit);
         // 求中心点
-        var center = turf.centerOfMass(polygon);
+        var center = centerOfMass(polygon);
         var maxHeight = Point.getMaxHeight(positions);
         var ptCenter = Cesium.Cartesian3.fromDegrees(
           center.geometry.coordinates[0],
@@ -1207,12 +1217,12 @@ export var  Measure = function(opts) {
         var point1 = Point.formatPosition(positions[0]);
         var point2 = Point.formatPosition(positions[1]);
 
-        var pt1 = turf.point([point1.x, point1.y, point1.z]);
-        ​var pt2 = turf.point([point2.x, point2.y, point2.z]);
-        var bearing = Math.round(turf.rhumbBearing(pt1, pt2));
+        var pt1 = point([point1.x, point1.y, point1.z]);
+        ​var pt2 = point([point2.x, point2.y, point2.z]);
+        var bearing = Math.round(rhumbBearing(pt1, pt2));
 
         // 求参考点
-        var newPoint = turf.destination(pt1, len / 3000, 0, {
+        var newPoint = destination(pt1, len / 3000, 0, {
           units: 'kilometers'
         });
         newPoint = {

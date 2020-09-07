@@ -1,5 +1,6 @@
 import { win } from "leaflet/src/core/Browser";
 import { Util } from "../utils";
+import { lineString, bezierSpline } from "turf";
 
 /*
  * @Description:
@@ -7,7 +8,7 @@ import { Util } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:34:00
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-03 13:22:53
+ * @LastEditTime: 2020-09-07 09:30:36
  */
 class Polyline {
   static style2Entity(style, entityAttr) {
@@ -122,8 +123,8 @@ class Polyline {
 
     var defHeight = coordinates[coordinates.length - 1][2];
 
-    var line = turf.lineString(coordinates);
-    var curved = turf.bezierSpline(line);
+    var line = lineString(coordinates);
+    var curved = bezierSpline(line);
     var _positions_show = Util.lonlats2cartesians(
       curved.geometry.coordinates,
       defHeight

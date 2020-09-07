@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:36:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-03 14:52:09
+ * @LastEditTime: 2020-09-07 08:29:21
  */
 var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
 var defoptions;
@@ -63,12 +63,12 @@ export function init(map, widgetcfg, _basePath) {
       '     <div style="height: 30px; line-height:30px;"><b style="color: #4db3ff;">widget测试栏</b>&nbsp;&nbsp;<button  id="widget-testbar-remove"  type="button" class="btn btn-link btn-xs">关闭</button> </div>' +
       '     <button id="widget-testbar-disableAll" type="button" class="btn btn-info" ><i class="fa fa-globe"></i>漫游</button>' +
       "</div>";
-    (0, _jquery2.default)("body").append(inhtml);
+    $("body").append(inhtml);
 
-    (0, _jquery2.default)("#widget-testbar-remove").click(function (e) {
+    $("#widget-testbar-remove").click(function (e) {
       removeDebugeBar();
     });
-    (0, _jquery2.default)("#widget-testbar-disableAll").click(function (e) {
+    $("#widget-testbar-disableAll").click(function (e) {
       disableAll();
     });
   }
@@ -103,7 +103,7 @@ export function init(map, widgetcfg, _basePath) {
         inhtml += "</ul></div>";
 
         if (isdebuger && !item._nodebug) {
-          (0, _jquery2.default)("#widget-testbar").append(inhtml);
+          $("#widget-testbar").append(inhtml);
         }
       } else {
         if (!item.hasOwnProperty("uri") || item.uri == "") {
@@ -119,7 +119,7 @@ export function init(map, widgetcfg, _basePath) {
             '"  > <i class="fa fa-globe"></i>' +
             item.name +
             " </button>";
-          (0, _jquery2.default)("#widget-testbar").append(inhtml);
+          $("#widget-testbar").append(inhtml);
         }
 
         bindDefOptions(item);
@@ -128,9 +128,9 @@ export function init(map, widgetcfg, _basePath) {
     }
 
     if (isdebuger) {
-      (0, _jquery2.default)("#widget-testbar .widget-btn").each(function () {
-        (0, _jquery2.default)(this).click(function (e) {
-          var uri = (0, _jquery2.default)(this).attr("data-widget");
+      $("#widget-testbar .widget-btn").each(function () {
+        $(this).click(function (e) {
+          var uri = $(this).attr("data-widget");
           if (uri == null || uri == "") return;
 
           if (isActivate(uri)) {
@@ -151,7 +151,7 @@ export function init(map, widgetcfg, _basePath) {
     }
   }
 
-  (0, _jquery2.default)(window).resize(function () {
+  $(window).resize(function () {
     for (var i = 0; i < widgetsdata.length; i++) {
       var item = widgetsdata[i];
       if (item._class) {
@@ -458,7 +458,7 @@ export function getFilePath(file) {
 }
 
 export function removeDebugeBar() {
-  (0, _jquery2.default)("#widget-testbar").remove();
+  $("#widget-testbar").remove();
 }
 
 export function getCacheVersion() {
