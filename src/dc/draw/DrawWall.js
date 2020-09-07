@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 10:20:32
+ * @LastEditTime: 2020-09-07 10:11:41
  */
 
 import DrawPolyline from "./DrawPolyline.js";
@@ -16,15 +16,14 @@ const def_minPointNum = 2;
 const def_maxPointNum = 9999;
 
 class DrawWall extends DrawPolyline {
-  type = "wall";
-  // 坐标位置相关
-  _minPointNum = def_minPointNum; //至少需要点的个数
-  _maxPointNum = def_maxPointNum; //最多允许点的个数
-  maximumHeights = null;
-  minimumHeights = null;
-
   constructor(opts) {
     super(opts);
+    this.type = "wall";
+    // 坐标位置相关
+    this._minPointNum = def_minPointNum; //至少需要点的个数
+    this._maxPointNum = def_maxPointNum; //最多允许点的个数
+    this.maximumHeights = null;
+    this.minimumHeights = null;
   }
 
   createFeature(attribute) {

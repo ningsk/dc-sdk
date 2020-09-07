@@ -8,14 +8,13 @@ import DrawPoint from "./DrawPoint";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-25 17:55:08
+ * @LastEditTime: 2020-09-07 10:07:42
  */
 
 class DrawBillboard extends DrawPoint {
-  type = "billboard";
-
   constructor(opts) {
     super(opts);
+    this.type = "billboard";
   }
 
   createFeature(attribute) {

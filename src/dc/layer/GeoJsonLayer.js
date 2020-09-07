@@ -1,3 +1,4 @@
+import Cesium from "cesium";
 import BaseLayer from "./BaseLayer";
 import { Util } from "../utils";
 import $ from "jquery";
@@ -9,7 +10,7 @@ import { Polyline, Polygon, Label, Billboard } from "../attr";
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:22:51
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 09:06:06
+ * @LastEditTime: 2020-09-07 10:17:16
  */
 export default class GeoJsonLayer extends BaseLayer {
   constructor(cfg, viewer) {

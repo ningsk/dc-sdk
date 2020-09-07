@@ -1,3 +1,4 @@
+import Cesium from "cesium";
 import EditPolyline from "./EditPolyline";
 import { Point } from "../point";
 import { Dragger, Tooltip } from "../utils";
@@ -8,7 +9,7 @@ import { Dragger, Tooltip } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-25 18:02:18
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:21:01
+ * @LastEditTime: 2020-09-07 10:14:14
  */
 class EditCircle extends EditPolyline {
   constructor(entity, viewer, dataSource) {

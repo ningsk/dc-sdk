@@ -10,13 +10,12 @@ import { EditPoint } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 08:27:36
+ * @LastEditTime: 2020-09-07 10:09:57
  */
 class DrawPoint extends DrawBase {
-  type = "point";
-
   constructor(opts) {
     super(opts);
+    this.type = "point";
   }
 
   // 根据attribute参数创建Entity

@@ -9,19 +9,18 @@ import { EditPolygon } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-27 08:31:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 09:21:08
+ * @LastEditTime: 2020-09-07 10:10:20
  */
 
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;
 
 class DrawPolygon extends DrawPolyline {
-  type = "polygon";
-  _minPointNum = def_minPointNum; // 至少需要点的个数
-  _maxPointNum = def_maxPointNum; // 最多允许点的个数
-
   constructor(opts) {
     super(opts);
+    this.type = "polygon";
+    this._minPointNum = def_minPointNum; // 至少需要点的个数
+    this._maxPointNum = def_maxPointNum; // 最多允许点的个数
   }
 
   createFeature(attribute) {

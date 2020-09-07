@@ -4,9 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:10:46
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:40:14
+ * @LastEditTime: 2020-09-07 10:17:40
  */
-const { default: BaseLayer } = require("./BaseLayer");
+import Cesium from "cesium";
+import BaseLayer from "./BaseLayer";
 
 class GltfLayer extends BaseLayer {
   constructor(cfg, viewer) {

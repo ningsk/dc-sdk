@@ -1,6 +1,6 @@
 import { Util, Dragger, Tooltip } from "../utils";
 import { EventType } from "../event";
-import { CesiumWidget } from "cesium";
+import Cesium from "cesium";
 import { Point } from "../point";
 
 /*
@@ -9,15 +9,16 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:52:40
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-31 09:07:38
+ * @LastEditTime: 2020-09-07 10:12:43
  */
 class EditBase {
 
-  _dataSource = null;
-  _minPointNum = 1; // 至少需要点的个数 （值是draw中传入）
-  _maxPointNum = 9999; // 最多允许点的个数 （值是draw中传入）
+
   
   constructor(entity, viewer, dataSource) {
+    this._dataSource = null;
+    this._minPointNum = 1; // 至少需要点的个数 （值是draw中传入）
+    this._maxPointNum = 9999; // 最多允许点的个数 （值是draw中传入）
     this.entity = entity;
     this.viewer = viewer;
     this.dataSource = dataSource;

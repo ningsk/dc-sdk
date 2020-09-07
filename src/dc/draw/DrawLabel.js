@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 13:17:46
+ * @LastEditTime: 2020-09-07 10:09:20
  */
 
 import Cesium from "cesium";
@@ -12,10 +12,9 @@ import DrawPoint from "./DrawPoint";
 import { Label } from "../attr";
 
 class DrawLabel extends DrawPoint {
-  type = "label";
-
   constructor(opts) {
     super(opts);
+    this.type = "label";
   }
 
   createFeature(attribute) {

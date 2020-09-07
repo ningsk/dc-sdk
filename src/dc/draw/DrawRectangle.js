@@ -4,20 +4,19 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:08
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 14:42:43
+ * @LastEditTime: 2020-09-07 10:11:18
  */
 import Cesium from "cesium";
 import DrawPolyline from "./DrawPolyline";
 import { EditRectangle } from "../edit";
 
 class DrawRectangle extends DrawPolyline {
-  type = "polyline";
-  // 坐标位置相关
-  _minPointNum = 2; // 至少需要点的个数
-  _maxPointNum = 2; // 最多允许点的个数
-
   constructor(opts) {
     super(opts);
+    this.type = "polyline";
+    // 坐标位置相关
+    this._minPointNum = 2; // 至少需要点的个数
+    this._maxPointNum = 2; // 最多允许点的个数
   }
 
   getRectangle() {

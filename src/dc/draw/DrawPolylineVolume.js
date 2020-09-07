@@ -9,20 +9,19 @@ import { PolylineVolume } from "../attr";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:36
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 15:01:38
+ * @LastEditTime: 2020-09-07 10:10:58
  */
 
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;
 
 class DrawPolylineVolume extends DrawPolyline {
-  type = "polylineVolume";
-  // 坐标位置相关
-  _minPointNum = def_minPointNum; // 至少需要点的个数
-  _maxPointNum = def_maxPointNum; // 最多允许点的个数
-
   constructor(opts) {
     super(opts);
+    this.type = "polylineVolume";
+    // 坐标位置相关
+    this._minPointNum = def_minPointNum; // 至少需要点的个数
+    this._maxPointNum = def_maxPointNum; // 最多允许点的个数
   }
 
   // 根据attribute参数创建Entity

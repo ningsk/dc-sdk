@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:01:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:19:06
+ * @LastEditTime: 2020-09-07 10:07:21
  */
 
 import Cesium from "cesium";
@@ -14,13 +14,11 @@ import { Util, Tooltip } from "../utils";
 import { EventType } from "../event";
 
 class DrawBase {
-  type = null;
-  dataSource = null;
-
-  // 坐标位置相关
-  _positions_draw = null;
-
   constructor(opts) {
+    this.type = null;
+    this.dataSource = null;
+    // 坐标位置相关
+    this._positions_draw = null;
     this.viewer = opts.viewer;
     this.dataSource = opts.dataSource;
     this.primitives = opts.primitives;

@@ -2,15 +2,16 @@ import { Util } from "../utils";
 
 /*
  * @Description: Terrain地形图层
- * @version: 
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-21 08:58:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 09:02:14
+ * @LastEditTime: 2020-09-07 09:46:13
  */
-const { default: BaseLayer } = require("./BaseLayer");
 
-class TerrainLayer extends BaseLayer{
+import BaseLayer from "./BaseLayer";
+
+class TerrainLayer extends BaseLayer {
   constructor(cfg, viewer) {
     super(cfg, viewer);
     this.terrain = null;
@@ -24,9 +25,8 @@ class TerrainLayer extends BaseLayer{
   }
 
   remove() {
-    this.viewer.terrainProvider = Util.getEllipsoidTerrain()
+    this.viewer.terrainProvider = Util.getEllipsoidTerrain();
   }
-
 }
 
 export default TerrainLayer;

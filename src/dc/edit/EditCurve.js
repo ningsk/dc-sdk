@@ -1,3 +1,4 @@
+import Cesium from "cesium";
 import EditPolyline from "./EditPolyline";
 import { Polyline } from "../attr";
 

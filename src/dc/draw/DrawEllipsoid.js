@@ -8,15 +8,14 @@ import { EditEllipsoid } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:25
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 13:57:14
+ * @LastEditTime: 2020-09-07 10:09:04
  */
 class DrawEllipsoid extends DrawPolyline {
-  type = "ellipsoid";
-  _minPointNum = 2; // 至少需要点的个数
-  _maxPointNum = 3; // 最多允许点的个数
-
   constructor(opts) {
     super(opts);
+    this.type = "ellipsoid";
+    this._minPointNum = 2; // 至少需要点的个数
+    this._maxPointNum = 3; // 最多允许点的个数
   }
 
   getShowPosition() {

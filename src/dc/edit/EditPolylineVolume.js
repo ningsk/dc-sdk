@@ -4,9 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-26 14:59:16
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 10:08:56
+ * @LastEditTime: 2020-09-07 10:15:16
  */
 import EditPolyline from "./EditPolyline";
+import Cesium from "cesium";
 
 class EditPolylineVolume extends EditPolyline {
   constructor(entity, viewer, dataSource) {

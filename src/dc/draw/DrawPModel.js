@@ -10,13 +10,12 @@ import { EditPModel } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:41
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:02:18
+ * @LastEditTime: 2020-09-07 10:09:42
  */
 class DrawPModel extends DrawBase {
-  type = "point";
-
   constructor(opts) {
     super(opts);
+    this.type = "point";
   }
 
   // 根据attribute参数创建Entity

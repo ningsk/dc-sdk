@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-21 13:59:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:39:38
+ * @LastEditTime: 2020-09-07 10:18:28
  */
-const { default: BaseLayer } = require("./BaseLayer");
-
+import Cesium from "cesium";
+import BaseLayer from './BaseLayer';
 class GroupLayer extends BaseLayer {
   constructor(cfg, viewer) {
     super(cfg, viewer);

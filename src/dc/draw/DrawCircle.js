@@ -9,16 +9,15 @@ import { EditCircle } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:15
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 09:54:02
+ * @LastEditTime: 2020-09-07 10:08:09
  */
 class DrawCircle extends DrawPolyline {
-  type = "ellipse";
-  // 坐标位置相关
-  _minPointNum = 2; // 至少需要点的个数
-  _maxPointNum = 2; // 最多允许点的个数
-
   constructor(opts) {
     super(opts);
+    this.type = "ellipse";
+    // 坐标位置相关
+    this._minPointNum = 2; // 至少需要点的个数
+    this._maxPointNum = 2; // 最多允许点的个数
   }
 
   getShowPosition() {

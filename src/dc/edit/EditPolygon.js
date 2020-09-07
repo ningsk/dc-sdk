@@ -1,3 +1,4 @@
+import Cesium from "cesium";
 import EditPolyline from "./EditPolyline";
 import { Point } from "../point";
 import { Dragger, Tooltip } from "../utils";
@@ -8,7 +9,7 @@ import { Dragger, Tooltip } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-27 09:13:45
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-28 09:06:22
+ * @LastEditTime: 2020-09-07 10:15:04
  */
 class EditPolygon extends EditPolyline {
 

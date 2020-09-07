@@ -7,13 +7,12 @@ import { Model } from "../attr";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:03
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 13:25:53
+ * @LastEditTime: 2020-09-07 10:09:32
  */
 class DrawModel extends DrawPoint {
-  type = "model";
-
   constructor(opts) {
     super(opts);
+    this.type = "model";
   }
 
   // 根据attribute参数创建Entity

@@ -1,4 +1,5 @@
 import EditBase from "./EditBase";
+import Cesium from "cesium";
 import { Dragger, Tooltip } from "../utils";
 
 /*

@@ -1,14 +1,15 @@
+import Cesium from "cesium";
 import CustomFeatureGridLayer from "./CustomFeatureGridLayer";
 import { esri } from "leaflet";
 /*
  * @Description: ArcGIS矢量服务分块加载图层
- * @version: 
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:53:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 08:56:01
+ * @LastEditTime: 2020-09-07 10:15:44
  */
-class ArcFeatureGridLayer extends CustomFeatureGridLayer{
+class ArcFeatureGridLayer extends CustomFeatureGridLayer {
   constructor(cfg, viewer) {
     super(cfg, viewer);
   }
@@ -22,15 +23,17 @@ class ArcFeatureGridLayer extends CustomFeatureGridLayer{
     }
 
     let query = esri.query({
-      url: url
+      url: url,
     });
 
     // 网格
-    let bounds = L.latLngBounds(L.latLng(opts.rectangle.ymin, opts.rectangle.xmin),
-      L.latLng(opts.rectangle.ymax, opts.rectangle.xmax));
+    let bounds = L.latLngBounds(
+      L.latLng(opts.rectangle.ymin, opts.rectangle.xmin),
+      L.latLng(opts.rectangle.ymax, opts.rectangle.xmax)
+    );
 
     query.within(bounds);
-    
+
     if (this.config.where) {
       query.where(this.config.where);
     }
@@ -41,7 +44,7 @@ class ArcFeatureGridLayer extends CustomFeatureGridLayer{
       }
 
       if (error != null && error.code > 0) {
-        console.log('arcgis服务访问出错' + error.message);
+        console.log("arcgis服务访问出错" + error.message);
         return;
       }
 
@@ -49,42 +52,42 @@ class ArcFeatureGridLayer extends CustomFeatureGridLayer{
         return; // 数据为空
       }
 
-      if (featureCollection.type == 'Feature') {
+      if (featureCollection.type == "Feature") {
         featureCollection = {
-          "type": "FeatureCollection",
-          "features": [featureCollection]
+          type: "FeatureCollection",
+          features: [featureCollection],
         };
 
         callback(featureCollection.features);
       }
-
     });
-
   }
 
   // 根据数据创造entity
   createEntity(opts, item, callback) {
     let that = this;
     let dataSource = Cesium.GeoJsonDataSource.load(item, {
-      clampToGround: true
+      clampToGround: true,
     });
 
-    dataSource.then((dataSource) => {
-      if (that.checkHasBreak[opts.key]) {
-        return; // 异步请求结束时，如果已经卸载了网格就直接跳出。
-      }
+    dataSource
+      .then((dataSource) => {
+        if (that.checkHasBreak[opts.key]) {
+          return; // 异步请求结束时，如果已经卸载了网格就直接跳出。
+        }
 
-      if (dataSource.entities.values.length == 0) {
-        return null;
-      }
+        if (dataSource.entities.values.length == 0) {
+          return null;
+        }
 
-      let entity = dataSource.entities.values[0];
-      entity._id = that.config.id + "_" + opts.key + "_" + entity.id;
+        let entity = dataSource.entities.values[0];
+        entity._id = that.config.id + "_" + opts.key + "_" + entity.id;
 
-      that._addEntity(entity, callback);
-    }).otherwise((error) => {
-      that.showError("服务出错", error);
-    });
+        that._addEntity(entity, callback);
+      })
+      .otherwise((error) => {
+        that.showError("服务出错", error);
+      });
 
     return null;
   }
@@ -93,9 +96,9 @@ class ArcFeatureGridLayer extends CustomFeatureGridLayer{
     let that = this;
     // 样式
     let symbol = this.config.symbol;
-    if (typeof symbol === 'function') {
+    if (typeof symbol === "function") {
       symbol(entity, entity.properties); // 回调方法
-    } else if (symbol == 'default') {
+    } else if (symbol == "default") {
       this.setDefSymbol(entity);
     } else {
       this.setConfigSymbol(entity, symbol);
@@ -104,29 +107,33 @@ class ArcFeatureGridLayer extends CustomFeatureGridLayer{
     // popup弹窗
     if (this.config.columns || this.config.popup) {
       entity.popup = {
-        html: function(entity) {
-          return that.viewer.mars.popup.getPopupForConfig(that.config, entity.properties);
+        html: function (entity) {
+          return that.viewer.mars.popup.getPopupForConfig(
+            that.config,
+            entity.properties
+          );
         },
-        anchor: this.config.popupAnchor || [0, -15]
+        anchor: this.config.popupAnchor || [0, -15],
       };
     }
 
     if (this.config.tooltip) {
       entity.tooltip = {
-        html: function(entity) {
-          return that.viewer.mars.popup.getPopupForConfig({
-            popup: that.config.tooltip
-          }, entity.properties);
+        html: function (entity) {
+          return that.viewer.mars.popup.getPopupForConfig(
+            {
+              popup: that.config.tooltip,
+            },
+            entity.properties
+          );
         },
-        anchor: this.config.tooltipAnchor || [0, -15]
+        anchor: this.config.tooltipAnchor || [0, -15],
       };
     }
 
     this.dataSource.entities.add(entity);
     callback(entity);
-
   }
-
 }
 
 export default ArcFeatureGridLayer;

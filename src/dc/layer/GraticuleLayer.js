@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 16:49:20
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-20 15:47:10
+ * @LastEditTime: 2020-09-07 10:18:03
  */
 import BaseLayer from "./BaseLayer";
-import { DiscardMissingTileImagePolicy } from "cesium";
+import Cesium from "cesium";
 
 class GraticuleLayer extends BaseLayer {
   constructor(cfg, viewer) {

@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-02 13:36:59
+ * @LastEditTime: 2020-09-07 10:06:41
  */
 import { Tooltip } from "../utils";
 
@@ -27,33 +27,19 @@ import {
   DrawCircle,
   DrawPModel,
 } from "./index";
-import { EventType } from "../event";
 
 import { Util as DrawUtil } from "../utils";
-import Event from "../event/Event";
-
-/*
- * @Description:
- * @version:
- * @Author: 宁四凯
- * @Date: 2020-08-14 13:28:37
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 13:37:05
- */
-export * from "./EventType";
-export * from "./Events";
+import {Event, EventType} from "../event";
 
 class Draw extends Event{
-  dataSource = null;
-  primitives = null;
-  drawCtrl = null;
-
-  currEditFeature = null; // 当前编辑的要素
-
-  _hasEdit = null;
 
   constructor(viewer, options) {
     super();
+    this.dataSource = null;
+    this.primitives = null;
+    this.drawCtrl = null;
+    this.currEditFeature = null; // 当前编辑的要素
+    this._hasEdit = null;
     console.log("draw initialize");
     this.viewer = viewer;
     this.options = options || {};

@@ -8,14 +8,13 @@ import { EditCurve } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:21
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-26 10:35:24
+ * @LastEditTime: 2020-09-07 10:08:42
  */
 class DrawCurve extends DrawPolyline {
-  type = "curve";
-  _positions_show = null;
-
   constructor(opts) {
     super(opts);
+    this.type = "curve";
+    this._positions_show = null;
   }
 
   getDrawPosition() {

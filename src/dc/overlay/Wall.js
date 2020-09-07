@@ -1,13 +1,13 @@
-import { Util } from "../utils";
-import Cesium from "cesium";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-24 10:02:53
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-03 13:21:30
+ * @LastEditTime: 2020-09-07 10:22:06
  */
+import { Util } from "../utils";
+import Cesium from "cesium";
 class Wall {
   //属性赋值到entity
   static style2Entity(style, entityAttr) {

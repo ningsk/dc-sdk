@@ -1,15 +1,14 @@
-import { win } from "leaflet/src/core/Browser";
-import { Util } from "../utils";
-import { lineString, bezierSpline } from "turf";
-
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:34:00
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-07 09:30:36
+ * @LastEditTime: 2020-09-07 10:21:27
  */
+import { Util } from "../utils";
+import { lineString, bezierSpline } from "turf";
+import Cesium from "Cesium";
 class Polyline {
   static style2Entity(style, entityAttr) {
     style = style || {};

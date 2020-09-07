@@ -6,6 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-08-21 08:56:39
  */
+import Cesium from "cesium";
 import {Util as util} from '../utils'
 
 class BaseLayer {

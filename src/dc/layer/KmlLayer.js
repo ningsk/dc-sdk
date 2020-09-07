@@ -1,17 +1,15 @@
 /*
  * @Description: Kml格式数据图层
- * @version: 
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-21 09:06:20
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-21 13:10:25
+ * @LastEditTime: 2020-09-07 10:18:57
  */
 
-const { default: GeoJsonLayer } = require("./GeoJsonLayer");
-
-
+import Cesium from "cesium";
+import GeoJsonLayer from "./GeoJsonLayer";
 class KmlLayer extends GeoJsonLayer {
- 
   constructor(cfg, viewer) {
     super(cfg, viewer);
   }
@@ -21,18 +19,20 @@ class KmlLayer extends GeoJsonLayer {
     var dataSource = Cesium.KmlDataSource.load(this.config.url, {
       camera: this.viewer.scene.camera,
       canvas: this.viewer.scene.canvas,
-      clampToGround: this.config.clampToGround
+      clampToGround: this.config.clampToGround,
     });
-    dataSource.then((dataSource) => {
-      that.showResult(dataSource);
-    }).otherwise((error) => {
-      that.showError("服务出错", error);
-    });
+    dataSource
+      .then((dataSource) => {
+        that.showResult(dataSource);
+      })
+      .otherwise((error) => {
+        that.showError("服务出错", error);
+      });
   }
 
   getEntityAttr(entity) {
     var attr = {
-      name: entity._name
+      name: entity._name,
     };
     var extendedData = entity._kml.extendedData;
     for (var key in extendedData) {
@@ -40,7 +40,6 @@ class KmlLayer extends GeoJsonLayer {
     }
     return attr;
   }
-  
 }
 
 export default KmlLayer;

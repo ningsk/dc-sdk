@@ -1,3 +1,4 @@
+import Cesium from "cesium";
 import EditPolyline from "./EditPolyline";
 
 /*
@@ -6,7 +7,7 @@ import EditPolyline from "./EditPolyline";
  * @Author: 宁四凯
  * @Date: 2020-08-26 15:09:56
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-27 10:19:44
+ * @LastEditTime: 2020-09-07 10:14:23
  */
 class EditCorridor extends EditPolyline {
   constructor(entity, viewer, dataSource) {
