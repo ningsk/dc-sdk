@@ -1,5 +1,5 @@
 import Cesium from "cesium";
-import {EditPolyline} from "./EditPolyline";
+import { EditPolyline } from "./EditPolyline";
 import { createDragger, Tooltip, PointUtil } from "../utils";
 
 /*
@@ -8,27 +8,27 @@ import { createDragger, Tooltip, PointUtil } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-27 09:13:45
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:25:29
+ * @LastEditTime: 2020-09-10 10:34:36
  */
-export var  EditPolygon = EditPolyline.extend({
+export var EditPolygon = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率
-  changePositionsToCallback: function() {
+  changePositionsToCallback: function () {
     var that = this;
     this._positions_draw =
       this.entity._positions_draw || this.entity.polygon.hierarchy.getValue();
   },
 
-  finish: function() {
+  finish: function () {
     this.entity._positions_draw = this.getPosition();
   },
 
-  isClampToGround: function() {
+  isClampToGround: function () {
     return this.entity.attribute.style.hasOwnProperty("clampToGround")
       ? this.entity.attribute.style.clampToGround
       : !this.entity.attribute.style.perPositionHeight;
   },
 
-  bindDraggers: function() {
+  bindDraggers: function () {
     var that = this;
     var positions = this.getPosition();
     var hasMidPoint = positions.length < this._maxPointNum; // 是否有新增点
@@ -139,11 +139,11 @@ export var  EditPolygon = EditPolyline.extend({
     //创建高程拖拽点
     if (this.entity.polygon.extrudedHeight)
       this.bindHeightDraggers(this.entity.polygon);
-  }
+  },
 
-  	//高度调整拖拽点
-	heightDraggers: null,
-  bindHeightDraggers: function(polygon, positions) {
+  //高度调整拖拽点
+  heightDraggers: null,
+  bindHeightDraggers: function (polygon, positions) {
     var that = this;
 
     this.heightDraggers = [];
@@ -153,34 +153,39 @@ export var  EditPolygon = EditPolyline.extend({
 
     for (var i = 0, len = positions.length; i < len; i++) {
       var loc = positions[i];
-      loc = PointUtil.setPositionsHeight(loc, extrudedHeight); 
+      loc = PointUtil.setPositionsHeight(loc, extrudedHeight);
 
       var dragger = createDragger(this.dataSource, {
         position: loc,
         type: Dragger.PointType.MoveHeight,
         tooltip: Tooltip.message.dragger.moveHeight,
-        onDrag: function(dragger, position) {
+        onDrag: function (dragger, position) {
           var thisHeight = Cesium.Cartographic.fromCartesian(position).height;
           polygon.extrudedHeight = thisHeight;
 
           var maxHeight = point.getMaxHeight(that.getPosition());
-          that.entity.attribute.style.extrudedHeight = that.formatNum(thisHeight - maxHeight, 2);
+          that.entity.attribute.style.extrudedHeight = that.formatNum(
+            thisHeight - maxHeight,
+            2
+          );
 
           that.updateHeightDraggers(thisHeight);
-        }
+        },
       });
 
       this.draggers.push(dragger);
       this.heightDraggers.push(dragger);
     }
   },
-updateHeightDraggers: function(extrudedHeight) {
-  for (var i = 0; i < this.heightDraggers.length; i++) {
-    var heightDragger = this.heightDraggers[i];
+  updateHeightDraggers: function (extrudedHeight) {
+    for (var i = 0; i < this.heightDraggers.length; i++) {
+      var heightDragger = this.heightDraggers[i];
 
-    var position = PointUtil.setPositionsHeight(heightDragger.position.getValue(), extrudedHeight);
-    heightDragger.position.setValue(position);
-  }
-}
-}
-)
+      var position = PointUtil.setPositionsHeight(
+        heightDragger.position.getValue(),
+        extrudedHeight
+      );
+      heightDragger.position.setValue(position);
+    }
+  },
+});

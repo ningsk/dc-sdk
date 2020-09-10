@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 09:43:56
+ * @LastEditTime: 2020-09-10 11:01:52
  */
 import Cesium from "cesium";
 import $ from "jquery";
@@ -693,7 +693,7 @@ function initMap(id, config, options) {
 
     if (item.style) $("#location_mars_jwd").css(item.style);
     else {
-      ($("#location_mars_jwd").css({
+      $("#location_mars_jwd").css({
         left: viewer.animation ? "170px" : "0",
         right: "0",
         bottom: viewer.timeline ? "25px" : "0",
@@ -902,7 +902,7 @@ function initMap(id, config, options) {
   return viewer;
 }
 
-export function createMap(opt) {
+function createMap(opt) {
   if (opt.url) {
     $.ajax({
       type: "get",

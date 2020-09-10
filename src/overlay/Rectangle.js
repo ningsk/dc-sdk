@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:49:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 13:11:34
+ * @LastEditTime: 2020-09-10 10:49:13
  */
 import { Util } from "../utils";
 import Cesium from 'cesium';
@@ -47,6 +47,8 @@ export function style2Entity(style, entityAttr) {
       case "color":
         // 填充颜色
         entityAttr.material = new Cesium.Color.fromCssColorString(value || "#FFFF00")
+
+          .alpha
           .withAlpha(Number(style.opacity || 1.0));
         break;
       case "image":

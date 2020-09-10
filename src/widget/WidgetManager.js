@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:36:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-07 08:29:21
+ * @LastEditTime: 2020-09-10 10:38:45
  */
 var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
 var defoptions;
@@ -309,19 +309,19 @@ export default function getWidget(id) {
   }
 }
 
-export  function getClass(id) {
+export function getClass(id) {
   var item = getWidget(id);
   if (item) return item._class;
   else return null;
 }
 
-export  unction isActivate(id) {
+export function isActivate(id) {
   var _class = getClass(id);
   if (_class == null) return false;
   return _class.isActivate;
 }
 
-export  function disable(id) {
+export function disable(id) {
   if (id == null) return;
   for (var i = 0; i < widgetsdata.length; i++) {
     var item = widgetsdata[i];
@@ -334,7 +334,7 @@ export  function disable(id) {
 }
 
 //释放所有widget
-export  function disableAll(nodisable, group) {
+export function disableAll(nodisable, group) {
   for (var i = 0; i < widgetsdata.length; i++) {
     var item = widgetsdata[i];
 
@@ -354,7 +354,7 @@ export  function disableAll(nodisable, group) {
 }
 
 //释放同组widget
-export  function disableGroup(group, nodisable) {
+export function disableGroup(group, nodisable) {
   if (group == null) return;
 
   for (var i = 0; i < widgetsdata.length; i++) {
@@ -418,7 +418,7 @@ function loadWidgetJs() {
   });
 }
 
-export  function bindClass(_class) {
+export function bindClass(_class) {
   if (loadItem == null) {
     var _jspath = getThisJSPath();
     for (var i = 0; i < widgetsdata.length; i++) {
@@ -468,4 +468,3 @@ export function getCacheVersion() {
 export function getBasePath() {
   return basePath;
 }
-

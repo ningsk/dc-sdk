@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 13:32:28
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 13:45:40
+ * @LastEditTime: 2020-09-10 10:37:38
  */
 
 import Cesium, { DeveloperError } from "cesium";
@@ -67,7 +67,6 @@ export function BaiduImageryProvider(option) {
   this._rectangle = this._tilingScheme.rectangle;
   this._ready = true;
 }
-
 Cesium.defineProperties(BaiduImageryProvider.prototype, {
   url: {
     get: function get() {
@@ -226,23 +225,27 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
       return this._layers;
     },
   },
-}
+});
 
-BaiduImageryProvider.prototype.getTileCredits = function(x, y, level) {
+BaiduImageryProvider.prototype.getTileCredits = function (x, y, level) {
   return undefined;
-}
+};
 
-BaiduImageryProvider.prototype.requestImage = function(x, y, level) {
+BaiduImageryProvider.prototype.requestImage = function (x, y, level) {
   if (!this._ready) {
     throw new DeveloperError(
       "requestImage must not be called before the imagery provider is ready."
     );
   }
+
   var tileW = this._tilingScheme.getNumberOfXTilesAtLevel(level);
-  val tileH = this._tilingScheme.getNumberOfYTilesAtLevel(level);
+  var tileH = this._tilingScheme.getNumberOfYTilesAtLevel(level);
+
   var url = this._url
-  .replace("{x}", x - tileW / 2)
-  .replace("{y}", tileH / 2 - y - 1)
-  .replace("{z}", level)
-  .replace("{s}", Math.floor(Math.random() * 10));
-}
+    .replace("{x}", x - tileW / 2)
+    .replace("{y}", tileH / 2 - y - 1)
+    .replace("{z}", level)
+    .replace("{s}", Math.floor(Math.random() * 10));
+
+  return Cesium.ImageryProvider.loadImage(this, url);
+};

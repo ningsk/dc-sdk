@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:36:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 13:05:51
+ * @LastEditTime: 2020-09-10 10:30:48
  */
 
 import Cesium from "cesium";
@@ -43,8 +43,7 @@ export function style2Entity(style, entityAttr) {
             entityAttr.heightReference = Cesium.HeightReference.NONE;
             break;
           case "CLAMP_TO_GROUND":
-            entityAttr.heightReference =
-              Cesium.HeightReference.CLAMP_TO_GROUND;
+            entityAttr.heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
             break;
           case "RELATIVE_TO_GROUND":
             entityAttr.heightReference =
@@ -74,9 +73,9 @@ export function style2Entity(style, entityAttr) {
       style.color || "#FFFFFF"
     ).withAlpha(opacity);
   else
-    entityAttr.color = new Cesium.Color.fromCssColorString(
-      "#FFFFFF"
-    ).withAlpha(opacity);
+    entityAttr.color = new Cesium.Color.fromCssColorString("#FFFFFF").withAlpha(
+      opacity
+    );
 
   return entityAttr;
 }
@@ -101,9 +100,9 @@ export function toGeoJson(entity) {
   return {
     type: "Feature",
     properties: entity.attribute || {},
-    geometry {
+    geometry: {
       type: "Point",
-      coordinates: coordinates[0]
-    }
+      coordinates: coordinates[0],
+    },
   };
 }

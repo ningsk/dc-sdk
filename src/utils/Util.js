@@ -4,461 +4,460 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 09:14:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-08-15 13:30:10
+ * @LastEditTime: 2020-09-10 10:46:03
  */
 
- // 从plot的标号默认值 F12打印 拷贝，方便读取
- const configDefVal = {
-  "label": {
-    "edittype": "label",
-    "name": "文字",
-    "style": {
-      "text": "文字",
-      "color": "#ffffff",
-      "opacity": 1,
-      "font_family": "楷体",
-      "font_size": 30,
-      "border": true,
-      "border_color": "#000000",
-      "border_width": 3,
-      "background": false,
-      "background_color": "#000000",
-      "background_opacity": 0.5,
-      "font_weight": "normal",
-      "font_style": "normal",
-      "scaleByDistance": false,
-      "scaleByDistance_far": 1000000,
-      "scaleByDistance_farValue": 0.1,
-      "scaleByDistance_near": 1000,
-      "scaleByDistance_nearValue": 1,
-      "distanceDisplayCondition": false,
-      "distanceDisplayCondition_far": 10000,
-      "distanceDisplayCondition_near": 0
+// 从plot的标号默认值 F12打印 拷贝，方便读取
+const configDefVal = {
+  label: {
+    edittype: "label",
+    name: "文字",
+    style: {
+      text: "文字",
+      color: "#ffffff",
+      opacity: 1,
+      font_family: "楷体",
+      font_size: 30,
+      border: true,
+      border_color: "#000000",
+      border_width: 3,
+      background: false,
+      background_color: "#000000",
+      background_opacity: 0.5,
+      font_weight: "normal",
+      font_style: "normal",
+      scaleByDistance: false,
+      scaleByDistance_far: 1000000,
+      scaleByDistance_farValue: 0.1,
+      scaleByDistance_near: 1000,
+      scaleByDistance_nearValue: 1,
+      distanceDisplayCondition: false,
+      distanceDisplayCondition_far: 10000,
+      distanceDisplayCondition_near: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "point": {
-    "edittype": "point",
-    "name": "点标记",
-    "style": {
-      "pixelSize": 10,
-      "color": "#3388ff",
-      "opacity": 1,
-      "outline": true,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6,
-      "outlineWidth": 2,
-      "scaleByDistance": false,
-      "scaleByDistance_far": 1000000,
-      "scaleByDistance_farValue": 0.1,
-      "scaleByDistance_near": 1000,
-      "scaleByDistance_nearValue": 1,
-      "distanceDisplayCondition": false,
-      "distanceDisplayCondition_far": 10000,
-      "distanceDisplayCondition_near": 0
+  point: {
+    edittype: "point",
+    name: "点标记",
+    style: {
+      pixelSize: 10,
+      color: "#3388ff",
+      opacity: 1,
+      outline: true,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
+      outlineWidth: 2,
+      scaleByDistance: false,
+      scaleByDistance_far: 1000000,
+      scaleByDistance_farValue: 0.1,
+      scaleByDistance_near: 1000,
+      scaleByDistance_nearValue: 1,
+      distanceDisplayCondition: false,
+      distanceDisplayCondition_far: 10000,
+      distanceDisplayCondition_near: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "imagepoint": {
-    "edittype": "imagepoint",
-    "name": "图标点标记",
-    "style": {
-      "image": "",
-      "opacity": 1,
-      "scale": 1,
-      "rotation": 0,
-      "scaleByDistance": false,
-      "scaleByDistance_far": 1000000,
-      "scaleByDistance_farValue": 0.1,
-      "scaleByDistance_near": 1000,
-      "scaleByDistance_nearValue": 1,
-      "distanceDisplayCondition": false,
-      "distanceDisplayCondition_far": 10000,
-      "distanceDisplayCondition_near": 0
+  imagepoint: {
+    edittype: "imagepoint",
+    name: "图标点标记",
+    style: {
+      image: "",
+      opacity: 1,
+      scale: 1,
+      rotation: 0,
+      scaleByDistance: false,
+      scaleByDistance_far: 1000000,
+      scaleByDistance_farValue: 0.1,
+      scaleByDistance_near: 1000,
+      scaleByDistance_nearValue: 1,
+      distanceDisplayCondition: false,
+      distanceDisplayCondition_far: 10000,
+      distanceDisplayCondition_near: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "model": {
-    "edittype": "model",
-    "name": "模型",
-    "style": {
-      "modelUrl": "",
-      "scale": 1,
-      "heading": 0,
-      "pitch": 0,
-      "roll": 0,
-      "fill": false,
-      "color": "#3388ff",
-      "opacity": 1,
-      "silhouette": false,
-      "silhouetteColor": "#ffffff",
-      "silhouetteSize": 2,
-      "silhouetteAlpha": 0.8
+  model: {
+    edittype: "model",
+    name: "模型",
+    style: {
+      modelUrl: "",
+      scale: 1,
+      heading: 0,
+      pitch: 0,
+      roll: 0,
+      fill: false,
+      color: "#3388ff",
+      opacity: 1,
+      silhouette: false,
+      silhouetteColor: "#ffffff",
+      silhouetteSize: 2,
+      silhouetteAlpha: 0.8,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "polyline": {
-    "edittype": "polyline",
-    "name": "线",
-    "position": {
-      "minCount": 2
+  polyline: {
+    edittype: "polyline",
+    name: "线",
+    position: {
+      minCount: 2,
     },
-    "style": {
-      "lineType": "solid",
-      "color": "#3388ff",
-      "width": 4,
-      "clampToGround": false,
-      "outline": false,
-      "outlineColor": "#ffffff",
-      "outlineWidth": 2,
-      "opacity": 1,
-      "zIndex": 0
+    style: {
+      lineType: "solid",
+      color: "#3388ff",
+      width: 4,
+      clampToGround: false,
+      outline: false,
+      outlineColor: "#ffffff",
+      outlineWidth: 2,
+      opacity: 1,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "polylineVolume": {
-    "edittype": "polylineVolume",
-    "name": "管道线",
-    "position": {
-      "height": true,
-      "minCount": 2
+  polylineVolume: {
+    edittype: "polylineVolume",
+    name: "管道线",
+    position: {
+      height: true,
+      minCount: 2,
     },
-    "style": {
-      "color": "#00FF00",
-      "radius": 10,
-      "shape": "pipeline",
-      "outline": false,
-      "outlineColor": "#ffffff",
-      "opacity": 1
+    style: {
+      color: "#00FF00",
+      radius: 10,
+      shape: "pipeline",
+      outline: false,
+      outlineColor: "#ffffff",
+      opacity: 1,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "polygon": {
-    "edittype": "polygon",
-    "name": "面",
-    "position": {
-      "height": true,
-      "minCount": 3
+  polygon: {
+    edittype: "polygon",
+    name: "面",
+    position: {
+      height: true,
+      minCount: 3,
     },
-    "style": {
-      "fill": true,
-      "color": "#3388ff",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6,
-      "clampToGround": false,
-      "zIndex": 0
+    style: {
+      fill: true,
+      color: "#3388ff",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
+      clampToGround: false,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "polygon_clampToGround": {
-    "edittype": "polygon_clampToGround",
-    "name": "贴地面",
-    "position": {
-      "height": false,
-      "minCount": 3
+  polygon_clampToGround: {
+    edittype: "polygon_clampToGround",
+    name: "贴地面",
+    position: {
+      height: false,
+      minCount: 3,
     },
-    "style": {
-      "color": "#ffff00",
-      "opacity": 0.6,
-      "clampToGround": true,
-      "zIndex": 0
+    style: {
+      color: "#ffff00",
+      opacity: 0.6,
+      clampToGround: true,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "extrudedPolygon": {
-    "edittype": "extrudedPolygon",
-    "name": "拉伸面",
-    "position": {
-      "height": true,
-      "minCount": 3
+  extrudedPolygon: {
+    edittype: "extrudedPolygon",
+    name: "拉伸面",
+    position: {
+      height: true,
+      minCount: 3,
     },
-    "style": {
-      "fill": true,
-      "color": "#00FF00",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6,
-      "extrudedHeight": 100,
-      "perPositionHeight": true,
-      "zIndex": 0
+    style: {
+      fill: true,
+      color: "#00FF00",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
+      extrudedHeight: 100,
+      perPositionHeight: true,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "rectangle": {
-    "edittype": "rectangle",
-    "name": "矩形",
-    "position": {
-      "height": false,
-      "minCount": 2,
-      "maxCount": 2
+  rectangle: {
+    edittype: "rectangle",
+    name: "矩形",
+    position: {
+      height: false,
+      minCount: 2,
+      maxCount: 2,
     },
-    "style": {
-      "height": 0,
-      "fill": true,
-      "color": "#3388ff",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6,
-      "rotation": 0,
-      "clampToGround": false,
-      "zIndex": 0
+    style: {
+      height: 0,
+      fill: true,
+      color: "#3388ff",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
+      rotation: 0,
+      clampToGround: false,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "rectangle_clampToGround": {
-    "edittype": "rectangle_clampToGround",
-    "name": "贴地矩形",
-    "position": {
-      "height": false,
-      "minCount": 2,
-      "maxCount": 2
+  rectangle_clampToGround: {
+    edittype: "rectangle_clampToGround",
+    name: "贴地矩形",
+    position: {
+      height: false,
+      minCount: 2,
+      maxCount: 2,
     },
-    "style": {
-      "color": "#ffff00",
-      "opacity": 0.6,
-      "rotation": 0,
-      "clampToGround": true,
-      "zIndex": 0
+    style: {
+      color: "#ffff00",
+      opacity: 0.6,
+      rotation: 0,
+      clampToGround: true,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "rectangleImg": {
-    "edittype": "rectangleImg",
-    "name": "贴地图片",
-    "position": {
-      "height": false,
-      "minCount": 2,
-      "maxCount": 2
+  rectangleImg: {
+    edittype: "rectangleImg",
+    name: "贴地图片",
+    position: {
+      height: false,
+      minCount: 2,
+      maxCount: 2,
     },
-    "style": {
-      "image": "",
-      "opacity": 1,
-      "rotation": 0,
-      "clampToGround": true,
-      "zIndex": 0
+    style: {
+      image: "",
+      opacity: 1,
+      rotation: 0,
+      clampToGround: true,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "extrudedRectangle": {
-    "edittype": "extrudedRectangle",
-    "name": "拉伸矩形",
-    "position": {
-      "height": false,
-      "minCount": 2,
-      "maxCount": 2
+  extrudedRectangle: {
+    edittype: "extrudedRectangle",
+    name: "拉伸矩形",
+    position: {
+      height: false,
+      minCount: 2,
+      maxCount: 2,
     },
-    "style": {
-      "extrudedHeight": 40,
-      "height": 0,
-      "fill": true,
-      "color": "#00FF00",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6,
-      "rotation": 0,
-      "zIndex": 0
+    style: {
+      extrudedHeight: 40,
+      height: 0,
+      fill: true,
+      color: "#00FF00",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
+      rotation: 0,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "ellipse": {
-    "edittype": "ellipse",
-    "name": "椭圆",
-    "position": {
-      "height": false
+  ellipse: {
+    edittype: "ellipse",
+    name: "椭圆",
+    position: {
+      height: false,
     },
-    "style": {
-      "semiMinorAxis": 200,
-      "semiMajorAxis": 200,
-      "height": 0,
-      "fill": true,
-      "color": "#3388ff",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6,
-      "rotation": 0,
-      "clampToGround": false,
-      "zIndex": 0
+    style: {
+      semiMinorAxis: 200,
+      semiMajorAxis: 200,
+      height: 0,
+      fill: true,
+      color: "#3388ff",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
+      rotation: 0,
+      clampToGround: false,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "ellipse_clampToGround": {
-    "edittype": "ellipse_clampToGround",
-    "name": "椭圆",
-    "position": {
-      "height": false
+  ellipse_clampToGround: {
+    edittype: "ellipse_clampToGround",
+    name: "椭圆",
+    position: {
+      height: false,
     },
-    "style": {
-      "semiMinorAxis": 200,
-      "semiMajorAxis": 200,
-      "color": "#ffff00",
-      "opacity": 0.6,
-      "rotation": 0,
-      "clampToGround": true,
-      "zIndex": 0
+    style: {
+      semiMinorAxis: 200,
+      semiMajorAxis: 200,
+      color: "#ffff00",
+      opacity: 0.6,
+      rotation: 0,
+      clampToGround: true,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "extrudedEllipse": {
-    "edittype": "extrudedEllipse",
-    "name": "圆柱体",
-    "position": {
-      "height": false
+  extrudedEllipse: {
+    edittype: "extrudedEllipse",
+    name: "圆柱体",
+    position: {
+      height: false,
     },
-    "style": {
-      "semiMinorAxis": 200,
-      "semiMajorAxis": 200,
-      "extrudedHeight": 200,
-      "height": 0,
-      "fill": true,
-      "color": "#00FF00",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6,
-      "rotation": 0,
-      "zIndex": 0
+    style: {
+      semiMinorAxis: 200,
+      semiMajorAxis: 200,
+      extrudedHeight: 200,
+      height: 0,
+      fill: true,
+      color: "#00FF00",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
+      rotation: 0,
+      zIndex: 0,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "ellipsoid": {
-    "edittype": "ellipsoid",
-    "name": "球体",
-    "style": {
-      "extentRadii": 200,
-      "widthRadii": 200,
-      "heightRadii": 200,
-      "fill": true,
-      "color": "#00FF00",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6
+  ellipsoid: {
+    edittype: "ellipsoid",
+    name: "球体",
+    style: {
+      extentRadii: 200,
+      widthRadii: 200,
+      heightRadii: 200,
+      fill: true,
+      color: "#00FF00",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
   },
-  "wall": {
-    "edittype": "wall",
-    "name": "墙体",
-    "position": {
-      "height": true,
-      "minCount": 2
+  wall: {
+    edittype: "wall",
+    name: "墙体",
+    position: {
+      height: true,
+      minCount: 2,
     },
-    "style": {
-      "extrudedHeight": 40,
-      "fill": true,
-      "color": "#00FF00",
-      "opacity": 0.6,
-      "outline": true,
-      "outlineWidth": 1,
-      "outlineColor": "#ffffff",
-      "outlineOpacity": 0.6
+    style: {
+      extrudedHeight: 40,
+      fill: true,
+      color: "#00FF00",
+      opacity: 0.6,
+      outline: true,
+      outlineWidth: 1,
+      outlineColor: "#ffffff",
+      outlineOpacity: 0.6,
     },
-    "attr": {
-      "id": "",
-      "name": "",
-      "remark": ""
-    }
-  }
+    attr: {
+      id: "",
+      name: "",
+      remark: "",
+    },
+  },
 };
 
-  // 地形构造
+// 地形构造
 const _ellipsoid = new Cesium.EllipsoidTerrainProvider({
-  ellipsoid: Cesium.Ellipsoid.WGS84
+  ellipsoid: Cesium.Ellipsoid.WGS84,
 });
 
-import * as Cesium from 'cesium';
-import { win } from 'leaflet/src/core/Browser';
+import * as Cesium from "cesium";
+import { win } from "leaflet/src/core/Browser";
 
-import { Util as util} from 'leaflet'
-import { formatNum } from 'leaflet/src/core/Util';
-
+import { Util as util } from "leaflet";
+import { formatNum } from "leaflet/src/core/Util";
 
 class Util {
   static isNumber(obj) {
     return typeof obj == "number" && obj.constructor == Number;
   }
-  
+
   static isString(str) {
     return typeof str == "string" && str.constructor == String;
   }
@@ -466,7 +465,7 @@ class Util {
   static isArray(arr) {
     return Array.isArray(arr);
   }
-  
+
   static alert(msg, title) {
     if (window.haoutil && window.haoutil.alert)
       // 此方法需要引用haoutil
@@ -481,7 +480,7 @@ class Util {
       });
     else alert(msg);
   }
-  
+
   static msg(msg) {
     if (window.haoutil && window.haoutil.msg) {
       // 此方法需要引用haoutil
@@ -495,7 +494,7 @@ class Util {
       alert(msg);
     }
   }
-  
+
   // url参数获取
   static getRequest() {
     var url = location.search; // 获取url中"?"符后的字符串
@@ -509,28 +508,28 @@ class Util {
     }
     return theRequest;
   }
-  
+
   static getRequestByName(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return decodeURI(r[2]);
     return null;
   }
-  
+
   static clone(obj) {
     if (
       null == obj ||
       "object" != (typeof obj === "undefined" ? "undefined" : _typeof(obj))
     )
       return obj;
-  
+
     // Handle Date
     if (obj instanceof Date) {
       var copy = new Date();
       copy.setTime(obj.getTime());
       return copy;
     }
-  
+
     // Handle Array
     if (obj instanceof Array) {
       var copy = [];
@@ -539,30 +538,34 @@ class Util {
       }
       return copy;
     }
-  
+
     // Handle Object
-    if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object") {
+    if (
+      (typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object"
+    ) {
       var copy = {};
       for (var attr in obj) {
-        if (attr == "_layer" || attr == "_layers" || attr == "_parent") continue;
-  
+        if (attr == "_layer" || attr == "_layers" || attr == "_parent")
+          continue;
+
         if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
       }
       return copy;
     }
     return obj;
   }
-  
+
   static template(str, data) {
     if (str == null) return str;
-    for (val col in data) {
+    for (var col in data) {
       var showVal = data[col];
-      if (showVal == null || showVal == "Null" || showVal == "Unknown") showVal = "";
-      str = str.replace(new RegExp('{' + col + '}', "gm"), showVal);
-    } 
+      if (showVal == null || showVal == "Null" || showVal == "Unknown")
+        showVal = "";
+      str = str.replace(new RegExp("{" + col + "}", "gm"), showVal);
+    }
     return str;
   }
-  
+
   static isPCBrowser() {
     var sUserAgent = navigator.userAgent.toLowerCase();
     var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
@@ -573,30 +576,39 @@ class Util {
     var bIsAndroid = sUserAgent.match(/android/i) == "android";
     var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
     var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
-    if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+    if (
+      bIsIpad ||
+      bIsIphoneOs ||
+      bIsMidp ||
+      bIsUc7 ||
+      bIsUc ||
+      bIsAndroid ||
+      bIsCE ||
+      bIsWM
+    ) {
       return false;
     } else {
       return true;
     }
   }
-  
+
   // 获取浏览器类型及版本
   static getExplorerInfo() {
     var explorer = window.navigator.userAgent.toLowerCase();
-    //ie 
+    //ie
     if (explorer.indexOf("msie") >= 0) {
       var ver = Number(explorer.match(/msie ([\d]+)/)[1]);
       return {
         type: "IE",
-        version: ver
+        version: ver,
       };
     }
-    //firefox 
+    //firefox
     else if (explorer.indexOf("firefox") >= 0) {
       var ver = Number(explorer.match(/firefox\/([\d]+)/)[1]);
       return {
         type: "Firefox",
-        version: ver
+        version: ver,
       };
     }
     //Chrome
@@ -604,7 +616,7 @@ class Util {
       var ver = Number(explorer.match(/chrome\/([\d]+)/)[1]);
       return {
         type: "Chrome",
-        version: ver
+        version: ver,
       };
     }
     //Opera
@@ -612,7 +624,7 @@ class Util {
       var ver = Number(explorer.match(/opera.([\d]+)/)[1]);
       return {
         type: "Opera",
-        version: ver
+        version: ver,
       };
     }
     //Safari
@@ -620,42 +632,46 @@ class Util {
       var ver = Number(explorer.match(/version\/([\d]+)/)[1]);
       return {
         type: "Safari",
-        version: ver
+        version: ver,
       };
     }
     return {
       type: explorer,
-      version: -1
+      version: -1,
     };
   }
-  
+
   // 检测浏览器webgl支持
   static webglReport() {
     var exInfo = getExplorerInfo();
-    if (exInfo.type == 'IE' && exInfo.version < 11) {
+    if (exInfo.type == "IE" && exInfo.version < 11) {
       return false;
     }
     try {
-      val glContext;
-      var canvas = document.createElement('canvas');
-      var requestWebgl2 = typeof WebGL2RenderingContext !== 'undefined';
+      var glContext;
+      var canvas = document.createElement("canvas");
+      var requestWebgl2 = typeof WebGL2RenderingContext !== "undefined";
       if (requestWebgl2) {
-        glContext = canvas.getContext('webgl2') || canvas.getContext('experimental-webgl2') || undefined;
+        glContext =
+          canvas.getContext("webgl2") ||
+          canvas.getContext("experimental-webgl2") ||
+          undefined;
       }
       if (glContext == null) {
-        glContext = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') || undefined
+        glContext =
+          canvas.getContext("webgl") ||
+          canvas.getContext("experimental-webgl") ||
+          undefined;
       }
       if (glContext == null) {
         return false;
-      } 
+      }
     } catch (e) {
       return false;
     }
     return true;
   }
-  
 
-  
   // 计算贴地路线
   static terrainPolyline(params) {
     var viewer = params.viewer;
@@ -666,12 +682,11 @@ class Util {
     }
     //TODO 待定
   }
-  
-  
+
   static getEllipsoidTerrain() {
     return _ellipsoid;
   }
-  
+
   static getTerrainProvider(cfg) {
     if (!cfg.hasOwnProperty("requestWaterMask")) {
       cfg.requestWaterMask = true;
@@ -680,23 +695,28 @@ class Util {
       cfg.requestVertexNormals = true;
     }
     var terrainProvider;
-    if (cfg.type == "icon" || cfg.url == "ion" ||cfg.url == "" || cfg.url == null) {
+    if (
+      cfg.type == "icon" ||
+      cfg.url == "ion" ||
+      cfg.url == "" ||
+      cfg.url == null
+    ) {
       terrainProvider = new Cesium.CesiumTerrainProvider({
-        url: Cesium.IonResource.fromAssetId(1)
-      })
+        url: Cesium.IonResource.fromAssetId(1),
+      });
     } else if (cfg.type == "ellipsoid" || cfg.url == "ellipsoid") {
       terrainProvider = _ellipsoid;
     } else if (cfg.type == "gee") {
       // 谷歌地球地形服务
       terrainProvider = new Cesium.GoogleEarthEnterpriseImageryProvider({
-        metadata: new Cesium.GoogleEarthEnterpriseMetadata(cfg)
-      })
+        metadata: new Cesium.GoogleEarthEnterpriseMetadata(cfg),
+      });
     } else {
       terrainProvider = new Cesium.CesiumTerrainProvider(cfg);
     }
     return terrainProvider;
   }
-  
+
   // 创建模型
   static createModel(cfg, viewer) {
     cfg = viewer.mars.point2map(cfg); // 转换坐标系
@@ -705,59 +725,72 @@ class Util {
     var pitch = Cesium.Math.toRadians(cfg.pitch || 0);
     var roll = Cesium.Math.toRadians(cfg.roll || 0);
     var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-    
+
     var converter = cfg.converter || Cesium.Transforms.eastNorthUpToFixedFrame;
     var orientation = Cesium.Transforms.headingPitchRollQuaternion(
-      position, hpr, viewer.scene.globe.ellipsoid,converter
+      position,
+      hpr,
+      viewer.scene.globe.ellipsoid,
+      converter
     );
     var model = viewer.entities.add({
       name: cfg.name || "",
       position: position,
       orientation: orientation,
       model: cfg,
-      tooltip: cfg.tooltip,v,
-      popup: cfg.popup
+      tooltip: cfg.tooltip,
+      v,
+      popup: cfg.popup,
     });
     return model;
   }
-  
+
   static formatDegree(value) {
     value = Math.abs(value);
-    val v1 = Math.floor(value); // 度
+    var v1 = Math.floor(value); // 度
     var v2 = Math.floor((value - v1) * 60); // 分
-    var v3 = Math.round((value - v1) * 3600 % 60); // 秒
-    return v1 + '° ' + v2 + '\'  ' + v3 + '"';
+    var v3 = Math.round(((value - v1) * 3600) % 60); // 秒
+    return v1 + "° " + v2 + "'  " + v3 + '"';
   }
-  
+
   // 许可验证
   static checkToken(token) {
     var nowTime = new Date().getTime();
-    var lastTime = Number(window.localStorage.getItem('tokenTime1987') || nowTime);
+    var lastTime = Number(
+      window.localStorage.getItem("tokenTime1987") || nowTime
+    );
     var startTime = new Date(token.start).getTime();
     var endTime = new Date(token.end).getTime();
-    if (token.hostname && window.location.hostname.indexOf(token.hostname) === -1 || nowTime <= startTime || nowTime >=
-            endTime || lastTime <= startTime || lastTime >= endTime) {
-            if (window.layer) layer.open({
-              type: 1,
-              title: unescape('%u8BB8%u53EF%u5230%u671F%u63D0%u793A'), //"许可到期提示",
-              skin: "layer-mars-dialog",
-              shade: [1, '#000'],
-              closeBtn: 0,
-              resize: false,
-              area: ['400px', '150px'], //宽高
-              content: '<div style="margin: 20px;">' + token.msg + '</div>'
-            });
-            else alert(token.msg);
-            return false;
-          } else {
-            window.localStorage.setItem('tokenTime1987', nowTime);
-            setTimeout(function() {
-              checkToken(token);
-            }, 600000 + Math.random() * 600000); //随机10分钟-20分钟内再次校验
-            return true;
-          }
+    if (
+      (token.hostname &&
+        window.location.hostname.indexOf(token.hostname) === -1) ||
+      nowTime <= startTime ||
+      nowTime >= endTime ||
+      lastTime <= startTime ||
+      lastTime >= endTime
+    ) {
+      if (window.layer)
+        layer.open({
+          type: 1,
+          title: unescape("%u8BB8%u53EF%u5230%u671F%u63D0%u793A"), //"许可到期提示",
+          skin: "layer-mars-dialog",
+          shade: [1, "#000"],
+          closeBtn: 0,
+          resize: false,
+          area: ["400px", "150px"], //宽高
+          content: '<div style="margin: 20px;">' + token.msg + "</div>",
+        });
+      else alert(token.msg);
+      return false;
+    } else {
+      window.localStorage.setItem("tokenTime1987", nowTime);
+      setTimeout(function () {
+        checkToken(token);
+      }, 600000 + Math.random() * 600000); //随机10分钟-20分钟内再次校验
+      return true;
+    }
   }
-  
+
   /**
    * 计算曲线链路的点集（a点到b点的，空中曲线）
    * @param {*} startPoint  开始节点
@@ -765,22 +798,33 @@ class Util {
    * @param {*} angularityFactor  曲率
    * @param {*} numOfSingleLine  点集数量
    */
-  static getLinkedPointList(startPoint, endPoint, angularityFactor,numOfSingleLine) {
+  static getLinkedPointList(
+    startPoint,
+    endPoint,
+    angularityFactor,
+    numOfSingleLine
+  ) {
     var result = [];
     var startPosition = Cesium.Cartographic.fromCartesian(startPoint);
     var endPosition = Cesium.Cartographic.fromCartesian(endPoint);
-    var startLon = startPosition.longitude * 180 / Math.PI;
-    var startLat = startPosition.latitude * 180 / Math.PI;
-    var endLon = endPosition.longitude * 180 / Math.PI;
-    var endLat = endPosition.latitude * 180 / Math.PI;
-  
-    var dist = Math.sqrt((startLon - endLon) * (startLon - endLon) + (startLat - endLat) * (startLat - endLat))
+    var startLon = (startPosition.longitude * 180) / Math.PI;
+    var startLat = (startPosition.latitude * 180) / Math.PI;
+    var endLon = (endPosition.longitude * 180) / Math.PI;
+    var endLat = (endPosition.latitude * 180) / Math.PI;
+
+    var dist = Math.sqrt(
+      (startLon - endLon) * (startLon - endLon) +
+        (startLat - endLat) * (startLat - endLat)
+    );
     // var dist = Cesium.Cartesian3.distance(startPoint, endPoint);
     var angularity = dist * angularityFactor;
-  
+
     var startVec = Cesium.Cartesian3.clone(startPoint);
     var endVec = Cesium.Cartesian3.clone(endPoint);
-    var startLength = Cesium.Cartesian3.distance(startVec, Cesium.Cartesian3.ZERO);
+    var startLength = Cesium.Cartesian3.distance(
+      startVec,
+      Cesium.Cartesian3.ZERO
+    );
     var endLength = Cesium.Cartesian3.distance(endVec, Cesium.Cartesian3.ZERO);
     Cesium.Cartesian3.normalize(startVec, startVec);
     Cesium.Cartesian3.normalize(endVec, endVec);
@@ -790,29 +834,46 @@ class Util {
     // var cosOmega = Cesium.Cartesian3.dot(startVec, endVec);
     // var omega = Math.acos(cosOmega);
     var omega = Cesium.Cartesian3.angleBetween(startVec, endVec);
-  
+
     result.push(startPoint);
     for (var i = 1; i < numOfSingleLine - 1; i++) {
-        var t = i * 1.0 / (numOfSingleLine - 1);
-        var invT = 1 - t;
-  
-        var startScalar = Math.sin(invT * omega) / Math.sin(omega);
-        var endScalar = Math.sin(t * omega) / Math.sin(omega);
-  
-        var startScalarVec = Cesium.Cartesian3.multiplyByScalar(startVec, startScalar, new Cesium.Cartesian3());
-        var endScalarVec = Cesium.Cartesian3.multiplyByScalar(endVec, endScalar, new Cesium.Cartesian3());
-  
-        var centerVec = Cesium.Cartesian3.add(startScalarVec, endScalarVec, new Cesium.Cartesian3());
-  
-        var ht = t * Math.PI;
-        var centerLength = startLength * invT + endLength * t + Math.sin(ht) * angularity;
-        centerVec = Cesium.Cartesian3.multiplyByScalar(centerVec, centerLength, centerVec);
-  
-        result.push(centerVec);
+      var t = (i * 1.0) / (numOfSingleLine - 1);
+      var invT = 1 - t;
+
+      var startScalar = Math.sin(invT * omega) / Math.sin(omega);
+      var endScalar = Math.sin(t * omega) / Math.sin(omega);
+
+      var startScalarVec = Cesium.Cartesian3.multiplyByScalar(
+        startVec,
+        startScalar,
+        new Cesium.Cartesian3()
+      );
+      var endScalarVec = Cesium.Cartesian3.multiplyByScalar(
+        endVec,
+        endScalar,
+        new Cesium.Cartesian3()
+      );
+
+      var centerVec = Cesium.Cartesian3.add(
+        startScalarVec,
+        endScalarVec,
+        new Cesium.Cartesian3()
+      );
+
+      var ht = t * Math.PI;
+      var centerLength =
+        startLength * invT + endLength * t + Math.sin(ht) * angularity;
+      centerVec = Cesium.Cartesian3.multiplyByScalar(
+        centerVec,
+        centerLength,
+        centerVec
+      );
+
+      result.push(centerVec);
     }
-  
+
     result.push(endPoint);
-  
+
     return result;
   }
 
@@ -853,7 +914,6 @@ class Util {
     return newGeoJson;
   }
 
-
   static addGeoJsonDefVal(properties) {
     // 赋默认值
     var def = configDefVal[properties.edittype || properties.type];
@@ -862,7 +922,7 @@ class Util {
       for (var key in def.style) {
         var val = properties.style[key];
         if (val != null) continue;
-        properties.style[key] = def.style[key]; 
+        properties.style[key] = def.style[key];
       }
       properties.attr = properties.attr || {};
       for (var key in def.attr) {
@@ -872,7 +932,6 @@ class Util {
       }
     }
     return properties;
-
   }
 
   /**
@@ -892,7 +951,11 @@ class Util {
    * 经纬度坐标转cesium坐标
    */
   static lonlat2cartesian(coord, defHeight) {
-    return Cesium.Cartesian3.fromDegrees(coords[0], coords[1], coords[2] || defHeight || 0);
+    return Cesium.Cartesian3.fromDegrees(
+      coords[0],
+      coords[1],
+      coords[2] || defHeight || 0
+    );
   }
 
   /**
@@ -924,29 +987,27 @@ class Util {
    * geojson 转 entity
    */
   static getPositionByGeoJSON(geojson, defHeight) {
-    var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson;
+    var geometry = geojson.type === "Feature" ? geojson.geometry : geojson;
     var coords = geometry ? geometry.coordinates : null;
     if (!coords && !geometry) {
       return null;
     }
-    switch(geometry.type) {
-      case 'Point':
+    switch (geometry.type) {
+      case "Point":
         return this.lonlat2cartesian(coords, defHeight);
-      case 'MultiPoint':
+      case "MultiPoint":
         return this.lonlats2cartesians(coords, defHeight);
-      case 'LineString':
+      case "LineString":
         return this.lonlats2cartesians(coords, defHeight);
-      case 'MultiLineString':
-      case 'Polygon':
+      case "MultiLineString":
+      case "Polygon":
         return this.lonlats2cartesians(coords[0], defHeight);
-      case 'MultiPolygon':
+      case "MultiPolygon":
         return this.lonlats2cartesians(coords[0][0], defHeight);
       default:
-        throw new Error('Invalid GeoJson object.');
+        throw new Error("Invalid GeoJson object.");
     }
   }
-
-
-} 
+}
 
 export default Util;

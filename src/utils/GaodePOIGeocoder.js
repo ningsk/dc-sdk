@@ -1,12 +1,13 @@
 import Util from "./Util";
 import { PointConvert } from "../point";
+import Cesium from 'cesium';
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:08:08
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 13:38:24
+ * @LastEditTime: 2020-09-10 10:54:53
  */
 export function GaodePOIGeocoder(options) {
   options = options || {};

@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 09:04:46
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:02:12
+ * @LastEditTime: 2020-09-10 10:39:16
  */
 import { BaseLayer } from "./BaseLayer";
 import Cesium from "cesium";
@@ -39,7 +39,7 @@ centerAt: function(duration) {
     });
   } else if (this.boundingSphere){
     this.viewer.camera.flyToBoundingSphere(this.boundingSphere, {
-      offset: new Cesium.HeadingPitchRange(0.0, -0.5, this.boundingSphere)
+      offset: new Cesium.HeadingPitchRange(0.0, -0.5, this.boundingSphere),
       duration: duration
     });
   }

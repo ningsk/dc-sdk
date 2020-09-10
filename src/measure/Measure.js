@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:26:25
+ * @LastEditTime: 2020-09-10 11:01:06
  */
 
 import Cesium from "cesium";
@@ -59,7 +59,7 @@ export var  Measure = function(opts) {
 
     drawControl.on(DrawEventType.DRAW_ADD_POINT, (e) => {
       var entity = e.entity;
-      switch thisType) {
+      switch (thisType) {
         case "length":
         case "section":
           that.workLength.showAddPointLength(entity);
@@ -808,7 +808,7 @@ export var  Measure = function(opts) {
         }
         return {
           maxHeight: maxHeight,
-          totalCutVolume: totalCutVolume;
+          totalCutVolume: totalCutVolume
         }
       },
       computeAreaOfTriangle: (pos1, pos2, pos3) => {
@@ -946,7 +946,7 @@ export var  Measure = function(opts) {
         this.hLabel = null;
       },
       // 开始绘制
-      start: (options) => {
+      start: function(options) {
         this.options = options;
         var entityAttr = Label.style2Entity(_labelAttr, {
           horizontalOrigin: Cesium.HorizontalOrigin.RIGHT,
@@ -999,7 +999,7 @@ export var  Measure = function(opts) {
         });
       },
       // 绘制增加一个点后，显示该分段的长度
-      showAddPointLength: (entity) => {
+      showAddPointLength: function(entity) {
         var lonLats = drawControl.getPositions(entity);
         if (lonLats.length == 4) {
           var mouseEndPosition = lonLats[3].clone();
@@ -1022,7 +1022,7 @@ export var  Measure = function(opts) {
 
       },
       // 绘制中删除了最够一个点
-      showRemoveLastPointLength: (e) => {
+      showRemoveLastPointLength: function (e) {
         var lonLats = drawControl.getPositions(e.entity);
         if (lonLats.length == 2) {
           lonLats.pop();
@@ -1033,7 +1033,7 @@ export var  Measure = function(opts) {
         }
       },
       // 绘制过程移动中，动态显示长度信息
-      showMoveDrawing: (entity) => {
+      showMoveDrawing: function(entity) {
         var lonLats = drawControl.getPositions(entity);
         if (lonLats.length == 4) {
           var mouseEndPosition = lonLats[3].clone();
@@ -1053,7 +1053,7 @@ export var  Measure = function(opts) {
         this.showSuperHeight(lonLats);
       },
       // 绘制完成后
-      showDrawEnd: (entity) => {
+      showDrawEnd: function(entity) {
         entity._arrLabels = [this.totalLabel, this.hLabel, this.xLabel];
 
         this.totalLabel = null;
@@ -1065,7 +1065,7 @@ export var  Measure = function(opts) {
        * 由四个点形成的三角形（首尾点相同），计算该三角形 三条线段的长度
        * @param {Array} positions 四个点形成的点数组
        */
-      showSuperHeight: (positions) => {
+      showSuperHeight: function(positions) {
         var vLength; // 垂直距离
         var hLength; // 水平距离
         var lLength; // 长度
@@ -1114,7 +1114,7 @@ export var  Measure = function(opts) {
         var heightStr = formatLength(vLength, this.options.unit);
         if (this.options.callback) this.options.callback(heightStr, vLength);
       },
-      updateSuperHeightLabel: (currentLabel, position, type, value) {
+      updateSuperHeightLabel: function (currentLabel, position, type, value) {
         if (currentLabel == null) {
           return;
         }
@@ -1125,7 +1125,7 @@ export var  Measure = function(opts) {
         currentLabel.attribute.value = value;
         currentLabel.attribute.textEx = type;
       },
-      getZHeightPosition: (cartesian1, cartesian2) => {
+      getZHeightPosition: function(cartesian1, cartesian2){
         var carto1 = Cesium.Cartographic.fromCartesian(cartesian1);
         var lng1 = Number(Cesium.Math.toDegrees(carto1.longitude));
         var lat1 = Number(Cesium.Math.toDegrees(carto1.latitude));
@@ -1140,7 +1140,7 @@ export var  Measure = function(opts) {
           return Cesium.Cartesian3.fromDegrees(lng1, lat1, height2);
         }
       },
-      getHDistance: (cartesian1, cartesian2) => {
+      getHDistance: function(cartesian1, cartesian2) {
         var zCartesian = this.getZHeightPosition(cartesian1, cartesian2);
         var carto1 = Cesium.Cartographic.fromCartesian(cartesian2);
         var cartoZ = Cesium.Cartographic.fromCartesian(zCartesian);

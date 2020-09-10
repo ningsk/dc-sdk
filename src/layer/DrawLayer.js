@@ -8,12 +8,12 @@ import $ from "jquery";
  * @Author: 宁四凯
  * @Date: 2020-08-25 10:20:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:17:29
+ * @LastEditTime: 2020-09-10 10:38:08
  */
-export var  DrawLayer =  BaseLayer.extend({
+export var DrawLayer = BaseLayer.extend({
   hasOpacity: false,
 
-  create: function() {
+  create: function () {
     this.drawControl = new Draw(this.viewer, {
       hasEdit: false,
       nameTooltip: false,
@@ -21,8 +21,7 @@ export var  DrawLayer =  BaseLayer.extend({
   },
 
   // 添加
-  add: function(
-  ) {
+  add: function () {
     if (this._isLoad) {
       this.drawControl.setVisible(true);
     } else {
@@ -31,21 +30,21 @@ export var  DrawLayer =  BaseLayer.extend({
   },
 
   // 移除
-  remove: function() {
+  remove: function () {
     this.drawControl.setVisible(false);
   },
 
   // 定位至数据区域
-  centerAt: function(duration) {
+  centerAt: function (duration) {
     var arr = this.drawControl.getEntities();
     this.viewer.flyTo(arr, {
       duration: duration,
     });
-  }
+  },
 
-  setOpacity: function(value) {},
+  setOpacity: function (value) {},
 
-  _loadData: function() {
+  _loadData: function () {
     var that = this;
     $.ajax({
       type: "get",
@@ -63,7 +62,7 @@ export var  DrawLayer =  BaseLayer.extend({
     });
   },
 
-  _bindEntityConfig: function(arrEntity) {
+  _bindEntityConfig: function (arrEntity) {
     var that = this;
     for (var i = 0, len = arrEntity.length; i < len; i++) {
       var entity = arrEntity[i];
@@ -101,5 +100,5 @@ export var  DrawLayer =  BaseLayer.extend({
         entity.click = this.config.click;
       }
     }
-  }
+  },
 });

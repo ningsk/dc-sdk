@@ -1,23 +1,23 @@
 import { FeatureGridLayer } from "./FeatureGridLayer";
-import Cesium from 'cesium';
+import Cesium from "cesium";
 import { Polygon, Polyline, Billboard, Label } from "../overlay";
 import { Util } from "../utils";
-import $ from 'jquery';
+import $ from "jquery";
 /*
  * @Description: 分块加载图层基类
- * @version: 
+ * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:54:59
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:13:23
+ * @LastEditTime: 2020-09-10 10:50:20
  */
-export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
-  this._cacheGrid: {}, // 网络缓存，存放矢量对象id集合
-  this._cacheFeature: {},  // 矢量对象缓存，存放矢量对象和其所对应的网格集合
-  _addImageryCache: function(opts) {
+export var CustomFeatureGridLayer = FeatureGridLayer.extend({
+  _cacheGrid: {}, // 网络缓存，存放矢量对象id集合
+  _cacheFeature: {}, // 矢量对象缓存，存放矢量对象和其所对应的网格集合
+  _addImageryCache: function (opts) {
     this._cacheGrid[opts.key] = {
       opts: opts,
-      isLoading: true
+      isLoading: true,
     };
 
     let that = this;
@@ -26,7 +26,7 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     });
   },
 
-  getDataForGrid: function(opts, callback) {
+  getDataForGrid: function (opts, callback) {
     // 子类可继承，callback为回调方法, callback参数传数据数组
     // 直接使用本类，传参方式
     if (this.config.getDataForGrid) {
@@ -34,14 +34,14 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     }
   },
 
-  checkHasBreak: function(cacheKey) {
+  checkHasBreak: function (cacheKey) {
     if (!this._visible || !this._cacheGrid[cacheKey]) {
       return true;
     }
     return false;
   },
 
-  _showData: function(opts, arrdata) {
+  _showData: function (opts, arrdata) {
     var cacheKey = opts.key;
     if (this.checkHasBreak[cacheKey]) {
       return; //异步请求结束时,如果已经卸载了网格就直接跳出。
@@ -52,7 +52,7 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     var arrIds = [];
     for (var i = 0, len = arrdata.length; i < len; i++) {
       var attributes = arrdata[i];
-      var id = attributes[this.config.IdName || 'id'];
+      var id = attributes[this.config.IdName || "id"];
 
       var layer = this._cacheFeature[id];
       if (layer) {
@@ -60,30 +60,30 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
         layer.grid.push(cacheKey);
         this.updateEntity(layer.entity, attributes);
       } else {
-        var entity = this.createEntity(opts, attributes, function(entity) {
+        var entity = this.createEntity(opts, attributes, function (entity) {
           if (that.config.debuggerTileInfo) {
             //测试用
             entity._temp_id = id;
-            entity.popup = function(entity) {
+            entity.popup = function (entity) {
               return JSON.stringify(that._cacheFeature[entity._temp_id].grid);
             };
           }
           that._cacheFeature[id] = {
             grid: [cacheKey],
-            entity: entity
+            entity: entity,
           };
         });
         if (entity != null) {
           if (that.config.debuggerTileInfo) {
             //测试用
             entity._temp_id = id;
-            entity.popup = function(entity) {
+            entity.popup = function (entity) {
               return JSON.stringify(that._cacheFeature[entity._temp_id].grid);
             };
           }
           that._cacheFeature[id] = {
             grid: [cacheKey],
-            entity: entity
+            entity: entity,
           };
         }
       }
@@ -93,39 +93,37 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     this._cacheGrid[cacheKey] = this._cacheGrid[cacheKey] || {};
     this._cacheGrid[cacheKey].ids = arrIds;
     this._cacheGrid[cacheKey].isLoading = false;
-
-  }
-
-  createEntity: function(opts, attributes, callback) {
-		//子类可以继承,根据数据创造entity
-
-		//直接使用本类,传参方式
-		if (this.config.createEntity) {
-			return this.config.createEntity(opts, attributes, callback);
-		}
-		return null;
   },
 
+  createEntity: function (opts, attributes, callback) {
+    //子类可以继承,根据数据创造entity
 
-  updateEntity: function(entity, attributes) {
-		//子类可以继承,更新entity（动态数据时有用）
-  	//直接使用本类,传参方式
-		if (this.config.updateEntity) {
-			this.config.updateEntity(entity, attributes);
-		}
-  },
-
-  removeEntity: function(entity) {
-  	//子类可以继承,移除entity
     //直接使用本类,传参方式
-		if (this.config.removeEntity) {
-			this.config.removeEntity(entity);
-		} else {
-			this.dataSource.entities.remove(entity);
-		}
+    if (this.config.createEntity) {
+      return this.config.createEntity(opts, attributes, callback);
+    }
+    return null;
   },
 
-  _removeImageryCache: function(opts) {
+  updateEntity: function (entity, attributes) {
+    //子类可以继承,更新entity（动态数据时有用）
+    //直接使用本类,传参方式
+    if (this.config.updateEntity) {
+      this.config.updateEntity(entity, attributes);
+    }
+  },
+
+  removeEntity: function (entity) {
+    //子类可以继承,移除entity
+    //直接使用本类,传参方式
+    if (this.config.removeEntity) {
+      this.config.removeEntity(entity);
+    } else {
+      this.dataSource.entities.remove(entity);
+    }
+  },
+
+  _removeImageryCache: function (opts) {
     var cacheKey = opts.key;
     var layers = this._cacheGrid[cacheKey];
     if (layers) {
@@ -146,7 +144,7 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     }
   },
 
-  _removeAllImageryCache: function() {
+  _removeAllImageryCache: function () {
     if (this.config.removeAllEntity) {
       this.config.removeAllEntity();
     } else {
@@ -157,8 +155,8 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     this._cacheFeature = {};
     this._cacheGrid = {};
   },
-  
-  removeEx: function() {
+
+  removeEx: function () {
     if (this.config.removeAllEntity) {
       this.config.removeAllEntity();
     } else {
@@ -174,14 +172,14 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
   },
 
   // 重新加载数据
-  reload: function() {
+  reload: function () {
     var that = this;
     for (var i in this._cacheGrid) {
       var item = this._cacheGrid[i];
       if (item == null || item.opts == null || item.isLoading) continue;
 
       var opts = item.opts;
-      this.getDataForGrid(opts, function(arrData) {
+      this.getDataForGrid(opts, function (arrData) {
         that._showData(opts, arrData);
       });
     }
@@ -189,36 +187,52 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
   // 设置透明度
   hasOpacity: true,
   _opacity: 1,
-  setOpacity: function(value) {
+  setOpacity: function (value) {
     this._opacity = value;
 
     for (var i in this._cacheFeature) {
       var entity = this._cacheFeature[i].entity;
 
-      if (entity.polygon && entity.polygon.material && entity.polygon.material.color) {
+      if (
+        entity.polygon &&
+        entity.polygon.material &&
+        entity.polygon.material.color
+      ) {
         this._updateEntityAlpha(entity.polygon.material.color, this._opacity);
         if (entity.polygon.outlineColor) {
           this._updateEntityAlpha(entity.polygon.outlineColor, this._opacity);
         }
-      } else if (entity.polyline && entity.polyline.material && entity.polyline.material.color) {
+      } else if (
+        entity.polyline &&
+        entity.polyline.material &&
+        entity.polyline.material.color
+      ) {
         this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
       } else if (entity.billboard) {
-        entity.billboard.color = new _Cesium2.default.Color.fromCssColorString("#FFFFFF").withAlpha(this._opacity);
+        entity.billboard.color = new _Cesium2.default.Color.fromCssColorString(
+          "#FFFFFF"
+        ).withAlpha(this._opacity);
 
         if (entity.label) {
-          if (entity.label.fillColor) this._updateEntityAlpha(entity.label.fillColor, this._opacity);
-          if (entity.label.outlineColor) this._updateEntityAlpha(entity.label.outlineColor, this._opacity);
-          if (entity.label.backgroundColor) this._updateEntityAlpha(entity.label.backgroundColor, this._opacity);
+          if (entity.label.fillColor)
+            this._updateEntityAlpha(entity.label.fillColor, this._opacity);
+          if (entity.label.outlineColor)
+            this._updateEntityAlpha(entity.label.outlineColor, this._opacity);
+          if (entity.label.backgroundColor)
+            this._updateEntityAlpha(
+              entity.label.backgroundColor,
+              this._opacity
+            );
         }
       }
     }
   },
-  _updateEntityAlpha: function(color, opacity) {
+  _updateEntityAlpha: function (color, opacity) {
     var newColor = color.getValue().withAlpha(opacity);
     color.setValue(newColor);
   },
   colorHash: {},
-  setDefSymbol: function(entity) {
+  setDefSymbol: function (entity) {
     if (entity.polygon) {
       var name = entity.properties.OBJECTID;
       var color = this.colorHash[name];
@@ -226,7 +240,7 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
         color = Cesium.Color.fromRandom({
           minimumGreen: 0.75,
           maximumBlue: 0.75,
-          alpha: this._opacity
+          alpha: this._opacity,
         });
         this.colorHash[name] = color;
       }
@@ -234,14 +248,13 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
       entity.polygon.outline = true;
       entity.polygon.outlineColor = Cesium.Color.WHITE;
     } else if (entity.polyline) {
-
       var name = entity.properties.OBJECTID;
       var color = this.colorHash[name];
       if (!color) {
         color = Cesium.Color.fromRandom({
           minimumGreen: 0.75,
           maximumBlue: 0.75,
-          alpha: this._opacity
+          alpha: this._opacity,
         });
         this.colorHash[name] = color;
       }
@@ -255,7 +268,7 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
   },
 
   // 外部配置的symbol
-  setConfigSymbol: function(entity, symbol) {
+  setConfigSymbol: function (entity, symbol) {
     if (entity.polygon) {
       var name = entity.properties.OBJECTID;
       var color = this.colorHash[name];
@@ -263,7 +276,7 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
         color = Cesium.Color.fromRandom({
           minimumGreen: 0.75,
           maximumBlue: 0.75,
-          alpha: this._opacity
+          alpha: this._opacity,
         });
         this.colorHash[name] = color;
       }
@@ -271,14 +284,13 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
       entity.polygon.outline = true;
       entity.polygon.outlineColor = Cesium.Color.WHITE;
     } else if (entity.polyline) {
-
       var name = entity.properties.OBJECTID;
       var color = this.colorHash[name];
       if (!color) {
         color = Cesium.Color.fromRandom({
           minimumGreen: 0.75,
           maximumBlue: 0.75,
-          alpha: this._opacity
+          alpha: this._opacity,
         });
         this.colorHash[name] = color;
       }
@@ -291,7 +303,7 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     }
   },
   //外部配置的symbol
-  setConfigSymbol: function(entity, symbol) {
+  setConfigSymbol: function (entity, symbol) {
     var attr = entity.properties;
     var styleOpt = symbol.styleOptions;
 
@@ -315,16 +327,16 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
         entity.polygon.outline = false;
 
         var newopt = {
-          "color": styleOpt.outlineColor,
-          "width": styleOpt.outlineWidth,
-          "opacity": styleOpt.outlineOpacity,
-          "lineType": "solid",
-          "outline": false
+          color: styleOpt.outlineColor,
+          width: styleOpt.outlineWidth,
+          opacity: styleOpt.outlineOpacity,
+          lineType: "solid",
+          outline: false,
         };
-        var polyline =  Polyline.style2Entity(newopt);
+        var polyline = Polyline.style2Entity(newopt);
         polyline.positions = entity.polygon.hierarchy._value.positions;
         this.dataSource.entities.add({
-          polyline: polyline
+          polyline: polyline,
         });
       }
 
@@ -338,17 +350,18 @@ export var CustomFeatureGridLayer =  FeatureGridLayer.extend({
     } else if (entity.polyline) {
       Polyline.style2Entity(styleOpt, entity.polyline);
     } else if (entity.billboard) {
-      entity.billboard.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+      entity.billboard.heightReference =
+        Cesium.HeightReference.RELATIVE_TO_GROUND;
       Billboard.style2Entity(styleOpt, entity.billboard);
-  
 
-      //加上文字标签 
+      //加上文字标签
       if (styleOpt.label && styleOpt.label.field) {
-        styleOpt.label.heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+        styleOpt.label.heightReference =
+          Cesium.HeightReference.RELATIVE_TO_GROUND;
 
         entity.label = Label.style2Entity(styleOpt.label);
         entity.label.text = attr[styleOpt.label.field];
       }
     }
-  }
-})
+  },
+});
