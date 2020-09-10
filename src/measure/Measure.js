@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:01:06
+ * @LastEditTime: 2020-09-10 11:34:47
  */
 
 import Cesium from "cesium";
@@ -1096,8 +1096,8 @@ export var  Measure = function(opts) {
               vLength = Cesium.Cartesian3.distance(positions[1], positions[2]);
             }
             this.updateSuperHeightLabel(this.totalLabel, midHPoint, "高度差:", vLength);
-            ​this.updateSuperHeightLabel(this.xLabel, midXPoint, "", hLength);
-            ​this.updateSuperHeightLabel(this.hLabel, midLPoint, "", lLength);
+            ​this.updateSuperHeightLabel(this.xLabel,midXPoint, null, hLength);
+            ​this.updateSuperHeightLabel(this.hLabel, midLPoint, null, lLength);
             
           }
         } else if (positions.length == 2) {

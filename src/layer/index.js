@@ -4,9 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:39:53
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 10:48:25
+ * @LastEditTime: 2020-09-10 11:26:59
  */
 import { BaseLayer } from "./BaseLayer";
+import { ArcFeatureLayer } from "./ArcFeatureLayer";
 import { ArcFeatureGridLayer } from "./ArcFeatureGridLayer";
 import { CustomFeatureGridLayer } from "./CustomFeatureGridLayer";
 import { CzmlLayer } from "./CzmlLayer";
