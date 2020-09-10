@@ -4,7 +4,10 @@
   "description": "基于cesium的三维sdk",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node_modules/.bin/webpack --config webpack.config.js",
+    "start": "node_modules/.bin/webpack-dev-server --config webpack.config.js",
+    "release": "node_modules/.bin/webpack --config webpack.release.config.js",
+    "serve-release": "node_modules/.bin/webpack-dev-server --config webpack.release.config.js --content-base /dist"
   },
   "repository": {
     "type": "git",
@@ -17,13 +20,23 @@
   },
   "homepage": "https://github.com/ningsk/earth3d#readme",
   "dependencies": {
-    "cesium": "1.57",
+    "cesium": "1.73.0",
     "echarts": "^4.8.0",
     "jquery": "^3.5.1",
     "leaflet": "^1.6.0",
     "turf": "^3.0.14"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^6.0.3",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "strip-pragma-loader": "^1.0.0",
+    "style-loader": "^1.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^2.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0",
     "esri-leaflet": "^2.5.0"
   }
 }
