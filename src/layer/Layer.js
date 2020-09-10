@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:23:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:12:29
+ * @LastEditTime: 2020-09-10 11:21:43
  */
 import Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer.js";
@@ -12,7 +12,6 @@ import { GroupLayer } from "./GroupLayer.js";
 import { TileLayer } from "./TileLayer.js";
 import { GraticuleLayer } from "./GraticuleLayer.js";
 import { CustomFeatureGridLayer } from "./CustomFeatureGridLayer.js";
-import { ArcFeatureGridLayer } from "./ArcFeatureGridLayer.js";
 import { POILayer } from "./POILayer.js";
 import { GeoJsonLayer } from "./GeoJsonLayer.js";
 import { ArcFeatureLayer } from "./ArcFeatureLayer.js";
@@ -108,7 +107,7 @@ function createLayer(item, viewer, serverURL, layerToMap) {
       break;
     case "arcgis_feature":
       //分网格加载
-      layer = new ArcFeatureGridLayer(item, viewer);
+      layer = new ArcFeatureLayer(item, viewer);
       break;
     case "arcgis_feature2":
       //一次加载，不分网格

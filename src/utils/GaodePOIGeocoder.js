@@ -1,13 +1,12 @@
-import Util from "./Util";
-import { PointConvert } from "../point";
-import Cesium from 'cesium';
+import { Util, PointConvert } from "./Util";
+import Cesium from "cesium";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:08:08
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:54:53
+ * @LastEditTime: 2020-09-10 11:07:26
  */
 export function GaodePOIGeocoder(options) {
   options = options || {};
@@ -22,22 +21,22 @@ export function GaodePOIGeocoder(options) {
   ];
 }
 
-GaodePOIGeocoder.prototype.getOneKey = function() {
+GaodePOIGeocoder.prototype.getOneKey = function () {
   var arr = this.gaodekey;
   var n = Math.floor(Math.random() * arr.length + 1) - 1;
   return arr[n];
-}
+};
 
-GaodePOIGeocoder.prototype.geocode = function(query, geocodeType) {
+GaodePOIGeocoder.prototype.geocode = function (query, geocodeType) {
   var that = this;
   var key = this.getOneKey();
   var resource = new Cesium.Resource({
-    url: 'http://restapi.amap.com/v3/place/text',
+    url: "http://restapi.amap.com/v3/place/text",
     queryParameters: {
       key: key,
       city: this.citycode,
-      keywords: query
-    }
+      keywords: query,
+    },
   });
 
   return resource.fetchJson().then((results) => {
@@ -61,16 +60,13 @@ GaodePOIGeocoder.prototype.geocode = function(query, geocodeType) {
       arrjwd = PointConvert.gcj2wgs(arrjwd); // 纠偏
       var lnglat = that.viewer.mars.point2map({
         x: arrjwd[0],
-        y: arrjwd[1]
+        y: arrjwd[1],
       });
 
       return {
         displayName: resultObject.name,
-        destination: Cesium.Cartesian3.fromDegrees(lnglat.x, lnglat.y, height);
-      }
-
+        destination: Cesium.Cartesian3.fromDegrees(lnglat.x, lnglat.y, height),
+      };
     });
-
   });
-
-}
+};

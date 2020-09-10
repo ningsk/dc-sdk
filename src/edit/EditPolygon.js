@@ -1,6 +1,6 @@
 import Cesium from "cesium";
 import { EditPolyline } from "./EditPolyline";
-import { createDragger, Tooltip, PointUtil } from "../utils";
+import { Dragger, Tooltip, PointUtil } from "../utils";
 
 /*
  * @Description:
@@ -8,7 +8,7 @@ import { createDragger, Tooltip, PointUtil } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-27 09:13:45
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:34:36
+ * @LastEditTime: 2020-09-10 11:17:05
  */
 export var EditPolygon = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率
@@ -42,7 +42,7 @@ export var EditPolygon = EditPolyline.extend({
       }
 
       // 各顶点
-      var dragger = createDragger(this.dataSource, {
+      var dragger = Dragger.createDragger(this.dataSource, {
         point: loc,
         onDrag: function (dragger, position) {
           positions[dragger.index] = position;

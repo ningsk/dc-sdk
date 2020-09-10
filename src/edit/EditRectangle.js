@@ -4,11 +4,11 @@
  * @Author: 宁四凯
  * @Date: 2020-08-26 14:38:36
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:10:25
+ * @LastEditTime: 2020-09-10 11:17:17
  */
 import Cesium from "cesium";
 import { EditPolygon } from "./EditPolygon";
-import { createDragger, PointUtil } from "../utils";
+import { Dragger, PointUtil } from "../utils";
 
 export var EditRectangle = EditPolygon.extend({
   // 修改坐标会回调，提高显示的效率
@@ -41,7 +41,7 @@ export var EditRectangle = EditPolygon.extend({
       }
 
       // 各顶点
-      var dragger = createDragger(this.dataSource, {
+      var dragger = Dragger.createDragger(this.dataSource, {
         position: position,
         onDrag: function (dragger, position) {
           if (that.entity.rectangle.height != undefined) {

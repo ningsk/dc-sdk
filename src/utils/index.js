@@ -4,9 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:46:09
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:04:01
+ * @LastEditTime: 2020-09-10 11:16:03
  */
-import { createDragger } from "./Dragger";
+import * as Dragger from "./Dragger";
 import { GaodePOIGeocoder } from "./GaodePOIGeocoder";
 import * as Loader from "./Loader";
 import * as PointUtil from "./PointUtil";
@@ -16,7 +16,7 @@ import * as TooltipUtil from "./Tooltip";
 import * as Matrix from "./Matrix";
 
 export {
-  createDragger,
+  Dragger,
   GaodePOIGeocoder,
   Loader,
   PointUtil,

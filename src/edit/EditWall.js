@@ -1,13 +1,13 @@
 import { EditPolyline } from "./EditPolyline";
 import Cesium from "cesium";
-import { createDragger, Tooltip, PointUtil } from "../utils";
+import { Dragger, Tooltip, PointUtil } from "../utils";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-26 14:30:05
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:11:15
+ * @LastEditTime: 2020-09-10 11:17:39
  */
 export var EditWall = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率
@@ -157,7 +157,7 @@ export var EditWall = EditPolyline.extend({
     for (var i = 0, len = positions.length; i < len; i++) {
       var loc = PointUtil.addPositionsHeight(positions[i], extrudedHeight);
 
-      var dragger = createDragger(this.dataSource, {
+      var dragger = Dragger.createDragger(this.dataSource, {
         position: loc,
         type: Dragger.PointType.MoveHeight,
         tooltip: Tooltip.message.dragger.moveHeight,

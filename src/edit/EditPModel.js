@@ -1,6 +1,6 @@
 import { EditBase } from "./EditBase";
 import Cesium from "cesium";
-import { createDragger, Tooltip, PointUtil } from "../utils";
+import { Dragger, Tooltip, PointUtil } from "../utils";
 import { Circle } from "../overlay";
 
 /*
@@ -9,7 +9,7 @@ import { Circle } from "../overlay";
  * @Author: 宁四凯
  * @Date: 2020-08-26 13:57:57
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:20:00
+ * @LastEditTime: 2020-09-10 11:16:38
  */
 export var EditPModel = EditBase.extend({
   setPositions: function (position) {
@@ -118,7 +118,7 @@ export var EditPModel = EditBase.extend({
 
     //缩放控制点
     var position_scale = PointUtil.addPositionsHeight(position, radius);
-    var dragger = createDragger(this.dataSource, {
+    var dragger = Dragger.createDragger(this.dataSource, {
       position: position_scale,
       type: Dragger.PointType.MoveHeight,
       tooltip: Tooltip.message.dragger.editScale,

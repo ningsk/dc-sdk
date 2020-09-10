@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:01:52
+ * @LastEditTime: 2020-09-10 11:10:17
  */
 import Cesium from "cesium";
 import $ from "jquery";
@@ -274,7 +274,6 @@ function initMap(id, config, options) {
   if (options.geocoder) {
     options.geocoder.viewer = viewer;
   }
-
 
   //地球一些属性设置
   var scene = viewer.scene;
@@ -998,6 +997,4 @@ function createMapByData(opt, configData, jsonData) {
   return viewer;
 }
 
-exports {
-  createMap
-}
+export { createMap };
