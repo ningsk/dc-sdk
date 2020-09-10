@@ -7,7 +7,7 @@ import { esri } from "leaflet";
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:53:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 15:52:13
+ * @LastEditTime: 2020-09-10 10:14:08
  */
 export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
   // 获取网格内的数据，callback为回调方法，参数传数据数组

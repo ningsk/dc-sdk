@@ -1,7 +1,7 @@
 import { EditBase } from "./EditBase";
 import Cesium from "cesium";
 import { Dragger, Tooltip } from "../utils";
-import { Point } from "../point";
+import { PointUtil } from "../utils";
 
 /*
  * @Description:
@@ -9,7 +9,7 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-26 11:00:14
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:32:15
+ * @LastEditTime: 2020-09-10 10:09:04
  */
 export var EditEllipsoid = EditBase.extend({
   _positions_draw: null,
@@ -38,7 +38,7 @@ export var EditEllipsoid = EditBase.extend({
     //位置中心点
     var position = this.entity.position.getValue();
     var dragger = Dragger.createDragger(this.dataSource, {
-      position: Point.addPositionsHeight(position, style.heightRadii),
+      position: PointUtil.addPositionsHeight(position, style.heightRadii),
       onDrag: function (dragger, position) {
         this._positions_draw = position;
         that.entity.position.setValue(position);
@@ -74,7 +74,7 @@ export var EditEllipsoid = EditBase.extend({
       onDrag: function onDrag(dragger, position) {
         var newHeight = Cesium.Cartographic.fromCartesian(that._positions_draw)
           .height;
-        position = Point.setPositionsHeight(position, newHeight);
+        position = PointUtil.setPositionsHeight(position, newHeight);
         dragger.position = position;
 
         var radius = that.formatNum(
@@ -103,7 +103,7 @@ export var EditEllipsoid = EditBase.extend({
       onDrag: function (dragger, position) {
         var newHeight = Cesium.Cartographic.fromCartesian(that._positions_draw)
           .height;
-        position = Point.setPositionsHeight(position, newHeight);
+        position = PointUtil.setPositionsHeight(position, newHeight);
         dragger.position = position;
 
         var radius = that.formatNum(

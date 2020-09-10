@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 09:05:47
+ * @LastEditTime: 2020-09-10 10:22:02
  */
 import { Tooltip } from "../utils";
 
@@ -17,12 +17,9 @@ import {
   DrawCurve,
   DrawPolylineVolume,
   DrawCorridor,
-  DrawPolyline,
   DrawRectangle,
   DrawEllipsoid,
   DrawWall,
-  DrawPolygon,
-  DrawCircle,
   DrawPolygon,
   DrawCircle,
   DrawPModel,

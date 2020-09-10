@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:24:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 14:11:16
+ * @LastEditTime: 2020-09-10 10:27:01
  */
 
 import Cesium from "cesium";
 import $ from "jquery";
-import { Point } from "../point";
+import { PointUtil } from "../utils";
 import EsriUtil from "esri-leaflet/src/Util";
 
 var _viewer;
@@ -65,7 +65,7 @@ function mousePickingClick(event) {
     var entity = pickedObject.id;
     // popup
     if (Cesium.defined(entity.popup)) {
-      var cartesian = Point.getCurrentMousePosition(
+      var cartesian = PointUtil.getCurrentMousePosition(
         this._viewer.scene,
         position
       );
@@ -139,7 +139,7 @@ function pickImageryLayerFeatures(position) {
         feature.properties
       );
       if (result) {
-        var cartesian = Point.getCurrentMousePosition(
+        var cartesian = PointUtil.getCurrentMousePosition(
           this._viewer.scene,
           position
         );

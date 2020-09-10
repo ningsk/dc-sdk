@@ -1,14 +1,13 @@
 import { EditPolyline } from "./EditPolyline";
 import Cesium from "cesium";
-import { Dragger, Tooltip } from "../utils";
-import { Point } from "../point";
+import { createDragger, Tooltip, PointUtil } from "../utils";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-26 14:30:05
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:46:51
+ * @LastEditTime: 2020-09-10 10:11:15
  */
 export var EditWall = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率
@@ -76,7 +75,7 @@ export var EditWall = EditPolyline.extend({
           if (that.heightDraggers && that.heightDraggers.length > 0) {
             that.heightDraggers[
               dragger.index
-            ].position = Point.addPositionsHeight(
+            ].position = PointUtil.addPositionsHeight(
               position,
               style.extrudedHeight
             );
@@ -156,9 +155,9 @@ export var EditWall = EditPolyline.extend({
     var extrudedHeight = Number(style.extrudedHeight);
 
     for (var i = 0, len = positions.length; i < len; i++) {
-      var loc = Point.addPositionsHeight(positions[i], extrudedHeight);
+      var loc = PointUtil.addPositionsHeight(positions[i], extrudedHeight);
 
-      var dragger = Dragger.createDragger(this.dataSource, {
+      var dragger = createDragger(this.dataSource, {
         position: loc,
         type: Dragger.PointType.MoveHeight,
         tooltip: Tooltip.message.dragger.moveHeight,
@@ -171,7 +170,7 @@ export var EditWall = EditPolyline.extend({
 
           for (var i = 0; i < positions.length; i++) {
             if (i == dragger.index) continue;
-            that.heightDraggers[i].position = Point.addPositionsHeight(
+            that.heightDraggers[i].position = PointUtil.addPositionsHeight(
               positions[i],
               style.extrudedHeight
             );

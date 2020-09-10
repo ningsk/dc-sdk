@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:23:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 09:25:12
+ * @LastEditTime: 2020-09-10 10:12:29
  */
 import Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer.js";
@@ -22,7 +22,7 @@ import { KmlLayer } from "./KmlLayer.js";
 import { CzmlLayer } from "./CzmlLayer.js";
 import { TerrainLayer } from "./TerrainLayer.js";
 import { DrawLayer } from "./DrawLayer.js";
-import { BaiduImageryProvider } from "./BaiduImageryProvider.js"; //暂时没有内容
+import { BaiduImageryProvider } from "../provider"; //暂时没有内容
 // import _FeatureGridImageryProvider from "./FeatureGridImageryProvider.js";//暂时没有
 
 function getOneKey(arr) {

@@ -4,12 +4,11 @@
  * @Author: 宁四凯
  * @Date: 2020-08-26 14:38:36
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:38:11
+ * @LastEditTime: 2020-09-10 10:10:25
  */
 import Cesium from "cesium";
 import { EditPolygon } from "./EditPolygon";
-import { Point } from "../point";
-import { Dragger } from "../utils";
+import { createDragger, PointUtil } from "../utils";
 
 export var EditRectangle = EditPolygon.extend({
   // 修改坐标会回调，提高显示的效率
@@ -35,19 +34,19 @@ export var EditRectangle = EditPolygon.extend({
       var position = positions[i];
       if (this.entity.rectangle.height != undefined) {
         var newHeight = this.entity.rectangle.height.getValue();
-        position = Point.setPositionsHeight(position, newHeight);
+        position = PointUtil.setPositionsHeight(position, newHeight);
       }
       if (clampToGround) {
-        position = Point.updateHeightForClampToGround(position);
+        position = PointUtil.updateHeightForClampToGround(position);
       }
 
       // 各顶点
-      var dragger = Dragger.createDragger(this.dataSource, {
+      var dragger = createDragger(this.dataSource, {
         position: position,
         onDrag: function (dragger, position) {
           if (that.entity.rectangle.height != undefined) {
             var newHeight = that.entity.rectangle.height.getValue();
-            position = Point.setPositionsHeight(position, newHeight);
+            position = PointUtil.setPositionsHeight(position, newHeight);
             dragger.position = position;
           }
           positions[dragger.index] = position;
@@ -56,7 +55,7 @@ export var EditRectangle = EditPolygon.extend({
             var extrudedHeight = that.entity.rectangle.extrudedHeight.getValue();
             that.heightDraggers[
               dragger.index
-            ].position = Point.setPositionsHeight(position, extrudedHeight);
+            ].position = PointUtil.setPositionsHeight(position, extrudedHeight);
           }
         },
       });

@@ -4,15 +4,14 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 08:39:43
+ * @LastEditTime: 2020-09-10 10:26:25
  */
 
 import Cesium from "cesium";
 import { Draw } from "../draw";
 import { DrawEventType } from "../event";
 import { style2Entity } from "../overlay/Label";
-import { Util } from "../utils";
-import { Point } from "../point";
+import { Util, PointUtil } from "../utils";
 
 import echarts from 'echarts';
 
@@ -485,7 +484,7 @@ export var  Measure = function(opts) {
                 }
                 arrLen.push(Number(allLen.toFixed(1)));
                 // 海拔高度
-                var point = Point.formatPosition(raisedPositions[i]);
+                var point = PointUtil.formatPosition(raisedPositions[i]);
                 arrHB.push(point.z);
                 arrPoint.push(point);
                 // 路线高度
@@ -595,7 +594,7 @@ export var  Measure = function(opts) {
         var areaStr = formatArea(area, this.options.unit);
         // 求中心点
         var center = centerOfMass(polygon);
-        var maxHeight = Point.getMaxHeight(positions);
+        var maxHeight = PointUtil.getMaxHeight(positions);
         var ptCenter = Cesium.Cartesian3.fromDegrees(
           center.geometry.coordinates[0],
           center.geometry.coordinates[1],
@@ -1218,8 +1217,8 @@ export var  Measure = function(opts) {
         var len = Cesium.Cartesian3.distance(positions[0], positions[1]);
 
         // 求方位角
-        var point1 = Point.formatPosition(positions[0]);
-        var point2 = Point.formatPosition(positions[1]);
+        var point1 = PointUtil.formatPosition(positions[0]);
+        var point2 = PointUtil.formatPosition(positions[1]);
 
         var pt1 = point([point1.x, point1.y, point1.z]);
         ​var pt2 = point([point2.x, point2.y, point2.z]);

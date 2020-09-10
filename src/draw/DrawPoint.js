@@ -1,7 +1,7 @@
 import Cesium from "cesium";
 import { Point } from "../overlay";
 import { DrawBase } from "./DrawBase";
-import { Point } from "../point";
+import { PointUtil } from "../utils";
 import { EditPoint } from "../edit";
 
 /*
@@ -10,7 +10,7 @@ import { EditPoint } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:24:29
+ * @LastEditTime: 2020-09-10 10:24:07
  */
 export var DrawPoint = DrawBase.extend({
   type: "point",
@@ -37,7 +37,7 @@ export var DrawPoint = DrawBase.extend({
   bindEvent: function () {
     var _this = this;
     this.getHandler().setInputAction((event) => {
-      var point = Point.getCurrentMousePosition(
+      var point = PointUtil.getCurrentMousePosition(
         _this.viewer.scene,
         event.position,
         _this.entity

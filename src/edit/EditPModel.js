@@ -1,8 +1,7 @@
 import { EditBase } from "./EditBase";
 import Cesium from "cesium";
-import { Dragger, Tooltip } from "../utils";
+import { createDragger, Tooltip, PointUtil } from "../utils";
 import { Circle } from "../overlay";
-import { Point } from "../point";
 
 /*
  * @Description:
@@ -10,7 +9,7 @@ import { Point } from "../point";
  * @Author: 宁四凯
  * @Date: 2020-08-26 13:57:57
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:35:42
+ * @LastEditTime: 2020-09-10 10:20:00
  */
 export var EditPModel = EditBase.extend({
   setPositions: function (position) {
@@ -118,8 +117,8 @@ export var EditPModel = EditBase.extend({
     //});
 
     //缩放控制点
-    var position_scale = Point.addPositionsHeight(position, radius);
-    var dragger = Dragger.createDragger(this.dataSource, {
+    var position_scale = PointUtil.addPositionsHeight(position, radius);
+    var dragger = createDragger(this.dataSource, {
       position: position_scale,
       type: Dragger.PointType.MoveHeight,
       tooltip: Tooltip.message.dragger.editScale,
@@ -152,8 +151,7 @@ export var EditPModel = EditBase.extend({
     //});
   },
   destroyDraggers: function () {
-    super.destroyDraggers();
-
+    EditBase.prototype.destroyDraggers.call(this);
     if (this.entityAngle) {
       this.dataSource.entities.remove(this.entityAngle);
       delete this.entityAngle;

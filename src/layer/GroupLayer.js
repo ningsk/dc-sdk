@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-21 13:59:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:27:03
+ * @LastEditTime: 2020-09-10 10:29:05
  */
 import Cesium from "cesium";
-import { BaseLayer } from './BaseLayer';
+import { BaseLayer } from "./BaseLayer";
 export var GroupLayer = BaseLayer.extend({
-  create: function() {
+  create: function () {
     var arr = this.config._layers;
     for (var i = 0, len = arr.length; i < len; i++) {
       this.hasOpacity = arr[i].hasOpacity;
@@ -17,7 +17,7 @@ export var GroupLayer = BaseLayer.extend({
     }
   },
 
-  setVisible: function(val) {
+  setVisible: function (val) {
     var arr = this.config._layers;
     for (var i = 0, len = arr.length; i < len; i++) {
       arr[i].setVisible(val);
@@ -25,7 +25,7 @@ export var GroupLayer = BaseLayer.extend({
   },
 
   // 添加
-  add: function() {
+  add: function () {
     var arr = this.config._layers;
     for (var i = 0, len = arr.length; i < len; i++) {
       arr[i].setVisible(true);
@@ -33,7 +33,7 @@ export var GroupLayer = BaseLayer.extend({
   },
 
   // 移除
-  remove: function() {
+  remove: function () {
     var arr = this.config._layers;
     for (var i = 0, len = arr.length; i < len; i++) {
       arr[i].setVisible(false);
@@ -41,17 +41,15 @@ export var GroupLayer = BaseLayer.extend({
   },
 
   // 定位至数据区域
-  centerAt: function(duration) {
+  centerAt: function (duration) {
     var arr = this.config._layers;
-    for (var i = 0， len = arr.length; i < len; i++) {
-      for (var i = 0, len = arr.length; i < len; i++) {
-        arr[i].centerAt(duration);
-      }
+    for (var i = 0, len = arr.length; i < len; i++) {
+      arr[i].centerAt(duration);
     }
   },
 
   // 设置透明度
-  setOpacity: function(value) {
+  setOpacity: function (value) {
     var arr = this.config._layers;
     for (var i = 0, len = arr.length; i < len; i++) {
       arr[i].setOpacity(value);
@@ -59,10 +57,10 @@ export var GroupLayer = BaseLayer.extend({
   },
 
   // 设置叠加顺序
-  setZIndex: function(value) {
+  setZIndex: function (value) {
     var arr = this.config._layers;
     for (var i = 0; i < arr.length; i++) {
       arr[i].setZIndex(value);
     }
-  }
-})
+  },
+});

@@ -1,7 +1,6 @@
 import Cesium from "cesium";
 import {EditPolyline} from "./EditPolyline";
-import { Point } from "../point";
-import { Dragger, Tooltip } from "../utils";
+import { createDragger, Tooltip, PointUtil } from "../utils";
 
 /*
  * @Description:
@@ -9,7 +8,7 @@ import { Dragger, Tooltip } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-27 09:13:45
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:19:33
+ * @LastEditTime: 2020-09-10 10:25:29
  */
 export var  EditPolygon = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率
@@ -38,12 +37,12 @@ export var  EditPolygon = EditPolyline.extend({
       var loc = positions[i];
       if (clampToGround) {
         // 贴地时，求贴模型和贴地的高度
-        loc = Point.updateHeightForClampToGround(loc);
+        loc = PointUtil.updateHeightForClampToGround(loc);
         positions[i] = loc;
       }
 
       // 各顶点
-      var dragger = Dragger.createDragger(this.dataSource, {
+      var dragger = createDragger(this.dataSource, {
         point: loc,
         onDrag: function (dragger, position) {
           positions[dragger.index] = position;
@@ -53,7 +52,7 @@ export var  EditPolygon = EditPolyline.extend({
             var extrudedHeight = that.entity.polygon.extrudedHeight.getValue();
             that.heightDraggers[
               dragger.index
-            ].position = Point.setPositionsHeight(position, extrudedHeight);
+            ].position = PointUtil.setPositionsHeight(position, extrudedHeight);
           }
 
           // ======== 新增拖拽点处理 ==============
@@ -76,7 +75,7 @@ export var  EditPolygon = EditPolyline.extend({
             );
             if (clampToGround) {
               // 贴地时，求贴模型和贴地的高度
-              midPoint = Point.updateHeightForClampToGround(midPoint);
+              midPoint = PointUtil.updateHeightForClampToGround(midPoint);
             }
             that.draggers[draggerIdx].position = midPoint;
 
@@ -96,7 +95,7 @@ export var  EditPolygon = EditPolyline.extend({
             );
             if (clampToGround) {
               // 贴地时，求贴模型和贴地的高度
-              midPoint = Point.updateHeightForClampToGround(midPoint);
+              midPoint = PointUtil.updateHeightForClampToGround(midPoint);
             }
             that.draggers[draggerIdx].position = midPoint;
           }
@@ -115,7 +114,7 @@ export var  EditPolygon = EditPolyline.extend({
 
         if (clampToGround) {
           //贴地时求贴模型和贴地的高度
-          midpoint = Point.updateHeightForClampToGround(midpoint);
+          midpoint = PointUtil.updateHeightForClampToGround(midpoint);
         }
 
         let draggerMid = Dragger.createDragger(this.dataSource, {
@@ -154,9 +153,9 @@ export var  EditPolygon = EditPolyline.extend({
 
     for (var i = 0, len = positions.length; i < len; i++) {
       var loc = positions[i];
-      loc = Point.setPositionsHeight(loc, extrudedHeight); 
+      loc = PointUtil.setPositionsHeight(loc, extrudedHeight); 
 
-      var dragger = Dragger.createDragger(this.dataSource, {
+      var dragger = createDragger(this.dataSource, {
         position: loc,
         type: Dragger.PointType.MoveHeight,
         tooltip: Tooltip.message.dragger.moveHeight,
@@ -179,7 +178,7 @@ updateHeightDraggers: function(extrudedHeight) {
   for (var i = 0; i < this.heightDraggers.length; i++) {
     var heightDragger = this.heightDraggers[i];
 
-    var position = Point.setPositionsHeight(heightDragger.position.getValue(), extrudedHeight);
+    var position = PointUtil.setPositionsHeight(heightDragger.position.getValue(), extrudedHeight);
     heightDragger.position.setValue(position);
   }
 }

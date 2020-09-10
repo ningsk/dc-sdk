@@ -1,6 +1,6 @@
 import { DrawPolyline } from "./DrawPolyline";
 import { Polygon } from "../overlay";
-import { Point } from "../point";
+import { PointUtil } from "../utils";
 import { EditPolygon } from "../edit";
 
 /*
@@ -9,7 +9,7 @@ import { EditPolygon } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-27 08:31:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:50:21
+ * @LastEditTime: 2020-09-10 10:06:13
  */
 
 const def_minPointNum = 2;
@@ -93,7 +93,7 @@ export var DrawPolygon = DrawPolyline.extend({
     var style = this.entity.attribute.style;
     if (style.extrudedHeight) {
       // 存在extrudedHeight高度设置时
-      var maxHeight = Point.getMaxHeight(this.getDrawPosition());
+      var maxHeight = PointUtil.getMaxHeight(this.getDrawPosition());
       this.entity.polygon.extrudedHeight =
         maxHeight + Number(style.extrudedHeight);
     }

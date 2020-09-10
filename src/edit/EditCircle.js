@@ -1,7 +1,6 @@
 import Cesium from "cesium";
 import { EditPolyline } from "./EditPolyline";
-import { Point } from "../point";
-import { Dragger, Tooltip } from "../utils";
+import { Dragger, Tooltip, PointUtil } from "../utils";
 
 /*
  * @Description:
@@ -9,7 +8,7 @@ import { Dragger, Tooltip } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-25 18:02:18
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:23:01
+ * @LastEditTime: 2020-09-10 10:08:31
  */
 export var EditCircle = EditPolyline.extend({
   //修改坐标会回调，提高显示的效率
@@ -33,7 +32,7 @@ export var EditCircle = EditPolyline.extend({
     if (this.entity.ellipse.height != undefined) {
       let newHeight = this.entity.ellipse.height.getValue();
       for (let i = 0, len = this._positions_draw.length; i < len; i++) {
-        this._positions_draw[i] = Point.setPositionsHeight(
+        this._positions_draw[i] = PointUtil.setPositionsHeight(
           this._positions_draw[i],
           newHeight
         );
@@ -55,7 +54,7 @@ export var EditCircle = EditPolyline.extend({
     var position = positions[0];
     if (clampToGround) {
       //贴地时求贴模型和贴地的高度
-      position = Point.updateHeightForClampToGround(position);
+      position = PointUtil.updateHeightForClampToGround(position);
       positions[0] = position;
     }
 
@@ -123,7 +122,7 @@ export var EditCircle = EditPolyline.extend({
     );
     if (clampToGround) {
       //贴地时求贴模型和贴地的高度
-      majorPos = point.updateHeightForClampToGround(majorPos);
+      majorPos = PointUtil.updateHeightForClampToGround(majorPos);
     }
     positions[1] = majorPos;
     var majorDragger = Dragger.createDragger(this.dataSource, {
@@ -134,7 +133,7 @@ export var EditCircle = EditPolyline.extend({
       onDrag: function (dragger, position) {
         if (that.entity.ellipse.height != undefined) {
           let newHeight = that.entity.ellipse.height.getValue();
-          position = point.setPositionsHeight(position, newHeight);
+          position = PointUtil.setPositionsHeight(position, newHeight);
           dragger.position = position;
         }
         positions[dragger.index] = position;
@@ -172,7 +171,7 @@ export var EditCircle = EditPolyline.extend({
       );
       if (clampToGround) {
         //贴地时求贴模型和贴地的高度
-        minorPos = point.updateHeightForClampToGround(minorPos);
+        minorPos = PointUtil.updateHeightForClampToGround(minorPos);
       }
       positions[2] = minorPos;
       var minorDragger = Dragger.createDragger(this.dataSource, {
@@ -183,7 +182,7 @@ export var EditCircle = EditPolyline.extend({
         onDrag: function (dragger, position) {
           if (that.entity.ellipse.height != undefined) {
             let newHeight = that.entity.ellipse.height.getValue();
-            position = Point.setPositionsHeight(position, newHeight);
+            position = PointUtil.setPositionsHeight(position, newHeight);
             dragger.position = position;
           }
           positions[dragger.index] = position;
@@ -216,11 +215,11 @@ export var EditCircle = EditPolyline.extend({
       let extrudedHeight = this.entity.ellipse.extrudedHeight.getValue();
 
       //顶部 中心点
-      let position = Point.setPositionsHeight(positions[0], extrudedHeight);
+      let position = PointUtil.setPositionsHeight(positions[0], extrudedHeight);
       let draggerTop = Dragger.createDragger(this.dataSource, {
         position: position,
         onDrag: function (dragger, position) {
-          position = Point.setPositionsHeight(
+          position = PointUtil.setPositionsHeight(
             position,
             that.entity.ellipse.height
           );

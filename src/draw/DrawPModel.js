@@ -1,7 +1,7 @@
 import { DrawBase } from "./DrawBase";
 import Cesium from "cesium";
 import { Model } from "../overlay";
-import { Point } from "../point";
+import { PointUtil } from "../utils";
 import { Tooltip } from "../utils";
 import { EditPModel } from "../edit";
 /*
@@ -10,7 +10,7 @@ import { EditPModel } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:41
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:47:57
+ * @LastEditTime: 2020-09-10 10:05:26
  */
 export var DrawPModel = DrawBase.extend({
   type: "point",
@@ -22,7 +22,7 @@ export var DrawPModel = DrawBase.extend({
     var modelPrimitive = this.primitives.add(
       Cesium.Model.fromGltf({
         url: style.modelUrl,
-        modelMatrix: this.getModelMatrix(style),
+        modelMatrix: _this.getModelMatrix(style),
         minimumPixelSize: style.minimumPixelSize || 30,
       })
     );
@@ -65,7 +65,7 @@ export var DrawPModel = DrawBase.extend({
   bindEvent: function () {
     var _this2 = this;
     this.getHandler().setInputAction((event) => {
-      var point = Point.getCurrentMousePosition(
+      var point = PointUtil.getCurrentMousePosition(
         _this2.viewer.scene,
         event.endPosition,
         _this2.entity
@@ -84,13 +84,13 @@ export var DrawPModel = DrawBase.extend({
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     this.getHandler().setInputAction((event) => {
-      var point = Point.getCurrentMousePosition(
+      var point = PointUtil.getCurrentMousePosition(
         _this2.viewer.scene,
         event.position,
         _this2.entity
       );
       if (point) {
-        _this2._positions_draw = pointl;
+        _this2._positions_draw = point;
         _this2.disable();
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);

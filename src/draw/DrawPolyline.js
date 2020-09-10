@@ -1,7 +1,7 @@
 import { DrawBase } from "./DrawBase";
 import { Polyline } from "../overlay";
 import Cesium from "cesium";
-import { Point } from "../point";
+import { PointUtil } from "../utils";
 import { EventType } from "../event";
 import { Tooltip } from "../utils";
 import { EditPolyline } from "../edit";
@@ -15,7 +15,7 @@ const def_maxPointNum = 9999;
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:11
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:31:20
+ * @LastEditTime: 2020-09-10 10:07:11
  */
 export var DrawPolyline = DrawBase.extend({
   type: "polyline",
@@ -62,7 +62,7 @@ export var DrawPolyline = DrawBase.extend({
     this.getHandler().setInputAction((event) => {
       // 单击添加点
       console.log("单击添加点");
-      var point = Point.getCurrentMousePosition(
+      var point = PointUtil.getCurrentMousePosition(
         _this.viewer.scene,
         event.position,
         _this.entity
@@ -80,7 +80,7 @@ export var DrawPolyline = DrawBase.extend({
           _this.entity.attribute.config &&
           _this.entity.attribute.config.addHeight
         ) {
-          point = Point.addPositionsHeight(
+          point = PointUtil.addPositionsHeight(
             point,
             _this.entity.attribute.config.addHeight
           );
@@ -91,7 +91,7 @@ export var DrawPolyline = DrawBase.extend({
           _this.entity.attribute.config &&
           _this.entity.attribute.config.terrain
         ) {
-          point = Point.updateHeightForClampToGround(point);
+          point = PointUtil.updateHeightForClampToGround(point);
         }
 
         _this._positions_draw.push(point);
@@ -115,7 +115,7 @@ export var DrawPolyline = DrawBase.extend({
       // 右击删除上一个点
       _this._positions_draw.pop(); // 删除最后标的一个点
 
-      var point = Point.getCurrentMousePosition(
+      var point = PointUtil.getCurrentMousePosition(
         _this.viewer.scene,
         event.position,
         _this.entity
@@ -166,7 +166,7 @@ export var DrawPolyline = DrawBase.extend({
           Tooltip.message.draw.polyline.end
         );
 
-      var point = Point.getCurrentMousePosition(
+      var point = PointUtil.getCurrentMousePosition(
         _this.viewer.scene,
         event.endPosition,
         _this.entity
