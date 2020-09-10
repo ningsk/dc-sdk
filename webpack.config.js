@@ -1,7 +1,14 @@
+/*
+ * @Description:
+ * @version:
+ * @Author: 宁四凯
+ * @Date: 2020-09-10 09:50:34
+ * @LastEditors: 宁四凯
+ * @LastEditTime: 2020-09-10 13:16:06
+ */
 const path = require("path");
 
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = [
@@ -40,9 +47,6 @@ module.exports = [
       ],
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        template: "src/index.html",
-      }),
       // Copy Cesium Assets, Widgets, and Workers to a static directory
       new CopyWebpackPlugin({
         patterns: [

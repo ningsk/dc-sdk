@@ -4,13 +4,14 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:24:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:27:01
+ * @LastEditTime: 2020-09-10 13:04:48
  */
 
 import Cesium from "cesium";
 import $ from "jquery";
 import { PointUtil } from "../utils";
 import EsriUtil from "esri-leaflet/src/Util";
+import { Util } from "leaflet";
 
 var _viewer;
 var _handler;
@@ -385,7 +386,7 @@ function  getPopup(cfg, attr, title) {
 
     title = title || "";
 
-    if (_leaflet2.default.Util.isArray(cfg)) {
+    if (Util.isArray(cfg)) {
       //数组
       var countsok = 0;
       var inhtml =
