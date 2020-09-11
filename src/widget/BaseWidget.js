@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:18:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 13:04:13
+ * @LastEditTime: 2020-09-11 09:17:36
  */
-import { Loader } from "../utils";
-import { WidgetManager } from ".";
+import { Loader } from "../utils/index";
+import * as WidgetManager from "./WidgetManager";
 import { Class } from "leaflet";
 
 export var BaseWidget = Class.extend({

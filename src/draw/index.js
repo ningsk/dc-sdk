@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:36:27
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 10:38:21
+ * @LastEditTime: 2020-09-11 08:57:58
  */
 import { Draw } from "./Draw";
 import { DrawBase } from "./DrawBase";
@@ -17,6 +17,7 @@ import { DrawLabel } from "./DrawLabel";
 import { DrawModel } from "./DrawModel";
 import { DrawPModel } from "./DrawPModel";
 import { DrawPoint } from "./DrawPoint";
+import { DrawPolyline } from "./DrawPolyline";
 import { DrawPolygon } from "./DrawPolygon";
 import { DrawPolylineVolume } from "./DrawPolylineVolume";
 import { DrawRectangle } from "./DrawRectangle";
@@ -34,6 +35,7 @@ export {
   DrawModel,
   DrawPModel,
   DrawPoint,
+  DrawPolyline,
   DrawPolygon,
   DrawPolylineVolume,
   DrawRectangle,

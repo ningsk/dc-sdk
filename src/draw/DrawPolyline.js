@@ -1,10 +1,10 @@
 import { DrawBase } from "./DrawBase";
-import { Polyline } from "../overlay";
+import { Polyline } from "../overlay/index";
 import Cesium from "cesium";
-import { PointUtil } from "../utils";
-import { EventType } from "../event";
-import { Tooltip } from "../utils";
-import { EditPolyline } from "../edit";
+import { PointUtil } from "../utils/index";
+import { DrawEventType, EditEventType } from "../event/index";
+import { TooltipUtil as Tooltip } from "../utils/index";
+import { EditPolyline } from "../edit/index";
 
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;
@@ -15,7 +15,7 @@ const def_maxPointNum = 9999;
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:11
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:07:11
+ * @LastEditTime: 2020-09-11 09:05:55
  */
 export var DrawPolyline = DrawBase.extend({
   type: "polyline",
@@ -97,7 +97,7 @@ export var DrawPolyline = DrawBase.extend({
         _this._positions_draw.push(point);
         _this.updateAttrForDrawing();
 
-        _this.fire(EventType.DrawAddPoint, {
+        _this.fire(DrawEventType.DRAW_ADD_POINT, {
           drawtype: _this.type,
           entity: _this.entity,
           position: point,
@@ -128,7 +128,7 @@ export var DrawPolyline = DrawBase.extend({
 
         lastPointTemporary = true;
 
-        _this.fire(EventType.DrawRemovePoint, {
+        _this.fire(DrawEventType.DRAW_MOVE_POINT, {
           drawtype: _this.type,
           entity: _this.entity,
           position: point,
@@ -179,7 +179,7 @@ export var DrawPolyline = DrawBase.extend({
 
         _this._positions_draw.push(point);
         _this.updateAttrForDrawing();
-        _this.fire(EventType.DrawMouseMove, {
+        _this.fire(DrawEventType.DRAW_MOUSE_MOVE, {
           drawtype: _this.type,
           entity: _this.entity,
           position: point,

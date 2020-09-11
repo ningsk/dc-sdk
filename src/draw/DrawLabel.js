@@ -9,7 +9,7 @@
 
 import Cesium from "cesium";
 import { DrawPoint } from "./DrawPoint";
-import { Label } from "../overlay";
+import { Label } from "../overlay/index";
 
 export var DrawLabel = DrawPoint.extend({
   type: "label",

@@ -1,5 +1,5 @@
 import { BaseLayer } from "./BaseLayer";
-import Draw from "../draw/Draw";
+import { Draw } from "../draw/index";
 import $ from "jquery";
 
 /*
@@ -8,7 +8,7 @@ import $ from "jquery";
  * @Author: 宁四凯
  * @Date: 2020-08-25 10:20:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:38:08
+ * @LastEditTime: 2020-09-11 08:51:32
  */
 export var DrawLayer = BaseLayer.extend({
   hasOpacity: false,

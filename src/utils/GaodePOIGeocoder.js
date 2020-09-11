@@ -1,4 +1,5 @@
-import { Util, PointConvert } from "./Util";
+import * as Util from "./Util";
+import * as PointConvert from "./PointConvert";
 import Cesium from "cesium";
 /*
  * @Description:
@@ -6,7 +7,7 @@ import Cesium from "cesium";
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:08:08
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:07:26
+ * @LastEditTime: 2020-09-11 09:15:57
  */
 export function GaodePOIGeocoder(options) {
   options = options || {};

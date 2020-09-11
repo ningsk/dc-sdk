@@ -4,34 +4,29 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:50:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 13:47:50
+ * @LastEditTime: 2020-09-11 08:40:28
  */
-export * from "./camera";
+export * from "./camera/index";
 
-export * from "./draw";
+export * from "./draw/index";
 
-export * from "./edit";
+export * from "./edit/index";
 
-export * from "./event";
+export * from "./event/index";
 
-export * from "./layer";
+export * from "./layer/index";
 
-export * from "./map";
+export * from "./map/index";
 
-export * from "./material";
+export * from "./material/index";
 
-export * from "./measure";
+export * from "./measure/index";
 
-export * from "./overlay";
+export * from "./overlay/index";
 
-export * from "./provider";
+export * from "./provider/index";
 
-export * from "./utils";
+export * from "./utils/index";
 
-export * from "./viewer";
-
-export * from "./utils";
-
-export * from "./viewer";
-
-export * from "./widget";
+export * from "./viewer/index";
+export * from "./widget/index";

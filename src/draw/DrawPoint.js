@@ -1,8 +1,8 @@
 import Cesium from "cesium";
-import { Point } from "../overlay";
+import { Point } from "../overlay/index";
 import { DrawBase } from "./DrawBase";
-import { PointUtil } from "../utils";
-import { EditPoint } from "../edit";
+import { PointUtil } from "../utils/index";
+import { EditPoint } from "../edit/index";
 
 /*
  * @Description: 绘制点
@@ -10,7 +10,7 @@ import { EditPoint } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:24:07
+ * @LastEditTime: 2020-09-11 08:46:11
  */
 export var DrawPoint = DrawBase.extend({
   type: "point",

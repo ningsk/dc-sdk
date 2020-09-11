@@ -4,14 +4,14 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:01:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:27:36
+ * @LastEditTime: 2020-09-11 09:00:57
  */
 
 import Cesium from "cesium";
 
-import { Util, Tooltip } from "../utils";
+import { Util, TooltipUtil as Tooltip } from "../utils/index";
 
-import { EventType } from "../event";
+import { DrawEventType, EditEventType } from "../event/index";
 import { Class } from "leaflet";
 
 export var DrawBase = Class.extend({
@@ -54,7 +54,7 @@ export var DrawBase = Class.extend({
     this.setCursor(true);
     this.bindEvent();
 
-    this.fire(EventType.DrawStart, {
+    this.fire(DrawEventType.DRAW_START, {
       drawtype: this.type,
       entity: this.entity,
     });

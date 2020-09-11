@@ -1,8 +1,8 @@
 import Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer";
-import { Util } from "../utils";
+import { Util } from "../utils/index";
 import $ from "jquery";
-import { Polyline, Polygon, Label, Billboard } from "../overlay";
+import { Polyline, Polygon, Label, Billboard } from "../overlay/index";
 
 /*
  * @Description: GeoJson格式数据图层
@@ -10,7 +10,7 @@ import { Polyline, Polygon, Label, Billboard } from "../overlay";
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:22:51
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:21:27
+ * @LastEditTime: 2020-09-11 08:51:40
  */
 export var GeoJsonLayer = BaseLayer.extend({
   dataSource: null,

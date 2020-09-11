@@ -1,15 +1,15 @@
 import { CustomFeatureGridLayer } from "./CustomFeatureGridLayer";
-import { Billboard, Point } from "../overlay";
+import { Billboard, Point } from "../overlay/index";
 import $ from "jquery";
 import Cesium from "cesium";
-import { PointConvert } from "../utils";
+import { PointConvert } from "../utils/index";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-21 14:00:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:12:51
+ * @LastEditTime: 2020-09-11 08:52:16
  */
 export var POILayer = CustomFeatureGridLayer.extend({
   _keys: null,

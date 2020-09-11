@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 08:41:02
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:51:57
+ * @LastEditTime: 2020-09-11 08:50:52
  */
 import Cesium from "cesium";
-import { Util as util } from "../utils";
+import { Util as util } from "../utils/index";
 import { Class } from "leaflet";
 
 export var BaseLayer = Class.extend({

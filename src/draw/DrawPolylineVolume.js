@@ -1,7 +1,7 @@
 import { DrawPolyline } from "./DrawPolyline";
 import Cesium from "cesium";
-import { EditPolylineVolume } from "../edit";
-import { PolylineVolume } from "../overlay";
+import { EditPolylineVolume } from "../edit/index";
+import { PolylineVolume } from "../overlay/index";
 
 /*
  * @Description:
@@ -9,7 +9,7 @@ import { PolylineVolume } from "../overlay";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:36
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:52:49
+ * @LastEditTime: 2020-09-11 08:47:12
  */
 
 const def_minPointNum = 2;

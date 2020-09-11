@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:24:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 13:04:48
+ * @LastEditTime: 2020-09-11 09:14:20
  */
 
 import Cesium from "cesium";
 import $ from "jquery";
-import { PointUtil } from "../utils";
+import { PointUtil } from "../utils/index";
 import EsriUtil from "esri-leaflet/src/Util";
 import { Util } from "leaflet";
 
@@ -38,9 +38,7 @@ function init() {
   // 添加弹出框
   var infoDiv = '<div id="popup-all-view"></div>';
   $("#" + viewer._container.id).append(infoDiv);
-  this._handler = new Cesium.ScreenSpaceEventHandler(
-    this._viewer.scene.canvas
-  );
+  this._handler = new Cesium.ScreenSpaceEventHandler(this._viewer.scene.canvas);
   // 单击事件
   this._handler.setInputAction(
     this.mousePickingClick,
@@ -98,7 +96,6 @@ function removeFeature() {
   this._lastShowFeature = null;
 }
 
-
 // 瓦片图层上的矢量对象，动态获取
 function pickImageryLayerFeatures(position) {
   var scene = this._viewer.scene;
@@ -121,10 +118,7 @@ function pickImageryLayerFeatures(position) {
 
       // 单击选中的要素对象
       var feature = features[0];
-      if (
-        feature.imageryLayer == null ||
-        feature.imageryLayer.config == null
-      ) {
+      if (feature.imageryLayer == null || feature.imageryLayer.config == null) {
         return;
       }
       var cfg = feature.imageryLayer.config;
@@ -210,329 +204,314 @@ function showFeature(item, options) {
     });
 }
 
+// popup 处理
+function show(entity, cartesian) {
+  if (entity == null || entity.popup == null) return;
+  var eleId =
+    "popup_" +
+    ((entity.id || "") + "").replace(new RegExp("[^0-9a-zA-Z_]", "gm"), "_");
+  this.close(eleId);
+  // 更新高度
+  // if (this._viewer.scene.sampleHeightSupported) {
+  //   cartesian = updateHeightForClampToGround(cartesian);
+  // }
+  this._objPopup[eleId] = {
+    id: entity.id,
+    popup: entity.popup,
+    cartesian: cartesian,
+  };
 
+  // 显示内容
+  var inHtml;
+  if (typeof entity.popup === "object") {
+    inHtml = entity.popup.html;
+  } else {
+    inHtml = entity.popup;
+  }
+  if (!inHtml) return;
+  if (typeof inHtml === "function") {
+    // TODO 回调方法
+    // inhtml = inhtml(entity, cartesian, function(inhtml) {
+    //   _showHtml(inhtml, eleId, entity, cartesian);
+    // });
+  }
+  if (!inHtml) {
+    return;
+  }
+  this._showHtml(inHtml, eleId, entity, cartesian);
+}
 
- 
+function _showHtml(inHtml, eleId, entity, cartesian) {
+  $("#popup-all-view").append(
+    '<div id="' +
+      eleId +
+      '" class="cesium-popup">' +
+      '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.mars.popup.close(\'' +
+      eleId +
+      "')\">×</a>" +
+      '            <div class="cesium-popup-content-wrapper cesium-popup-background">' +
+      '                <div class="cesium-popup-content cesium-popup-color">' +
+      inhtml +
+      "</div>" +
+      "            </div>" +
+      '            <div class="cesium-popup-tip-container"><div class="cesium-popup-tip cesium-popup-background"></div></div>' +
+      "        </div>"
+  );
 
-
-
-  
- 
-
-  
-
-  
-  // popup 处理
-  function show(entity, cartesian) {
-    if (entity == null || entity.popup == null) return;
-    var eleId =
-      "popup_" +
-      ((entity.id || "") + "").replace(new RegExp("[^0-9a-zA-Z_]", "gm"), "_");
+  // 计算显示位置
+  var result = this.updateViewPoint(eleId, cartesian, entity.popup);
+  if (!result) {
     this.close(eleId);
-    // 更新高度
-    // if (this._viewer.scene.sampleHeightSupported) {
-    //   cartesian = updateHeightForClampToGround(cartesian);
-    // }
-    this._objPopup[eleId] = {
-      id: entity.id,
-      popup: entity.popup,
-      cartesian: cartesian,
-    };
+    return;
+  }
+}
 
-    // 显示内容
-    var inHtml;
-    if (typeof entity.popup === "object") {
-      inHtml = entity.popup.html;
-    } else {
-      inHtml = entity.popup;
-    }
-    if (!inHtml) return;
-    if (typeof inHtml === "function") {
-      // TODO 回调方法
-      // inhtml = inhtml(entity, cartesian, function(inhtml) {
-      //   _showHtml(inhtml, eleId, entity, cartesian);
-      // });
-    }
-    if (!inHtml) {
-      return;
-    }
-    this._showHtml(inHtml, eleId, entity, cartesian);
+function updateViewPoint(eleId, cartesian, popup) {
+  var point = Cesium.SceneTransforms.wgs84ToDrawingBufferCoordinates(
+    this._viewer.scene,
+    cartesian
+  );
+  if (point == null) return false;
+  // 判断是否在球的背面
+  var scene = this._viewer.scene;
+  var cartesianNew;
+  if (scene.mode === Cesium.SceneMode.SCENE3D) {
+    // 三维模式下
+    var pickRay = scene.camera.getPickRay(point);
+    cartesianNew = scene.globe.pick(pickRay, scene);
+  } else {
+    // 二维模式下
+    cartesianNew = scene.camera.pickEllipsoid(point, scene.globe.ellipsoid);
+  }
+  if (cartesianNew) {
+    var len = Cesium.Cartesian3.distance(cartesian, cartesianNew);
+    if (len > 10000) return false;
   }
 
-  function _showHtml(inHtml, eleId, entity, cartesian) {
-    $("#popup-all-view").append(
-      '<div id="' +
-        eleId +
-        '" class="cesium-popup">' +
-        '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.mars.popup.close(\'' +
-        eleId +
-        "')\">×</a>" +
-        '            <div class="cesium-popup-content-wrapper cesium-popup-background">' +
-        '                <div class="cesium-popup-content cesium-popup-color">' +
-        inhtml +
-        "</div>" +
-        "            </div>" +
-        '            <div class="cesium-popup-tip-container"><div class="cesium-popup-tip cesium-popup-background"></div></div>' +
-        "        </div>"
-    );
+  // 判断是否在球的背面
+  var $view = $("#" + eleId);
+  var x = point.x - $view.width() / 2;
+  var y = point.y - $view.height();
 
-    // 计算显示位置
-    var result = this.updateViewPoint(eleId, cartesian, entity.popup);
+  if (
+    popup &&
+    (typeof popup === "undefined"
+      ? "undefined"
+      : typeof popup === "object" && popup.anchor)
+  ) {
+    x += popup.anchor[0];
+    y += popup.anchor[1];
+  }
+  $view.css("transform", "translate3d(" + x + "px," + y + "px, 0)");
+  return true;
+}
+
+function _bind2Scene() {
+  for (var i in this._objPopup) {
+    var item = this._objPopup[i];
+    var result = this.updateViewPoint(i, item.cartesian, item.popup);
     if (!result) {
-      this.close(eleId);
-      return;
+      this.close(i);
     }
   }
+}
 
-  function updateViewPoint(eleId, cartesian, popup) {
-    var point = Cesium.SceneTransforms.wgs84ToDrawingBufferCoordinates(
-      this._viewer.scene,
-      cartesian
-    );
-    if (point == null) return false;
-    // 判断是否在球的背面
-    var scene = this._viewer.scene;
-    var cartesianNew;
-    if (scene.mode === Cesium.SceneMode.SCENE3D) {
-      // 三维模式下
-      var pickRay = scene.camera.getPickRay(point);
-      cartesianNew = scene.globe.pick(pickRay, scene);
-    } else {
-      // 二维模式下
-      cartesianNew = scene.camera.pickEllipsoid(point, scene.globe.ellipsoid);
-    }
-    if (cartesianNew) {
-      var len = Cesium.Cartesian3.distance(cartesian, cartesianNew);
-      if (len > 10000) return false;
-    }
-
-    // 判断是否在球的背面
-    var $view = $("#" + eleId);
-    var x = point.x - $view.width() / 2;
-    var y = point.y - $view.height();
-
-    if (
-      popup &&
-      (typeof popup === "undefined"
-        ? "undefined"
-        : typeof popup === "object" && popup.anchor)
-    ) {
-      x += popup.anchor[0];
-      y += popup.anchor[1];
-    }
-    $view.css("transform", "translate3d(" + x + "px," + y + "px, 0)");
-    return true;
-  }
-
-  _bind2Scene() {
+function close(eleId) {
+  if (!this._isOnly && eleId) {
     for (var i in this._objPopup) {
-      var item = this._objPopup[i];
-      var result = this.updateViewPoint(i, item.cartesian, item.popup);
-      if (!result) {
-        this.close(i);
+      if (eleId == this._objPopup[i].id || eleId == i) {
+        $("#" + i).remove();
+        delete this._objPopup[i];
+        break;
       }
     }
+  } else {
+    $("#popup-all-view").empty();
+    this._objPopup = {};
   }
-
-  close(eleId) {
-    if (!this._isOnly && eleId) {
-      for (var i in this._objPopup) {
-        if (eleId == this._objPopup[i].id || eleId == i) {
-          $("#" + i).remove();
-          delete this._objPopup[i];
-          break;
-        }
-      }
-    } else {
-      $("#popup-all-view").empty();
-      this._objPopup = {};
-    }
-  }
+}
 
 function destroy() {
-    this.close();
-    this._handler.destroy();
-    this._viewer.scene.postRender.removeEventListener(this._bind2Scene);
-  }
+  this.close();
+  this._handler.destroy();
+  this._viewer.scene.postRender.removeEventListener(this._bind2Scene);
+}
 
 function template(str, data) {
-    for (var col in data) {
-      var showVal = data[col];
-      if (showVal == null || showVal == "Null" || showVal == "Unknown") {
-        showVal = "";
-      }
-      if (col.substr(0, 1) == "_") {
-        col = col.substring(1); // cesium 内部属性
-      }
-      str = str.replace(new RegExp("{" + col + "}", "gm"), showVal);
+  for (var col in data) {
+    var showVal = data[col];
+    if (showVal == null || showVal == "Null" || showVal == "Unknown") {
+      showVal = "";
     }
-    return str;
-  }
-
-  // 通用， 统一配置popup的方式
-function  getPopupForConfig(cfg, attr) {
-    var _title = cfg.popupNameField ? attr[cfg.popupNameField] : cfg.name;
-    if (cfg.popup) {
-      return this.getPopup(cfg.popup, attr, _title);
-    } else if (cfg.columns) {
-      return this.getPopup(cfg.columns, attr, _title);
+    if (col.substr(0, 1) == "_") {
+      col = col.substring(1); // cesium 内部属性
     }
-    return false;
+    str = str.replace(new RegExp("{" + col + "}", "gm"), showVal);
   }
+  return str;
+}
 
-  // 格式化Popup或Tooltip格式化字符串
-function  getPopup(cfg, attr, title) {
-    if (!attr) return false;
+// 通用， 统一配置popup的方式
+function getPopupForConfig(cfg, attr) {
+  var _title = cfg.popupNameField ? attr[cfg.popupNameField] : cfg.name;
+  if (cfg.popup) {
+    return this.getPopup(cfg.popup, attr, _title);
+  } else if (cfg.columns) {
+    return this.getPopup(cfg.columns, attr, _title);
+  }
+  return false;
+}
 
-    title = title || "";
+// 格式化Popup或Tooltip格式化字符串
+function getPopup(cfg, attr, title) {
+  if (!attr) return false;
 
-    if (Util.isArray(cfg)) {
-      //数组
-      var countsok = 0;
-      var inhtml =
-        '<div class="mars-popup-titile">' +
-        title +
-        '</div><div class="mars-popup-content" >';
-      for (var i = 0; i < cfg.length; i++) {
-        var thisfield = cfg[i];
+  title = title || "";
 
-        var col = thisfield.field;
-        if (
-          _typeof(attr[col]) === "object" &&
-          attr[col].hasOwnProperty("getValue")
-        )
-          attr[col] = attr[col].getValue();
-        if (typeof attr[col] === "function") continue;
+  if (Util.isArray(cfg)) {
+    //数组
+    var countsok = 0;
+    var inhtml =
+      '<div class="mars-popup-titile">' +
+      title +
+      '</div><div class="mars-popup-content" >';
+    for (var i = 0; i < cfg.length; i++) {
+      var thisfield = cfg[i];
 
-        if (thisfield.type == "details") {
-          //详情按钮
-          var showval = _jquery2.default.trim(attr[col || "OBJECTID"]);
-          if (
-            showval == null ||
-            showval == "" ||
-            showval == "Null" ||
-            showval == "Unknown"
-          )
-            continue;
+      var col = thisfield.field;
+      if (
+        _typeof(attr[col]) === "object" &&
+        attr[col].hasOwnProperty("getValue")
+      )
+        attr[col] = attr[col].getValue();
+      if (typeof attr[col] === "function") continue;
 
-          inhtml +=
-            '<div style="text-align: center;padding: 10px 0;"><button type="button" onclick="' +
-            thisfield.calback +
-            "('" +
-            showval +
-            '\');" " class="btn btn-info  btn-sm">' +
-            (thisfield.name || "查看详情") +
-            "</button></div>";
-          continue;
-        }
-
-        var showval = _jquery2.default.trim(attr[col]);
+      if (thisfield.type == "details") {
+        //详情按钮
+        var showval = _jquery2.default.trim(attr[col || "OBJECTID"]);
         if (
           showval == null ||
           showval == "" ||
           showval == "Null" ||
-          showval == "Unknown" ||
-          showval == "0" ||
-          showval.length == 0
+          showval == "Unknown"
         )
           continue;
-
-        if (thisfield.format) {
-          //格式化
-          try {
-            showval = eval(thisfield.format + "(" + showval + ")");
-          } catch (e) {
-            console.log("getPopupByConfig error:" + thisfield.format);
-          }
-        }
-        if (thisfield.unit) {
-          showval += thisfield.unit;
-        }
 
         inhtml +=
-          "<div><label>" + thisfield.name + "</label>" + showval + "</div>";
-        countsok++;
+          '<div style="text-align: center;padding: 10px 0;"><button type="button" onclick="' +
+          thisfield.calback +
+          "('" +
+          showval +
+          '\');" " class="btn btn-info  btn-sm">' +
+          (thisfield.name || "查看详情") +
+          "</button></div>";
+        continue;
       }
-      inhtml += "</div>";
 
-      if (countsok == 0) return false;
-      return inhtml;
-    } else if (
-      (typeof cfg === "undefined" ? "undefined" : _typeof(cfg)) === "object"
-    ) {
-      //对象,type区分逻辑
-      switch (cfg.type) {
-        case "iframe":
-          var _url = _util.template(cfg.url, attr);
+      var showval = _jquery2.default.trim(attr[col]);
+      if (
+        showval == null ||
+        showval == "" ||
+        showval == "Null" ||
+        showval == "Unknown" ||
+        showval == "0" ||
+        showval.length == 0
+      )
+        continue;
 
-          var inhtml =
-            '<iframe id="ifarm" src="' +
-            _url +
-            '"  style="width:' +
-            (cfg.width || "300") +
-            "px;height:" +
-            (cfg.height || "300") +
-            'px;overflow:hidden;margin:0;" scrolling="no" frameborder="0" ></iframe>';
-          return inhtml;
-          break;
-        case "javascript":
-          //回调方法
-          return eval(cfg.calback + "(" + JSON.stringify(attr) + ")");
-          break;
-      }
-    } else if (cfg == "all") {
-      //全部显示
-      var countsok = 0;
-      var inhtml =
-        '<div class="mars-popup-title">' +
-        title +
-        '</div><div class="mars-popup-content" >';
-      for (var col in attr) {
-        if (
-          col == "Shape" ||
-          col == "FID" ||
-          col == "OBJECTID" ||
-          col == "_definitionChanged" ||
-          col == "_propertyNames"
-        )
-          continue; //不显示的字段
-
-        if (col.substr(0, 1) == "_") {
-          col = col.substring(1); //cesium 内部属性
+      if (thisfield.format) {
+        //格式化
+        try {
+          showval = eval(thisfield.format + "(" + showval + ")");
+        } catch (e) {
+          console.log("getPopupByConfig error:" + thisfield.format);
         }
-
-        if (
-          typeof attr[col] === "object" &&
-          attr[col].hasOwnProperty("getValue")
-        )
-          attr[col] = attr[col].getValue();
-        if (typeof attr[col] === "function") continue;
-
-        var showval = $.trim(attr[col]);
-        if (
-          showval == null ||
-          showval == "" ||
-          showval == "Null" ||
-          showval == "Unknown" ||
-          showval == "0" ||
-          showval.length == 0
-        )
-          continue; //不显示空值，更美观友好
-
-        inhtml += "<div><label>" + col + "</label>" + showval + "</div>";
-        countsok++;
       }
-      inhtml += "</div>";
+      if (thisfield.unit) {
+        showval += thisfield.unit;
+      }
 
-      if (countsok == 0) return false;
-      return inhtml;
-    } else {
-      //格式化字符串
-      return this.template(cfg, attr);
+      inhtml +=
+        "<div><label>" + thisfield.name + "</label>" + showval + "</div>";
+      countsok++;
     }
+    inhtml += "</div>";
 
-    return false;
+    if (countsok == 0) return false;
+    return inhtml;
+  } else if (
+    (typeof cfg === "undefined" ? "undefined" : _typeof(cfg)) === "object"
+  ) {
+    //对象,type区分逻辑
+    switch (cfg.type) {
+      case "iframe":
+        var _url = _util.template(cfg.url, attr);
+
+        var inhtml =
+          '<iframe id="ifarm" src="' +
+          _url +
+          '"  style="width:' +
+          (cfg.width || "300") +
+          "px;height:" +
+          (cfg.height || "300") +
+          'px;overflow:hidden;margin:0;" scrolling="no" frameborder="0" ></iframe>';
+        return inhtml;
+        break;
+      case "javascript":
+        //回调方法
+        return eval(cfg.calback + "(" + JSON.stringify(attr) + ")");
+        break;
+    }
+  } else if (cfg == "all") {
+    //全部显示
+    var countsok = 0;
+    var inhtml =
+      '<div class="mars-popup-title">' +
+      title +
+      '</div><div class="mars-popup-content" >';
+    for (var col in attr) {
+      if (
+        col == "Shape" ||
+        col == "FID" ||
+        col == "OBJECTID" ||
+        col == "_definitionChanged" ||
+        col == "_propertyNames"
+      )
+        continue; //不显示的字段
+
+      if (col.substr(0, 1) == "_") {
+        col = col.substring(1); //cesium 内部属性
+      }
+
+      if (typeof attr[col] === "object" && attr[col].hasOwnProperty("getValue"))
+        attr[col] = attr[col].getValue();
+      if (typeof attr[col] === "function") continue;
+
+      var showval = $.trim(attr[col]);
+      if (
+        showval == null ||
+        showval == "" ||
+        showval == "Null" ||
+        showval == "Unknown" ||
+        showval == "0" ||
+        showval.length == 0
+      )
+        continue; //不显示空值，更美观友好
+
+      inhtml += "<div><label>" + col + "</label>" + showval + "</div>";
+      countsok++;
+    }
+    inhtml += "</div>";
+
+    if (countsok == 0) return false;
+    return inhtml;
+  } else {
+    //格式化字符串
+    return this.template(cfg, attr);
   }
+
+  return false;
+}
 
 // 模块对外公开的属性和方法
 export {
@@ -544,6 +523,5 @@ export {
   close,
   destroy,
   getPopup,
-  getPopupForConfig
-}
-
+  getPopupForConfig,
+};

@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:39:53
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:26:59
+ * @LastEditTime: 2020-09-11 09:08:22
  */
 import { BaseLayer } from "./BaseLayer";
 import { ArcFeatureLayer } from "./ArcFeatureLayer";
@@ -21,7 +21,7 @@ import { KmlLayer } from "./KmlLayer";
 import * as Layer from "./Layer";
 import { POILayer } from "./POILayer";
 import { TerrainLayer } from "./TerrainLayer";
-import { Tile3dLayer } from "./Tile3dLayer";
+import { Tiles3dLayer } from "./Tiles3dLayer";
 import { TileLayer } from "./TileLayer";
 
 export {
@@ -39,6 +39,6 @@ export {
   Layer,
   POILayer,
   TerrainLayer,
-  Tile3dLayer,
+  Tiles3dLayer,
   TileLayer,
 };

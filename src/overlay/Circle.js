@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-26 08:49:17
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 13:01:26
+ * @LastEditTime: 2020-09-11 08:53:42
  */
 import Cesium from "cesium";
-import { Util } from "../utils";
+import { Util } from "../utils/index";
 export function style2Entity(style, entityAttr) {
   style = style || {};
   if (entityAttr == null) {

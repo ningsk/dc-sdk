@@ -1,5 +1,5 @@
 import { DrawPoint } from "./DrawPoint";
-import { Model } from "../overlay";
+import { Model } from "../overlay/index";
 
 /*
  * @Description:
@@ -7,7 +7,7 @@ import { Model } from "../overlay";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:03
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:46:01
+ * @LastEditTime: 2020-09-11 08:45:15
  */
 export var DrawModel = DrawPoint.extend({
   type: "model",

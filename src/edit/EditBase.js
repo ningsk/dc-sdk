@@ -1,5 +1,5 @@
-import { Util, PointUtil, Tooltip } from "../utils";
-import { EventType } from "../event";
+import { Util, PointUtil, TooltipUtil as Tooltip } from "../utils/index";
+import { EditEventType } from "../event/index";
 import Cesium from "cesium";
 import { Class } from "leaflet";
 
@@ -9,7 +9,7 @@ import { Class } from "leaflet";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:52:40
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:14:02
+ * @LastEditTime: 2020-09-11 09:07:19
  */
 export var EditBase = Class.extend({
   _dataSource: null,
@@ -41,7 +41,7 @@ export var EditBase = Class.extend({
     this.changePositionsToCallback();
     this.bindDraggers();
     this.bindEvent();
-    this.fire(EventType.EditStart, {
+    this.fire(EditEventType.EDIT_START, {
       edittype: this.entity.attribute.type,
       entity: this.entity,
     });
@@ -62,7 +62,7 @@ export var EditBase = Class.extend({
 
     this.entity.inProgress = false;
 
-    this.fire(EventType.EditStop, {
+    this.fire(EditEventType.EDIT_STOP, {
       EditStop: this.entity.attribute.type,
       entity: this.entity,
     });
@@ -203,7 +203,7 @@ export var EditBase = Class.extend({
           dragger.onDragEnd(dragger, position);
         }
 
-        _this.fire(EventType.EditMovePoint, {
+        _this.fire(EditEventType.EDIT_MOVE_POINT, {
           edittype: _this.entity.attribute.type,
           entity: _this.entity,
           position: position,
@@ -232,7 +232,7 @@ export var EditBase = Class.extend({
           var isDelOk = _this.deletePointForDragger(entity, event.position);
 
           if (isDelOk) {
-            _this.fire(EventType.EditRemovePoint, {
+            _this.fire(EditEventType.EDIT_REMOVE_POINT, {
               edittype: _this.entity.attribute.type,
               entity: _this.entity,
             });

@@ -1,6 +1,6 @@
 import { DrawPolyline } from "./DrawPolyline";
-import { Polyline } from "../overlay";
-import { EditCurve } from "../edit";
+import { Polyline } from "../overlay/index";
+import { EditCurve } from "../edit/index";
 
 /*
  * @Description:
@@ -8,7 +8,7 @@ import { EditCurve } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:21
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:38:51
+ * @LastEditTime: 2020-09-11 08:44:44
  */
 export var DrawCurve = DrawPolyline.extend({
   type: "curve",

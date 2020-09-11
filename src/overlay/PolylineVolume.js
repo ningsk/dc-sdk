@@ -8,7 +8,7 @@
  */
 
 import Cesium from "cesium";
-import { Util } from "../utils";
+import { Util } from "../utils/index";
 
 // 赋值到entity
 export function style2Entity(style, entityAttr) {

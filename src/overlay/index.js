@@ -4,11 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:42:20
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 10:50:04
+ * @LastEditTime: 2020-09-11 09:03:26
  */
 import * as Billboard from "./Billboard";
 import * as Circle from "./Circle";
-import * as Corridor from "./Ellipsoid";
+import * as Corridor from "./Corridor";
+import * as Ellipsoid from "./Ellipsoid";
 import * as Label from "./Label";
 import * as Model from "./Model";
 import * as Point from "./Point";
@@ -22,6 +23,7 @@ export {
   Billboard,
   Circle,
   Corridor,
+  Ellipsoid,
   Label,
   Model,
   Point,

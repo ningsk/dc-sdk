@@ -1,7 +1,7 @@
 import { DrawPolyline } from "./DrawPolyline";
-import { Polygon } from "../overlay";
-import { PointUtil } from "../utils";
-import { EditPolygon } from "../edit";
+import { Polygon } from "../overlay/index";
+import { PointUtil } from "../utils/index";
+import { EditPolygon } from "../edit/index";
 
 /*
  * @Description:
@@ -9,7 +9,7 @@ import { EditPolygon } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-27 08:31:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:06:13
+ * @LastEditTime: 2020-09-11 08:46:23
  */
 
 const def_minPointNum = 2;

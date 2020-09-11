@@ -1,6 +1,6 @@
 import Cesium from "cesium";
 import { EditPolyline } from "./EditPolyline";
-import { Dragger, Tooltip, PointUtil } from "../utils";
+import { Dragger, TooltipUtil as Tooltip, PointUtil } from "../utils/index";
 
 /*
  * @Description:
@@ -8,7 +8,7 @@ import { Dragger, Tooltip, PointUtil } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-27 09:13:45
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:17:05
+ * @LastEditTime: 2020-09-11 08:49:33
  */
 export var EditPolygon = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率

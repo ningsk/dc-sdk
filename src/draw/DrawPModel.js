@@ -1,16 +1,15 @@
 import { DrawBase } from "./DrawBase";
 import Cesium from "cesium";
-import { Model } from "../overlay";
-import { PointUtil } from "../utils";
-import { Tooltip } from "../utils";
-import { EditPModel } from "../edit";
+import { Model } from "../overlay/index";
+import { PointUtil, TooltipUtil as Tooltip } from "../utils/index";
+import { EditPModel } from "../edit/index";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:41
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:05:26
+ * @LastEditTime: 2020-09-11 08:45:52
  */
 export var DrawPModel = DrawBase.extend({
   type: "point",

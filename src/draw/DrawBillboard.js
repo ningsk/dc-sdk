@@ -1,5 +1,5 @@
 import Cesium from "cesium";
-import { Point, Billboard } from "../overlay";
+import { Point, Billboard } from "../overlay/index";
 import { DrawPoint } from "./DrawPoint";
 
 /*
@@ -8,7 +8,7 @@ import { DrawPoint } from "./DrawPoint";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:27:21
+ * @LastEditTime: 2020-09-11 08:44:17
  */
 
 export var DrawBillboard = DrawPoint.extend({

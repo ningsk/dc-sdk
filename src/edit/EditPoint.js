@@ -1,5 +1,5 @@
 import { EditBase } from "./EditBase";
-import { Dragger, Tooltip } from "../utils";
+import { Dragger, TooltipUtil as Tooltip } from "../utils/index";
 
 /*
  * @Description: 编辑点
@@ -7,7 +7,7 @@ import { Dragger, Tooltip } from "../utils";
  * @Author: 宁四凯
  * @Date: 2020-08-25 15:34:07
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:11:58
+ * @LastEditTime: 2020-09-11 08:49:17
  */
 export var EditPoint = EditBase.extend({
   // 外部更新位置

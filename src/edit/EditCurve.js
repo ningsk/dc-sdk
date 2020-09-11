@@ -1,6 +1,6 @@
 import Cesium from "cesium";
 import { EditPolyline } from "./EditPolyline";
-import { Polyline } from "../overlay";
+import { Polyline } from "../overlay/index";
 
 /*
  * @Description:
@@ -8,7 +8,7 @@ import { Polyline } from "../overlay";
  * @Author: 宁四凯
  * @Date: 2020-08-26 10:01:43
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:30:46
+ * @LastEditTime: 2020-09-11 09:02:26
  */
 export var EditCurve = EditPolyline.extend({
   //修改坐标会回调，提高显示的效率

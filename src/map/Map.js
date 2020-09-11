@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:10:17
+ * @LastEditTime: 2020-09-11 08:52:51
  */
 import Cesium from "cesium";
 import $ from "jquery";
-import { Tooltip, Popup } from "../widget";
-import { FirstPerson } from "../camera";
+import { Tooltip, Popup } from "../widget/index";
+import { FirstPerson } from "../camera/index";
 
 //版权信息
 var copyright = false;

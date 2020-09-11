@@ -4,9 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:34:00
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 13:08:15
+ * @LastEditTime: 2020-09-11 08:54:28
  */
-import { Util } from "../utils";
+import { Util } from "../utils/index";
 import { lineString, bezierSpline } from "turf";
 import Cesium from "Cesium";
 export function style2Entity(style, entityAttr) {

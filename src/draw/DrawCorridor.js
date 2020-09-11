@@ -1,14 +1,14 @@
 import { DrawPolyline } from "./DrawPolyline";
 import Cesium from "cesium";
-import { Corridor } from "../overlay";
-import { EditCorridor } from "../edit";
+import { Corridor } from "../overlay/index";
+import { EditCorridor } from "../edit/index";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-26 15:05:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:37:14
+ * @LastEditTime: 2020-09-11 08:44:37
  */
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;

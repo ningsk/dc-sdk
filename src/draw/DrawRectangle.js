@@ -8,7 +8,7 @@
  */
 import Cesium from "cesium";
 import { DrawPolyline } from "./DrawPolyline";
-import { EditRectangle } from "../edit";
+import { EditRectangle } from "../edit/index";
 
 export var DrawRectangle = DrawPolyline.extend({
   type: "polyline",

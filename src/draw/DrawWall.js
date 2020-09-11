@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:58:32
+ * @LastEditTime: 2020-09-11 08:47:29
  */
 
-import { DrawPolyline } from "./DrawPolyline.js";
-import { Wall } from "../overlay";
-import { EditWall } from "../edit/index.js";
+import { DrawPolyline } from "./DrawPolyline";
+import { Wall } from "../overlay/index";
+import { EditWall } from "../edit/index";
 import Cesium from "cesium";
 
 const def_minPointNum = 2;

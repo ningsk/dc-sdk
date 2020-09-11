@@ -1,5 +1,5 @@
 import { BaseLayer } from "./BaseLayer";
-import Layer from "./Layer";
+import { createImageryProvider } from "./Layer";
 import Cesium from "cesium";
 /*
  * @Description: 瓦片底图图层
@@ -7,7 +7,7 @@ import Cesium from "cesium";
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:22:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 10:56:11
+ * @LastEditTime: 2020-09-11 09:12:15
  */
 
 export var TileLayer = BaseLayer.extend({
@@ -19,7 +19,7 @@ export var TileLayer = BaseLayer.extend({
       this.remove();
     }
     this.addEx();
-    var imageryProvider = Layer.createImageryProvider(this.config);
+    var imageryProvider = createImageryProvider(this.config);
     if (imageryProvider == null) {
       return;
     }

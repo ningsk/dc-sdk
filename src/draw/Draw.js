@@ -4,9 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:22:02
+ * @LastEditTime: 2020-09-11 09:01:21
  */
-import { Tooltip } from "../utils";
+
+import { TooltipUtil as Tooltip, Util as DrawUtil } from "../utils/index";
 
 import {
   DrawPoint,
@@ -25,8 +26,7 @@ import {
   DrawPModel,
 } from "./index";
 
-import { Util as DrawUtil } from "../utils";
-import { EventType } from "../event";
+import { DrawEventType, EditEventType } from "../event/index";
 
 import { Evented } from "leaflet";
 
@@ -93,7 +93,7 @@ export var Draw = Evented.extend({
     }
     // 创建完成后激活编辑
     this.on(
-      EventType.DrawCreated,
+      DrawEventType.DRAW_CREATED,
       (e) => {
         this.startEditing(e.entity);
       },

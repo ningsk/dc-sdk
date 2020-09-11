@@ -1,9 +1,8 @@
-import { Tooltip } from "../utils/Tooltip";
 import Cesium from "cesium";
 import { createLayer, createImageryProvider } from "../layer/Layer";
 import { gcj2bd, wgs2gcj, wgs2bd, bd2gcj } from "../utils/PointConvert";
 
-import Util from "../utils/Util";
+import { Util, TooltipUtil as Tooltip } from "../utils/index";
 
 //版权信息
 var copyright = false;

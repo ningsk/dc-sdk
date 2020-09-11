@@ -1,7 +1,7 @@
 import { DrawPolyline } from "./DrawPolyline";
 import Cesium from "cesium";
-import { Circle } from "../overlay";
-import { EditCircle } from "../edit";
+import { Circle } from "../overlay/index";
+import { EditCircle } from "../edit/index";
 
 /*
  * @Description:
@@ -9,7 +9,7 @@ import { EditCircle } from "../edit";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:15
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:34:35
+ * @LastEditTime: 2020-09-11 08:44:25
  */
 export var DrawCircle = DrawPolyline.extend({
   type: "ellipse",

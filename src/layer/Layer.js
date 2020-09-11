@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:23:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:21:43
+ * @LastEditTime: 2020-09-11 09:09:15
  */
 import Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer.js";
@@ -16,12 +16,12 @@ import { POILayer } from "./POILayer.js";
 import { GeoJsonLayer } from "./GeoJsonLayer.js";
 import { ArcFeatureLayer } from "./ArcFeatureLayer.js";
 import { GltfLayer } from "./GltfLayer.js";
-import { Tiles3dLayer } from "./Tile3dLayer.js";
+import { Tiles3dLayer } from "./Tiles3dLayer.js";
 import { KmlLayer } from "./KmlLayer.js";
 import { CzmlLayer } from "./CzmlLayer.js";
 import { TerrainLayer } from "./TerrainLayer.js";
 import { DrawLayer } from "./DrawLayer.js";
-import { BaiduImageryProvider } from "../provider"; //暂时没有内容
+import { BaiduImageryProvider } from "../provider/index"; //暂时没有内容
 // import _FeatureGridImageryProvider from "./FeatureGridImageryProvider.js";//暂时没有
 
 function getOneKey(arr) {
