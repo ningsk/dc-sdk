@@ -1,69 +1,22 @@
 (function (global, factory) {
-  typeof exports === "object" && typeof module !== "undefined"
-    ? factory(
-        exports,
-        require("cesium"),
-        require("jquery"),
-        require("leaflet"),
-        require("turf"),
-        require("Cesium"),
-        require("esri-leaflet/src/Util"),
-        require("echarts")
-      )
-    : typeof define === "function" && define.amd
-    ? define([
-        "exports",
-        "cesium",
-        "jquery",
-        "leaflet",
-        "turf",
-        "Cesium",
-        "esri-leaflet/src/Util",
-        "echarts",
-      ], factory)
-    : factory(
-        (global.Earth3D = {}),
-        global.Cesium$1,
-        global.$$1,
-        global.leaflet,
-        global.turf,
-        global.Cesium$2,
-        global.EsriUtil,
-        global.echarts
-      );
-})(this, function (
-  exports,
-  Cesium$1,
-  $$1,
-  leaflet,
-  turf,
-  Cesium$2,
-  EsriUtil,
-  echarts
-) {
-  "use strict";
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('cesium'), require('jquery'), require('leaflet'), require('turf'), require('Cesium'), require('esri-leaflet/src/Util'), require('echarts')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'cesium', 'jquery', 'leaflet', 'turf', 'Cesium', 'esri-leaflet/src/Util', 'echarts'], factory) :
+  (factory((global.DC = {}),global.Cesium$1,global.$$1,global.leaflet,global.turf,global.Cesium$2,global.EsriUtil,global.echarts));
+}(this, (function (exports,Cesium$1,$$1,leaflet,turf,Cesium$2,EsriUtil,echarts) { 'use strict';
 
-  var Cesium$1__default =
-    "default" in Cesium$1 ? Cesium$1["default"] : Cesium$1;
-  $$1 = $$1 && $$1.hasOwnProperty("default") ? $$1["default"] : $$1;
-  Cesium$2 =
-    Cesium$2 && Cesium$2.hasOwnProperty("default")
-      ? Cesium$2["default"]
-      : Cesium$2;
-  EsriUtil =
-    EsriUtil && EsriUtil.hasOwnProperty("default")
-      ? EsriUtil["default"]
-      : EsriUtil;
-  echarts =
-    echarts && echarts.hasOwnProperty("default") ? echarts["default"] : echarts;
+  var Cesium$1__default = 'default' in Cesium$1 ? Cesium$1['default'] : Cesium$1;
+  $$1 = $$1 && $$1.hasOwnProperty('default') ? $$1['default'] : $$1;
+  Cesium$2 = Cesium$2 && Cesium$2.hasOwnProperty('default') ? Cesium$2['default'] : Cesium$2;
+  EsriUtil = EsriUtil && EsriUtil.hasOwnProperty('default') ? EsriUtil['default'] : EsriUtil;
+  echarts = echarts && echarts.hasOwnProperty('default') ? echarts['default'] : echarts;
 
   /*
    * @Description:
    * @version:
    * @Author: 宁四凯
    * @Date: 2020-08-24 13:19:53
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 09:18:29
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-07 10:04:01
    */
 
   var cameraFunc; //键盘漫游  第一人称漫游
@@ -183,17 +136,9 @@
       );
 
       // right = direction * up
-      var right = Cesium$1__default.Cartesian3.cross(
-        direction,
-        up,
-        new Cesium$1__default.Cartesian3()
-      );
+      var right = Cesium$1__default.Cartesian3.cross(direction, up, new Cesium$1__default.Cartesian3());
 
-      direction = Cesium$1__default.Cartesian3.cross(
-        up,
-        right,
-        new Cesium$1__default.Cartesian3()
-      );
+      direction = Cesium$1__default.Cartesian3.cross(up, right, new Cesium$1__default.Cartesian3());
 
       direction = Cesium$1__default.Cartesian3.normalize(direction, direction);
       direction = Cesium$1__default.Cartesian3.multiplyByScalar(
@@ -240,11 +185,7 @@
           new Cesium$1__default.Cartesian3()
         );
         // up = right * direction
-        up = Cesium$1__default.Cartesian3.cross(
-          right,
-          direction,
-          new Cesium$1__default.Cartesian3()
-        );
+        up = Cesium$1__default.Cartesian3.cross(right, direction, new Cesium$1__default.Cartesian3());
 
         camera.up = up;
         camera.right = right;
@@ -293,10 +234,10 @@
     }
   }
 
-  var FirstPerson$1 = {
+  var FirstPerson$1 = ({
     bind: bind,
-    unbind: unbind,
-  };
+    unbind: unbind
+  });
 
   /*
    * @Description:
@@ -329,9 +270,7 @@
     Control: new Cesium$1__default.Color.fromCssColorString("#2c197d"), // 位置控制拖拽点
     MoveHeight: new Cesium$1__default.Color.fromCssColorString("#9500eb"), // 上下移动高度的拖拽点
     EditAttr: new Cesium$1__default.Color.fromCssColorString("#f73163"), // 辅助修改属性（如半径）的拖拽点
-    AddMidPoint: new Cesium$1__default.Color.fromCssColorString(
-      "#04c2c9"
-    ).withAlpha(0.3), // 增加新点，辅助拖拽点
+    AddMidPoint: new Cesium$1__default.Color.fromCssColorString("#04c2c9").withAlpha(0.3), // 增加新点，辅助拖拽点
   };
 
   /**
@@ -347,16 +286,11 @@
       var attr = {
         scale: 1,
         pixelSize: this.PixelSize,
-        outlineColor: new Cesium$1__default.Color.fromCssColorString(
-          "#ffffff"
-        ).withAlpha(0.5),
-        outlineWidth: 2,
-        scaleByDistance: new Cesium$1__default.NearFarScalar(
-          1000,
-          1,
-          1000000,
+        outlineColor: new Cesium$1__default.Color.fromCssColorString("#ffffff").withAlpha(
           0.5
         ),
+        outlineWidth: 2,
+        scaleByDistance: new Cesium$1__default.NearFarScalar(1000, 1, 1000000, 0.5),
         heightReference: options.clamToGround
           ? Cesium$1__default.HeightReference.CLAMP_TO_GROUND
           : Cesium$1__default.HeightReference.NONE,
@@ -364,10 +298,7 @@
       attr = this.getAttrForType(options.type, attr);
 
       dragger = data.entities.add({
-        position: Cesium$1__default.defaultValue(
-          options.position,
-          Cesium$1__default.Cartesian3.ZERO
-        ),
+        position: Cesium$1__default.defaultValue(options.position, Cesium$1__default.Cartesian3.ZERO),
         point: attr,
         draw_tooltip: options.tooltip || message.dragger.def,
       });
@@ -375,20 +306,17 @@
 
     dragger._isDragger = true;
     dragger._pointType = options.type || this.PointType.Control; // 默认是位置控制拖拽点
-    dragger.onDragStart = Cesium$1__default.defaultValue(
-      options.onDragStart,
-      null
-    );
+    dragger.onDragStart = Cesium$1__default.defaultValue(options.onDragStart, null);
     dragger.onDrag = Cesium$1__default.defaultValue(options.onDrag, null);
     dragger.onDragEnd = Cesium$1__default.defaultValue(options.onDragEnd, null);
     return dragger;
   };
 
-  var Dragger$1 = {
+  var Dragger$1 = ({
     PointType: PointType$$1,
     PointColor: PointColor$$1,
-    createDragger: createDragger$$1,
-  };
+    createDragger: createDragger$$1
+  });
 
   /*
    * @Description:
@@ -925,13 +853,10 @@
     }
 
     // Handle Object
-    if (
-      (typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object"
-    ) {
+    if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object") {
       var copy = {};
       for (var attr in obj) {
-        if (attr == "_layer" || attr == "_layers" || attr == "_parent")
-          continue;
+        if (attr == "_layer" || attr == "_layers" || attr == "_parent") continue;
 
         if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
       }
@@ -1111,8 +1036,7 @@
     var roll = Cesium$1.Math.toRadians(cfg.roll || 0);
     var hpr = new Cesium$1.HeadingPitchRoll(heading, pitch, roll);
 
-    var converter =
-      cfg.converter || Cesium$1.Transforms.eastNorthUpToFixedFrame;
+    var converter = cfg.converter || Cesium$1.Transforms.eastNorthUpToFixedFrame;
     var orientation = Cesium$1.Transforms.headingPitchRollQuaternion(
       position,
       hpr,
@@ -1211,10 +1135,7 @@
       startVec,
       Cesium$1.Cartesian3.ZERO
     );
-    var endLength = Cesium$1.Cartesian3.distance(
-      endVec,
-      Cesium$1.Cartesian3.ZERO
-    );
+    var endLength = Cesium$1.Cartesian3.distance(endVec, Cesium$1.Cartesian3.ZERO);
     Cesium$1.Cartesian3.normalize(startVec, startVec);
     Cesium$1.Cartesian3.normalize(endVec, endVec);
     if (Cesium$1.Cartesian3.distance(startVec, endVec) == 0) {
@@ -1405,7 +1326,7 @@
     }
   }
 
-  var Util$1 = {
+  var Util$1 = ({
     isNumber: isNumber,
     isString: isString,
     isArray: isArray,
@@ -1432,8 +1353,8 @@
     lonlats2cartesians: lonlats2cartesians,
     cartesian2lonlat: cartesian2lonlat,
     formatNum: formatNum,
-    getPositionByGeoJSON: getPositionByGeoJSON,
-  };
+    getPositionByGeoJSON: getPositionByGeoJSON
+  });
 
   /*
    * @Description:
@@ -1478,8 +1399,7 @@
       ((20.0 * Math.sin(lat * PI) + 40.0 * Math.sin((lat / 3.0) * PI)) * 2.0) /
       3.0;
     ret +=
-      ((160.0 * Math.sin((lat / 12.0) * PI) +
-        320 * Math.sin((lat * PI) / 30.0)) *
+      ((160.0 * Math.sin((lat / 12.0) * PI) + 320 * Math.sin((lat * PI) / 30.0)) *
         2.0) /
       3.0;
     return ret;
@@ -1655,7 +1575,7 @@
     return [x, y];
   }
 
-  var PointConvert = {
+  var PointConvert = ({
     bd2gcj: bd2gcj,
     gcj2bd: gcj2bd,
     wgs2gcj: wgs2gcj,
@@ -1663,8 +1583,8 @@
     bd2wgs: bd2wgs,
     wgs2bd: wgs2bd,
     jwd2mct: jwd2mct,
-    mct2jwd: mct2jwd,
-  };
+    mct2jwd: mct2jwd
+  });
 
   /*
    * @Description:
@@ -1731,11 +1651,7 @@
 
         return {
           displayName: resultObject.name,
-          destination: Cesium$1__default.Cartesian3.fromDegrees(
-            lnglat.x,
-            lnglat.y,
-            height
-          ),
+          destination: Cesium$1__default.Cartesian3.fromDegrees(lnglat.x, lnglat.y, height),
         };
       });
     });
@@ -1928,9 +1844,9 @@
     },
   };
 
-  var Loader$1 = {
-    Loader: Loader,
-  };
+  var Loader$1 = ({
+    Loader: Loader
+  });
 
   /*
    * @Description:
@@ -1959,14 +1875,8 @@
   function formatPosition(position) {
     var carto = Cesium$1__default.Cartographic.fromCartesian(position);
     var result = {};
-    result.y = this.formatNum(
-      Cesium$1__default.Math.toDegrees(carto.latitude),
-      6
-    );
-    result.x = this.formatNum(
-      Cesium$1__default.Math.toDegrees(carto.longitude),
-      6
-    );
+    result.y = this.formatNum(Cesium$1__default.Math.toDegrees(carto.latitude), 6);
+    result.x = this.formatNum(Cesium$1__default.Math.toDegrees(carto.longitude), 6);
     result.z = this.formatNum(carto.height, 2);
     return result;
   }
@@ -1986,9 +1896,7 @@
     }
 
     for (var i = 0; i < positions.length; i++) {
-      var tempCarto = Cesium$1__default.Cartographic.fromCartesian(
-        positions[i]
-      );
+      var tempCarto = Cesium$1__default.Cartographic.fromCartesian(positions[i]);
       if (tempCarto.height > maxHeight) {
         maxHeight = tempCarto.height;
       }
@@ -2048,11 +1956,7 @@
       return arr;
     } else {
       var car = Cesium$1__default.Cartographic.fromCartesian(positions);
-      return Cesium$1__default.Cartesian3.fromRadians(
-        car.longitude,
-        car.latitude,
-        height
-      );
+      return Cesium$1__default.Cartesian3.fromRadians(car.longitude, car.latitude, height);
     }
   }
 
@@ -2086,10 +1990,7 @@
     var cartesian;
     // 模型上提取坐标
     var pickedObject = scene.pick(position);
-    if (
-      scene.pickPositionSupported &&
-      Cesium$1__default.defined(pickedObject)
-    ) {
+    if (scene.pickPositionSupported && Cesium$1__default.defined(pickedObject)) {
       // pickPositionSupported: 判断是否支持深度拾取
       if (
         noPickEntity == null ||
@@ -2099,9 +2000,7 @@
       ) {
         var cartesian = scene.pickPosition(position);
         if (Cesium$1__default.defined(cartesian)) {
-          var cartographic = Cesium$1__default.Cartographic.fromCartesian(
-            cartesian
-          );
+          var cartographic = Cesium$1__default.Cartographic.fromCartesian(cartesian);
           var height = cartographic.height; // 模型高度
           if (height >= 0) {
             return cartesian;
@@ -2143,9 +2042,7 @@
       var carto = scene.camera.positionCartographic.clone();
       var height = globe.getHeight(carto);
       carto.height = height || 0;
-      bestTarget = Cesium$1__default.Ellipsoid.WGS84.cartographicToCartesian(
-        carto
-      );
+      bestTarget = Cesium$1__default.Ellipsoid.WGS84.cartographicToCartesian(carto);
     }
 
     var result = this.formatPosition(bestTarget);
@@ -2295,23 +2192,14 @@
     var position = camera.positionCartographic;
 
     var bookmark = {};
-    bookmark.y = this.formatNum(
-      Cesium$1__default.Math.toDegrees(position.latitude),
-      6
-    );
-    bookmark.x = this.formatNum(
-      Cesium$1__default.Math.toDegrees(position.longitude),
-      6
-    );
+    bookmark.y = this.formatNum(Cesium$1__default.Math.toDegrees(position.latitude), 6);
+    bookmark.x = this.formatNum(Cesium$1__default.Math.toDegrees(position.longitude), 6);
     bookmark.z = this.formatNum(position.height, 2);
     bookmark.heading = this.formatNum(
       Cesium$1__default.Math.toDegrees(camera.heading || -90),
       1
     );
-    bookmark.pitch = this.formatNum(
-      Cesium$1__default.Math.toDegrees(camera.roll || 0),
-      1
-    );
+    bookmark.pitch = this.formatNum(Cesium$1__default.Math.toDegrees(camera.roll || 0), 1);
 
     if (isToWgs) {
       bookmark = viewer.mars.point2wgs(bookmark); // 坐标转换wgs
@@ -2319,7 +2207,7 @@
     return bookmark;
   }
 
-  var PointUtil = {
+  var PointUtil = ({
     formatNum: formatNum$1,
     formatPosition: formatPosition,
     getMaxHeight: getMaxHeight,
@@ -2330,8 +2218,8 @@
     getCenter: getCenter,
     pickCenterPoint: pickCenterPoint,
     getExtent: getExtent,
-    getCameraView: getCameraView,
-  };
+    getCameraView: getCameraView
+  });
 
   /*
    * @Description:
@@ -2414,10 +2302,10 @@
     }
   };
 
-  var Tooltip$1 = {
+  var Tooltip$1 = ({
     message: message,
-    Tooltip: Tooltip,
-  };
+    Tooltip: Tooltip
+  });
 
   const matrix3Scratch = new Cesium$1__default.Matrix3(); //一些涉及矩阵计算的方法
   const matrix4Scratch = new Cesium$1__default.Matrix4();
@@ -2440,10 +2328,7 @@
       new Cesium$1__default.Matrix4()
     );
     // 得到旋转矩阵
-    let mat3 = Cesium$1__default.Matrix4.getRotation(
-      m3,
-      new Cesium$1__default.Matrix3()
-    );
+    let mat3 = Cesium$1__default.Matrix4.getRotation(m3, new Cesium$1__default.Matrix3());
     // 计算四元数
     let q = Cesium$1__default.Quaternion.fromRotationMatrix(mat3);
     // 计算旋转角(弧度)
@@ -2507,41 +2392,22 @@
     chicB.height = 0;
     let dB = Cesium$1__default.Cartographic.toCartesian(chicB);
     let normaB = Cesium$1__default.Cartesian3.normalize(
-      Cesium$1__default.Cartesian3.subtract(
-        dB,
-        center,
-        new _Cesium2.default.Cartesian3()
-      ),
+      Cesium$1__default.Cartesian3.subtract(dB, center, new _Cesium2.default.Cartesian3()),
       new Cesium$1__default.Cartesian3()
     );
 
     // 构造基于center的法向量旋转90度的矩阵
-    let Q = Cesium$1__default.Quaternion.fromAxisAngle(
-      normaB,
-      Cesium$1__default.Math.toRadians(angle)
-    );
+    let Q = Cesium$1__default.Quaternion.fromAxisAngle(normaB, Cesium$1__default.Math.toRadians(angle));
     let m3 = Cesium$1__default.Matrix3.fromQuaternion(Q);
     let m4 = Cesium$1__default.Matrix4.fromRotationTranslation(m3);
 
     // 计算point1点相对center点的坐标A1
-    let A1 = Cesium$1__default.Cartesian3.subtract(
-      point1,
-      center,
-      new Cesium$1__default.Cartesian3()
-    );
+    let A1 = Cesium$1__default.Cartesian3.subtract(point1, center, new Cesium$1__default.Cartesian3());
 
     //对A1应用旋转矩阵
-    let p = Cesium$1__default.Matrix4.multiplyByPoint(
-      m4,
-      A1,
-      new Cesium$1__default.Cartesian3()
-    );
+    let p = Cesium$1__default.Matrix4.multiplyByPoint(m4, A1, new Cesium$1__default.Cartesian3());
     // 新点的坐标
-    let pointNew = Cesium$1__default.Cartesian3.add(
-      p,
-      center,
-      new Cesium$1__default.Cartesian3()
-    );
+    let pointNew = Cesium$1__default.Cartesian3.add(p, center, new Cesium$1__default.Cartesian3());
 
     return pointNew;
   }
@@ -2558,11 +2424,7 @@
       rotate
     ); //quaternion为围绕这个z轴旋转d度的四元数
     let rotateMatrix3 = Cesium$1__default.Matrix3.fromQuaternion(quaternion); //rotateMatrix3为根据四元数求得的旋转矩阵
-    let pointCartesian3 = new Cesium$1__default.Cartesian3(
-      offest.x,
-      offest.y,
-      offest.z
-    ); //point的局部坐标
+    let pointCartesian3 = new Cesium$1__default.Cartesian3(offest.x, offest.y, offest.z); //point的局部坐标
     let rotateTranslationMatrix4 = Cesium$1__default.Matrix4.fromRotationTranslation(
       rotateMatrix3,
       Cesium$1__default.Cartesian3.ZERO
@@ -2584,19 +2446,16 @@
       rotateTranslationMatrix4
     ); //rotateTranslationMatrix4 = rotateTranslationMatrix4 X originPositionTransform
     let pointCartesian = new Cesium$1__default.Cartesian3();
-    Cesium$1__default.Matrix4.getTranslation(
-      rotateTranslationMatrix4,
-      pointCartesian
-    ); //根据最终变换矩阵m得到p2
+    Cesium$1__default.Matrix4.getTranslation(rotateTranslationMatrix4, pointCartesian); //根据最终变换矩阵m得到p2
     return pointCartesian;
   }
 
-  var Matrix = {
+  var Matrix = ({
     getHeadingPitchRollByOrientation: getHeadingPitchRollByOrientation,
     getHeadingPitchRollForLine: getHeadingPitchRollForLine,
     getRotateCenterPoint: getRotateCenterPoint,
-    getPositionTranslation: getPositionTranslation,
-  };
+    getPositionTranslation: getPositionTranslation
+  });
 
   /*
    * @Description:
@@ -2788,9 +2647,7 @@
       var _this = this;
 
       // 选取对象
-      var handler = new Cesium.ScreenSpaceEventHandler(
-        this.viewer.scene.canvas
-      );
+      var handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
       handler.setInputAction((event) => {
         var pickedObject = _this.viewer.scene.pick(event.position);
         if (Cesium.defined(pickedObject)) {
@@ -2940,8 +2797,7 @@
         var features = [];
         for (var i = 0, len = arrEntity.length; i < len; i++) {
           var entity = arrEntity[i];
-          if (entity.attribute == null || entity.attribute.type == null)
-            continue;
+          if (entity.attribute == null || entity.attribute.type == null) continue;
 
           var type = entity.attribute.type;
           var geojson = this.drawCtrl[type].toGeoJSON(entity);
@@ -3375,12 +3231,10 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
@@ -3422,12 +3276,12 @@
     };
   }
 
-  var Billboard = {
+  var Billboard = ({
     style2Entity: style2Entity,
     getPositions: getPositions,
     getCoordinates: getCoordinates,
-    toGeoJSON: toGeoJSON,
-  };
+    toGeoJSON: toGeoJSON
+  });
 
   /*
    * @Description:
@@ -3538,12 +3392,12 @@
     };
   }
 
-  var Circle = {
+  var Circle = ({
     style2Entity: style2Entity$1,
     getPositions: getPositions$1,
     getCoordinates: getCoordinates$1,
-    toGeoJSON: toGeoJSON$1,
-  };
+    toGeoJSON: toGeoJSON$1
+  });
 
   /*
    * @Description:
@@ -3555,9 +3409,9 @@
    */
   class Corridor {}
 
-  var Corridor$1 = {
-    default: Corridor,
-  };
+  var Corridor$1 = ({
+    'default': Corridor
+  });
 
   /*
    * @Description:
@@ -3653,12 +3507,12 @@
     };
   }
 
-  var Ellipsoid = {
+  var Ellipsoid = ({
     style2Entity: style2Entity$2,
     getPositions: getPositions$2,
     getCoordinates: getCoordinates$2,
-    toGeoJson: toGeoJson,
-  };
+    toGeoJson: toGeoJson
+  });
 
   /*
    * @Description:
@@ -3747,8 +3601,7 @@
           break;
         case "hasPixelOffset":
           //是否存在偏移量
-          if (!value)
-            entityAttr.pixelOffset = new Cesium$1__default.Cartesian2(0, 0);
+          if (!value) entityAttr.pixelOffset = new Cesium$1__default.Cartesian2(0, 0);
           break;
         case "pixelOffsetX":
           //偏移量
@@ -3785,12 +3638,10 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
@@ -3843,12 +3694,12 @@
     };
   }
 
-  var Label$1 = {
+  var Label$1 = ({
     style2Entity: style2Entity$3,
     getPositions: getPositions$3,
     getCoordinates: getCoordinates$3,
-    toGeoJSON: toGeoJSON$2,
-  };
+    toGeoJSON: toGeoJSON$2
+  });
 
   /*
    * @Description:
@@ -3889,12 +3740,10 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
@@ -3924,9 +3773,9 @@
         style.color || "#FFFFFF"
       ).withAlpha(opacity);
     else
-      entityAttr.color = new Cesium$1__default.Color.fromCssColorString(
-        "#FFFFFF"
-      ).withAlpha(opacity);
+      entityAttr.color = new Cesium$1__default.Color.fromCssColorString("#FFFFFF").withAlpha(
+        opacity
+      );
 
     return entityAttr;
   }
@@ -3958,12 +3807,12 @@
     };
   }
 
-  var Model = {
+  var Model = ({
     style2Entity: style2Entity$4,
     getPositions: getPositions$4,
     getCoordinates: getCoordinates$4,
-    toGeoJson: toGeoJson$1,
-  };
+    toGeoJson: toGeoJson$1
+  });
 
   /*
    * @Description:
@@ -4038,12 +3887,10 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference =
-                Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
@@ -4088,12 +3935,12 @@
     };
   }
 
-  var Point = {
+  var Point = ({
     style2Entity: style2Entity$5,
     getPositions: getPositions$5,
     getCoordinates: getCoordinates$5,
-    toGeoJSON: toGeoJSON$3,
-  };
+    toGeoJSON: toGeoJSON$3
+  });
 
   /*
    * @Description:
@@ -4197,12 +4044,12 @@
     };
   }
 
-  var Polygon$1 = {
+  var Polygon$1 = ({
     style2Entity: style2Entity$6,
     getPositions: getPositions$6,
     getCoordinates: getCoordinates$6,
-    toGeoJSON: toGeoJSON$4,
-  };
+    toGeoJSON: toGeoJSON$4
+  });
 
   /*
    * @Description:
@@ -4287,9 +4134,7 @@
           break;
         case "arrow":
           // 箭头线
-          entityAttr.material = new Cesium$2.PolylineArrowMaterialProperty(
-            color
-          );
+          entityAttr.material = new Cesium$2.PolylineArrowMaterialProperty(color);
           break;
       }
     }
@@ -4334,12 +4179,12 @@
     return _positions_show;
   }
 
-  var Polyline = {
+  var Polyline = ({
     style2Entity: style2Entity$7,
     getPositions: getPositions$7,
     getCoordinates: getCoordinates$7,
-    line2curve: line2curve,
-  };
+    line2curve: line2curve
+  });
 
   /*
    * @Description:
@@ -4493,15 +4338,15 @@
     };
   }
 
-  var PolylineVolume = {
+  var PolylineVolume = ({
     style2Entity: style2Entity$8,
     getCorridorShape1: getCorridorShape1,
     getCorridorShape2: getCorridorShape2,
     getCorridorShape3: getCorridorShape3,
     getPositions: getPositions$8,
     getCoordinates: getCoordinates$8,
-    toGeoJSON: toGeoJSON$5,
-  };
+    toGeoJSON: toGeoJSON$5
+  });
 
   /*
    * @Description:
@@ -4560,9 +4405,9 @@
           // 填充图片
           entityAttr.material = new Cesium$1__default.ImageMaterialProperty({
             image: style.image,
-            color: new Cesium$1__default.Color.fromCssColorString(
-              "#FFFFFF"
-            ).withAlpha(Number(style.opacity || 1.0)),
+            color: new Cesium$1__default.Color.fromCssColorString("#FFFFFF").withAlpha(
+              Number(style.opacity || 1.0)
+            ),
           });
           break;
         case "rotation":
@@ -4595,20 +4440,10 @@
       return entity._positions_draw;
 
     var re = entity.rectangle.coordinates.getValue(); // Rectangle
-    var height = entity.rectangle.height
-      ? entity.rectangle.height.getValue()
-      : 0;
+    var height = entity.rectangle.height ? entity.rectangle.height.getValue() : 0;
 
-    var pt1 = Cesium$1__default.Cartesian3.fromRadians(
-      re.west,
-      re.south,
-      height
-    );
-    var pt2 = Cesium$1__default.Cartesian3.fromRadians(
-      re.east,
-      re.north,
-      height
-    );
+    var pt1 = Cesium$1__default.Cartesian3.fromRadians(re.west, re.south, height);
+    var pt2 = Cesium$1__default.Cartesian3.fromRadians(re.east, re.north, height);
     return [pt1, pt2];
   }
 
@@ -4631,12 +4466,12 @@
     };
   }
 
-  var Rectangle$1 = {
+  var Rectangle$1 = ({
     style2Entity: style2Entity$9,
     getPositions: getPositions$9,
     getCoordinates: getCoordinates$9,
-    toGeoJson: toGeoJson$2,
-  };
+    toGeoJson: toGeoJson$2
+  });
 
   /*
    * @Description:
@@ -4719,12 +4554,12 @@
     };
   }
 
-  var Wall = {
+  var Wall = ({
     style2Entity: style2Entity$a,
     getPositions: getPositions$a,
     getCoordinates: getCoordinates$a,
-    toGeoJSON: toGeoJSON$6,
-  };
+    toGeoJSON: toGeoJSON$6
+  });
 
   /*
    * @Description: 覆盖物
@@ -4813,9 +4648,7 @@
       var _this = this;
       var scratchBoundingSphere = new Cesium$1__default.BoundingSphere();
       var zOffset = new Cesium$1__default.Cartesian3();
-      var draggerHandler = new Cesium$1__default.ScreenSpaceEventHandler(
-        this.viewer.canvas
-      );
+      var draggerHandler = new Cesium$1__default.ScreenSpaceEventHandler(this.viewer.canvas);
       draggerHandler.dragger = null;
 
       // 选中后拖动
@@ -4824,10 +4657,7 @@
         if (Cesium$1__default.defined(pickObject)) {
           var entity =
             pickObject.id || pickObject.primitive.id || pickObject.primitive;
-          if (
-            entity &&
-            Cesium$1__default.defaultValue(entity.isDragger, false)
-          ) {
+          if (entity && Cesium$1__default.defaultValue(entity.isDragger, false)) {
             _this.viewer.scene.screenSpaceCameraController.enableRotate = false;
             _this.viewer.scene.screenSpaceCameraController.enableTilt = false;
             _this.viewer.scene.screenSpaceCameraController.enableTranslate = false;
@@ -4857,9 +4687,7 @@
               var position = dragger.position;
               if (position && position.getValue) position = position.getValue();
 
-              var tangentPlane = new Cesium$1__default.EllipsoidTangentPlane(
-                position
-              );
+              var tangentPlane = new Cesium$1__default.EllipsoidTangentPlane(position);
               scratchBoundingSphere.center = position;
               scratchBoundingSphere.radius = 1;
 
@@ -5015,7 +4843,9 @@
 
     deletePointForDragger: function (dragger, position) {
       if (this._positions_draw.length - 1 < this._minPointNum) {
-        this.tooltip.showAt(message.del.min(position) + this._minPointNum);
+        this.tooltip.showAt(
+          message.del.min(position) + this._minPointNum
+        );
         return false;
       }
 
@@ -5052,8 +4882,7 @@
     },
     changePositionsToCallback: function () {
       this._positions_draw =
-        this.entity._positions_draw ||
-        this.entity.polyline.positions.getValue();
+        this.entity._positions_draw || this.entity.polyline.positions.getValue();
     },
     isClampToGround: function () {
       return this.entity.attribute.style.clampToGround;
@@ -5211,11 +5040,7 @@
         position: position,
         //clampToGround: clampToGround,
         onDrag: function (dragger, position) {
-          Cesium$1__default.Cartesian3.subtract(
-            position,
-            positions[dragger.index],
-            diff
-          ); //记录差值
+          Cesium$1__default.Cartesian3.subtract(position, positions[dragger.index], diff); //记录差值
 
           positions[dragger.index] = position;
 
@@ -5260,9 +5085,7 @@
           center: position,
           semiMajorAxis: this.entity.ellipse.semiMajorAxis.getValue(), //长半轴
           semiMinorAxis: this.entity.ellipse.semiMinorAxis.getValue(), //短半轴
-          rotation: Cesium$1__default.Math.toRadians(
-            Number(style.rotation || 0)
-          ),
+          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -5374,7 +5197,10 @@
         let draggerTop = createDragger$$1(this.dataSource, {
           position: position,
           onDrag: function (dragger, position) {
-            position = setPositionsHeight(position, that.entity.ellipse.height);
+            position = setPositionsHeight(
+              position,
+              that.entity.ellipse.height
+            );
             positions[0] = position;
 
             that.updateDraggers();
@@ -5383,9 +5209,7 @@
         this.draggers.push(draggerTop);
 
         let _pos =
-          this._maxPointNum == 3
-            ? [positions[1], positions[2]]
-            : [positions[1]];
+          this._maxPointNum == 3 ? [positions[1], positions[2]] : [positions[1]];
         this.bindHeightDraggers(this.entity.ellipse, _pos);
 
         this.heightDraggers.push(draggerTop); //拖动高度时联动修改此点高
@@ -5407,8 +5231,7 @@
       //var that = this;
 
       this._positions_draw =
-        this.entity._positions_draw ||
-        this.entity.corridor.positions.getValue();
+        this.entity._positions_draw || this.entity.corridor.positions.getValue();
       //this.entity.corridor.positions = new Cesium.CallbackProperty(function (time) {
       //    return that.getPosition();
       //}, false);
@@ -5430,10 +5253,10 @@
   var EditCurve = EditPolyline.extend({
     //修改坐标会回调，提高显示的效率
     changePositionsToCallback: function () {
+
       this._positions_draw = this.entity._positions_draw;
       this._positions_show =
-        this.entity._positions_show ||
-        this.entity.polyline.positions.getValue();
+        this.entity._positions_show || this.entity.polyline.positions.getValue();
 
       //this.entity.polyline.positions = new Cesium.CallbackProperty(function (time) {
       //    return that._positions_show;
@@ -5508,9 +5331,7 @@
           center: position,
           semiMajorAxis: Number(style.extentRadii), //长半轴
           semiMinorAxis: Number(style.widthRadii), //短半轴
-          rotation: Cesium$1__default.Math.toRadians(
-            Number(style.rotation || 0)
-          ),
+          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -5528,17 +5349,13 @@
         type: PointType$$1.EditAttr,
         tooltip: message.dragger.editRadius,
         onDrag: function onDrag(dragger, position) {
-          var newHeight = Cesium$1__default.Cartographic.fromCartesian(
-            that._positions_draw
-          ).height;
+          var newHeight = Cesium$1__default.Cartographic.fromCartesian(that._positions_draw)
+            .height;
           position = setPositionsHeight(position, newHeight);
           dragger.position = position;
 
           var radius = that.formatNum(
-            Cesium$1__default.Cartesian3.distance(
-              that._positions_draw,
-              position
-            ),
+            Cesium$1__default.Cartesian3.distance(that._positions_draw, position),
             2
           );
           style.extentRadii = radius; //短半轴
@@ -5561,17 +5378,13 @@
         type: PointType$$1.EditAttr,
         tooltip: message.dragger.editRadius,
         onDrag: function (dragger, position) {
-          var newHeight = Cesium$1__default.Cartographic.fromCartesian(
-            that._positions_draw
-          ).height;
+          var newHeight = Cesium$1__default.Cartographic.fromCartesian(that._positions_draw)
+            .height;
           position = setPositionsHeight(position, newHeight);
           dragger.position = position;
 
           var radius = that.formatNum(
-            Cesium$1__default.Cartesian3.distance(
-              that._positions_draw,
-              position
-            ),
+            Cesium$1__default.Cartesian3.distance(that._positions_draw, position),
             2
           );
           style.widthRadii = radius; //长半轴
@@ -5636,8 +5449,7 @@
         Cesium$1__default.Math.toRadians(cfg.pitch || 0),
         Cesium$1__default.Math.toRadians(cfg.roll || 0)
       );
-      var fixedFrameTransform =
-        Cesium$1__default.Transforms.eastNorthUpToFixedFrame;
+      var fixedFrameTransform = Cesium$1__default.Transforms.eastNorthUpToFixedFrame;
 
       var modelMatrix = Cesium$1__default.Transforms.headingPitchRollToFixedFrame(
         position || this.entity.position,
@@ -5679,8 +5491,7 @@
       let style = this.entity.attribute.style;
 
       let position = this.entity.position;
-      let height = Cesium$1__default.Cartographic.fromCartesian(position)
-        .height;
+      let height = Cesium$1__default.Cartographic.fromCartesian(position).height;
       let radius = this.entity.boundingSphere.radius;
 
       //辅助显示：创建角度调整底部圆
@@ -5737,10 +5548,7 @@
         type: PointType$$1.MoveHeight,
         tooltip: message.dragger.editScale,
         onDrag: function onDrag(dragger, positionNew) {
-          let radiusNew = Cesium$1__default.Cartesian3.distance(
-            positionNew,
-            position
-          );
+          let radiusNew = Cesium$1__default.Cartesian3.distance(positionNew, position);
 
           let radiusOld = dragger.radius / style.scale;
           let scaleNew = radiusNew / radiusOld;
@@ -5791,45 +5599,23 @@
 
       var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(position);
       var rotationX = Cesium$1__default.Matrix4.fromRotationTranslation(
-        Cesium$1__default.Matrix3.fromRotationZ(
-          Cesium$1__default.Math.toRadians(angle)
-        )
+        Cesium$1__default.Matrix3.fromRotationZ(Cesium$1__default.Math.toRadians(angle))
       );
       Cesium$1__default.Matrix4.multiply(mat, rotationX, mat);
 
-      mat = Cesium$1__default.Matrix4.getRotation(
-        mat,
-        new Cesium$1__default.Matrix3()
-      );
+      mat = Cesium$1__default.Matrix4.getRotation(mat, new Cesium$1__default.Matrix3());
       rotpos = Cesium$1__default.Matrix3.multiplyByVector(mat, rotpos, rotpos);
       rotpos = Cesium$1__default.Cartesian3.add(position, rotpos, rotpos);
       return rotpos;
     },
     getHeading: function (positionCenter, positionNew) {
       //获取该位置的默认矩阵
-      var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(
-        positionCenter
-      );
-      mat = Cesium$1__default.Matrix4.getRotation(
-        mat,
-        new Cesium$1__default.Matrix3()
-      );
+      var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(positionCenter);
+      mat = Cesium$1__default.Matrix4.getRotation(mat, new Cesium$1__default.Matrix3());
 
-      var xaxis = Cesium$1__default.Matrix3.getColumn(
-        mat,
-        0,
-        new Cesium$1__default.Cartesian3()
-      );
-      var yaxis = Cesium$1__default.Matrix3.getColumn(
-        mat,
-        1,
-        new Cesium$1__default.Cartesian3()
-      );
-      var zaxis = Cesium$1__default.Matrix3.getColumn(
-        mat,
-        2,
-        new Cesium$1__default.Cartesian3()
-      );
+      var xaxis = Cesium$1__default.Matrix3.getColumn(mat, 0, new Cesium$1__default.Cartesian3());
+      var yaxis = Cesium$1__default.Matrix3.getColumn(mat, 1, new Cesium$1__default.Cartesian3());
+      var zaxis = Cesium$1__default.Matrix3.getColumn(mat, 2, new Cesium$1__default.Cartesian3());
 
       //计算该位置 和  positionCenter 的 角度值
       var dir = Cesium$1__default.Cartesian3.subtract(
@@ -5900,10 +5686,9 @@
             // ============= 高度调整拖拽点处理 ===================
             if (that.heightDraggers && that.heightDraggers.length > 0) {
               var extrudedHeight = that.entity.polygon.extrudedHeight.getValue();
-              that.heightDraggers[dragger.index].position = setPositionsHeight(
-                position,
-                extrudedHeight
-              );
+              that.heightDraggers[
+                dragger.index
+              ].position = setPositionsHeight(position, extrudedHeight);
             }
 
             // ======== 新增拖拽点处理 ==============
@@ -6011,9 +5796,7 @@
           type: PointType$$1.MoveHeight,
           tooltip: message.dragger.moveHeight,
           onDrag: function (dragger, position) {
-            var thisHeight = Cesium$1__default.Cartographic.fromCartesian(
-              position
-            ).height;
+            var thisHeight = Cesium$1__default.Cartographic.fromCartesian(position).height;
             polygon.extrudedHeight = thisHeight;
 
             var maxHeight = point.getMaxHeight(that.getPosition());
@@ -6122,10 +5905,9 @@
             // ======== 高度调整拖拽点处理 =====================
             if (that.heightDraggers && that.heightDraggers.length > 0) {
               var extrudedHeight = that.entity.rectangle.extrudedHeight.getValue();
-              that.heightDraggers[dragger.index].position = setPositionsHeight(
-                position,
-                extrudedHeight
-              );
+              that.heightDraggers[
+                dragger.index
+              ].position = setPositionsHeight(position, extrudedHeight);
             }
           },
         });
@@ -6151,26 +5933,17 @@
     changePositionsToCallback: function () {
       var that = this;
       this._positions_draw = this.entity.wall.positions.getValue();
-      this.entity.wall.positions = new Cesium$1__default.CallbackProperty(
-        (time) => {
-          return that.getPosition();
-        },
-        false
-      );
+      this.entity.wall.positions = new Cesium$1__default.CallbackProperty((time) => {
+        return that.getPosition();
+      }, false);
       this.minimumHeights = this.entity.wall.minimumHeights.getValue();
-      this.entity.wall.minimumHeights = new Cesium$1__default.CallbackProperty(
-        (time) => {
-          return that.getMinimumHeights();
-        },
-        false
-      );
+      this.entity.wall.minimumHeights = new Cesium$1__default.CallbackProperty((time) => {
+        return that.getMinimumHeights();
+      }, false);
       this.maximumHeights = this.entity.wall.maximumHeights.getValue();
-      this.entity.wall.maximumHeights = new Cesium$1__default.CallbackProperty(
-        (time) => {
-          return that.getMaximumHeights();
-        },
-        false
-      );
+      this.entity.wall.maximumHeights = new Cesium$1__default.CallbackProperty((time) => {
+        return that.getMaximumHeights();
+      }, false);
     },
     maximumHeights: null,
     getMaximumHeights: function () {
@@ -6191,8 +5964,7 @@
       this.minimumHeights = new Array(len);
 
       for (var i = 0; i < len; i++) {
-        var height = Cesium$1__default.Cartographic.fromCartesian(position[i])
-          .height;
+        var height = Cesium$1__default.Cartographic.fromCartesian(position[i]).height;
         this.minimumHeights[i] = height;
         this.maximumHeights[i] = height + Number(style.extrudedHeight);
       }
@@ -6220,7 +5992,9 @@
             positions[dragger.index] = position;
             // =============== 高度调整拖拽点处理 ========================
             if (that.heightDraggers && that.heightDraggers.length > 0) {
-              that.heightDraggers[dragger.index].position = addPositionsHeight(
+              that.heightDraggers[
+                dragger.index
+              ].position = addPositionsHeight(
                 position,
                 style.extrudedHeight
               );
@@ -6307,9 +6081,7 @@
           type: PointType$$1.MoveHeight,
           tooltip: message.dragger.moveHeight,
           onDrag: (dragger, position) => {
-            var thisHeight = Cesium$1__default.Cartographic.fromCartesian(
-              position
-            ).height;
+            var thisHeight = Cesium$1__default.Cartographic.fromCartesian(position).height;
             style.extrudedHeight = that.formatNum(
               thisHeight - that.minimumHeights[dragger.index],
               2
@@ -6477,12 +6249,9 @@
         attribute: attribute,
       };
 
-      addAttr.polyline.positions = new Cesium$1__default.CallbackProperty(
-        (time) => {
-          return that.getDrawPosition();
-        },
-        false
-      );
+      addAttr.polyline.positions = new Cesium$1__default.CallbackProperty((time) => {
+        return that.getDrawPosition();
+      }, false);
 
       this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
       this.entity._positions_draw = this._positions_draw;
@@ -6582,15 +6351,27 @@
         // 鼠标移动
         console.log("鼠标移动");
         if (_this._positions_draw.length <= 1) {
-          _this.tooltip.showAt(event.endPosition, message.draw.polyline.start);
+          _this.tooltip.showAt(
+            event.endPosition,
+            message.draw.polyline.start
+          );
         } else if (_this._positions_draw.length < _this._minPointNum) {
           // 点数不满足最少数量
-          _this.tooltip.showAt(event.endPosition, message.draw.polyline.cont);
+          _this.tooltip.showAt(
+            event.endPosition,
+            message.draw.polyline.cont
+          );
         } else if (_this._positions_draw.length >= _this._maxPointNum) {
           // 点数满足最大数量
-          _this.tooltip.showAt(event.endPosition, message.draw.polyline.end2);
+          _this.tooltip.showAt(
+            event.endPosition,
+            message.draw.polyline.end2
+          );
         } else
-          _this.tooltip.showAt(event.endPosition, message.draw.polyline.end);
+          _this.tooltip.showAt(
+            event.endPosition,
+            message.draw.polyline.end
+          );
 
         var point = getCurrentMousePosition(
           _this.viewer.scene,
@@ -6643,12 +6424,9 @@
       var entity = this.entity;
       entity.editing = this.getEditClass(entity); // 绑定编辑对象
       entity._positions_draw = this.getDrawPosition();
-      entity.polyline.positions = new Cesium$1__default.CallbackProperty(
-        (time) => {
-          return entity._positions_draw;
-        },
-        false
-      );
+      entity.polyline.positions = new Cesium$1__default.CallbackProperty((time) => {
+        return entity._positions_draw;
+      }, false);
     },
   });
 
@@ -6720,8 +6498,7 @@
       // 高度处理
       if (!style.clampToGround) {
         var height = this.formatNum(
-          Cesium$1__default.Cartographic.fromCartesian(this._positions_draw[0])
-            .height,
+          Cesium$1__default.Cartographic.fromCartesian(this._positions_draw[0]).height,
           2
         );
         this.entity.ellipse.height = height;
@@ -6779,9 +6556,7 @@
           center: position,
           semiMajorAxis: this.entity.ellipse.semiMajorAxis.getValue(), // 长半轴
           semiMinorAxis: this.entity.ellipse.semiMinorAxis.getValue(), // 短半轴
-          rotation: Cesium$1__default.Math.toRadians(
-            Number(style.rotation || 0)
-          ),
+          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -6868,12 +6643,9 @@
         corridor: undefined(attribute.style),
         attribute: attribute,
       };
-      addAttr.corridor.positions = new Cesium$1__default.CallbackProperty(
-        (time) => {
-          return that.getDrawPosition();
-        },
-        false
-      );
+      addAttr.corridor.positions = new Cesium$1__default.CallbackProperty((time) => {
+        return that.getDrawPosition();
+      }, false);
 
       this.entity = this.dataSource.entities.add(addAttr); //创建要素对象
       this.entity._positions_draw = this._positions_draw;
@@ -6902,12 +6674,9 @@
       entity.editing = this.getEditClass(entity); //绑定编辑对象
 
       entity._positions_draw = this.getDrawPosition();
-      entity.corridor.positions = new Cesium$1__default.CallbackProperty(
-        function (time) {
-          return entity._positions_draw;
-        },
-        false
-      );
+      entity.corridor.positions = new Cesium$1__default.CallbackProperty(function (time) {
+        return entity._positions_draw;
+      }, false);
     },
   });
 
@@ -7052,9 +6821,7 @@
           center: position,
           semiMajorAxis: Number(style.extentRadii), //长半轴
           semiMinorAxis: Number(style.widthRadii), //短半轴
-          rotation: Cesium$1__default.Math.toRadians(
-            Number(style.rotation || 0)
-          ),
+          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -7226,8 +6993,7 @@
         Cesium$1__default.Math.toRadians(cfg.roll || 0)
       );
 
-      var fixedFrameTransform =
-        Cesium$1__default.Transforms.eastNorthUpToFixedFrame;
+      var fixedFrameTransform = Cesium$1__default.Transforms.eastNorthUpToFixedFrame;
       var modelMatrix = Cesium$1__default.Transforms.headingPitchRollToFixedFrame(
         position || this._positions_draw,
         hpRoll,
@@ -7236,11 +7002,7 @@
       );
 
       if (cfg.scale) {
-        Cesium$1__default.Matrix4.multiplyByScale(
-          modelMatrix,
-          cfg.scale,
-          modelMatrix
-        );
+        Cesium$1__default.Matrix4.multiplyByScale(modelMatrix, cfg.scale, modelMatrix);
       }
       return modelMatrix;
     },
@@ -7265,7 +7027,10 @@
           );
         }
 
-        _this2.tooltip.showAt(event.endPosition, message.draw.point.start);
+        _this2.tooltip.showAt(
+          event.endPosition,
+          message.draw.point.start
+        );
       }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
 
       this.getHandler().setInputAction((event) => {
@@ -7292,9 +7057,7 @@
 
     // 图形绘制结束后，更新属性
     finish: function () {
-      this.entity.modelMatrix = this.getModelMatrix(
-        this.entity.attribute.style
-      );
+      this.entity.modelMatrix = this.getModelMatrix(this.entity.attribute.style);
       this.entity.editing = this.getEditClass(this.entity); // 绑定编辑对象
       this.entity.position = this.getDrawPosition();
     },
@@ -7452,12 +7215,12 @@
         polylineVolume: attr.style2Entity(attribute.style),
         attribute: attribute,
       };
-      addAttr.polylineVolume.positions = new Cesium$1__default.CallbackProperty(
-        function (time) {
-          return that.getDrawPosition();
-        },
-        false
-      );
+      addAttr.polylineVolume.positions = new Cesium$1__default.CallbackProperty(function (
+        time
+      ) {
+        return that.getDrawPosition();
+      },
+      false);
 
       this.entity = this.dataSource.entities.add(addAttr); //创建要素对象
       this.entity._positions_draw = this._positions_draw;
@@ -7515,12 +7278,12 @@
         rectangle: Rectangle.style2Entity(attribute.style),
         attribute: attribute,
       };
-      addAttr.rectangle.coordinates = new Cesium$1__default.CallbackProperty(
-        function (time) {
-          return that.getRectangle();
-        },
-        false
-      );
+      addAttr.rectangle.coordinates = new Cesium$1__default.CallbackProperty(function (
+        time
+      ) {
+        return that.getRectangle();
+      },
+      false);
 
       //线：边线宽度大于1时
       addAttr.polyline = {
@@ -7538,58 +7301,33 @@
     },
     bindOutline: function (entity) {
       //是否显示：边线宽度大于1时
-      entity.polyline.show = new Cesium$1__default.CallbackProperty(function (
-        time
-      ) {
+      entity.polyline.show = new Cesium$1__default.CallbackProperty(function (time) {
         return (
           entity.rectangle.outline &&
           entity.rectangle.outline.getValue() &&
           entity.rectangle.outlineWidth &&
           entity.rectangle.outlineWidth.getValue() > 1
         );
-      },
-      false);
-      entity.polyline.positions = new Cesium$1__default.CallbackProperty(
-        function (time) {
-          if (!entity.polyline.show.getValue()) return null;
+      }, false);
+      entity.polyline.positions = new Cesium$1__default.CallbackProperty(function (time) {
+        if (!entity.polyline.show.getValue()) return null;
 
-          var positions = entity._draw_positions;
-          var height = entity.rectangle.height
-            ? entity.rectangle.height.getValue()
-            : 0;
+        var positions = entity._draw_positions;
+        var height = entity.rectangle.height
+          ? entity.rectangle.height.getValue()
+          : 0;
 
-          var re = Cesium$1__default.Rectangle.fromCartesianArray(positions);
-          var pt1 = Cesium$1__default.Cartesian3.fromRadians(
-            re.west,
-            re.south,
-            height
-          );
-          var pt2 = Cesium$1__default.Cartesian3.fromRadians(
-            re.east,
-            re.south,
-            height
-          );
-          var pt3 = Cesium$1__default.Cartesian3.fromRadians(
-            re.east,
-            re.north,
-            height
-          );
-          var pt4 = Cesium$1__default.Cartesian3.fromRadians(
-            re.west,
-            re.north,
-            height
-          );
+        var re = Cesium$1__default.Rectangle.fromCartesianArray(positions);
+        var pt1 = Cesium$1__default.Cartesian3.fromRadians(re.west, re.south, height);
+        var pt2 = Cesium$1__default.Cartesian3.fromRadians(re.east, re.south, height);
+        var pt3 = Cesium$1__default.Cartesian3.fromRadians(re.east, re.north, height);
+        var pt4 = Cesium$1__default.Cartesian3.fromRadians(re.west, re.north, height);
 
-          return [pt1, pt2, pt3, pt4, pt1];
-        },
-        false
-      );
-      entity.polyline.width = new Cesium$1__default.CallbackProperty(function (
-        time
-      ) {
+        return [pt1, pt2, pt3, pt4, pt1];
+      }, false);
+      entity.polyline.width = new Cesium$1__default.CallbackProperty(function (time) {
         return entity.rectangle.outlineWidth;
-      },
-      false);
+      }, false);
       entity.polyline.material = new Cesium$1__default.ColorMaterialProperty(
         new Cesium$1__default.CallbackProperty(function (time) {
           return entity.rectangle.outlineColor.getValue();
@@ -7628,15 +7366,10 @@
 
       entity._positions_draw = this._positions_draw;
       //entity.rectangle.coordinates = this.getRectangle();
-      entity.rectangle.coordinates = new Cesium$1__default.CallbackProperty(
-        function (time) {
-          if (entity._positions_draw.length < 2) return null;
-          return Cesium$1__default.Rectangle.fromCartesianArray(
-            entity._positions_draw
-          );
-        },
-        false
-      );
+      entity.rectangle.coordinates = new Cesium$1__default.CallbackProperty(function (time) {
+        if (entity._positions_draw.length < 2) return null;
+        return Cesium$1__default.Rectangle.fromCartesianArray(entity._positions_draw);
+      }, false);
     },
   });
 
@@ -7676,24 +7409,15 @@
         wall: style2Entity$a(attribute.style),
         attribute: attribute,
       };
-      addAttr.wall.positions = new Cesium$1__default.CallbackProperty(function (
-        time
-      ) {
+      addAttr.wall.positions = new Cesium$1__default.CallbackProperty(function (time) {
         return that.getDrawPosition();
-      },
-      false);
-      addAttr.wall.minimumHeights = new Cesium$1__default.CallbackProperty(
-        function (time) {
-          return that.getMinimumHeights();
-        },
-        false
-      );
-      addAttr.wall.maximumHeights = new Cesium$1__default.CallbackProperty(
-        function (time) {
-          return that.getMaximumHeights();
-        },
-        false
-      );
+      }, false);
+      addAttr.wall.minimumHeights = new Cesium$1__default.CallbackProperty(function (time) {
+        return that.getMinimumHeights();
+      }, false);
+      addAttr.wall.maximumHeights = new Cesium$1__default.CallbackProperty(function (time) {
+        return that.getMaximumHeights();
+      }, false);
 
       this.entity = this.dataSource.entities.add(addAttr); //创建要素对象
       return this.entity;
@@ -7717,8 +7441,7 @@
       this.minimumHeights = new Array(len);
 
       for (let i = 0; i < len; i++) {
-        let height = Cesium$1__default.Cartographic.fromCartesian(position[i])
-          .height;
+        let height = Cesium$1__default.Cartographic.fromCartesian(position[i]).height;
         this.minimumHeights[i] = height;
         this.maximumHeights[i] = height + Number(style.extrudedHeight);
       }
@@ -7928,10 +7651,7 @@
           entity.polyline.material &&
           entity.polyline.material.color
         ) {
-          this._updateEntityAlpha(
-            entity.polyline.material.color,
-            this._opacity
-          );
+          this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
         }
 
         if (entity.billboard) {
@@ -7954,10 +7674,7 @@
             this._updateEntityAlpha(entity.label.outlineColor, this._opacity);
           }
           if (entity.label.backgroundColor) {
-            this._updateEntityAlpha(
-              entity.label.backgroundColor,
-              this._opacity
-            );
+            this._updateEntityAlpha(entity.label.backgroundColor, this._opacity);
           }
         }
       }
@@ -7970,12 +7687,9 @@
 
     queryData: function () {
       let that = this;
-      let dataSource = Cesium$1__default.GeoJsonDataSource.load(
-        this.config.url,
-        {
-          clampToGround: this.config.clampToGround,
-        }
-      );
+      let dataSource = Cesium$1__default.GeoJsonDataSource.load(this.config.url, {
+        clampToGround: this.config.clampToGround,
+      });
       dataSource
         .then((dataSource) => {
           that.showResult(dataSource);
@@ -8076,10 +7790,8 @@
         entity.polyline.width = 2;
       } else if (entity.billboard) {
         entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin =
-          Cesium$1__default.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin =
-          Cesium$1__default.VerticalOrigin.BOTTOM;
+        entity.billboard.horizontalOrigin = Cesium$1__default.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1__default.VerticalOrigin.BOTTOM;
       }
     },
 
@@ -8131,15 +7843,13 @@
 
       if (entity.label) {
         styleOpt.heightReference =
-          styleOpt.heightReference ||
-          Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+          styleOpt.heightReference || Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
         style2Entity$3(styleOpt, entity.label);
       }
 
       if (entity.billboard) {
         styleOpt.heightReference =
-          styleOpt.heightReference ||
-          Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+          styleOpt.heightReference || Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
         style2Entity(styleOpt, entity.billboard);
         // 加上文字标签
         if (styleOpt.label && styleOpt.label.field) {
@@ -8317,10 +8027,8 @@
       function GraticuleLayer(description, scene) {
         description = description || {};
         this._tilingScheme =
-          description._tilingScheme ||
-          new Cesium$1__default.GeographicTilingScheme();
-        this._color =
-          description.color || new Cesium$1__default.Color(1.0, 1.0, 1.0, 0.4);
+          description._tilingScheme || new Cesium$1__default.GeographicTilingScheme();
+        this._color = description.color || new Cesium$1__default.Color(1.0, 1.0, 1.0, 0.4);
         this._tileWidth = description.tileWidth || 256;
         this._tileHeight = description.tileHeight || 256;
         this._ready = true;
@@ -8442,13 +8150,7 @@
         },
       });
 
-      GraticuleLayer.prototype.makeLabel = function (
-        lng,
-        lat,
-        text,
-        top,
-        color
-      ) {
+      GraticuleLayer.prototype.makeLabel = function (lng, lat, text, top, color) {
         this._lables.add({
           position: this._ellipsoid.cartographicToCartesian(
             new Cesium$1__default.Cartographic(lng, lat, 10.0)
@@ -8800,17 +8502,10 @@
         entityOptions.point = {
           color: new Cesium$1__default.Color.fromCssColorString("#3388ff"),
           pixelSize: 10,
-          outlineColor: new Cesium$1__default.Color.fromCssColorString(
-            "#ffffff"
-          ),
+          outlineColor: new Cesium$1__default.Color.fromCssColorString("#ffffff"),
           outlineWidth: 2,
           heightReference: Cesium$1__default.HeightReference.RELATIVE_TO_GROUND,
-          scaleByDistance: new Cesium$1__default.NearFarScalar(
-            1000,
-            1,
-            20000,
-            0.5
-          ),
+          scaleByDistance: new Cesium$1__default.NearFarScalar(1000, 1, 20000, 0.5),
         };
         entityOptions.label = {
           text: attributes.name,
@@ -8823,12 +8518,7 @@
           verticalOrigin: Cesium$1__default.VerticalOrigin.BOTTOM,
           pixelOffset: new Cesium$1__default.Cartesian2(0, -15), //偏移量
           heightReference: Cesium$1__default.HeightReference.RELATIVE_TO_GROUND, //是地形上方的高度
-          scaleByDistance: new Cesium$1__default.NearFarScalar(
-            1000,
-            1,
-            5000,
-            0.8
-          ),
+          scaleByDistance: new Cesium$1__default.NearFarScalar(1000, 1, 5000, 0.8),
           distanceDisplayCondition: new Cesium$1__default.DistanceDisplayCondition(
             0.0,
             5000
@@ -8887,11 +8577,7 @@
     initData: function () {
       var cfg = this.config.position;
       cfg = this.viewer.mars.point2map(cfg); // 转换坐标系
-      var position = Cesium$1__default.Cartesian3.fromDegrees(
-        cfg.x,
-        cfg.y,
-        cfg.z || 0
-      );
+      var position = Cesium$1__default.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
       var heading = Cesium$1__default.Math.toRadians(cfg.heading || 0);
       var pitch = Cesium$1__default.Math.toRadians(cfg.pitch || 0);
       var roll = Cesium$1__default.Math.toRadians(cfg.roll || 0);
@@ -9045,11 +8731,7 @@
         });
       } else if (this.boundingSphere) {
         this.viewer.camera.flyToBoundingSphere(this.boundingSphere, {
-          offset: new Cesium$1__default.HeadingPitchRange(
-            0.0,
-            -0.5,
-            this.boundingSphere
-          ),
+          offset: new Cesium$1__default.HeadingPitchRange(0.0, -0.5, this.boundingSphere),
           duration: duration,
         });
       }
@@ -9092,9 +8774,7 @@
         }
 
         var position = boundingSphere.center; // 模型原始的中心店
-        var cartographic = Cesium$1__default.Cartographic.fromCartesian(
-          position
-        );
+        var cartographic = Cesium$1__default.Cartographic.fromCartesian(position);
 
         var height = Number(cartographic.height.toFixed(2));
         var longitude = Number(
@@ -9204,13 +8884,8 @@
         this.model._root.transform
       ) {
         // 有自带世界矩阵，进行旋转操作。
-        var mat = Cesium$1__default.Matrix4.fromArray(
-          this.model._root.transform
-        );
-        var pos = Cesium$1__default.Matrix4.fromArray(
-          mat,
-          new Cesium$1__default.Cartesian3()
-        );
+        var mat = Cesium$1__default.Matrix4.fromArray(this.model._root.transform);
+        var pos = Cesium$1__default.Matrix4.fromArray(mat, new Cesium$1__default.Cartesian3());
         var wpos = Cesium$1__default.Cartographic.fromCartesian(pos);
         if (wpos) {
           var position = Cesium$1__default.Cartesian3.fromDegrees(
@@ -9218,9 +8893,7 @@
             offsetopt.y,
             offsetopt.z
           );
-          var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(
-            position
-          );
+          var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(position);
           var rotationX = Cesium$1__default.Matrix4.fromRotationTranslation(
             Cesium$1__default.Matrix3.fromRotationZ(
               Cesium$1__default.Math.toRadians(offsetopt.heading || 0)
@@ -9228,11 +8901,7 @@
           );
           Cesium$1__default.Matrix4.multiply(mat, rotationX, mat);
           if (this.config.scale > 0 && this.config.scale != 1) {
-            Cesium$1__default.Matrix4.multiplyByUniformScale(
-              mat,
-              this.config.scale,
-              mat
-            );
+            Cesium$1__default.Matrix4.multiplyByUniformScale(mat, this.config.scale, mat);
             isOK = true;
           }
         }
@@ -9258,9 +8927,7 @@
             surface,
             new Cesium$1__default.Cartesian3()
           );
-          this.model.modelMatrix = Cesium$1__default.Matrix4.fromTranslation(
-            translation
-          );
+          this.model.modelMatrix = Cesium$1__default.Matrix4.fromTranslation(translation);
         }
       }
     },
@@ -9412,11 +9079,7 @@
         timeout: 10000,
         success: function (data) {
           that._isLoad = true;
-          var arr = that.drawControl.jsonToEntity(
-            data,
-            true,
-            that.config.flyTo
-          );
+          var arr = that.drawControl.jsonToEntity(data, true, that.config.flyTo);
           that._bindEntityConfig(arr);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -9522,14 +9185,8 @@
     this._tileHeight = 256;
     this._maximumLevel = 18;
 
-    var rectangleSouthwestInMeters = new Cesium$1__default.Cartesian2(
-      -width,
-      -height
-    );
-    var rectangleNortheastInMeters = new Cesium$1__default.Cartesian2(
-      width,
-      height
-    );
+    var rectangleSouthwestInMeters = new Cesium$1__default.Cartesian2(-width, -height);
+    var rectangleNortheastInMeters = new Cesium$1__default.Cartesian2(width, height);
     this._tilingScheme = new Cesium$1__default.WebMercatorTilingScheme({
       rectangleSouthwestInMeters: rectangleSouthwestInMeters,
       rectangleNortheastInMeters: rectangleNortheastInMeters,
@@ -9942,9 +9599,7 @@
         break;
       case "tms":
         if (!opts.url)
-          opts.url = Cesium$1__default.buildModuleUrl(
-            "Assets/Textures/NaturalEarthII"
-          );
+          opts.url = Cesium$1__default.buildModuleUrl("Assets/Textures/NaturalEarthII");
         layer = new Cesium$1__default.createTileMapServiceImageryProvider(opts);
         break;
       case "wmts":
@@ -10248,10 +9903,10 @@
     return layer;
   }
 
-  var Layer = {
+  var Layer = ({
     createLayer: createLayer,
-    createImageryProvider: createImageryProvider,
-  };
+    createImageryProvider: createImageryProvider
+  });
 
   /*
    * @Description: 瓦片底图图层
@@ -10294,12 +9949,7 @@
         var xmax = options.rectangle.xmax;
         var ymin = options.rectangle.ymin;
         var ymax = options.rectangle.ymax;
-        var rectangle = Cesium$1__default.Rectangle.fromDegrees(
-          xmin,
-          ymin,
-          xmax,
-          ymax
-        );
+        var rectangle = Cesium$1__default.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
         this.rectangle = rectangle;
         imageryOpt.rectangle = rectangle;
       }
@@ -10315,10 +9965,7 @@
       if (options.maximumTerrainLevel)
         imageryOpt.maximumTerrainLevel = options.maximumTerrainLevel;
 
-      this.layer = new Cesium$1__default.ImageryLayer(
-        imageryProvider,
-        imageryOpt
-      );
+      this.layer = new Cesium$1__default.ImageryLayer(imageryProvider, imageryOpt);
       this.layer.config = this.config;
 
       this.viewer.imageryLayers.add(this.layer);
@@ -10654,10 +10301,7 @@
           entity.polyline.material &&
           entity.polyline.material.color
         ) {
-          this._updateEntityAlpha(
-            entity.polyline.material.color,
-            this._opacity
-          );
+          this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
         } else if (entity.billboard) {
           entity.billboard.color = new _Cesium2.default.Color.fromCssColorString(
             "#FFFFFF"
@@ -10712,10 +10356,8 @@
         entity.polyline.width = 2;
       } else if (entity.billboard) {
         entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin =
-          Cesium$1__default.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin =
-          Cesium$1__default.VerticalOrigin.BOTTOM;
+        entity.billboard.horizontalOrigin = Cesium$1__default.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1__default.VerticalOrigin.BOTTOM;
       }
     },
 
@@ -10750,10 +10392,8 @@
         entity.polyline.width = 2;
       } else if (entity.billboard) {
         entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin =
-          Cesium$1__default.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin =
-          Cesium$1__default.VerticalOrigin.BOTTOM;
+        entity.billboard.horizontalOrigin = Cesium$1__default.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1__default.VerticalOrigin.BOTTOM;
       }
     },
     //外部配置的symbol
@@ -11160,8 +10800,7 @@
     //赋默认值至options（跳过已存在设置值）
     if (defoptions) {
       for (var aa in defoptions) {
-        if (aa == "windowOptions");
-        else if (!item.hasOwnProperty(aa)) {
+        if (aa == "windowOptions") ; else if (!item.hasOwnProperty(aa)) {
           item[aa] = defoptions[aa];
         }
       }
@@ -11295,14 +10934,12 @@
     for (var i = 0; i < widgetsdata.length; i++) {
       var item = widgetsdata[i];
 
-      if (group && item.group == group);
-      else {
+      if (group && item.group == group) ; else {
         if (!item.autoDisable) continue;
       }
 
       //指定不释放的跳过
-      if (nodisable && (nodisable == item.uri || nodisable == item.id))
-        continue;
+      if (nodisable && (nodisable == item.uri || nodisable == item.id)) continue;
 
       if (item._class) {
         item._class.disableBase(); ////BaseWidget: disableBase
@@ -11426,13 +11063,13 @@
     return basePath;
   }
 
-  var WidgetManager = {
+  var WidgetManager = ({
     init: init,
     getDefWindowOptions: getDefWindowOptions,
     clone: clone$1,
     bindDefOptions: bindDefOptions,
     activate: activate,
-    default: getWidget,
+    'default': getWidget,
     getClass: getClass,
     isActivate: isActivate,
     disable: disable,
@@ -11444,8 +11081,8 @@
     getFilePath: getFilePath,
     removeDebugeBar: removeDebugeBar,
     getCacheVersion: getCacheVersion,
-    getBasePath: getBasePath,
-  };
+    getBasePath: getBasePath
+  });
 
   /*
    * @Description:
@@ -11650,7 +11287,7 @@
           }
         },
       };
-      if (viewopt._layerIdx > 0);
+      if (viewopt._layerIdx > 0) ;
       viewopt._layerOpening = true;
       viewopt._layerIdx = layer.open(this._getWinOpt(viewopt, opts));
     },
@@ -11896,7 +11533,7 @@
 
       var has = this.changeWidgetView(function (viewopts) {
         if (viewopts._layerIdx != null && viewopts._layerIdx != -1) {
-          if (viewopts._layerOpening);
+          if (viewopts._layerOpening) ;
           layer.close(viewopts._layerIdx);
           return true;
         } else {
@@ -12037,9 +11674,7 @@
       "</div> ";
     $$1("#" + viewer$1._container.id).append(infoDiv);
 
-    handler = new Cesium$1__default.ScreenSpaceEventHandler(
-      viewer$1.scene.canvas
-    );
+    handler = new Cesium$1__default.ScreenSpaceEventHandler(viewer$1.scene.canvas);
     //鼠标移动事件
     handler.setInputAction(
       mouseMovingPicking,
@@ -12084,10 +11719,7 @@
 
       var cartesian = getCurrentMousePosition(viewer$1.scene, position);
       show(entity, cartesian, position);
-    } else if (
-      pickedObject &&
-      Cesium$1__default.defined(pickedObject.primitive)
-    ) {
+    } else if (pickedObject && Cesium$1__default.defined(pickedObject.primitive)) {
       //primitive对象 && viewer.scene.pickPositionSupported
       var primitive = pickedObject.primitive;
       if (primitive.popup || primitive.click || primitive.cursorCSS) {
@@ -12183,12 +11815,12 @@
     handler.destroy();
   }
 
-  var Tooltip$2 = {
+  var Tooltip$2 = ({
     init: init$1,
     show: show,
     close: close,
-    destroy: destroy,
-  };
+    destroy: destroy
+  });
 
   /*
    * @Description: 该类不仅仅是popup处理，是所有一些有关单击事件的统一处理入口（从效率考虑）
@@ -12199,7 +11831,8 @@
    * @LastEditTime: 2020-09-11 09:14:20
    */
 
-  function isOnly(value) {}
+  function isOnly(value) {
+  }
 
   function setEnable(value) {
     this._enable = value;
@@ -12216,9 +11849,7 @@
     // 添加弹出框
     var infoDiv = '<div id="popup-all-view"></div>';
     $$1("#" + viewer._container.id).append(infoDiv);
-    this._handler = new Cesium$1__default.ScreenSpaceEventHandler(
-      this._viewer.scene.canvas
-    );
+    this._handler = new Cesium$1__default.ScreenSpaceEventHandler(this._viewer.scene.canvas);
     // 单击事件
     this._handler.setInputAction(
       this.mousePickingClick,
@@ -12412,10 +12043,7 @@
           col = col.substring(1); //cesium 内部属性
         }
 
-        if (
-          typeof attr[col] === "object" &&
-          attr[col].hasOwnProperty("getValue")
-        )
+        if (typeof attr[col] === "object" && attr[col].hasOwnProperty("getValue"))
           attr[col] = attr[col].getValue();
         if (typeof attr[col] === "function") continue;
 
@@ -12445,7 +12073,7 @@
     return false;
   }
 
-  var Popup = {
+  var Popup = ({
     isOnly: isOnly,
     setEnable: setEnable,
     getEnable: getEnable,
@@ -12454,8 +12082,8 @@
     close: close$1,
     destroy: destroy$1,
     getPopup: getPopup,
-    getPopupForConfig: getPopupForConfig,
-  };
+    getPopupForConfig: getPopupForConfig
+  });
 
   /*
    * @Description:
@@ -12586,13 +12214,9 @@
       //无baseLayerPicker插件时,按内部规则
       if (options.imageryProvider == null) {
         hasRemoveImagery = true;
-        options.imageryProvider = Cesium$1__default.createTileMapServiceImageryProvider(
-          {
-            url: Cesium$1__default.buildModuleUrl(
-              "Assets/Textures/NaturalEarthII"
-            ),
-          }
-        );
+        options.imageryProvider = Cesium$1__default.createTileMapServiceImageryProvider({
+          url: Cesium$1__default.buildModuleUrl("Assets/Textures/NaturalEarthII"),
+        });
       }
     }
 
@@ -12977,12 +12601,7 @@
         centeropt = configData.extent || configData.center;
       }
 
-      if (
-        centeropt.xmin &&
-        centeropt.xmax &&
-        centeropt.ymin &&
-        centeropt.ymax
-      ) {
+      if (centeropt.xmin && centeropt.xmax && centeropt.ymin && centeropt.ymax) {
         //使用extent配置
         var xmin = centeropt.xmin;
         var xmax = centeropt.xmax;
@@ -13006,12 +12625,7 @@
           ymax = pt2.y;
         }
 
-        var rectangle = Cesium$1__default.Rectangle.fromDegrees(
-          xmin,
-          ymin,
-          xmax,
-          ymax
-        );
+        var rectangle = Cesium$1__default.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
         viewer.camera.flyTo({
           destination: rectangle,
           duration: options.duration,
@@ -13055,18 +12669,10 @@
 
       _isFlyAnimation = true;
       viewer.camera.setView({
-        destination: Cesium$1__default.Cartesian3.fromDegrees(
-          -85.16,
-          13.71,
-          23000000.0
-        ),
+        destination: Cesium$1__default.Cartesian3.fromDegrees(-85.16, 13.71, 23000000.0),
       });
       viewer.camera.flyTo({
-        destination: Cesium$1__default.Cartesian3.fromDegrees(
-          view.x,
-          view.y,
-          23000000.0
-        ),
+        destination: Cesium$1__default.Cartesian3.fromDegrees(view.x, view.y, 23000000.0),
         duration: 2,
         easingFunction: Cesium$1__default.EasingFunction.LINEAR_NONE,
         complete: function complete() {
@@ -13074,11 +12680,7 @@
           if (z > 23000000) z = 23000000;
 
           viewer.camera.flyTo({
-            destination: Cesium$1__default.Cartesian3.fromDegrees(
-              view.x,
-              view.y,
-              z
-            ),
+            destination: Cesium$1__default.Cartesian3.fromDegrees(view.x, view.y, z),
             complete: function complete() {
               centerAt(view, {
                 duration: 2,
@@ -13176,9 +12778,7 @@
       var locationData = {};
 
       function setXYZ2Data(cartesian) {
-        var cartographic = Cesium$1__default.Cartographic.fromCartesian(
-          cartesian
-        );
+        var cartographic = Cesium$1__default.Cartographic.fromCartesian(cartesian);
 
         locationData.z = cartographic.height.toFixed(1);
 
@@ -13226,9 +12826,7 @@
         }
       }
 
-      var handler = new Cesium$1__default.ScreenSpaceEventHandler(
-        viewer.scene.canvas
-      );
+      var handler = new Cesium$1__default.ScreenSpaceEventHandler(viewer.scene.canvas);
       handler.setInputAction(function (movement) {
         var cartesian = point.getCurrentMousePosition(
           viewer.scene,
@@ -13262,9 +12860,9 @@
         locationData.heading = Cesium$1__default.Math.toDegrees(
           viewer.camera.heading
         ).toFixed(0);
-        locationData.pitch = Cesium$1__default.Math.toDegrees(
-          viewer.camera.pitch
-        ).toFixed(0);
+        locationData.pitch = Cesium$1__default.Math.toDegrees(viewer.camera.pitch).toFixed(
+          0
+        );
 
         if (locationData.x == null) {
           setXYZ2Data(viewer.camera.position);
@@ -13280,12 +12878,7 @@
       if (!Cesium$1__default.viewerCesiumNavigationMixin) return;
 
       viewer.extend(Cesium$1__default.viewerCesiumNavigationMixin, {
-        defaultResetView: Cesium$1__default.Rectangle.fromDegrees(
-          110,
-          20,
-          120,
-          30
-        ),
+        defaultResetView: Cesium$1__default.Rectangle.fromDegrees(110, 20, 120, 30),
         enableZoomControls: true,
       });
 
@@ -13595,10 +13188,10 @@
     var dataSource = drawControl.getDataSource();
   };
 
-  var Measure$1 = {
+  var Measure$1 = ({
     Measure: Measure,
-    default: Measure,
-  };
+    'default': Measure
+  });
 
   /*
    * @Description:
@@ -13718,13 +13311,9 @@
       //无baseLayerPicker插件时,按内部规则
       if (options.imageryProvider == null) {
         hasremoveimagery = true;
-        options.imageryProvider = Cesium$1__default.createTileMapServiceImageryProvider(
-          {
-            url: Cesium$1__default.buildModuleUrl(
-              "Assets/Textures/NaturalEarthII"
-            ),
-          }
-        );
+        options.imageryProvider = Cesium$1__default.createTileMapServiceImageryProvider({
+          url: Cesium$1__default.buildModuleUrl("Assets/Textures/NaturalEarthII"),
+        });
       }
     }
 
@@ -14105,12 +13694,7 @@
         centeropt = configdata.extent || configdata.center;
       }
 
-      if (
-        centeropt.xmin &&
-        centeropt.xmax &&
-        centeropt.ymin &&
-        centeropt.ymax
-      ) {
+      if (centeropt.xmin && centeropt.xmax && centeropt.ymin && centeropt.ymax) {
         //使用extent配置
         var xmin = centeropt.xmin;
         var xmax = centeropt.xmax;
@@ -14134,12 +13718,7 @@
           ymax = pt2.y;
         }
 
-        var rectangle = Cesium$1__default.Rectangle.fromDegrees(
-          xmin,
-          ymin,
-          xmax,
-          ymax
-        );
+        var rectangle = Cesium$1__default.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
         viewer.camera.flyTo({
           destination: rectangle,
           duration: options.duration,
@@ -14183,18 +13762,10 @@
 
       _isFlyAnimation = true;
       viewer.camera.setView({
-        destination: Cesium$1__default.Cartesian3.fromDegrees(
-          -85.16,
-          13.71,
-          23000000.0
-        ),
+        destination: Cesium$1__default.Cartesian3.fromDegrees(-85.16, 13.71, 23000000.0),
       });
       viewer.camera.flyTo({
-        destination: Cesium$1__default.Cartesian3.fromDegrees(
-          view.x,
-          view.y,
-          23000000.0
-        ),
+        destination: Cesium$1__default.Cartesian3.fromDegrees(view.x, view.y, 23000000.0),
         duration: 2,
         easingFunction: Cesium$1__default.EasingFunction.LINEAR_NONE,
         complete: function complete() {
@@ -14202,11 +13773,7 @@
           if (z > 23000000) z = 23000000;
 
           viewer.camera.flyTo({
-            destination: Cesium$1__default.Cartesian3.fromDegrees(
-              view.x,
-              view.y,
-              z
-            ),
+            destination: Cesium$1__default.Cartesian3.fromDegrees(view.x, view.y, z),
             complete: function complete() {
               centerAt(view, {
                 duration: 2,
@@ -14288,8 +13855,7 @@
         '<div id="location_mars_jwd"  class="location-bar animation-slide-bottom no-print" ></div>';
       (0, _jquery2.default)("#" + viewerDivId).prepend(inhtml);
 
-      if (item.style)
-        (0, _jquery2.default)("#location_mars_jwd").css(item.style);
+      if (item.style) (0, _jquery2.default)("#location_mars_jwd").css(item.style);
       else {
         $("#location_mars_jwd").css({
           left: viewer.animation ? "170px" : "0",
@@ -14305,9 +13871,7 @@
       var locationData = {};
 
       function setXYZ2Data(cartesian) {
-        var cartographic = Cesium$1__default.Cartographic.fromCartesian(
-          cartesian
-        );
+        var cartographic = Cesium$1__default.Cartographic.fromCartesian(cartesian);
 
         locationData.z = cartographic.height.toFixed(1);
 
@@ -14355,9 +13919,7 @@
         }
       }
 
-      var handler = new Cesium$1__default.ScreenSpaceEventHandler(
-        viewer.scene.canvas
-      );
+      var handler = new Cesium$1__default.ScreenSpaceEventHandler(viewer.scene.canvas);
       handler.setInputAction(function (movement) {
         var cartesian = point.getCurrentMousePosition(
           viewer.scene,
@@ -14391,9 +13953,9 @@
         locationData.heading = Cesium$1__default.Math.toDegrees(
           viewer.camera.heading
         ).toFixed(0);
-        locationData.pitch = Cesium$1__default.Math.toDegrees(
-          viewer.camera.pitch
-        ).toFixed(0);
+        locationData.pitch = Cesium$1__default.Math.toDegrees(viewer.camera.pitch).toFixed(
+          0
+        );
 
         if (locationData.x == null) {
           setXYZ2Data(viewer.camera.position);
@@ -14409,12 +13971,7 @@
       if (!Cesium$1__default.viewerCesiumNavigationMixin) return;
 
       viewer.extend(Cesium$1__default.viewerCesiumNavigationMixin, {
-        defaultResetView: Cesium$1__default.Rectangle.fromDegrees(
-          110,
-          20,
-          120,
-          30
-        ),
+        defaultResetView: Cesium$1__default.Rectangle.fromDegrees(110, 20, 120, 30),
         enableZoomControls: true,
       });
 
@@ -14590,4 +14147,5 @@
   exports.WidgetManager = WidgetManager;
   exports.Tooltip = Tooltip$2;
   exports.Popup = Popup;
-});
+
+})));

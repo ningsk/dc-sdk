@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:44:56
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 16:58:11
+ * @LastEditTime: 2020-09-14 08:48:42
  */
 // Config file for running Rollup in "watch" mode
 // This adds a sanity check to help ourselves to run 'rollup -w' as needed.
@@ -14,14 +14,15 @@ import gitRev from "git-rev-sync";
 
 const branch = gitRev.branch();
 const rev = gitRev.short();
+import pkg from "../package.json";
 const version = require("../package.json").version + "+" + branch + "." + rev;
 
 export default {
   input: "src/Earth3D.js",
   output: {
-    file: "dist/earth3d-src.js",
+    file: pkg.main,
     format: "umd",
-    name: "Earth3D",
+    name: "DC",
     legacy: true, // Needed to create files loadable by IE8
     freeze: false,
   },

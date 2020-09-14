@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 16:46:06
+ * @LastEditTime: 2020-09-14 08:48:48
  */
 import rollupGitVersion from "rollup-plugin-git-version";
 import json from "rollup-plugin-json";
@@ -30,7 +30,7 @@ export default {
     {
       file: pkg.main,
       format: "umd",
-      name: "Earth3D",
+      name: "DC",
       legacy: true, // Needed to create files loadable by IE8
       freeze: false,
     },
