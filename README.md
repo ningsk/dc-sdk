@@ -7,7 +7,7 @@
  * @LastEditTime: 2020-09-14 09:01:52
 -->
 
-# DC-SDK
+# CARD-SDK
 
 基于 cesium 的三维 sdk
 
