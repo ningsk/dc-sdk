@@ -16,5 +16,5 @@ sdk 架构还在不断的探索中，建议先 star。
 使用方法：
 
 ```
-
+yarn add card-sdk
 ```
