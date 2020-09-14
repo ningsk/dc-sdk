@@ -19,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ningsk/dc-sdk.git"
+    "url": "git+https://github.com/ningsk/card-sdk.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ningsk/dc-sdk/issues"
+    "url": "https://github.com/ningsk/card-sdk/issues"
   },
-  "homepage": "https://github.com/ningsk/dc-sdk#readme",
+  "homepage": "https://github.com/ningsk/card-sdk#readme",
   "dependencies": {
     "cesium": "1.73.0",
     "echarts": "^4.8.0",
