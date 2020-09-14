@@ -1,11 +1,11 @@
 {
-  "name": "earth3d",
+  "name": "card-sdk",
   "version": "1.0.2",
   "description": "基于cesium的三维sdk",
-  "main": "dist/dc.runtime.common.js",
-  "module": "dist/dc.runtime.esm.js",
-  "unpkg": "dist/dc.js",
-  "jsdelivr": "dist/dc.js",
+  "main": "dist/card.runtime.common.js",
+  "module": "dist/card.runtime.esm.js",
+  "unpkg": "dist/card.js",
+  "jsdelivr": "dist/card.js",
   "scripts": {
     "pretest": "yarn run lint",
     "test": "yarn run test-nolint",
@@ -19,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ningsk/earth3d.git"
+    "url": "git+https://github.com/ningsk/dc-sdk.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ningsk/earth3d/issues"
+    "url": "https://github.com/ningsk/dc-sdk/issues"
   },
-  "homepage": "https://github.com/ningsk/earth3d#readme",
+  "homepage": "https://github.com/ningsk/dc-sdk#readme",
   "dependencies": {
     "cesium": "1.73.0",
     "echarts": "^4.8.0",

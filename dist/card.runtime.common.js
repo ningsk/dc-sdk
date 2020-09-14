@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('cesium'), require('jquery'), require('leaflet'), require('turf'), require('Cesium'), require('esri-leaflet/src/Util'), require('echarts')) :
   typeof define === 'function' && define.amd ? define(['exports', 'cesium', 'jquery', 'leaflet', 'turf', 'Cesium', 'esri-leaflet/src/Util', 'echarts'], factory) :
-  (factory((global.DC = {}),global.Cesium$1,global.$$1,global.leaflet,global.turf,global.Cesium$2,global.EsriUtil,global.echarts));
+  (factory((global.CARD = {}),global.Cesium$1,global.$$1,global.leaflet,global.turf,global.Cesium$2,global.EsriUtil,global.echarts));
 }(this, (function (exports,Cesium$1,$$1,leaflet,turf,Cesium$2,EsriUtil,echarts) { 'use strict';
 
   var Cesium$1__default = 'default' in Cesium$1 ? Cesium$1['default'] : Cesium$1;
@@ -3405,12 +3405,101 @@
    * @Author: 宁四凯
    * @Date: 2020-08-26 15:09:41
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-03 13:25:10
+   * @LastEditTime: 2020-09-14 09:29:12
    */
-  class Corridor {}
 
-  var Corridor$1 = ({
-    'default': Corridor
+  // 属性赋值到entity
+  function style2Entity$2(style, entityAttr) {
+    style = style || {};
+    if (entityAttr == null) {
+      // 默认值
+      entityAttr = {
+        fill: true,
+      };
+    }
+    for (var key in style) {
+      var value = style[key];
+      switch (key) {
+        default:
+          //直接赋值
+          entityAttr[key] = value;
+          break;
+        case "opacity": //跳过扩展其他属性的参数
+        case "outlineOpacity":
+          break;
+        case "outlineColor":
+          //边框颜色
+          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
+          break;
+        case "color":
+          //填充颜色
+          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+            value || "#FFFF00"
+          ).withAlpha(Number(style.opacity || 1.0));
+          break;
+        case "cornerType":
+          switch (value) {
+            case "BEVELED":
+              entityAttr.cornerType = Cesium$1__default.CornerType.BEVELED;
+              break;
+            case "MITERED":
+              entityAttr.cornerType = Cesium$1__default.CornerType.MITERED;
+              break;
+            case "ROUNDED":
+              entityAttr.cornerType = Cesium$1__default.CornerType.ROUNDED;
+              break;
+            default:
+              entityAttr.cornerType = value;
+              break;
+          }
+          break;
+      }
+    }
+
+    //如果未设置任何material，设置默认颜色
+    if (entityAttr.material == null) {
+      entityAttr.material = Cesium$1__default.Color.fromRandom({
+        minimumGreen: 0.75,
+        maximumBlue: 0.75,
+        alpha: Number(style.opacity || 1.0),
+      });
+    }
+
+    return entityAttr;
+  }
+
+  //获取entity的坐标
+  function getPositions$2(entity) {
+    return entity.corridor.positions.getValue();
+  }
+
+  //获取entity的坐标（geojson规范的格式）
+  function getCoordinates$2(entity) {
+    var positions = getPositions$2(entity);
+    var coordinates = cartesians2lonlats(positions);
+    return coordinates;
+  }
+
+  //entity转geojson
+  function toGeoJSON$2(entity) {
+    var coordinates = getCoordinates$2(entity);
+    return {
+      type: "Feature",
+      properties: entity.attribute || {},
+      geometry: {
+        type: "LineString",
+        coordinates: coordinates,
+      },
+    };
+  }
+
+  var Corridor = ({
+    style2Entity: style2Entity$2,
+    getPositions: getPositions$2,
+    getCoordinates: getCoordinates$2,
+    toGeoJSON: toGeoJSON$2
   });
 
   /*
@@ -3422,7 +3511,7 @@
    * @LastEditTime: 2020-09-11 08:54:00
    */
 
-  function style2Entity$2(style, entityAttr) {
+  function style2Entity$3(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       //默认值
@@ -3483,12 +3572,12 @@
   }
 
   // 获取entity的坐标
-  function getPositions$2(entity) {
+  function getPositions$3(entity) {
     return [entity.position.getValue()];
   }
 
   // 获取entity的坐标（geojso规范的格式）
-  function getCoordinates$2(entity) {
+  function getCoordinates$3(entity) {
     var positions = this.getPositions(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
@@ -3508,9 +3597,9 @@
   }
 
   var Ellipsoid = ({
-    style2Entity: style2Entity$2,
-    getPositions: getPositions$2,
-    getCoordinates: getCoordinates$2,
+    style2Entity: style2Entity$3,
+    getPositions: getPositions$3,
+    getCoordinates: getCoordinates$3,
     toGeoJson: toGeoJson
   });
 
@@ -3523,7 +3612,7 @@
    * @LastEditTime: 2020-09-08 13:04:35
    */
   // 属性赋值到entity
-  function style2Entity$3(style, entityAttr) {
+  function style2Entity$4(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       // 默认值
@@ -3670,19 +3759,19 @@
   }
 
   // 获取entity的坐标
-  function getPositions$3(entity) {
+  function getPositions$4(entity) {
     return [entity.position.getValue()];
   }
 
   // 获取entity的坐标（geojson规范的格式）
-  function getCoordinates$3(entity) {
+  function getCoordinates$4(entity) {
     var positions = this.getPositions(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
   }
 
   // entity转geojson
-  function toGeoJSON$2(entity) {
+  function toGeoJSON$3(entity) {
     var coordinates = this.getCoordinates(entity);
     return {
       type: "Feature",
@@ -3695,10 +3784,10 @@
   }
 
   var Label$1 = ({
-    style2Entity: style2Entity$3,
-    getPositions: getPositions$3,
-    getCoordinates: getCoordinates$3,
-    toGeoJSON: toGeoJSON$2
+    style2Entity: style2Entity$4,
+    getPositions: getPositions$4,
+    getCoordinates: getCoordinates$4,
+    toGeoJSON: toGeoJSON$3
   });
 
   /*
@@ -3710,7 +3799,7 @@
    * @LastEditTime: 2020-09-11 08:54:11
    */
 
-  function style2Entity$4(style, entityAttr) {
+  function style2Entity$5(style, entityAttr) {
     style = style || {};
 
     if (entityAttr == null) {
@@ -3781,14 +3870,14 @@
   }
 
   // 获取entity的坐标
-  function getPositions$4(entity) {
+  function getPositions$5(entity) {
     var position = entity.position;
     if (position && position.getValue) position = position.getValue();
     return [position];
   }
 
   // 获取entity的坐标（geojson规范的格式）
-  function getCoordinates$4(entity) {
+  function getCoordinates$5(entity) {
     var positions = this.getPositions(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
@@ -3808,9 +3897,9 @@
   }
 
   var Model = ({
-    style2Entity: style2Entity$4,
-    getPositions: getPositions$4,
-    getCoordinates: getCoordinates$4,
+    style2Entity: style2Entity$5,
+    getPositions: getPositions$5,
+    getCoordinates: getCoordinates$5,
     toGeoJson: toGeoJson$1
   });
 
@@ -3823,7 +3912,7 @@
    * @LastEditTime: 2020-09-08 13:06:43
    */
   //属性赋值到entity
-  function style2Entity$5(style, entityAttr) {
+  function style2Entity$6(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       //默认值
@@ -3911,19 +4000,19 @@
   }
 
   //获取entity的坐标
-  function getPositions$5(entity) {
+  function getPositions$6(entity) {
     return [entity.position.getValue()];
   }
 
   //获取entity的坐标（geojson规范的格式）
-  function getCoordinates$5(entity) {
+  function getCoordinates$6(entity) {
     var positions = this.getPositions(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
   }
 
   //entity转geojson
-  function toGeoJSON$3(entity) {
+  function toGeoJSON$4(entity) {
     var coordinates = this.getCoordinates(entity);
     return {
       type: "Feature",
@@ -3936,10 +4025,10 @@
   }
 
   var Point = ({
-    style2Entity: style2Entity$5,
-    getPositions: getPositions$5,
-    getCoordinates: getCoordinates$5,
-    toGeoJSON: toGeoJSON$3
+    style2Entity: style2Entity$6,
+    getPositions: getPositions$6,
+    getCoordinates: getCoordinates$6,
+    toGeoJSON: toGeoJSON$4
   });
 
   /*
@@ -3951,7 +4040,7 @@
    * @LastEditTime: 2020-09-11 08:54:21
    */
 
-  function style2Entity$6(style, entityAttr) {
+  function style2Entity$7(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       //默认值
@@ -4015,22 +4104,22 @@
   }
 
   //获取entity的坐标
-  function getPositions$6(entity) {
+  function getPositions$7(entity) {
     var arr = entity.polygon.hierarchy.getValue();
     if (arr.positions && isArray(arr.positions)) return arr.positions;
     return arr;
   }
 
   //获取entity的坐标（geojson规范的格式）
-  function getCoordinates$6(entity) {
-    var positions = getPositions$6(entity);
+  function getCoordinates$7(entity) {
+    var positions = getPositions$7(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
   }
 
   //entity转geojson
-  function toGeoJSON$4(entity) {
-    var coordinates = getCoordinates$6(entity);
+  function toGeoJSON$5(entity) {
+    var coordinates = getCoordinates$7(entity);
 
     if (coordinates.length > 0) coordinates.push(coordinates[0]);
 
@@ -4045,10 +4134,10 @@
   }
 
   var Polygon$1 = ({
-    style2Entity: style2Entity$6,
-    getPositions: getPositions$6,
-    getCoordinates: getCoordinates$6,
-    toGeoJSON: toGeoJSON$4
+    style2Entity: style2Entity$7,
+    getPositions: getPositions$7,
+    getCoordinates: getCoordinates$7,
+    toGeoJSON: toGeoJSON$5
   });
 
   /*
@@ -4059,7 +4148,7 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-11 08:54:28
    */
-  function style2Entity$7(style, entityAttr) {
+  function style2Entity$8(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       // 默认值
@@ -4145,7 +4234,7 @@
    * 获取entity的坐标
    * @param {*} entity
    */
-  function getPositions$7(entity) {
+  function getPositions$8(entity) {
     if (entity._positions_draw && entity._positions_draw.length > 0) {
       return entity._positions_draw; // 曲线等情形时，取绑定的数据
     }
@@ -4155,7 +4244,7 @@
    * 获取entity的坐标（geojson规范的格式）
    * @param {*} entity
    */
-  function getCoordinates$7(entity) {
+  function getCoordinates$8(entity) {
     var positions = this.getPositions(entity);
   }
 
@@ -4180,9 +4269,9 @@
   }
 
   var Polyline = ({
-    style2Entity: style2Entity$7,
-    getPositions: getPositions$7,
-    getCoordinates: getCoordinates$7,
+    style2Entity: style2Entity$8,
+    getPositions: getPositions$8,
+    getCoordinates: getCoordinates$8,
     line2curve: line2curve
   });
 
@@ -4196,7 +4285,7 @@
    */
 
   // 赋值到entity
-  function style2Entity$8(style, entityAttr) {
+  function style2Entity$9(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       //默认值
@@ -4311,7 +4400,7 @@
   }
 
   //获取entity的坐标
-  function getPositions$8(entity) {
+  function getPositions$9(entity) {
     if (entity._positions_draw && entity._positions_draw.length > 0)
       return entity._positions_draw; //取绑定的数据
 
@@ -4319,14 +4408,14 @@
   }
 
   //获取entity的坐标（geojson规范的格式）
-  function getCoordinates$8(entity) {
+  function getCoordinates$9(entity) {
     var positions = this.getPositions(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
   }
 
   //entity转geojson
-  function toGeoJSON$5(entity) {
+  function toGeoJSON$6(entity) {
     var coordinates = this.getCoordinates(entity);
     return {
       type: "Feature",
@@ -4339,13 +4428,13 @@
   }
 
   var PolylineVolume = ({
-    style2Entity: style2Entity$8,
+    style2Entity: style2Entity$9,
     getCorridorShape1: getCorridorShape1,
     getCorridorShape2: getCorridorShape2,
     getCorridorShape3: getCorridorShape3,
-    getPositions: getPositions$8,
-    getCoordinates: getCoordinates$8,
-    toGeoJSON: toGeoJSON$5
+    getPositions: getPositions$9,
+    getCoordinates: getCoordinates$9,
+    toGeoJSON: toGeoJSON$6
   });
 
   /*
@@ -4357,7 +4446,7 @@
    * @LastEditTime: 2020-09-11 08:54:38
    */
 
-  function style2Entity$9(style, entityAttr) {
+  function style2Entity$a(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
       // 默认值
@@ -4435,7 +4524,7 @@
   }
 
   //获取entity的坐标
-  function getPositions$9(entity) {
+  function getPositions$a(entity) {
     if (entity._positions_draw && entity._positions_draw.length > 0)
       return entity._positions_draw;
 
@@ -4448,7 +4537,7 @@
   }
 
   // 获取entity的坐标（geojson规范的格式）
-  function getCoordinates$9(entity) {
+  function getCoordinates$a(entity) {
     var positions = this.getPositions(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
@@ -4467,9 +4556,9 @@
   }
 
   var Rectangle$1 = ({
-    style2Entity: style2Entity$9,
-    getPositions: getPositions$9,
-    getCoordinates: getCoordinates$9,
+    style2Entity: style2Entity$a,
+    getPositions: getPositions$a,
+    getCoordinates: getCoordinates$a,
     toGeoJson: toGeoJson$2
   });
 
@@ -4482,7 +4571,7 @@
    * @LastEditTime: 2020-09-08 13:12:49
    */
   //属性赋值到entity
-  function style2Entity$a(style, entityAttr) {
+  function style2Entity$b(style, entityAttr) {
     style = style || {};
 
     if (!entityAttr) {
@@ -4530,19 +4619,19 @@
   }
 
   //获取entity的坐标
-  function getPositions$a(entity) {
+  function getPositions$b(entity) {
     return entity.wall.positions.getValue();
   }
 
   //获取entity的坐标（geojson规范的格式）
-  function getCoordinates$a(entity) {
+  function getCoordinates$b(entity) {
     var positions = this.getPositions(entity);
     var coordinates = cartesians2lonlats(positions);
     return coordinates;
   }
 
   //entity转geojson
-  function toGeoJSON$6(entity) {
+  function toGeoJSON$7(entity) {
     var coordinates = this.getCoordinates(entity);
     return {
       type: "Feature",
@@ -4555,10 +4644,10 @@
   }
 
   var Wall = ({
-    style2Entity: style2Entity$a,
-    getPositions: getPositions$a,
-    getCoordinates: getCoordinates$a,
-    toGeoJSON: toGeoJSON$6
+    style2Entity: style2Entity$b,
+    getPositions: getPositions$b,
+    getCoordinates: getCoordinates$b,
+    toGeoJSON: toGeoJSON$7
   });
 
   /*
@@ -6132,7 +6221,7 @@
         position: new Cesium$1__default.CallbackProperty((time) => {
           return that.getDrawPosition();
         }, false),
-        point: style2Entity$5(attribute.style),
+        point: style2Entity$6(attribute.style),
         attribute: attribute,
       };
 
@@ -6141,7 +6230,7 @@
     },
 
     style2Entity: function (style, entity) {
-      return style2Entity$5(style, entity.point);
+      return style2Entity$6(style, entity.point);
     },
     // 绑定鼠标事件
     bindEvent: function () {
@@ -6245,7 +6334,7 @@
 
       var that = this;
       var addAttr = {
-        polyline: style2Entity$7(attribute.style),
+        polyline: style2Entity$8(attribute.style),
         attribute: attribute,
       };
 
@@ -6259,7 +6348,7 @@
     },
 
     style2Entity: function (style, entity) {
-      return style2Entity$7(style, entity.polyline);
+      return style2Entity$8(style, entity.polyline);
     },
 
     // 绑定鼠标事件
@@ -6640,7 +6729,7 @@
 
       var that = this;
       var addAttr = {
-        corridor: undefined(attribute.style),
+        corridor: style2Entity$2(attribute.style),
         attribute: attribute,
       };
       addAttr.corridor.positions = new Cesium$1__default.CallbackProperty((time) => {
@@ -6653,7 +6742,7 @@
       return this.entity;
     },
     style2Entity: function (style, entity) {
-      return undefined(style, entity.corridor);
+      return style2Entity$2(style, entity.corridor);
     },
     updateAttrForDrawing: function () {},
     //获取编辑对象
@@ -6665,7 +6754,7 @@
     },
     //获取属性处理类
     getAttrClass: function () {
-      return Corridor$1;
+      return Corridor;
     },
     //图形绘制结束后调用
     finish: function () {
@@ -6750,13 +6839,13 @@
         position: new Cesium$1__default.CallbackProperty((time) => {
           return that.getShowPosition();
         }),
-        ellipsoid: style2Entity$2(attribute.style),
+        ellipsoid: style2Entity$3(attribute.style),
         attribute: attribute,
       };
     },
 
     style2Entity: function (style, entity) {
-      return style2Entity$2(style, entity.ellipsoid);
+      return style2Entity$3(style, entity.ellipsoid);
     },
 
     updateAttrForDrawing: function (isLoad) {
@@ -6884,7 +6973,7 @@
         position: new Cesium$1__default.CallbackProperty((time) => {
           return that.getDrawPosition();
         }, false),
-        label: style2Entity$3(attribute.style),
+        label: style2Entity$4(attribute.style),
         attribute: attribute,
       };
       this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
@@ -6892,7 +6981,7 @@
     },
 
     style2Entity: function (style, entity) {
-      return style2Entity$3(style, entity.label);
+      return style2Entity$4(style, entity.label);
     },
 
     getAttrClass: function () {
@@ -6919,7 +7008,7 @@
         position: new Cesium.CallbackProperty((time) => {
           return that.getDrawPosition();
         }, false),
-        model: style2Entity$4(attribute.style),
+        model: style2Entity$5(attribute.style),
         attribute: attribute,
       };
       this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
@@ -6928,7 +7017,7 @@
 
     style2Entity: function (style, entity) {
       this.updateOrientation(style, entity);
-      return style2Entity$4(style, entity.model);
+      return style2Entity$5(style, entity.model);
     },
 
     updateAttrForDrawing: function () {
@@ -7009,7 +7098,7 @@
 
     style2Entity: function (style, entity) {
       entity.modelMatrix = this.getModelMatrix(style, entity.position);
-      return style2Entity$4(style, entity);
+      return style2Entity$5(style, entity);
     },
 
     bindEvent: function () {
@@ -7091,7 +7180,7 @@
 
       var that = this;
       var addAttr = {
-        polygon: style2Entity$6(attribute.style),
+        polygon: style2Entity$7(attribute.style),
         attribute: attribute,
       };
 
@@ -7110,7 +7199,7 @@
     },
 
     style2Entity: function (style, entity) {
-      return style2Entity$6(style, entity.polygon);
+      return style2Entity$7(style, entity.polygon);
     },
 
     bindOutline: function (entity) {
@@ -7229,7 +7318,7 @@
     },
 
     style2Entity: function (style, entity) {
-      return style2Entity$8(style, entity.polylineVolume);
+      return style2Entity$9(style, entity.polylineVolume);
     },
     updateAttrForDrawing: function () {},
     //获取编辑对象
@@ -7406,7 +7495,7 @@
 
       var that = this;
       var addAttr = {
-        wall: style2Entity$a(attribute.style),
+        wall: style2Entity$b(attribute.style),
         attribute: attribute,
       };
       addAttr.wall.positions = new Cesium$1__default.CallbackProperty(function (time) {
@@ -7424,7 +7513,7 @@
     },
 
     style2Entity: function (style, entity) {
-      return style2Entity$a(style, entity.wall);
+      return style2Entity$b(style, entity.wall);
     },
     getMaximumHeights: function (entity) {
       return this.maximumHeights;
@@ -7811,10 +7900,10 @@
 
       this._opacity = styleOpt.opacity || 1; // 透明度
       if (entity.polyline) {
-        style2Entity$7(styleOpt, entity.polyline);
+        style2Entity$8(styleOpt, entity.polyline);
       }
       if (entity.polygon) {
-        style2Entity$6(styleOpt, entity.polygon);
+        style2Entity$7(styleOpt, entity.polygon);
         // 加上线宽
         if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
           entity.polygon.outline = false;
@@ -7826,7 +7915,7 @@
             clampToGround: true,
             outliine: false,
           };
-          let polyline = style2Entity$7(newOpt);
+          let polyline = style2Entity$8(newOpt);
           polyline.positions = entity.polygon.hierarchy._value.positions;
           this.dataSource._entityCollection.add({
             polyline: polyline,
@@ -7844,7 +7933,7 @@
       if (entity.label) {
         styleOpt.heightReference =
           styleOpt.heightReference || Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
-        style2Entity$3(styleOpt, entity.label);
+        style2Entity$4(styleOpt, entity.label);
       }
 
       if (entity.billboard) {
@@ -7856,7 +7945,7 @@
           styleOpt.label.heightReference =
             styleOpt.label.heightReference ||
             Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
-          entity.label = style2Entity$3(styleOpt.label);
+          entity.label = style2Entity$4(styleOpt.label);
           entity.label.text = attr[styleOpt.label.field] || "";
         }
       }
@@ -8487,7 +8576,7 @@
           entityOptions.billboard.heightReference =
             Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
         } else {
-          entityOptions.point = style2Entity$5(styleOpt);
+          entityOptions.point = style2Entity$6(styleOpt);
         }
 
         //加上文字标签
@@ -10415,7 +10504,7 @@
       this._opacity = styleOpt.opacity || 1; //透明度
 
       if (entity.polygon) {
-        style2Entity$6(styleOpt, entity.polygon);
+        style2Entity$7(styleOpt, entity.polygon);
         //加上线宽
         if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
           entity.polygon.outline = false;
@@ -10427,7 +10516,7 @@
             lineType: "solid",
             outline: false,
           };
-          var polyline = style2Entity$7(newopt);
+          var polyline = style2Entity$8(newopt);
           polyline.positions = entity.polygon.hierarchy._value.positions;
           this.dataSource.entities.add({
             polyline: polyline,
@@ -10442,7 +10531,7 @@
           entity.polygon.extrudedHeight = floor * height;
         }
       } else if (entity.polyline) {
-        style2Entity$7(styleOpt, entity.polyline);
+        style2Entity$8(styleOpt, entity.polyline);
       } else if (entity.billboard) {
         entity.billboard.heightReference =
           Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
@@ -10453,7 +10542,7 @@
           styleOpt.label.heightReference =
             Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
 
-          entity.label = style2Entity$3(styleOpt.label);
+          entity.label = style2Entity$4(styleOpt.label);
           entity.label.text = attr[styleOpt.label.field];
         }
       }
@@ -14123,7 +14212,7 @@
   exports.Measure = Measure$1;
   exports.Billboard = Billboard;
   exports.Circle = Circle;
-  exports.Corridor = Corridor$1;
+  exports.Corridor = Corridor;
   exports.Ellipsoid = Ellipsoid;
   exports.Label = Label$1;
   exports.Model = Model;

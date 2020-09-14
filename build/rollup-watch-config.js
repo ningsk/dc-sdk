@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:44:56
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-14 08:48:42
+ * @LastEditTime: 2020-09-14 09:20:49
  */
 // Config file for running Rollup in "watch" mode
 // This adds a sanity check to help ourselves to run 'rollup -w' as needed.
@@ -22,7 +22,7 @@ export default {
   output: {
     file: pkg.main,
     format: "umd",
-    name: "DC",
+    name: "CARD",
     legacy: true, // Needed to create files loadable by IE8
     freeze: false,
   },
