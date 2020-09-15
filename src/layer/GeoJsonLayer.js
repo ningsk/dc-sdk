@@ -35,7 +35,7 @@ export var GeoJsonLayer = BaseLayer.extend({
   // 定位至数据区域
   centerAt: function (duration) {
     if (this.config.extent || this.config.center) {
-      this.viewer.mars.centerAt(this.config.extent || this.config.center, {
+      this.viewer.card.centerAt(this.config.extent || this.config.center, {
         duration: duration,
         isWgs84: true,
       });
@@ -144,7 +144,7 @@ export var GeoJsonLayer = BaseLayer.extend({
             let attr = that.getEntityAttr(entity);
             if (Util.isString(attr)) return attr;
             else
-              return that.viewer.mars.popup.getPopupForConfig(
+              return that.viewer.card.popup.getPopupForConfig(
                 that.config,
                 attr
               );
@@ -159,7 +159,7 @@ export var GeoJsonLayer = BaseLayer.extend({
             let attr = that.getEntityAttr(entity);
             if (Util.isString(attr)) return attr;
             else
-              return that.viewer.mars.popup.getPopupForConfig(
+              return that.viewer.card.popup.getPopupForConfig(
                 {
                   popup: that.config.tooltip,
                 },

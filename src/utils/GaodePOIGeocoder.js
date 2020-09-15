@@ -59,7 +59,7 @@ GaodePOIGeocoder.prototype.geocode = function (query, geocodeType) {
     return results.pois.map((resultObject) => {
       var arrjwd = resultObject.location.split(",");
       arrjwd = PointConvert.gcj2wgs(arrjwd); // 纠偏
-      var lnglat = that.viewer.mars.point2map({
+      var lnglat = that.viewer.card.point2map({
         x: arrjwd[0],
         y: arrjwd[1],
       });

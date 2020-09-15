@@ -88,7 +88,7 @@ export var TileLayer = BaseLayer.extend({
     if (this.layer == null) return;
 
     if (this.config.extent || this.config.center) {
-      this.viewer.mars.centerAt(this.config.extent || this.config.center, {
+      this.viewer.card.centerAt(this.config.extent || this.config.center, {
         duration: duration,
         isWgs84: true,
       });

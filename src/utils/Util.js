@@ -469,7 +469,7 @@ export function alert(msg, title) {
     // 此方法需要引用layer.js
     layer.alert(msg, {
       title: title || "提示",
-      skin: "layui-layer-lan layer-mars-dialog",
+      skin: "layui-layer-lan layer-card-dialog",
       closeBtn: 0,
       anim: 0,
     });
@@ -711,7 +711,7 @@ export function getTerrainProvider(cfg) {
 
 // 创建模型
 export function createModel(cfg, viewer) {
-  cfg = viewer.mars.point2map(cfg); // 转换坐标系
+  cfg = viewer.card.point2map(cfg); // 转换坐标系
   var position = Cesium.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
   var heading = Cesium.Math.toRadians(cfg.heading || 0);
   var pitch = Cesium.Math.toRadians(cfg.pitch || 0);
@@ -765,7 +765,7 @@ export function checkToken(token) {
       layer.open({
         type: 1,
         title: unescape("%u8BB8%u53EF%u5230%u671F%u63D0%u793A"), //"许可到期提示",
-        skin: "layer-mars-dialog",
+        skin: "layer-card-dialog",
         shade: [1, "#000"],
         closeBtn: 0,
         resize: false,

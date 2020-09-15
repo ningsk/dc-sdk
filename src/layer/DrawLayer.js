@@ -73,7 +73,7 @@ export var DrawLayer = BaseLayer.extend({
             var attr = entity.attribute.attr;
             attr.draw_type = entity.attribute.type;
             attr.draw_typename = entity.attribute.name;
-            return that.viewer.mars.popup.getPopupConfig(that.config, attr);
+            return that.viewer.card.popup.getPopupConfig(that.config, attr);
           },
           anchor: this.config.popupAnchor || [0, -15],
         };
@@ -85,7 +85,7 @@ export var DrawLayer = BaseLayer.extend({
             var attr = entity.attribute.attr;
             attr.draw_type = entity.attribute.type;
             attr.draw_typename = entity.attribute.name;
-            return that.viewer.mars.popup.getPopupConfig(
+            return that.viewer.card.popup.getPopupConfig(
               {
                 popup: that.config.tooltip,
               },

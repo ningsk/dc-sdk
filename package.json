@@ -1,6 +1,6 @@
 {
   "name": "card-sdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "基于cesium的三维sdk",
   "main": "dist/card.runtime.common.js",
   "module": "dist/card.runtime.esm.js",

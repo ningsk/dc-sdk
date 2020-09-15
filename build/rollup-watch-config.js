@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:44:56
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-14 09:20:49
+ * @LastEditTime: 2020-09-15 09:24:47
  */
 // Config file for running Rollup in "watch" mode
 // This adds a sanity check to help ourselves to run 'rollup -w' as needed.
@@ -18,7 +18,7 @@ import pkg from "../package.json";
 const version = require("../package.json").version + "+" + branch + "." + rev;
 
 export default {
-  input: "src/Earth3D.js",
+  input: "src/Card.js",
   output: {
     file: pkg.main,
     format: "umd",

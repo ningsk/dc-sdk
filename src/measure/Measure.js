@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:53:26
+ * @LastEditTime: 2020-09-15 09:25:29
  */
 
 import Cesium from "cesium";
@@ -229,7 +229,7 @@ export var Measure = function (opts) {
     for (var i in arr) {
       if (
         entity.label &&
-        entity.isMarsMeasureLabel &&
+        entity.isCardMeasureLabel &&
         entity.attribute &&
         entity.attribute.value
       ) {
@@ -279,7 +279,7 @@ export var Measure = function (opts) {
       });
       this.totalLabel = dataSource.entities.add({
         label: entityAttr,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -311,7 +311,7 @@ export var Measure = function (opts) {
       var tempSingleLabel = dataSource.entities.add({
         position: positions[positions.length - 1],
         label: entityAttr,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -541,7 +541,7 @@ export var Measure = function (opts) {
 
       this.totalLabel = data.entities.add({
         label: entityAttr,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -632,7 +632,7 @@ export var Measure = function (opts) {
       });
       this.totalLabel = dataSource.entities.add({
         label: entityAttr,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -858,7 +858,7 @@ export var Measure = function (opts) {
       });
       this.totalLabel = dataSource.entities.add({
         label: entityAttr,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -937,7 +937,7 @@ export var Measure = function (opts) {
       });
       this.totalLabel = dataSource.entities.add({
         label: entityAttr,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -951,7 +951,7 @@ export var Measure = function (opts) {
       entityAttr2.pixelOffset = new Cesium.Cartesian2(0, 0);
       this.xLabel = dataSource.entities.add({
         label: entityAttr2,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -960,7 +960,7 @@ export var Measure = function (opts) {
 
       this.hLabel = dataSource.entities.add({
         label: entityAttr2,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,
@@ -1197,7 +1197,7 @@ export var Measure = function (opts) {
       });
       this.totalLabel = dataSource.entities.add({
         label: entityAttr,
-        isMarsMeasureLabel: true,
+        isCardMeasureLabel: true,
         attribute: {
           unit: this.options.unit,
           type: this.options.type,

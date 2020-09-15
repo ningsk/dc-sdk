@@ -81,7 +81,7 @@ export var BaseLayer = Class.extend({
   // 定位到数据区域
   centerAt: function (duration) {
     if (this.config.extent || this.config.center) {
-      this.viewer.mars.centerAt(this.config.extent || this.config.center, {
+      this.viewer.card.centerAt(this.config.extent || this.config.center, {
         duration: duration,
         isWgs84: true,
       });

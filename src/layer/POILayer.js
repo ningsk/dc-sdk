@@ -85,7 +85,7 @@ export var POILayer = CustomFeatureGridLayer.extend({
 
     var arrJwd = attributes.location.split(",");
     arrJwd = Transform.transformGcjToWGS(arrJwd); // 纠偏
-    var lnglat = this.viewer.mars.point2map({
+    var lnglat = this.viewer.card.point2map({
       x: arrJwd[0],
       y: arrJwd[1],
     });

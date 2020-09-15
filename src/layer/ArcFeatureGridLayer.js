@@ -104,7 +104,7 @@ export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
     if (this.config.columns || this.config.popup) {
       entity.popup = {
         html: function (entity) {
-          return that.viewer.mars.popup.getPopupForConfig(
+          return that.viewer.card.popup.getPopupForConfig(
             that.config,
             entity.properties
           );
@@ -116,7 +116,7 @@ export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
     if (this.config.tooltip) {
       entity.tooltip = {
         html: function (entity) {
-          return that.viewer.mars.popup.getPopupForConfig(
+          return that.viewer.card.popup.getPopupForConfig(
             {
               popup: that.config.tooltip,
             },

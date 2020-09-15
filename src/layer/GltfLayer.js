@@ -30,13 +30,13 @@ export var GltfLayer = BaseLayer.extend({
   centerAt: function (duration) {
     if (this.model == null) return;
     if (this.config.extent || this.config.center) {
-      this.viewer.mars.centerAt(this.config.extent || this.config.center, {
+      this.viewer.card.centerAt(this.config.extent || this.config.center, {
         duration: duration,
         isWgs84: true,
       });
     } else {
       var cfg = this.config.position;
-      this.viewer.mars.centerAt(cfg, {
+      this.viewer.card.centerAt(cfg, {
         duration: duration,
         isWgs84: true,
       });
@@ -45,7 +45,7 @@ export var GltfLayer = BaseLayer.extend({
 
   initData: function () {
     var cfg = this.config.position;
-    cfg = this.viewer.mars.point2map(cfg); // 转换坐标系
+    cfg = this.viewer.card.point2map(cfg); // 转换坐标系
     var position = Cesium.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
     var heading = Cesium.Math.toRadians(cfg.heading || 0);
     var pitch = Cesium.Math.toRadians(cfg.pitch || 0);

@@ -246,7 +246,7 @@ function _showHtml(inHtml, eleId, entity, cartesian) {
     '<div id="' +
       eleId +
       '" class="cesium-popup">' +
-      '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.mars.popup.close(\'' +
+      '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.card.popup.close(\'' +
       eleId +
       "')\">×</a>" +
       '            <div class="cesium-popup-content-wrapper cesium-popup-background">' +
@@ -372,9 +372,9 @@ function getPopup(cfg, attr, title) {
     //数组
     var countsok = 0;
     var inhtml =
-      '<div class="mars-popup-titile">' +
+      '<div class="card-popup-titile">' +
       title +
-      '</div><div class="mars-popup-content" >';
+      '</div><div class="card-popup-content" >';
     for (var i = 0; i < cfg.length; i++) {
       var thisfield = cfg[i];
 
@@ -466,9 +466,9 @@ function getPopup(cfg, attr, title) {
     //全部显示
     var countsok = 0;
     var inhtml =
-      '<div class="mars-popup-title">' +
+      '<div class="card-popup-title">' +
       title +
-      '</div><div class="mars-popup-content" >';
+      '</div><div class="card-popup-content" >';
     for (var col in attr) {
       if (
         col == "Shape" ||
