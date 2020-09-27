@@ -1,15 +1,15 @@
 /*
- * @Descripttion:
+ * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-09-10 11:24:07
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:50:35
+ * @LastEditTime: 2020-09-27 14:47:03
  */
 import Cesium from "cesium";
 import { GeoJsonLayer } from "./GeoJsonLayer";
 import { esri } from "leaflet";
-import { Util } from "../utils/index";
+import * as Util from "../core/Util";
 
 export var ArcFeatureLayer = GeoJsonLayer.extend({
   queryData: function () {

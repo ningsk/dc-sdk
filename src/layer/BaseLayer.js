@@ -4,11 +4,11 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 08:41:02
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:50:52
+ * @LastEditTime: 2020-09-27 14:38:44
  */
 import Cesium from "cesium";
-import { Util as util } from "../utils/index";
-import { Class } from "leaflet";
+import * as Util from "../Util";
+import { Class } from "../Class";
 
 export var BaseLayer = Class.extend({
   config: {}, // 配置的config信息

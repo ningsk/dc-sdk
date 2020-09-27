@@ -7,7 +7,7 @@ const rotationScratch = new Cesium.Matrix3();
 
 // 根据模型的matrix矩阵求方位角
 //Cesium.Transforms.fixedFrameToHeadingPitchRoll
-function getHeadingPitchRollByMatrix(position, matrix) {
+export function getHeadingPitchRollByMatrix(position, matrix) {
   // 计算当前模型中心处的变换矩阵
   let m1 = Cesium.Transforms.eastNorthUpToFixedFrame(
     position,

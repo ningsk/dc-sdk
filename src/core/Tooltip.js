@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 08:32:36
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 13:53:23
+ * @LastEditTime: 2020-09-27 15:02:59
  */
 
 import $ from "jquery";
 
 // 样式文件在map.css
-export var message = {
+const message = {
   draw: {
     point: {
       start: "单击 完成绘制",
@@ -61,6 +61,8 @@ export function Tooltip(frameDiv) {
     $(this).hide();
   });
 }
+
+Tooltip.message = message;
 
 Tooltip.prototype.setVisible = function (visible) {
   this._div.style.display = visible ? "block" : "none";

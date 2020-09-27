@@ -4,11 +4,11 @@
  * @Author: 宁四凯
  * @Date: 2020-08-25 16:17:18
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 11:15:11
+ * @LastEditTime: 2020-09-27 15:11:01
  */
 
-import { TooltipUtil } from "./index";
 import Cesium from "cesium";
+import { Tooltip } from "../core/index";
 
 const PixelSize = 12; // 编辑点的像素大小
 

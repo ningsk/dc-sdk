@@ -1,7 +1,7 @@
 import { FeatureGridLayer } from "./FeatureGridLayer";
 import Cesium from "cesium";
 import { Polygon, Polyline, Billboard, Label } from "../overlay/index";
-import { Util } from "../utils/index";
+import * as Util from "../Util";
 import $ from "jquery";
 /*
  * @Description: 分块加载图层基类
@@ -9,7 +9,7 @@ import $ from "jquery";
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:54:59
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:51:05
+ * @LastEditTime: 2020-09-27 14:41:16
  */
 export var CustomFeatureGridLayer = FeatureGridLayer.extend({
   _cacheGrid: {}, // 网络缓存，存放矢量对象id集合

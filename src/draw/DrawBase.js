@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:01:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 09:00:57
+ * @LastEditTime: 2020-09-27 14:53:03
  */
 
 import Cesium from "cesium";
@@ -12,7 +12,7 @@ import Cesium from "cesium";
 import { Util, TooltipUtil as Tooltip } from "../utils/index";
 
 import { DrawEventType, EditEventType } from "../event/index";
-import { Class } from "leaflet";
+import { Class } from "../core/index";
 
 export var DrawBase = Class.extend({
   type: null,

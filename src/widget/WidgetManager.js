@@ -4,24 +4,24 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:36:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:38:45
+ * @LastEditTime: 2020-09-27 15:45:19
  */
 var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
-var defoptions;
+var defOptions;
 var cacheVersion;
-var isdebuger;
+var isDebug;
 
-var thismap;
-var widgetsdata = [];
+var thisMap;
+var widgetsData = [];
 
 //初始化插件
-export function init(map, widgetcfg, _basePath) {
-  thismap = map;
-  widgetcfg = widgetcfg || {};
+export function init(map, widgetCfg, _basePath) {
+  thisMap = map;
+  widgetCfg = widgetCfg || {};
   basePath = _basePath || "";
 
-  widgetsdata = [];
-  defoptions = widgetcfg.defaultOptions || {
+  widgetsData = [];
+  defOptions = widgetCfg.defaultOptions || {
     windowOptions: {
       position: "rt",
       maxmin: false,
@@ -31,11 +31,11 @@ export function init(map, widgetcfg, _basePath) {
     disableOhter: true,
   };
 
-  cacheVersion = widgetcfg.version;
+  cacheVersion = widgetCfg.version;
   if (cacheVersion == "time") cacheVersion = new Date().getTime();
 
   //将自启动的加入
-  var arrtemp = widgetcfg.widgetsAtStart;
+  var arrtemp = widgetCfg.widgetsAtStart;
   if (arrtemp && arrtemp.length > 0) {
     for (var i = 0; i < arrtemp.length; i++) {
       var item = arrtemp[i];
@@ -49,15 +49,15 @@ export function init(map, widgetcfg, _basePath) {
       item.openAtStart = true;
       item._nodebug = true;
 
-      bindDefOptions(item);
-      widgetsdata.push(item);
+      binddefOptions(item);
+      widgetsData.push(item);
     }
   }
 
   //显示测试栏
   //为了方便测试，所有widget会在页面下侧生成一排按钮，每个按钮对应一个widget，单击后激活对应widget
-  isdebuger = widgetcfg["debugger"];
-  if (isdebuger) {
+  isDebug = widgetCfg["debugger"];
+  if (isDebug) {
     var inhtml =
       '<div id="widget-testbar" class="widgetbar animation-slide-bottom no-print-view" > ' +
       '     <div style="height: 30px; line-height:30px;"><b style="color: #4db3ff;">widget测试栏</b>&nbsp;&nbsp;<button  id="widget-testbar-remove"  type="button" class="btn btn-link btn-xs">关闭</button> </div>' +
@@ -74,7 +74,7 @@ export function init(map, widgetcfg, _basePath) {
   }
 
   //将配置的加入
-  arrtemp = widgetcfg.widgets;
+  arrtemp = widgetCfg.widgets;
   if (arrtemp && arrtemp.length > 0) {
     for (var i = 0; i < arrtemp.length; i++) {
       var item = arrtemp[i];
@@ -97,12 +97,12 @@ export function init(map, widgetcfg, _basePath) {
             childItem.name +
             "</a></li>";
 
-          bindDefOptions(childItem);
-          widgetsdata.push(childItem); //将配置的加入
+          binddefOptions(childItem);
+          widgetsData.push(childItem); //将配置的加入
         }
         inhtml += "</ul></div>";
 
-        if (isdebuger && !item._nodebug) {
+        if (isDebug && !item._nodebug) {
           $("#widget-testbar").append(inhtml);
         }
       } else {
@@ -112,7 +112,7 @@ export function init(map, widgetcfg, _basePath) {
         }
 
         //显示测试栏
-        if (isdebuger && !item._nodebug) {
+        if (isDebug && !item._nodebug) {
           var inhtml =
             '<button type="button" class="btn btn-primary widget-btn" data-widget="' +
             item.uri +
@@ -122,12 +122,12 @@ export function init(map, widgetcfg, _basePath) {
           $("#widget-testbar").append(inhtml);
         }
 
-        bindDefOptions(item);
-        widgetsdata.push(item); //将配置的加入
+        binddefOptions(item);
+        widgetsData.push(item); //将配置的加入
       }
     }
 
-    if (isdebuger) {
+    if (isDebug) {
       $("#widget-testbar .widget-btn").each(function () {
         $(this).click(function (e) {
           var uri = $(this).attr("data-widget");
@@ -143,8 +143,8 @@ export function init(map, widgetcfg, _basePath) {
     }
   }
 
-  for (var i = 0; i < widgetsdata.length; i++) {
-    var item = widgetsdata[i];
+  for (var i = 0; i < widgetsData.length; i++) {
+    var item = widgetsData[i];
 
     if (item.openAtStart || item.createAtStart) {
       _arrLoadWidget.push(item);
@@ -152,8 +152,8 @@ export function init(map, widgetcfg, _basePath) {
   }
 
   $(window).resize(function () {
-    for (var i = 0; i < widgetsdata.length; i++) {
-      var item = widgetsdata[i];
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
       if (item._class) {
         item._class.indexResize(); //BaseWidget: indexResize
       }
@@ -164,7 +164,7 @@ export function init(map, widgetcfg, _basePath) {
 }
 
 export function getDefWindowOptions() {
-  return clone(defoptions.windowOptions);
+  return clone(defOptions.windowOptions);
 }
 
 export function clone(from, to) {
@@ -194,18 +194,18 @@ export function clone(from, to) {
   return to;
 }
 
-export function bindDefOptions(item) {
+export function binddefOptions(item) {
   //赋默认值至options（跳过已存在设置值）
-  if (defoptions) {
-    for (var aa in defoptions) {
+  if (defOptions) {
+    for (var aa in defOptions) {
       if (aa == "windowOptions") {
-        //for (var jj in defoptions['windowOptions']) {
+        //for (var jj in defOptions['windowOptions']) {
         //    if (!item['windowOptions'].hasOwnProperty(jj)) {
-        //        item['windowOptions'][jj] = defoptions['windowOptions'][jj];
+        //        item['windowOptions'][jj] = defOptions['windowOptions'][jj];
         //    }
         //}
       } else if (!item.hasOwnProperty(aa)) {
-        item[aa] = defoptions[aa];
+        item[aa] = defOptions[aa];
       }
     }
   }
@@ -217,7 +217,7 @@ export function bindDefOptions(item) {
 
 //激活指定模块
 export function activate(item, noDisableOther) {
-  if (thismap == null && item.viewer) {
+  if (thisMap == null && item.viewer) {
     init(item.viewer);
   }
 
@@ -235,8 +235,8 @@ export function activate(item, noDisableOther) {
   }
 
   var thisItem;
-  for (var i = 0; i < widgetsdata.length; i++) {
-    var othitem = widgetsdata[i];
+  for (var i = 0; i < widgetsData.length; i++) {
+    var othitem = widgetsData[i];
     if (item.uri == othitem.uri || (othitem.id && item.uri == othitem.id)) {
       thisItem = othitem;
       if (thisItem.isloading) return thisItem; //激活了正在loading的widget 防止快速双击了菜单
@@ -250,13 +250,13 @@ export function activate(item, noDisableOther) {
     }
   }
   if (thisItem == null) {
-    bindDefOptions(item);
+    binddefOptions(item);
     thisItem = item;
     //非config中配置的，外部传入，首次激活
-    widgetsdata.push(item);
+    widgetsData.push(item);
   }
 
-  if (isdebuger) console.log("开始激活widget：" + thisItem.uri);
+  if (isDebug) console.log("开始激活widget：" + thisItem.uri);
 
   //释放其他已激活的插件
   if (thisItem.disableOhter) {
@@ -300,8 +300,8 @@ export function activate(item, noDisableOther) {
 }
 
 export default function getWidget(id) {
-  for (var i = 0; i < widgetsdata.length; i++) {
-    var item = widgetsdata[i];
+  for (var i = 0; i < widgetsData.length; i++) {
+    var item = widgetsData[i];
 
     if (id == item.uri || id == item.id) {
       return item;
@@ -323,8 +323,8 @@ export function isActivate(id) {
 
 export function disable(id) {
   if (id == null) return;
-  for (var i = 0; i < widgetsdata.length; i++) {
-    var item = widgetsdata[i];
+  for (var i = 0; i < widgetsData.length; i++) {
+    var item = widgetsData[i];
 
     if (item._class && (id == item.uri || id == item.id)) {
       item._class.disableBase();
@@ -335,8 +335,8 @@ export function disable(id) {
 
 //释放所有widget
 export function disableAll(nodisable, group) {
-  for (var i = 0; i < widgetsdata.length; i++) {
-    var item = widgetsdata[i];
+  for (var i = 0; i < widgetsData.length; i++) {
+    var item = widgetsData[i];
 
     if (group && item.group == group) {
       //同组别的全部释放
@@ -357,8 +357,8 @@ export function disableAll(nodisable, group) {
 export function disableGroup(group, nodisable) {
   if (group == null) return;
 
-  for (var i = 0; i < widgetsdata.length; i++) {
-    var item = widgetsdata[i];
+  for (var i = 0; i < widgetsData.length; i++) {
+    var item = widgetsData[i];
     if (item.group == group) {
       //指定不释放的跳过
       if (nodisable && (nodisable == item.uri || nodisable == item.id))
@@ -371,8 +371,8 @@ export function disableGroup(group, nodisable) {
 }
 
 export function eachWidget(calback) {
-  for (var i = 0; i < widgetsdata.length; i++) {
-    var item = widgetsdata[i];
+  for (var i = 0; i < widgetsData.length; i++) {
+    var item = widgetsData[i];
     calback(item);
   }
 }
@@ -402,12 +402,12 @@ function loadWidgetJs() {
     NProgress.start();
   }
 
-  if (isdebuger) console.log("开始加载js：" + basePath + _uri);
+  if (isDebug) console.log("开始加载js：" + basePath + _uri);
 
   _loader.Loader.async([basePath + _uri], function () {
     isloading = false;
     loadItem.isloading = false;
-    if (isdebuger) console.log("完成js加载：" + basePath + _uri);
+    if (isDebug) console.log("完成js加载：" + basePath + _uri);
 
     if (window.NProgress) {
       NProgress.done(true);
@@ -421,18 +421,18 @@ function loadWidgetJs() {
 export function bindClass(_class) {
   if (loadItem == null) {
     var _jspath = getThisJSPath();
-    for (var i = 0; i < widgetsdata.length; i++) {
-      var item = widgetsdata[i];
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
       if (_jspath.endsWith(item.uri)) {
         item.isloading = false;
-        item._class = new _class(item, thismap);
+        item._class = new _class(item, thisMap);
         item._class.activateBase(); // BaseWidget: activateBase
         return item._class;
       }
     }
   } else {
     loadItem.isloading = false;
-    loadItem._class = new _class(loadItem, thismap);
+    loadItem._class = new _class(loadItem, thisMap);
     loadItem._class.activateBase(); // BaseWidget: activateBase
     return loadItem._class;
   }

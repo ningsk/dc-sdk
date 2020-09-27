@@ -1,7 +1,6 @@
-import { Util, PointUtil, TooltipUtil as Tooltip } from "../utils/index";
 import { EditEventType } from "../event/index";
 import Cesium from "cesium";
-import { Class } from "leaflet";
+import { Class, Util, PointUtil, Tooltip } from "../core/index";
 
 /*
  * @Description:
@@ -9,7 +8,7 @@ import { Class } from "leaflet";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:52:40
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 09:07:19
+ * @LastEditTime: 2020-09-27 15:04:05
  */
 export var EditBase = Class.extend({
   _dataSource: null,
