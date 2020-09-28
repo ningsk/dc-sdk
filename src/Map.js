@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-15 09:20:57
+ * @LastEditTime: 2020-09-28 11:18:36
  */
 import Cesium from "cesium";
 import $ from "jquery";
 import { Tooltip, Popup } from "../widget/index";
-import { FirstPerson } from "../camera/index";
+import { FirstPerson } from "../core/index";
 
 //版权信息
 var copyright = false;
@@ -136,7 +136,7 @@ function initMap(id, config, options) {
   viewer.cesiumWidget.creditContainer.style.display = "none"; //去cesium logo
 
   //====绑定方法到viewer上====
-  viewer.card = {
+  viewer.mars = {
     popup: new Popup(viewer),
     tooltip: new Tooltip(viewer),
     keyboard: function keyboard(isBind) {
@@ -365,8 +365,8 @@ function initMap(id, config, options) {
   }
 
   function destroy() {
-    viewer.card.tooltip.destroy();
-    viewer.card.tooltip.destroy();
+    viewer.mars.tooltip.destroy();
+    viewer.mars.tooltip.destroy();
   }
 
   //获取指定图层 keyName默认为名称
@@ -687,12 +687,12 @@ function initMap(id, config, options) {
   //添加“鼠标经纬度提示”控件
   function addLocationWidget(item) {
     var inhtml =
-      '<div id="location_card_jwd"  class="location-bar animation-slide-bottom no-print" ></div>';
+      '<div id="location_mars_jwd"  class="location-bar animation-slide-bottom no-print" ></div>';
     $("#" + viewerDivId).prepend(inhtml);
 
-    if (item.style) $("#location_card_jwd").css(item.style);
+    if (item.style) $("#location_mars_jwd").css(item.style);
     else {
-      $("#location_card_jwd").css({
+      $("#location_mars_jwd").css({
         left: viewer.animation ? "170px" : "0",
         right: "0",
         bottom: viewer.timeline ? "25px" : "0",
@@ -776,7 +776,7 @@ function initMap(id, config, options) {
         }
 
         var inhtml = _util.template(item.format, locationData);
-        $("#location_card_jwd").html(inhtml);
+        $("#location_mars_jwd").html(inhtml);
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
@@ -797,7 +797,7 @@ function initMap(id, config, options) {
       }
 
       var inhtml = _util.template(item.format, locationData);
-      $("#location_card_jwd").html(inhtml);
+      $("#location_mars_jwd").html(inhtml);
     });
   }
 
@@ -964,7 +964,7 @@ function createMapByData(opt, configData, jsonData) {
           '1(g(){2.3("\\4\\5\\6\\7\\8\\9\\a\\b d e\\f\\0\\h\\i %c \\j\\k\\l\\m\\n://o.p.q","r:s")},t);',
           30,
           30,
-          "u67b6|setTimeout|console|log|u5f53|u524d|u4e09|u7ef4|u5730|u56fe|u4f7f|u7528cardGIS||for|Cesium|u6846|function|u5b9e|u73b0|u5b98|u65b9|u7f51|u7ad9|uff1ahttp|cesium|cardgis|cn|color|red|6E4".split(
+          "u67b6|setTimeout|console|log|u5f53|u524d|u4e09|u7ef4|u5730|u56fe|u4f7f|u7528marsGIS||for|Cesium|u6846|function|u5b9e|u73b0|u5b98|u65b9|u7f51|u7ad9|uff1ahttp|cesium|marsgis|cn|color|red|6E4".split(
             "|"
           ),
           0,
@@ -975,7 +975,7 @@ function createMapByData(opt, configData, jsonData) {
   }
 
   //var token = {
-  //    hostname: 'cardgis',
+  //    hostname: 'marsgis',
   //    start: '2018-11-25 00:00:00',
   //    end: '2018-12-25 00:00:00',
   //    msg: unescape('%u5F53%u524D%u7CFB%u7EDF%u8BB8%u53EF%u5DF2%u5230%u671F%uFF0C%u8BF7%u8054%u7CFB%u4F9B%u5E94%u5546%u201C%u706B%u661F%u79D1%u6280%u201D%uFF01'),

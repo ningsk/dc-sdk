@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-15 09:24:40
+ * @LastEditTime: 2020-09-28 11:15:08
  */
 import rollupGitVersion from "rollup-plugin-git-version";
 import json from "rollup-plugin-json";
@@ -25,12 +25,12 @@ if (process.env.NODE_ENV === "release") {
 }
 
 export default {
-  input: "src/Card.js",
+  input: "src/index.js",
   output: [
     {
       file: pkg.main,
       format: "umd",
-      name: "CARD",
+      name: "mars",
       legacy: true, // Needed to create files loadable by IE8
       freeze: false,
     },
