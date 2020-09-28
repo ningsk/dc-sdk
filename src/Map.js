@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 11:18:36
+ * @LastEditTime: 2020-09-28 13:52:46
  */
 import Cesium from "cesium";
 import $ from "jquery";
-import { Tooltip, Popup } from "../widget/index";
-import { FirstPerson } from "../core/index";
+import { Tooltip, Popup } from "./widget/index";
+import { FirstPerson } from "./core/index";
 
 //版权信息
 var copyright = false;
@@ -137,8 +137,8 @@ function initMap(id, config, options) {
 
   //====绑定方法到viewer上====
   viewer.mars = {
-    popup: new Popup(viewer),
-    tooltip: new Tooltip(viewer),
+    popup: Popup,
+    tooltip: Tooltip,
     keyboard: function keyboard(isBind) {
       if (isBind) FirstPerson.bind(viewer);
       else FirstPerson.unbind(viewer);
@@ -274,6 +274,11 @@ function initMap(id, config, options) {
   if (options.geocoder) {
     options.geocoder.viewer = viewer;
   }
+
+  // 绑定popup
+  Popup.init(viewer);
+  // 绑定tooltip
+  Tooltip.init(viewer);
 
   //地球一些属性设置
   var scene = viewer.scene;

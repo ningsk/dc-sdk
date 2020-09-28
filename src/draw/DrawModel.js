@@ -1,5 +1,5 @@
 import { DrawPoint } from "./DrawPoint";
-import { Model } from "../overlay/index";
+import { AttrModel } from "../attr/index";
 
 /*
  * @Description:
@@ -7,7 +7,7 @@ import { Model } from "../overlay/index";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:03
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:45:15
+ * @LastEditTime: 2020-09-28 11:29:57
  */
 export var DrawModel = DrawPoint.extend({
   type: "model",
@@ -20,7 +20,7 @@ export var DrawModel = DrawPoint.extend({
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      model: Model.style2Entity(attribute.style),
+      model: AttrModel.style2Entity(attribute.style),
       attribute: attribute,
     };
     this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
@@ -29,7 +29,7 @@ export var DrawModel = DrawPoint.extend({
 
   style2Entity: function (style, entity) {
     this.updateOrientation(style, entity);
-    return Model.style2Entity(style, entity.model);
+    return AttrModel.style2Entity(style, entity.model);
   },
 
   updateAttrForDrawing: function () {
@@ -51,6 +51,6 @@ export var DrawModel = DrawPoint.extend({
   },
 
   getAttrClass: function () {
-    return Model;
+    return AttrModel;
   },
 });

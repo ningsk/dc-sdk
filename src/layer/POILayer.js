@@ -1,15 +1,15 @@
 import { CustomFeatureGridLayer } from "./CustomFeatureGridLayer";
-import { Billboard, Point } from "../overlay/index";
+import { AttrBillboard, AttrPoint } from "../attr/index";
 import $ from "jquery";
 import Cesium from "cesium";
-import { PointConvert } from "../utils/index";
+import { PointConvert } from "../core/index";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-21 14:00:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:52:16
+ * @LastEditTime: 2020-09-28 14:03:02
  */
 export var POILayer = CustomFeatureGridLayer.extend({
   _keys: null,
@@ -119,16 +119,16 @@ export var POILayer = CustomFeatureGridLayer.extend({
       styleOpt = styleOpt || {};
 
       if (styleOpt.image) {
-        entityOptions.billboard = Billboard.style2Entity(styleOpt);
+        entityOptions.billboard = AttrBillboard.style2Entity(styleOpt);
         entityOptions.billboard.heightReference =
           Cesium.HeightReference.RELATIVE_TO_GROUND;
       } else {
-        entityOptions.point = Point.style2Entity(styleOpt);
+        entityOptions.point = AttrPoint.style2Entity(styleOpt);
       }
 
       //加上文字标签
       if (styleOpt.label) {
-        entityOptions.label = Label.style2Entity(styleOpt.label);
+        entityOptions.label = AttrLabel.style2Entity(styleOpt.label);
         entityOptions.label.heightReference =
           Cesium.HeightReference.RELATIVE_TO_GROUND;
         entityOptions.label.text = attributes.name;

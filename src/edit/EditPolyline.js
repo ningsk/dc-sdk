@@ -1,6 +1,7 @@
 import { EditBase } from "./EditBase";
 import Cesium from "cesium";
-import { Dragger, TooltipUtil as Tooltip } from "../utils/index";
+import { Tooltip } from "../core/Tooltip";
+import { Dragger } from "../dom/index";
 
 /*
  * @Description:
@@ -8,7 +9,7 @@ import { Dragger, TooltipUtil as Tooltip } from "../utils/index";
  * @Author: 宁四凯
  * @Date: 2020-08-26 08:32:51
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:49:48
+ * @LastEditTime: 2020-09-28 14:09:48
  */
 export var EditPolyline = EditBase.extend({
   // 坐标位置相关

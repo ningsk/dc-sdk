@@ -1,13 +1,14 @@
 import { EditPolyline } from "./EditPolyline";
 import Cesium from "cesium";
-import { Dragger, TooltipUtil as Tooltip, PointUtil } from "../utils/index";
+import { Tooltip, PointUtil } from "../core/index";
+import { Dragger } from "../dom/index";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-26 14:30:05
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:50:15
+ * @LastEditTime: 2020-09-28 14:10:12
  */
 export var EditWall = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率

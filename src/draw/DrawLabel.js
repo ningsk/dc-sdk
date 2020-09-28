@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 09:43:19
+ * @LastEditTime: 2020-09-28 11:29:26
  */
 
 import Cesium from "cesium";
 import { DrawPoint } from "./DrawPoint";
-import { Label } from "../overlay/index";
+import { AttrLabel } from "../attr/index";
 
 export var DrawLabel = DrawPoint.extend({
   type: "label",
@@ -21,7 +21,7 @@ export var DrawLabel = DrawPoint.extend({
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      label: Label.style2Entity(attribute.style),
+      label: AttrLabel.style2Entity(attribute.style),
       attribute: attribute,
     };
     this.entity = this.dataSource.entities.add(addAttr); // 创建要素对象
@@ -29,10 +29,10 @@ export var DrawLabel = DrawPoint.extend({
   },
 
   style2Entity: function (style, entity) {
-    return Label.style2Entity(style, entity.label);
+    return AttrLabel.style2Entity(style, entity.label);
   },
 
   getAttrClass: function () {
-    return Label;
+    return AttrLabel;
   },
 });

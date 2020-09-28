@@ -1,6 +1,6 @@
 import { DrawPolyline } from "./DrawPolyline";
-import { Polygon } from "../overlay/index";
-import { PointUtil } from "../utils/index";
+import { AttrPolygon } from "../attr/index";
+import { PointUtil } from "../core/index";
 import { EditPolygon } from "../edit/index";
 
 /*
@@ -9,7 +9,7 @@ import { EditPolygon } from "../edit/index";
  * @Author: 宁四凯
  * @Date: 2020-08-27 08:31:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:46:23
+ * @LastEditTime: 2020-09-28 14:05:52
  */
 
 const def_minPointNum = 2;
@@ -31,7 +31,7 @@ export var DrawPolygon = DrawPolyline.extend({
 
     var that = this;
     var addAttr = {
-      polygon: Polygon.style2Entity(attribute.style),
+      polygon: AttrPolygon.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -50,7 +50,7 @@ export var DrawPolygon = DrawPolyline.extend({
   },
 
   style2Entity: function (style, entity) {
-    return Polygon.style2Entity(style, entity.polygon);
+    return AttrPolygon.style2Entity(style, entity.polygon);
   },
 
   bindOutline: function (entity) {
@@ -108,7 +108,7 @@ export var DrawPolygon = DrawPolyline.extend({
 
   // 获取属性处理类
   getAttrClass: function () {
-    return Polygon;
+    return AttrPolygon;
   },
 
   // 图形绘制结束后调用

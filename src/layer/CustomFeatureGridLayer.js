@@ -1,7 +1,12 @@
 import { FeatureGridLayer } from "./FeatureGridLayer";
 import Cesium from "cesium";
-import { Polygon, Polyline, Billboard, Label } from "../overlay/index";
-import * as Util from "../Util";
+import {
+  AttrPolygon,
+  AttrPolyline,
+  AttrBillboard,
+  AttrLabel,
+} from "../attr/index";
+import { Util } from "../core/index";
 import $ from "jquery";
 /*
  * @Description: 分块加载图层基类
@@ -9,7 +14,7 @@ import $ from "jquery";
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:54:59
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 14:41:16
+ * @LastEditTime: 2020-09-28 14:03:28
  */
 export var CustomFeatureGridLayer = FeatureGridLayer.extend({
   _cacheGrid: {}, // 网络缓存，存放矢量对象id集合
@@ -321,7 +326,7 @@ export var CustomFeatureGridLayer = FeatureGridLayer.extend({
     this._opacity = styleOpt.opacity || 1; //透明度
 
     if (entity.polygon) {
-      Polygon.style2Entity(styleOpt, entity.polygon);
+      AttrPolygon.style2Entity(styleOpt, entity.polygon);
       //加上线宽
       if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
         entity.polygon.outline = false;
@@ -333,7 +338,7 @@ export var CustomFeatureGridLayer = FeatureGridLayer.extend({
           lineType: "solid",
           outline: false,
         };
-        var polyline = Polyline.style2Entity(newopt);
+        var polyline = AttrPolyline.style2Entity(newopt);
         polyline.positions = entity.polygon.hierarchy._value.positions;
         this.dataSource.entities.add({
           polyline: polyline,
@@ -348,18 +353,18 @@ export var CustomFeatureGridLayer = FeatureGridLayer.extend({
         entity.polygon.extrudedHeight = floor * height;
       }
     } else if (entity.polyline) {
-      Polyline.style2Entity(styleOpt, entity.polyline);
+      AttrPolyline.style2Entity(styleOpt, entity.polyline);
     } else if (entity.billboard) {
       entity.billboard.heightReference =
         Cesium.HeightReference.RELATIVE_TO_GROUND;
-      Billboard.style2Entity(styleOpt, entity.billboard);
+      AttrEntity(styleOpt, entity.billboard);
 
       //加上文字标签
       if (styleOpt.label && styleOpt.label.field) {
         styleOpt.label.heightReference =
           Cesium.HeightReference.RELATIVE_TO_GROUND;
 
-        entity.label = Label.style2Entity(styleOpt.label);
+        entity.label = AttrLabel.style2Entity(styleOpt.label);
         entity.label.text = attr[styleOpt.label.field];
       }
     }

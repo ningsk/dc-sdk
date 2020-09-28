@@ -5,7 +5,6 @@ import { Tooltip } from "./Tooltip";
 import * as PointUtil from "./PointUtil";
 import { GaodePOIGeocoder } from "./GaodePOIGeocoder";
 import * as Matrix from "./Matrix";
-import * as Popup from "./Popup";
 import * as FirstPerson from "./FirstPerson";
 export {
   Class,

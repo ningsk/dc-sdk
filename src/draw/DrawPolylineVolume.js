@@ -1,7 +1,7 @@
 import { DrawPolyline } from "./DrawPolyline";
 import Cesium from "cesium";
 import { EditPolylineVolume } from "../edit/index";
-import { PolylineVolume } from "../overlay/index";
+import { AttrPolylineVolume } from "../attr/index";
 
 /*
  * @Description:
@@ -9,7 +9,7 @@ import { PolylineVolume } from "../overlay/index";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:36
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:47:12
+ * @LastEditTime: 2020-09-28 11:34:10
  */
 
 const def_minPointNum = 2;
@@ -34,7 +34,7 @@ export var DrawPolylineVolume = DrawPolyline.extend({
 
     var that = this;
     var addAttr = {
-      polylineVolume: attr.style2Entity(attribute.style),
+      polylineVolume: AttrPolylineVolume.style2Entity(attribute.style),
       attribute: attribute,
     };
     addAttr.polylineVolume.positions = new Cesium.CallbackProperty(function (
@@ -51,7 +51,7 @@ export var DrawPolylineVolume = DrawPolyline.extend({
   },
 
   style2Entity: function (style, entity) {
-    return PolylineVolume.style2Entity(style, entity.polylineVolume);
+    return AttrPolylineVolume.style2Entity(style, entity.polylineVolume);
   },
   updateAttrForDrawing: function () {},
   //获取编辑对象
@@ -63,7 +63,7 @@ export var DrawPolylineVolume = DrawPolyline.extend({
   },
   //获取属性处理类
   getAttrClass: function () {
-    return PolylineVolume;
+    return AttrPolylineVolume;
   },
   //图形绘制结束后调用
   finish: function () {

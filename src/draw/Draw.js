@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 09:01:21
+ * @LastEditTime: 2020-09-28 13:55:12
  */
 
-import { TooltipUtil as Tooltip, Util as DrawUtil } from "../utils/index";
+import { Tooltip, Util as DrawUtil } from "../core/index";
 
 import {
   DrawPoint,
@@ -130,7 +130,7 @@ export var Draw = Evented.extend({
     attribute = DrawUtil.addGeoJsonDefVal(attribute);
 
     this.stopDraw();
-    var entity = this.drawCtrl[type].activate(attribute, drawOkCalback);
+    var entity = this.drawCtrl[type].activate(attribute, drawOkcallback);
     return entity;
   },
   stopDraw: function () {

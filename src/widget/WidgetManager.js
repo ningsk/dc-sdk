@@ -370,10 +370,10 @@ export function disableGroup(group, nodisable) {
   }
 }
 
-export function eachWidget(calback) {
+export function eachWidget(callback) {
   for (var i = 0; i < widgetsData.length; i++) {
     var item = widgetsData[i];
-    calback(item);
+    callback(item);
   }
 }
 

@@ -1,8 +1,13 @@
 import Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer";
-import * as Util from "../Util";
+import { Util } from "../core/index";
 import $ from "jquery";
-import { Polyline, Polygon, Label, Billboard } from "../overlay/index";
+import {
+  AttrPolyline,
+  AttrPolygon,
+  AttrLabel,
+  AttrBillboard,
+} from "../attr/index";
 
 /*
  * @Description: GeoJson格式数据图层
@@ -10,7 +15,7 @@ import { Polyline, Polygon, Label, Billboard } from "../overlay/index";
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:22:51
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 14:41:54
+ * @LastEditTime: 2020-09-28 14:03:43
  */
 export var GeoJsonLayer = BaseLayer.extend({
   dataSource: null,
@@ -233,10 +238,10 @@ export var GeoJsonLayer = BaseLayer.extend({
 
     this._opacity = styleOpt.opacity || 1; // 透明度
     if (entity.polyline) {
-      Polyline.style2Entity(styleOpt, entity.polyline);
+      AttrPolyline.style2Entity(styleOpt, entity.polyline);
     }
     if (entity.polygon) {
-      Polygon.style2Entity(styleOpt, entity.polygon);
+      AttrPolygon.style2Entity(styleOpt, entity.polygon);
       // 加上线宽
       if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
         entity.polygon.outline = false;
@@ -248,7 +253,7 @@ export var GeoJsonLayer = BaseLayer.extend({
           clampToGround: true,
           outliine: false,
         };
-        let polyline = Polyline.style2Entity(newOpt);
+        let polyline = AttrPolyline.style2Entity(newOpt);
         polyline.positions = entity.polygon.hierarchy._value.positions;
         this.dataSource._entityCollection.add({
           polyline: polyline,
@@ -266,19 +271,19 @@ export var GeoJsonLayer = BaseLayer.extend({
     if (entity.label) {
       styleOpt.heightReference =
         styleOpt.heightReference || Cesium.HeightReference.RELATIVE_TO_GROUND;
-      Label.style2Entity(styleOpt, entity.label);
+      AttrLabel.style2Entity(styleOpt, entity.label);
     }
 
     if (entity.billboard) {
       styleOpt.heightReference =
         styleOpt.heightReference || Cesium.HeightReference.RELATIVE_TO_GROUND;
-      Billboard.style2Entity(styleOpt, entity.billboard);
+      AttrBillboard.style2Entity(styleOpt, entity.billboard);
       // 加上文字标签
       if (styleOpt.label && styleOpt.label.field) {
         styleOpt.label.heightReference =
           styleOpt.label.heightReference ||
           Cesium.HeightReference.RELATIVE_TO_GROUND;
-        entity.label = Label.style2Entity(styleOpt.label);
+        entity.label = AttrEntity(styleOpt.label);
         entity.label.text = attr[styleOpt.label.field] || "";
       }
     }

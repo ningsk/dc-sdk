@@ -1,6 +1,6 @@
 import { DrawPolyline } from "./DrawPolyline";
 import Cesium from "cesium";
-import { Ellipsoid } from "../overlay/index";
+import { AttrEllipsoid } from "../attr/index";
 import { EditEllipsoid } from "../edit/index";
 /*
  * @Description:
@@ -8,7 +8,7 @@ import { EditEllipsoid } from "../edit/index";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:25
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:44:58
+ * @LastEditTime: 2020-09-28 11:29:01
  */
 export var DrawEllipsoid = DrawPolyline.extend({
   type: "ellipsoid",
@@ -29,13 +29,13 @@ export var DrawEllipsoid = DrawPolyline.extend({
       position: new Cesium.CallbackProperty((time) => {
         return that.getShowPosition();
       }),
-      ellipsoid: Ellipsoid.style2Entity(attribute.style),
+      ellipsoid: AttrEllipsoid.style2Entity(attribute.style),
       attribute: attribute,
     };
   },
 
   style2Entity: function (style, entity) {
-    return Ellipsoid.style2Entity(style, entity.ellipsoid);
+    return AttrEllipsoid.style2Entity(style, entity.ellipsoid);
   },
 
   updateAttrForDrawing: function (isLoad) {
@@ -133,7 +133,7 @@ export var DrawEllipsoid = DrawPolyline.extend({
 
   // 获取属性处理类
   getAttrClass: function () {
-    return Ellipsoid;
+    return AttrEllipsoid;
   },
 
   // 图形绘制结束后调用

@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:50:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 11:17:31
+ * @LastEditTime: 2020-09-28 11:24:20
  */
 
 import * as Map from "./Map";
@@ -18,7 +18,7 @@ import {
 
 import { DivPoint } from "./DivPoint";
 
-import * as Attr from "./overlay/index";
+import * as Attr from "./attr/index";
 
 import * as EventType from "./event/index";
 

@@ -167,14 +167,6 @@ export function getParamString(obj, existingUrl, uppercase) {
   );
 }
 
-// @function isArray(obj): Boolean
-// Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
-export var isArray =
-  Array.isArray ||
-  function (obj) {
-    return Object.prototype.toString.call(obj) === "[object Array]";
-  };
-
 // @function indexOf(array: Array, el: Object): Number
 // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 export function indexOf(array, el) {
@@ -914,27 +906,17 @@ export function terrainPolyline(params) {
   });
   var cartographicArray = [];
   var ellipsoid = viewer.scene.globe.ellipsoid;
-  for (var i = 0; i < flatPositions.length; i+=3) {
-    var cartesian = Cesium.Cartesian3.unpack(
-      flatPositions,
-      i
-    );
-    cartographicArray.push(
-      ellipsoid.cartesianToCartographic(cartesian);
-    );
+  for (var i = 0; i < flatPositions.length; i += 3) {
+    var cartesian = Cesium.Cartesian3.unpack(flatPositions, i);
+    cartographicArray.push(ellipsoid.cartesianToCartographic(cartesian));
   }
 
   // 用于缺少地形数据时，赋值的高度
-  var tempHeight = Cesium.Cartographic.fromCartesian(
-    positions[0]
-  ).height;
+  var tempHeight = Cesium.Cartographic.fromCartesian(positions[0]).height;
 
   Cesium2.when(
-    Cesium.sampleTerrainMostDetailed(
-      viewer.terrainProvider,
-      cartographicArray
-    ),
-    function(samples) {
+    Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, cartographicArray),
+    function (samples) {
       var noHeight = false;
       var offset = params.offset || 2; //增高高度，便于可视
 
@@ -944,8 +926,7 @@ export function terrainPolyline(params) {
           samples[i].height = tempHeight;
         } else {
           samples[i].height =
-            offset +
-            samples[i].height * viewer.scene._terrainExaggeration;
+            offset + samples[i].height * viewer.scene._terrainExaggeration;
         }
       }
 
@@ -956,7 +937,6 @@ export function terrainPolyline(params) {
       else if (positions.setValue) positions.setValue(raisedPositions);
     }
   );
-
 }
 
 export function getEllipsoidTerrain() {
@@ -1257,13 +1237,6 @@ export function cartesian2lonlat(cartesian) {
   var y = formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
   var z = formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
   return [x, y, z];
-}
-
-// @function formatNum(num: Number, digits?: Number): Number
-// Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
-export function formatNum(num, digits) {
-  var pow = Math.pow(10, digits === undefined ? 6 : digits);
-  return Math.round(num * pow) / pow;
 }
 
 /**

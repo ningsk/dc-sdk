@@ -4,11 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 08:41:02
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 14:38:44
+ * @LastEditTime: 2020-09-28 13:58:22
  */
 import Cesium from "cesium";
-import * as Util from "../Util";
-import { Class } from "../Class";
+import { Util, Class } from "../core/index";
 
 export var BaseLayer = Class.extend({
   config: {}, // 配置的config信息

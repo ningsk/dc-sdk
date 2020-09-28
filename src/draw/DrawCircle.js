@@ -1,6 +1,6 @@
 import { DrawPolyline } from "./DrawPolyline";
 import Cesium from "cesium";
-import { Circle } from "../overlay/index";
+import { AttrCircle } from "../attr/index";
 import { EditCircle } from "../edit/index";
 
 /*
@@ -9,7 +9,7 @@ import { EditCircle } from "../edit/index";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:15
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:44:25
+ * @LastEditTime: 2020-09-28 11:26:58
  */
 export var DrawCircle = DrawPolyline.extend({
   type: "ellipse",
@@ -40,7 +40,7 @@ export var DrawCircle = DrawPolyline.extend({
       position: new Cesium.CallbackProperty((time) => {
         return that.getShowPosition();
       }, false),
-      ellipse: Circle.style2Entity(attribute.style),
+      ellipse: AttrCircle.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -49,7 +49,7 @@ export var DrawCircle = DrawPolyline.extend({
   },
 
   style2Entity: function (style, entity) {
-    return Circle.style2Entity(style, entity.ellipse);
+    return AttrCircle.style2Entity(style, entity.ellipse);
   },
 
   updateAttrForDrawing: function (isLoad) {
@@ -166,7 +166,7 @@ export var DrawCircle = DrawPolyline.extend({
 
   // 获取属性处理类
   getAttrClass: function () {
-    return Circle;
+    return AttrCircle;
   },
 
   // 图形绘制结束后调用

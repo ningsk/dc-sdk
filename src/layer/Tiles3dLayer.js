@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 09:04:46
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 09:11:05
+ * @LastEditTime: 2020-09-28 14:04:01
  */
 import { BaseLayer } from "./BaseLayer";
 import Cesium from "cesium";
 import { Axis } from "./Axis";
-import { Util, PointUtil } from "../utils/index";
+import { Util, PointUtil } from "../core/index";
 
 export var Tiles3dLayer = BaseLayer.extend({
   model: null,

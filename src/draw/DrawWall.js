@@ -4,11 +4,11 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:47:29
+ * @LastEditTime: 2020-09-28 11:34:47
  */
 
 import { DrawPolyline } from "./DrawPolyline";
-import { Wall } from "../overlay/index";
+import { AttrWall } from "../attr/index";
 import { EditWall } from "../edit/index";
 import Cesium from "cesium";
 
@@ -36,7 +36,7 @@ export var DrawWall = DrawPolyline.extend({
 
     var that = this;
     var addAttr = {
-      wall: Wall.style2Entity(attribute.style),
+      wall: AttrWall.style2Entity(attribute.style),
       attribute: attribute,
     };
     addAttr.wall.positions = new Cesium.CallbackProperty(function (time) {
@@ -54,7 +54,7 @@ export var DrawWall = DrawPolyline.extend({
   },
 
   style2Entity: function (style, entity) {
-    return Wall.style2Entity(style, entity.wall);
+    return AttrWall.style2Entity(style, entity.wall);
   },
   getMaximumHeights: function (entity) {
     return this.maximumHeights;
@@ -85,7 +85,7 @@ export var DrawWall = DrawPolyline.extend({
   },
   //获取属性处理类
   getAttrClass: function () {
-    return Wall;
+    return AttrWall;
   },
   //图形绘制结束后调用
   finish: function () {

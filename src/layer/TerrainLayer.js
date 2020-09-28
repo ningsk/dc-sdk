@@ -1,4 +1,4 @@
-import { Util } from "../utils/index";
+import { Util } from "../core/index";
 
 /*
  * @Description: Terrain地形图层
@@ -6,7 +6,7 @@ import { Util } from "../utils/index";
  * @Author: 宁四凯
  * @Date: 2020-08-21 08:58:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:05:45
+ * @LastEditTime: 2020-09-28 14:04:11
  */
 
 import { BaseLayer } from "./BaseLayer";

@@ -4,14 +4,14 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 10:39:16
+ * @LastEditTime: 2020-09-28 13:54:29
  */
 
 import Cesium from "cesium";
-import { Draw } from "../draw/index";
-import { DrawEventType } from "../event/index";
-import { style2Entity } from "../overlay/Label";
-import { Util, PointUtil } from "../core/index";
+import { Draw } from "./draw/index";
+import { DrawEventType } from "./event/index";
+import { style2Entity } from "./attr/AttrLabel";
+import { Util, PointUtil } from "./core/index";
 
 import echarts from "echarts";
 

@@ -1,5 +1,5 @@
 import Cesium from "cesium";
-import { Point, Billboard } from "../overlay/index";
+import { AttrBillboard } from "../attr/index";
 import { DrawPoint } from "./DrawPoint";
 
 /*
@@ -8,7 +8,7 @@ import { DrawPoint } from "./DrawPoint";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:44:17
+ * @LastEditTime: 2020-09-28 11:26:03
  */
 
 export var DrawBillboard = DrawPoint.extend({
@@ -21,7 +21,7 @@ export var DrawBillboard = DrawPoint.extend({
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      billboard: Billboard.style2Entity(attribute.style),
+      billboard: AttrBillboard.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -30,11 +30,11 @@ export var DrawBillboard = DrawPoint.extend({
   },
 
   style2Entity: function (style, entity) {
-    return Billboard.style2Entity(style, entity.billboard);
+    return AttrBillboard.style2Entity(style, entity.billboard);
   },
 
   // 获取属性处理类
   getAttrClass: function () {
-    return Billboard;
+    return AttrBillboard;
   },
 });

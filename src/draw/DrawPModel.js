@@ -1,7 +1,7 @@
 import { DrawBase } from "./DrawBase";
 import Cesium from "cesium";
-import { Model } from "../overlay/index";
-import { PointUtil, TooltipUtil as Tooltip } from "../utils/index";
+import { AttrModel } from "../attr/index";
+import { PointUtil, Tooltip } from "../core/index";
 import { EditPModel } from "../edit/index";
 /*
  * @Description:
@@ -9,7 +9,7 @@ import { EditPModel } from "../edit/index";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:41
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:45:52
+ * @LastEditTime: 2020-09-28 14:04:58
  */
 export var DrawPModel = DrawBase.extend({
   type: "point",
@@ -58,7 +58,7 @@ export var DrawPModel = DrawBase.extend({
 
   style2Entity: function (style, entity) {
     entity.modelMatrix = this.getModelMatrix(style, entity.position);
-    return Model.style2Entity(style, entity);
+    return AttrModel.style2Entity(style, entity);
   },
 
   bindEvent: function () {
@@ -101,7 +101,7 @@ export var DrawPModel = DrawBase.extend({
   },
 
   getAttrClass: function () {
-    return Model;
+    return AttrModel;
   },
 
   // 图形绘制结束后，更新属性

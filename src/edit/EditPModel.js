@@ -1,7 +1,8 @@
 import { EditBase } from "./EditBase";
 import Cesium from "cesium";
-import { Dragger, TooltipUtil as Tooltip, PointUtil } from "../utils/index";
-import { Circle } from "../overlay/index";
+import { Tooltip, PointUtil } from "../core/index";
+import { Dragger } from "../dom/index";
+import { AttrCircle } from "../attr/index";
 
 /*
  * @Description:
@@ -9,7 +10,7 @@ import { Circle } from "../overlay/index";
  * @Author: 宁四凯
  * @Date: 2020-08-26 13:57:57
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:49:01
+ * @LastEditTime: 2020-09-28 14:09:21
  */
 export var EditPModel = EditBase.extend({
   setPositions: function (position) {

@@ -1,9 +1,8 @@
 import Cesium from "cesium";
 import { DrawBase } from "./DrawBase";
-import { Polyline } from "../overlay/index";
-import { PointUtil } from "../core/index";
+import { AttrPolyline } from "../attr/index";
+import { PointUtil, Tooltip } from "../core/index";
 import { DrawEventType, EditEventType } from "../event/index";
-import { Tooltip } from "../core/index";
 import { EditPolyline } from "../edit/index";
 
 const def_minPointNum = 2;
@@ -15,7 +14,7 @@ const def_maxPointNum = 9999;
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:11
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 15:00:47
+ * @LastEditTime: 2020-09-28 14:05:38
  */
 export var DrawPolyline = DrawBase.extend({
   type: "polyline",
@@ -38,7 +37,7 @@ export var DrawPolyline = DrawBase.extend({
 
     var that = this;
     var addAttr = {
-      polyline: Polyline.style2Entity(attribute.style),
+      polyline: AttrPolyline.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -52,7 +51,7 @@ export var DrawPolyline = DrawBase.extend({
   },
 
   style2Entity: function (style, entity) {
-    return Polyline.style2Entity(style, entity.polyline);
+    return AttrPolyline.style2Entity(style, entity.polyline);
   },
 
   // 绑定鼠标事件
@@ -210,7 +209,7 @@ export var DrawPolyline = DrawBase.extend({
 
   // 获取属性处理类
   getAttrClass: function () {
-    return Polyline;
+    return AttrPolyline;
   },
 
   finish: function () {

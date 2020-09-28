@@ -1,7 +1,7 @@
 import Cesium from "cesium";
-import { Point } from "../overlay/index";
+import { AttrPoint } from "../attr/index";
 import { DrawBase } from "./DrawBase";
-import { PointUtil } from "../utils/index";
+import { PointUtil } from "../core/index";
 import { EditPoint } from "../edit/index";
 
 /*
@@ -10,7 +10,7 @@ import { EditPoint } from "../edit/index";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:31:39
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:46:11
+ * @LastEditTime: 2020-09-28 11:32:50
  */
 export var DrawPoint = DrawBase.extend({
   type: "point",
@@ -22,7 +22,7 @@ export var DrawPoint = DrawBase.extend({
       position: new Cesium.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false),
-      point: Point.style2Entity(attribute.style),
+      point: AttrPoint.style2Entity(attribute.style),
       attribute: attribute,
     };
 
@@ -31,7 +31,7 @@ export var DrawPoint = DrawBase.extend({
   },
 
   style2Entity: function (style, entity) {
-    return Point.style2Entity(style, entity.point);
+    return AttrPoint.style2Entity(style, entity.point);
   },
   // 绑定鼠标事件
   bindEvent: function () {
@@ -57,7 +57,7 @@ export var DrawPoint = DrawBase.extend({
 
   // 获取属性处理类
   getAttrClass: function () {
-    return attr;
+    return AttrPoint;
   },
 
   finish: function () {

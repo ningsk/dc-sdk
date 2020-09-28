@@ -4,9 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:18:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 15:45:36
+ * @LastEditTime: 2020-09-28 13:54:54
  */
-import { Loader } from "../utils/index";
+import { Loader } from "../dom/index";
 import * as WidgetManager from "./WidgetManager";
 import { Class } from "../core/index";
 

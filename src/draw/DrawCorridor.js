@@ -1,6 +1,6 @@
 import { DrawPolyline } from "./DrawPolyline";
 import Cesium from "cesium";
-import { Corridor } from "../overlay/index";
+import { AttrCorridor } from "../attr/index";
 import { EditCorridor } from "../edit/index";
 /*
  * @Description:
@@ -8,7 +8,7 @@ import { EditCorridor } from "../edit/index";
  * @Author: 宁四凯
  * @Date: 2020-08-26 15:05:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:44:37
+ * @LastEditTime: 2020-09-28 11:27:34
  */
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;
@@ -32,7 +32,7 @@ export var DrawCorridor = DrawPolyline.extend({
 
     var that = this;
     var addAttr = {
-      corridor: Corridor.style2Entity(attribute.style),
+      corridor: AttrCorridor.style2Entity(attribute.style),
       attribute: attribute,
     };
     addAttr.corridor.positions = new Cesium.CallbackProperty((time) => {
@@ -45,7 +45,7 @@ export var DrawCorridor = DrawPolyline.extend({
     return this.entity;
   },
   style2Entity: function (style, entity) {
-    return Corridor.style2Entity(style, entity.corridor);
+    return AttrCorridor.style2Entity(style, entity.corridor);
   },
   updateAttrForDrawing: function () {},
   //获取编辑对象
@@ -57,7 +57,7 @@ export var DrawCorridor = DrawPolyline.extend({
   },
   //获取属性处理类
   getAttrClass: function () {
-    return Corridor;
+    return AttrCorridor;
   },
   //图形绘制结束后调用
   finish: function () {

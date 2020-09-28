@@ -1,5 +1,5 @@
 import { DrawPolyline } from "./DrawPolyline";
-import { Polyline } from "../overlay/index";
+import { AttrPolyline } from "../attr/index";
 import { EditCurve } from "../edit/index";
 
 /*
@@ -8,7 +8,7 @@ import { EditCurve } from "../edit/index";
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:21
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:44:44
+ * @LastEditTime: 2020-09-28 11:35:11
  */
 export var DrawCurve = DrawPolyline.extend({
   type: "curve",
@@ -23,13 +23,17 @@ export var DrawCurve = DrawPolyline.extend({
       this._positions_show = this._positions_draw;
       return;
     }
-    this._positions_show = Polyline.line2curve(this._positions_draw);
+    this._positions_show = AttrPolyline.line2curve(this._positions_draw);
   },
 
   // 获取编辑对象
   getEditClass: function (entity) {
     var _edit = new EditCurve(entity, this.viewer, this.dataSource);
     return this._bindEdit(_edit);
+  },
+
+  getAttrClass() {
+    return AttrPolyline;
   },
 
   // 绘制结束后调用
