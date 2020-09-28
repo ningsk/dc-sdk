@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 14:11:41
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-09 10:05:02
+ * @LastEditTime: 2020-09-28 08:40:52
  */
 
-import { getCurrentMousePosition } from "../utils/PointUtil";
+import { getCurrentMousePosition } from "../core/PointUtil";
 import Cesium from "cesium";
 import $ from "jquery";
 

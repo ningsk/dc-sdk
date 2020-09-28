@@ -6,7 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-11 08:54:28
  */
-import { Util } from "../utils/index";
+import { Util } from "../core/index";
 import { lineString, bezierSpline } from "turf";
 import Cesium from "Cesium";
 export function style2Entity(style, entityAttr) {

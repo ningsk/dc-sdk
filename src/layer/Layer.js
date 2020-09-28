@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:23:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 09:09:15
+ * @LastEditTime: 2020-09-28 09:21:25
  */
 import Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer.js";
@@ -21,8 +21,10 @@ import { KmlLayer } from "./KmlLayer.js";
 import { CzmlLayer } from "./CzmlLayer.js";
 import { TerrainLayer } from "./TerrainLayer.js";
 import { DrawLayer } from "./DrawLayer.js";
-import { BaiduImageryProvider } from "../provider/index"; //暂时没有内容
-// import _FeatureGridImageryProvider from "./FeatureGridImageryProvider.js";//暂时没有
+import {
+  BaiduImageryProvider,
+  FeatureGridImageryProvider,
+} from "../imageprovider/index";
 
 function getOneKey(arr) {
   var n = Math.floor(Math.random() * arr.length + 1) - 1;
@@ -401,8 +403,13 @@ function createImageryProvider(item, serverURL) {
           break;
         case "time":
           var time = new Date().getTime();
-          _url =
-            "http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t=" +
+          _url = context.font = "bold 25px Arial";
+          context.textAlign = "center";
+          context.fillStyle = "black";
+          context.fillText(label, 127, 127);
+          context.fillStyle = "#ffff00";
+          context.fillText(label, 124, 124);
+          "http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t=" +
             time;
           break;
       }
@@ -420,7 +427,7 @@ function createImageryProvider(item, serverURL) {
       break;
     case "www_baidu":
       //百度
-      layer = new _BaiduImageryProvider.BaiduImageryProvider(opts);
+      layer = new BaiduImageryProvider(opts);
       break;
     case "www_google":
       //谷歌国内
