@@ -4,11 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-24 13:19:53
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 15:39:14
+ * @LastEditTime: 2020-09-29 11:10:00
  */
-
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 var cameraFunc; //键盘漫游  第一人称漫游
 
 export function bind(viewer) {
@@ -45,7 +43,7 @@ export function bind(viewer) {
 
   handler.setInputAction(function (movement) {
     flags.looking = true;
-    mousePosition = startMousePosition = _Cesium2.default.Cartesian3.clone(
+    mousePosition = startMousePosition = Cesium.Cartesian3.clone(
       movement.position
     );
   }, Cesium.ScreenSpaceEventType.LEFT_DOWN);

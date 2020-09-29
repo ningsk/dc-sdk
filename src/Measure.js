@@ -4,16 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 13:54:29
+ * @LastEditTime: 2020-09-29 11:07:02
  */
-
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Draw } from "./draw/index";
 import { DrawEventType } from "./event/index";
 import { style2Entity } from "./attr/AttrLabel";
 import { Util, PointUtil } from "./core/index";
-
-import echarts from "echarts";
 
 import { area, centerOfMass, point, rhumbBearing, destination } from "turf";
 
@@ -1110,10 +1107,7 @@ export var Measure = function (opts) {
           this.updateSuperHeightLabel(this.hLable, midLPoint, "", lLength);
         }
       } else if (positions.length == 2) {
-        vLength = _Cesium2.default.Cartesian3.distance(
-          positions[1],
-          positions[0]
-        );
+        vLength = Cesium.Cartesian3.distance(positions[1], positions[0]);
         var midHPoint = Cesium.Cartesian3.midpoint(
           positions[0],
           positions[1],

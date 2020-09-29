@@ -1,7 +1,7 @@
-import Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer";
 import { Util } from "../core/index";
 import $ from "jquery";
+import * as Cesium from "cesium";
 import {
   AttrPolyline,
   AttrPolygon,

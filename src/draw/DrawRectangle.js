@@ -6,7 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-08 09:55:35
  */
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { DrawPolyline } from "./DrawPolyline";
 import { EditRectangle } from "../edit/index";
 

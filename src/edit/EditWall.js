@@ -1,5 +1,5 @@
 import { EditPolyline } from "./EditPolyline";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Tooltip, PointUtil } from "../core/index";
 import { Dragger } from "../dom/index";
 /*

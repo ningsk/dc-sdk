@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 13:32:28
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:37:38
+ * @LastEditTime: 2020-09-29 11:30:00
  */
 
-import Cesium, { DeveloperError } from "cesium";
+import * as Cesium from "cesium";
 var height = 33746824;
 var width = 33554054;
 
@@ -90,7 +90,7 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
     get: function get() {
       //>>includeStart('debug', pragmas.debug);
       if (!this._ready) {
-        throw new DeveloperError(
+        throw new Cesium.DeveloperError(
           "tileWidth must not be called before the imagery provider is ready."
         );
       }
@@ -104,7 +104,7 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
     get: function get() {
       //>>includeStart('debug', pragmas.debug);
       if (!this._ready) {
-        throw new DeveloperError(
+        throw new Cesium.DeveloperError(
           "tileHeight must not be called before the imagery provider is ready."
         );
       }
@@ -118,7 +118,7 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
     get: function get() {
       //>>includeStart('debug', pragmas.debug);
       if (!this._ready) {
-        throw new DeveloperError(
+        throw new Cesium.DeveloperError(
           "maximumLevel must not be called before the imagery provider is ready."
         );
       }
@@ -132,7 +132,7 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
     get: function get() {
       //>>includeStart('debug', pragmas.debug);
       if (!this._ready) {
-        throw new DeveloperError(
+        throw new Cesium.DeveloperError(
           "minimumLevel must not be called before the imagery provider is ready."
         );
       }
@@ -146,7 +146,7 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
     get: function get() {
       //>>includeStart('debug', pragmas.debug);
       if (!this._ready) {
-        throw new DeveloperError(
+        throw new Cesium.DeveloperError(
           "tilingScheme must not be called before the imagery provider is ready."
         );
       }
@@ -160,7 +160,7 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
     get: function get() {
       //>>includeStart('debug', pragmas.debug);
       if (!this._ready) {
-        throw new DeveloperError(
+        throw new Cesium.DeveloperError(
           "rectangle must not be called before the imagery provider is ready."
         );
       }
@@ -174,7 +174,7 @@ Cesium.defineProperties(BaiduImageryProvider.prototype, {
     get: function get() {
       //>>includeStart('debug', pragmas.debug);
       if (!this._ready) {
-        throw new DeveloperError(
+        throw new Cesium.DeveloperError(
           "tileDiscardPolicy must not be called before the imagery provider is ready."
         );
       }
@@ -233,7 +233,7 @@ BaiduImageryProvider.prototype.getTileCredits = function (x, y, level) {
 
 BaiduImageryProvider.prototype.requestImage = function (x, y, level) {
   if (!this._ready) {
-    throw new DeveloperError(
+    throw new Cesium.DeveloperError(
       "requestImage must not be called before the imagery provider is ready."
     );
   }

@@ -1,7 +1,8 @@
 import { DrawPolyline } from "./DrawPolyline";
-import Cesium from "cesium";
+
 import { AttrCorridor } from "../attr/index";
 import { EditCorridor } from "../edit/index";
+import * as Cesium from "cesium";
 /*
  * @Description:
  * @version:

@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:18:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 13:54:54
+ * @LastEditTime: 2020-09-29 11:06:20
  */
 import { Loader } from "../dom/index";
 import * as WidgetManager from "./WidgetManager";
@@ -424,7 +424,7 @@ export var BaseWidget = Class.extend({
   //==============直接添加到index上=================
   _appendView: function (viewopt) {
     if (this.isCreate && viewopt._dom) {
-      (0, _jquery2.default)(viewopt._dom).show({
+      $(viewopt._dom).show({
         duration: 500,
       });
       this._startActivate(viewopt._dom);
@@ -432,9 +432,7 @@ export var BaseWidget = Class.extend({
       var view_url = this._getUrl(viewopt.url);
       var that = this;
       that.getHtml(view_url, function (html) {
-        viewopt._dom = (0, _jquery2.default)(html).appendTo(
-          viewopt.parent || "body"
-        );
+        viewopt._dom = $(html).appendTo(viewopt.parent || "body");
 
         that.winCreateOK(viewopt, html);
 

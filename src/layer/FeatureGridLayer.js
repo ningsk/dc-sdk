@@ -1,12 +1,12 @@
-import Cesium from "cesium";
 import { TileLayer } from "./TileLayer";
+import * as Cesium from "cesium";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-20 15:48:16
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:08:01
+ * @LastEditTime: 2020-09-29 10:19:39
  */
 export var FeatureGridLayer = TileLayer.extend({
   dataSource: null,

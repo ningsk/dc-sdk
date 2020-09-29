@@ -4,9 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-21 13:59:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:29:05
+ * @LastEditTime: 2020-09-29 10:19:58
  */
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer";
 export var GroupLayer = BaseLayer.extend({
   create: function () {

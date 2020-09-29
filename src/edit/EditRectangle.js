@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-26 14:38:36
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 14:10:00
+ * @LastEditTime: 2020-09-29 10:19:03
  */
-import Cesium from "cesium";
+
 import { EditPolygon } from "./EditPolygon";
 import { PointUtil } from "../core/index";
 import { Dragger } from "../dom/index";
-
+import * as Cesium from "cesium";
 export var EditRectangle = EditPolygon.extend({
   // 修改坐标会回调，提高显示的效率
   changePositionsToCallback: function () {

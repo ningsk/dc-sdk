@@ -4,10 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:36:42
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 08:38:16
+ * @LastEditTime: 2020-09-29 10:16:32
  */
-
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Util } from "../core/index";
 
 export function style2Entity(style, entityAttr) {

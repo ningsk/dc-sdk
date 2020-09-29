@@ -1,5 +1,5 @@
 import { EditEventType } from "../event/index";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Class, Util, PointUtil, Tooltip } from "../core/index";
 
 /*

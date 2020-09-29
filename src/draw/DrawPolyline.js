@@ -1,10 +1,9 @@
-import Cesium from "cesium";
 import { DrawBase } from "./DrawBase";
 import { AttrPolyline } from "../attr/index";
 import { PointUtil, Tooltip } from "../core/index";
 import { DrawEventType, EditEventType } from "../event/index";
 import { EditPolyline } from "../edit/index";
-
+import * as Cesium from "cesium";
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;
 
@@ -14,7 +13,7 @@ const def_maxPointNum = 9999;
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:32:11
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 14:05:38
+ * @LastEditTime: 2020-09-29 10:18:16
  */
 export var DrawPolyline = DrawBase.extend({
   type: "polyline",

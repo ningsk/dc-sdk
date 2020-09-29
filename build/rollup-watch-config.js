@@ -1,30 +1,44 @@
 /*
- * @Descripttion:
+ * @Description:
  * @version:
  * @Author: 宁四凯
- * @Date: 2020-09-10 16:44:56
+ * @Date: 2020-09-10 16:36:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 11:15:15
+ * @LastEditTime: 2020-09-29 13:15:37
  */
-// Config file for running Rollup in "watch" mode
-// This adds a sanity check to help ourselves to run 'rollup -w' as needed.
-
 import rollupGitVersion from "rollup-plugin-git-version";
+import json from "rollup-plugin-json";
 import gitRev from "git-rev-sync";
-
-const branch = gitRev.branch();
-const rev = gitRev.short();
 import pkg from "../package.json";
-const version = require("../package.json").version + "+" + branch + "." + rev;
+
+let { version } = pkg;
+let release;
+
+// Skip the git branch+rev in the banner when doing a release build
+if (process.env.NODE_ENV === "release") {
+  release = true;
+} else {
+  release = false;
+  const branch = gitRev.branch();
+  const rev = gitRev.short();
+  version += "+" + branch + "." + rev;
+}
 
 export default {
   input: "src/index.js",
-  output: {
-    file: pkg.main,
-    format: "umd",
-    name: "mars",
-    legacy: true, // Needed to create files loadable by IE8
-    freeze: false,
-  },
-  plugins: [rollupGitVersion()],
+  external: ["jquery", "turf", "cesium"],
+  output: [
+    {
+      file: pkg.main,
+      format: "umd",
+      name: "mars3d",
+      globals: {
+        jquery: "$",
+        cesium: "Cesium",
+        leaflet: "L",
+        "esri-leaflet": "L.esri",
+      },
+    },
+  ],
+  plugins: [release ? json() : rollupGitVersion()],
 };

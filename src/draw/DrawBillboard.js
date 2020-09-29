@@ -1,7 +1,6 @@
-import Cesium from "cesium";
 import { AttrBillboard } from "../attr/index";
 import { DrawPoint } from "./DrawPoint";
-
+import * as Cesium from "cesium";
 /*
  * @Description: 绘制广告牌
  * @version:

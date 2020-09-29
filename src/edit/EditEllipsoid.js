@@ -1,5 +1,5 @@
 import { EditBase } from "./EditBase";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Tooltip, PointUtil } from "../core/index";
 import { Dragger } from "../dom/index";
 
@@ -9,7 +9,7 @@ import { Dragger } from "../dom/index";
  * @Author: 宁四凯
  * @Date: 2020-08-26 11:00:14
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 14:06:20
+ * @LastEditTime: 2020-09-29 10:18:47
  */
 export var EditEllipsoid = EditBase.extend({
   _positions_draw: null,

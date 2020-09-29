@@ -6,8 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-28 13:57:22
  */
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 var Color = Cesium.Color;
 var defaultValue = Cesium.defaultValue;
 var defined = Cesium.defined;

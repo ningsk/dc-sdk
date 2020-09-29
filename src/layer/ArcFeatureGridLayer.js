@@ -1,13 +1,12 @@
-import Cesium from "cesium";
 import { CustomFeatureGridLayer } from "./CustomFeatureGridLayer";
-import { esri } from "leaflet";
+import * as Cesium from "cesium";
 /*
  * @Description: ArcGIS矢量服务分块加载图层
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:53:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-10 10:14:08
+ * @LastEditTime: 2020-09-29 13:17:17
  */
 export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
   // 获取网格内的数据，callback为回调方法，参数传数据数组
@@ -18,7 +17,7 @@ export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
       url += "/" + this.config.layers[0];
     }
 
-    let query = esri.query({
+    let query = L.esri.query({
       url: url,
     });
 

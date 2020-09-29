@@ -1,4 +1,4 @@
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 
 const matrix3Scratch = new Cesium.Matrix3(); //一些涉及矩阵计算的方法
 const matrix4Scratch = new Cesium.Matrix4();
@@ -12,7 +12,7 @@ export function getHeadingPitchRollByMatrix(position, matrix) {
   let m1 = Cesium.Transforms.eastNorthUpToFixedFrame(
     position,
     Cesium.Ellipsoid.WGS84,
-    new _Cesium2.default.Matrix4()
+    new Cesium.Matrix4()
   );
   // 矩阵相除
   let m3 = Cesium.Matrix4.multiply(
@@ -85,7 +85,7 @@ export function getRotateCenterPoint(center, point1, angle) {
   chicB.height = 0;
   let dB = Cesium.Cartographic.toCartesian(chicB);
   let normaB = Cesium.Cartesian3.normalize(
-    Cesium.Cartesian3.subtract(dB, center, new _Cesium2.default.Cartesian3()),
+    Cesium.Cartesian3.subtract(dB, center, new Cesium.Cartesian3()),
     new Cesium.Cartesian3()
   );
 

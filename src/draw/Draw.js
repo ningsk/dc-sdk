@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 13:55:12
+ * @LastEditTime: 2020-09-29 13:17:56
  */
 
 import { Tooltip, Util as DrawUtil } from "../core/index";
@@ -28,9 +28,7 @@ import {
 
 import { DrawEventType, EditEventType } from "../event/index";
 
-import { Evented } from "leaflet";
-
-export var Draw = Evented.extend({
+export var Draw = L.Evented.extend({
   dataSource: null,
   primitives: null,
   drawCtrl: null,

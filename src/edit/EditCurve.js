@@ -1,7 +1,6 @@
-import Cesium from "cesium";
 import { EditPolyline } from "./EditPolyline";
 import { AttrPolyline } from "../attr/index";
-
+import * as Cesium from "cesium";
 /*
  * @Description:
  * @version:

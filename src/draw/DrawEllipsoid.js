@@ -1,14 +1,15 @@
 import { DrawPolyline } from "./DrawPolyline";
-import Cesium from "cesium";
+
 import { AttrEllipsoid } from "../attr/index";
 import { EditEllipsoid } from "../edit/index";
+import * as Cesium from "cesium";
 /*
  * @Description:
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:25
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 11:29:01
+ * @LastEditTime: 2020-09-29 10:18:02
  */
 export var DrawEllipsoid = DrawPolyline.extend({
   type: "ellipsoid",

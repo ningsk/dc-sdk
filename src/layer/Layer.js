@@ -6,7 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-28 09:21:25
  */
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer.js";
 import { GroupLayer } from "./GroupLayer.js";
 import { TileLayer } from "./TileLayer.js";

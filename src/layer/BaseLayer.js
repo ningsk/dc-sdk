@@ -6,9 +6,9 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-28 13:58:22
  */
-import Cesium from "cesium";
-import { Util, Class } from "../core/index";
 
+import { Util, Class } from "../core/index";
+import * as Cesium from "cesium";
 export var BaseLayer = Class.extend({
   config: {}, // 配置的config信息
   viewer: null,

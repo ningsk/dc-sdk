@@ -4,11 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 16:49:20
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:24:37
+ * @LastEditTime: 2020-09-29 11:11:00
  */
 import { BaseLayer } from "./BaseLayer";
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 export var GraticuleLayer = BaseLayer.extend({
   model: null,
   // 添加
@@ -228,7 +227,7 @@ export var GraticuleLayer = BaseLayer.extend({
       var ellipsoid = this._ellipsoid;
       var lat,
         lng,
-        granularity = _Cesium2.default.Math.toRadians(1);
+        granularity = Cesium.Math.toRadians(1);
 
       // labels positions
       var latitudeText =
@@ -318,10 +317,7 @@ export var GraticuleLayer = BaseLayer.extend({
       var camera = this._scene.camera;
       var canvas = this._scene.canvas;
       var corners = [
-        camera.pickEllipsoid(
-          new _Cesium2.default.Cartesian2(0, 0),
-          this._ellipsoid
-        ),
+        camera.pickEllipsoid(new Cesium.Cartesian2(0, 0), this._ellipsoid),
         camera.pickEllipsoid(
           new Cesium.Cartesian2(canvas.width, 0),
           this._ellipsoid
@@ -337,10 +333,10 @@ export var GraticuleLayer = BaseLayer.extend({
       ];
       for (var index = 0; index < 4; index++) {
         if (corners[index] === undefined) {
-          return Cesium.default.Rectangle.MAX_VALUE;
+          return Cesium.Rectangle.MAX_VALUE;
         }
       }
-      return Cesium.default.Rectangle.fromCartographicArray(
+      return Cesium.Rectangle.fromCartographicArray(
         this._ellipsoid.cartesianArrayToCartographicArray(corners)
       );
     };

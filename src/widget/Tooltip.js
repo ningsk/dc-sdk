@@ -6,9 +6,9 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-28 08:40:52
  */
-
+import * as Cesium from "cesium";
 import { getCurrentMousePosition } from "../core/PointUtil";
-import Cesium from "cesium";
+
 import $ from "jquery";
 
 var viewer;

@@ -4,8 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 09:45:03
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 14:46:20
+ * @LastEditTime: 2020-09-29 10:17:20
  */
+
+import * as Cesium from "cesium";
 
 //定义一些常量
 const x_PI = (3.14159265358979324 * 3000.0) / 180.0;

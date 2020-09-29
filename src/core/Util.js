@@ -4,7 +4,7 @@
  * Various utility functions, used by Leaflet internally.
  */
 
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.

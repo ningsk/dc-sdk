@@ -7,8 +7,7 @@
  * @LastEditTime: 2020-09-08 10:36:57
  */
 import { EditPolyline } from "./EditPolyline";
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 export var EditPolylineVolume = EditPolyline.extend({
   // 修改坐标会回调，提高显示的效率
   changePositionsToCallback: function () {

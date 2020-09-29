@@ -1,7 +1,7 @@
 import { CustomFeatureGridLayer } from "./CustomFeatureGridLayer";
 import { AttrBillboard, AttrPoint } from "../attr/index";
 import $ from "jquery";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { PointConvert } from "../core/index";
 /*
  * @Description:
@@ -9,7 +9,7 @@ import { PointConvert } from "../core/index";
  * @Author: 宁四凯
  * @Date: 2020-08-21 14:00:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 14:03:02
+ * @LastEditTime: 2020-09-29 10:20:08
  */
 export var POILayer = CustomFeatureGridLayer.extend({
   _keys: null,

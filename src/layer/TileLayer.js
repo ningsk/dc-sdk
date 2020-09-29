@@ -1,6 +1,6 @@
 import { BaseLayer } from "./BaseLayer";
 import { createImageryProvider } from "./Layer";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 /*
  * @Description: 瓦片底图图层
  * @version:

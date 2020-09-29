@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 11:24:07
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 14:47:03
+ * @LastEditTime: 2020-09-29 13:17:34
  */
-import Cesium from "cesium";
+
 import { GeoJsonLayer } from "./GeoJsonLayer";
-import { esri } from "leaflet";
 import * as Util from "../core/Util";
+import * as Cesium from "cesium";
 
 export var ArcFeatureLayer = GeoJsonLayer.extend({
   queryData: function () {
@@ -19,7 +19,7 @@ export var ArcFeatureLayer = GeoJsonLayer.extend({
     if (this.config.layers && this.config.layers.length > 0)
       url += "/" + this.config.layers[0];
 
-    var query = esri.query({
+    var query = L.esri.query({
       url: url,
     });
     if (this.config.where) query.where(this.config.where);
@@ -52,12 +52,9 @@ export var ArcFeatureLayer = GeoJsonLayer.extend({
         }
         featureCollection.features = featuresOK;
 
-        var dataSource = _Cesium2.default.GeoJsonDataSource.load(
-          featureCollection,
-          {
-            clampToGround: true,
-          }
-        );
+        var dataSource = Cesium.GeoJsonDataSource.load(featureCollection, {
+          clampToGround: true,
+        });
         dataSource
           .then(function (dataSource) {
             that.showResult(dataSource);

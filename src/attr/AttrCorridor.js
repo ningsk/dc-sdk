@@ -4,10 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-26 15:09:41
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-14 09:29:12
+ * @LastEditTime: 2020-09-29 10:16:22
  */
-
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Util } from "../core/index";
 
 // 属性赋值到entity

@@ -7,9 +7,9 @@
  * @LastEditTime: 2020-09-28 11:29:26
  */
 
-import Cesium from "cesium";
 import { DrawPoint } from "./DrawPoint";
 import { AttrLabel } from "../attr/index";
+import * as Cesium from "cesium";
 
 export var DrawLabel = DrawPoint.extend({
   type: "label",

@@ -6,9 +6,9 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-27 14:44:57
  */
-import Cesium from "cesium";
-import { GeoJsonLayer } from "./GeoJsonLayer";
 
+import { GeoJsonLayer } from "./GeoJsonLayer";
+import * as Cesium from "cesium";
 export var CzmlLayer = GeoJsonLayer.extend({
   queryData: function () {
     var that = this;

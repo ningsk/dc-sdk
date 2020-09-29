@@ -1,5 +1,5 @@
 import { EditBase } from "./EditBase";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Tooltip, PointUtil } from "../core/index";
 import { Dragger } from "../dom/index";
 import { AttrCircle } from "../attr/index";

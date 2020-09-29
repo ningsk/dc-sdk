@@ -4,10 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:37:50
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 08:38:37
+ * @LastEditTime: 2020-09-29 11:09:20
  */
-
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Util } from "../core/index";
 
 // 赋值到entity
@@ -71,18 +70,18 @@ export function getCorridorShape1(radius) {
 
   var pss = [];
   for (var i = startAngle; i <= endAngle; i++) {
-    var radians = _Cesium2.default.Math.toRadians(i);
+    var radians = Cesium.Math.toRadians(i);
     pss.push(
-      new _Cesium2.default.Cartesian2(
+      new Cesium.Cartesian2(
         radius * Math.cos(radians),
         radius * Math.sin(radians)
       )
     );
   }
   for (var i = endAngle; i >= startAngle; i--) {
-    var radians = _Cesium2.default.Math.toRadians(i);
+    var radians = Cesium.Math.toRadians(i);
     pss.push(
-      new _Cesium2.default.Cartesian2(
+      new Cesium.Cartesian2(
         (radius - hd) * Math.cos(radians),
         (radius - hd) * Math.sin(radians)
       )

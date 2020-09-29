@@ -6,9 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-27 14:55:31
  */
-
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 /**
  * 格式化
  * @param {*} num 数字

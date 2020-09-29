@@ -4,9 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 13:52:46
+ * @LastEditTime: 2020-09-29 10:20:42
  */
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import $ from "jquery";
 import { Tooltip, Popup } from "./widget/index";
 import { FirstPerson } from "./core/index";

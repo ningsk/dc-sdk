@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 08:33:33
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 11:34:47
+ * @LastEditTime: 2020-09-29 10:18:26
  */
 
+import * as Cesium from "cesium";
 import { DrawPolyline } from "./DrawPolyline";
 import { AttrWall } from "../attr/index";
 import { EditWall } from "../edit/index";
-import Cesium from "cesium";
 
 const def_minPointNum = 2;
 const def_maxPointNum = 9999;

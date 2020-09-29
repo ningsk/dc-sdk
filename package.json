@@ -2,10 +2,9 @@
   "name": "card-sdk",
   "version": "1.0.3",
   "description": "基于cesium的三维sdk",
-  "main": "dist/mars-src.js",
-  "module": "dist/mars-src.esm.js",
-  "unpkg": "dist/mars.js",
-  "jsdelivr": "dist/mars.js",
+  "main": "dist/mars3d-src.js",
+  "module": "dist/mars3d-src.esm.js",
+  "unpkg": "dist/mars3d-src.js",
   "scripts": {
     "pretest": "yarn run lint",
     "test": "yarn run test-nolint",

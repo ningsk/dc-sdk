@@ -1,8 +1,8 @@
-import Cesium from "cesium";
 import { AttrPoint } from "../attr/index";
 import { DrawBase } from "./DrawBase";
 import { PointUtil } from "../core/index";
 import { EditPoint } from "../edit/index";
+import * as Cesium from "cesium";
 
 /*
  * @Description: 绘制点

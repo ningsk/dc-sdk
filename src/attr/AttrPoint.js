@@ -6,7 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-08 13:06:43
  */
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Util } from "../core/index";
 //属性赋值到entity
 export function style2Entity(style, entityAttr) {

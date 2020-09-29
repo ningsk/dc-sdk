@@ -1,4 +1,4 @@
-const { Matrix4, Matrix3 } = require("cesium");
+import * as Cesium from "cesium";
 
 /*
  * @Description:
@@ -6,7 +6,7 @@ const { Matrix4, Matrix3 } = require("cesium");
  * @Author: 宁四凯
  * @Date: 2020-08-15 10:19:53
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 15:52:35
+ * @LastEditTime: 2020-09-29 13:09:02
  */
 export var Axis = {
   /**
@@ -15,8 +15,8 @@ export var Axis = {
    * @type {Matrix4}
    * @constant
    */
-  Y_UP_TO_Z_UP: Matrix4.fromRotationTranslation(
-    Matrix3.fromRotationX(CesiumMath.PI_OVER_TWO)
+  Y_UP_TO_Z_UP: Cesium.Matrix4.fromRotationTranslation(
+    Cesium.Matrix3.fromRotationX(Cesium.Math.PI_OVER_TWO)
   ),
 
   /**
@@ -25,8 +25,8 @@ export var Axis = {
    * @type {Matrix4}
    * @constant
    */
-  Z_UP_TO_Y_UP: Matrix4.fromRotationTranslation(
-    Matrix3.fromRotationX(-CesiumMath.PI_OVER_TWO)
+  Z_UP_TO_Y_UP: Cesium.Matrix4.fromRotationTranslation(
+    Cesium.Matrix3.fromRotationX(-Cesium.Math.PI_OVER_TWO)
   ),
 
   /**
@@ -35,8 +35,8 @@ export var Axis = {
    * @type {Matrix4}
    * @constant
    */
-  X_UP_TO_Z_UP: Matrix4.fromRotationTranslation(
-    Matrix3.fromRotationY(-CesiumMath.PI_OVER_TWO)
+  X_UP_TO_Z_UP: Cesium.Matrix4.fromRotationTranslation(
+    Cesium.Matrix3.fromRotationY(-Cesium.Math.PI_OVER_TWO)
   ),
 
   /**
@@ -45,8 +45,8 @@ export var Axis = {
    * @type {Matrix4}
    * @constant
    */
-  Z_UP_TO_X_UP: Matrix4.fromRotationTranslation(
-    Matrix3.fromRotationY(CesiumMath.PI_OVER_TWO)
+  Z_UP_TO_X_UP: Cesium.Matrix4.fromRotationTranslation(
+    Cesium.Matrix3.fromRotationY(Cesium.Math.PI_OVER_TWO)
   ),
 
   /**
@@ -55,8 +55,8 @@ export var Axis = {
    * @type {Matrix4}
    * @constant
    */
-  X_UP_TO_Y_UP: Matrix4.fromRotationTranslation(
-    Matrix3.fromRotationZ(CesiumMath.PI_OVER_TWO)
+  X_UP_TO_Y_UP: Cesium.Matrix4.fromRotationTranslation(
+    Cesium.Matrix3.fromRotationZ(Cesium.Math.PI_OVER_TWO)
   ),
 
   /**
@@ -65,7 +65,7 @@ export var Axis = {
    * @type {Matrix4}
    * @constant
    */
-  Y_UP_TO_X_UP: Matrix4.fromRotationTranslation(
-    Matrix3.fromRotationZ(-CesiumMath.PI_OVER_TWO)
+  Y_UP_TO_X_UP: Cesium.Matrix4.fromRotationTranslation(
+    Cesium.Matrix3.fromRotationZ(-Cesium.Math.PI_OVER_TWO)
   ),
 };

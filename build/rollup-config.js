@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 11:15:08
+ * @LastEditTime: 2020-09-29 13:12:14
  */
 import rollupGitVersion from "rollup-plugin-git-version";
 import json from "rollup-plugin-json";
@@ -26,13 +26,18 @@ if (process.env.NODE_ENV === "release") {
 
 export default {
   input: "src/index.js",
+  external: ["jquery", "turf", "cesium"],
   output: [
     {
       file: pkg.main,
       format: "umd",
-      name: "mars",
-      legacy: true, // Needed to create files loadable by IE8
-      freeze: false,
+      name: "mars3d",
+      globals: {
+        jquery: "$",
+        cesium: "Cesium",
+        leaflet: "L",
+        "esri-leaflet": "L.esri",
+      },
     },
   ],
   plugins: [release ? json() : rollupGitVersion()],

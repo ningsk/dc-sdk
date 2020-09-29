@@ -4,11 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:01:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 14:04:40
+ * @LastEditTime: 2020-09-29 10:17:43
  */
-
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 import { Util, Tooltip, Class } from "../core/index";
 
 import { DrawEventType, EditEventType } from "../event/index";

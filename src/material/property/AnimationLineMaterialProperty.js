@@ -4,11 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-09-28 09:29:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 09:41:08
+ * @LastEditTime: 2020-09-29 13:21:21
  */
-
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 var Color = Cesium.Color;
 var defaultValue = Cesium.defaultValue;
 var defined = Cesium.defined;
@@ -36,7 +34,7 @@ export function AnimationLineMaterialProperty(options) {
   this._time = undefined;
 }
 
-defineProperties(AnimationLineMaterialProperty.prototype, {
+definedProperties(AnimationLineMaterialProperty.prototype, {
   /**
    * Gets a value indicating if this property is constant.  A property is considered
    * constant if getValue always returns the same result for the current definition.
@@ -138,7 +136,7 @@ AnimationLineMaterialProperty.getImageMaterial = function (imgurl, repeat) {
         color: new Color(1, 0, 0, 1.0),
         image: Material[imageName],
         time: 0,
-        repeat: repeat || new _Cesium2.default.Cartesian2(1.0, 1.0),
+        repeat: repeat || new Cesium.Cartesian2(1.0, 1.0),
       },
       //source: "czm_material czm_getMaterial(czm_materialInput materialInput)\n\
       //    {\n\

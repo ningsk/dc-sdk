@@ -1,5 +1,5 @@
 import { FeatureGridLayer } from "./FeatureGridLayer";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import {
   AttrPolygon,
   AttrPolyline,
@@ -14,7 +14,7 @@ import $ from "jquery";
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:54:59
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 14:03:28
+ * @LastEditTime: 2020-09-29 11:10:41
  */
 export var CustomFeatureGridLayer = FeatureGridLayer.extend({
   _cacheGrid: {}, // 网络缓存，存放矢量对象id集合
@@ -214,7 +214,7 @@ export var CustomFeatureGridLayer = FeatureGridLayer.extend({
       ) {
         this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
       } else if (entity.billboard) {
-        entity.billboard.color = new _Cesium2.default.Color.fromCssColorString(
+        entity.billboard.color = new Cesium.Color.fromCssColorString(
           "#FFFFFF"
         ).withAlpha(this._opacity);
 

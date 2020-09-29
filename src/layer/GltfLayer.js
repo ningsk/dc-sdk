@@ -4,11 +4,11 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 11:10:46
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:23:09
+ * @LastEditTime: 2020-09-29 10:19:49
  */
-import Cesium from "cesium";
-import { BaseLayer } from "./BaseLayer";
 
+import { BaseLayer } from "./BaseLayer";
+import * as Cesium from "cesium";
 export var GltfLayer = BaseLayer.extend({
   model: null,
   hasOpacity: true,

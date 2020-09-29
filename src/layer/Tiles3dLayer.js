@@ -7,7 +7,7 @@
  * @LastEditTime: 2020-09-28 14:04:01
  */
 import { BaseLayer } from "./BaseLayer";
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Axis } from "./Axis";
 import { Util, PointUtil } from "../core/index";
 

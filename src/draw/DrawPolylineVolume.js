@@ -1,8 +1,8 @@
 import { DrawPolyline } from "./DrawPolyline";
-import Cesium from "cesium";
+
 import { EditPolylineVolume } from "../edit/index";
 import { AttrPolylineVolume } from "../attr/index";
-
+import * as Cesium from "cesium";
 /*
  * @Description:
  * @version:

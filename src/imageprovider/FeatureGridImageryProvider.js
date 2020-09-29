@@ -4,10 +4,9 @@
  * @Author: 宁四凯
  * @Date: 2020-09-28 08:42:26
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 09:16:24
+ * @LastEditTime: 2020-09-29 10:19:12
  */
-import Cesium from "cesium";
-
+import * as Cesium from "cesium";
 export function FeatureGridImageryProvider(options) {
   options = Cesium.defaultValue(options, Cesium.defaultValue.EMPTY_OBJECT);
   this.options = options;

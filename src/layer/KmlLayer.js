@@ -6,8 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-08 11:28:12
  */
-
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { GeoJsonLayer } from "./GeoJsonLayer";
 export var KmlLayer = GeoJsonLayer.extend({
   queryData: function () {

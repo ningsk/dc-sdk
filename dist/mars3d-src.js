@@ -1,14 +1,10 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('cesium'), require('jquery'), require('esri-leaflet/src/Util'), require('turf'), require('Cesium'), require('leaflet'), require('echarts')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'cesium', 'jquery', 'esri-leaflet/src/Util', 'turf', 'Cesium', 'leaflet', 'echarts'], factory) :
-  (factory((global.mars = {}),global.Cesium$1,global.$$1,global.Util,global.turf,global.Cesium$2,global.leaflet,global.echarts));
-}(this, (function (exports,Cesium$1,$$1,Util,turf,Cesium$2,leaflet,echarts) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('cesium'), require('jquery'), require('turf')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'cesium', 'jquery', 'turf'], factory) :
+  (factory((global.mars3d = {}),global.Cesium,global.$,null));
+}(this, (function (exports,Cesium$1,$$1,turf) { 'use strict';
 
-  var Cesium$1__default = 'default' in Cesium$1 ? Cesium$1['default'] : Cesium$1;
   $$1 = $$1 && $$1.hasOwnProperty('default') ? $$1['default'] : $$1;
-  Util = Util && Util.hasOwnProperty('default') ? Util['default'] : Util;
-  Cesium$2 = Cesium$2 && Cesium$2.hasOwnProperty('default') ? Cesium$2['default'] : Cesium$2;
-  echarts = echarts && echarts.hasOwnProperty('default') ? echarts['default'] : echarts;
 
   /*
    * @namespace Util
@@ -897,8 +893,8 @@
   };
 
   // 地形构造
-  const _ellipsoid = new Cesium$1__default.EllipsoidTerrainProvider({
-    ellipsoid: Cesium$1__default.Ellipsoid.WGS84,
+  const _ellipsoid = new Cesium$1.EllipsoidTerrainProvider({
+    ellipsoid: Cesium$1.Ellipsoid.WGS84,
   });
 
   // 计算贴地路线
@@ -910,22 +906,22 @@
       return;
     }
     //TODO 待定
-    var flatPositions = Cesium$1__default.PolylinePipeline.generateArc({
+    var flatPositions = Cesium$1.PolylinePipeline.generateArc({
       position: positions,
       granularity: params.generateArc || 0.00001,
     });
     var cartographicArray = [];
     var ellipsoid = viewer.scene.globe.ellipsoid;
     for (var i = 0; i < flatPositions.length; i += 3) {
-      var cartesian = Cesium$1__default.Cartesian3.unpack(flatPositions, i);
+      var cartesian = Cesium$1.Cartesian3.unpack(flatPositions, i);
       cartographicArray.push(ellipsoid.cartesianToCartographic(cartesian));
     }
 
     // 用于缺少地形数据时，赋值的高度
-    var tempHeight = Cesium$1__default.Cartographic.fromCartesian(positions[0]).height;
+    var tempHeight = Cesium$1.Cartographic.fromCartesian(positions[0]).height;
 
     Cesium2.when(
-      Cesium$1__default.sampleTerrainMostDetailed(viewer.terrainProvider, cartographicArray),
+      Cesium$1.sampleTerrainMostDetailed(viewer.terrainProvider, cartographicArray),
       function (samples) {
         var noHeight = false;
         var offset = params.offset || 2; //增高高度，便于可视
@@ -967,18 +963,18 @@
       cfg.url == "" ||
       cfg.url == null
     ) {
-      terrainProvider = new Cesium$1__default.CesiumTerrainProvider({
-        url: Cesium$1__default.IonResource.fromAssetId(1),
+      terrainProvider = new Cesium$1.CesiumTerrainProvider({
+        url: Cesium$1.IonResource.fromAssetId(1),
       });
     } else if (cfg.type == "ellipsoid" || cfg.url == "ellipsoid") {
       terrainProvider = _ellipsoid;
     } else if (cfg.type == "gee") {
       // 谷歌地球地形服务
-      terrainProvider = new Cesium$1__default.GoogleEarthEnterpriseImageryProvider({
-        metadata: new Cesium$1__default.GoogleEarthEnterpriseMetadata(cfg),
+      terrainProvider = new Cesium$1.GoogleEarthEnterpriseImageryProvider({
+        metadata: new Cesium$1.GoogleEarthEnterpriseMetadata(cfg),
       });
     } else {
-      terrainProvider = new Cesium$1__default.CesiumTerrainProvider(cfg);
+      terrainProvider = new Cesium$1.CesiumTerrainProvider(cfg);
     }
     return terrainProvider;
   }
@@ -986,14 +982,14 @@
   // 创建模型
   function createModel(cfg, viewer) {
     cfg = viewer.card.point2map(cfg); // 转换坐标系
-    var position = Cesium$1__default.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
-    var heading = Cesium$1__default.Math.toRadians(cfg.heading || 0);
-    var pitch = Cesium$1__default.Math.toRadians(cfg.pitch || 0);
-    var roll = Cesium$1__default.Math.toRadians(cfg.roll || 0);
-    var hpr = new Cesium$1__default.HeadingPitchRoll(heading, pitch, roll);
+    var position = Cesium$1.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
+    var heading = Cesium$1.Math.toRadians(cfg.heading || 0);
+    var pitch = Cesium$1.Math.toRadians(cfg.pitch || 0);
+    var roll = Cesium$1.Math.toRadians(cfg.roll || 0);
+    var hpr = new Cesium$1.HeadingPitchRoll(heading, pitch, roll);
 
-    var converter = cfg.converter || Cesium$1__default.Transforms.eastNorthUpToFixedFrame;
-    var orientation = Cesium$1__default.Transforms.headingPitchRollQuaternion(
+    var converter = cfg.converter || Cesium$1.Transforms.eastNorthUpToFixedFrame;
+    var orientation = Cesium$1.Transforms.headingPitchRollQuaternion(
       position,
       hpr,
       viewer.scene.globe.ellipsoid,
@@ -1071,8 +1067,8 @@
     numOfSingleLine
   ) {
     var result = [];
-    var startPosition = Cesium$1__default.Cartographic.fromCartesian(startPoint);
-    var endPosition = Cesium$1__default.Cartographic.fromCartesian(endPoint);
+    var startPosition = Cesium$1.Cartographic.fromCartesian(startPoint);
+    var endPosition = Cesium$1.Cartographic.fromCartesian(endPoint);
     var startLon = (startPosition.longitude * 180) / Math.PI;
     var startLat = (startPosition.latitude * 180) / Math.PI;
     var endLon = (endPosition.longitude * 180) / Math.PI;
@@ -1085,21 +1081,21 @@
     // var dist = Cesium.Cartesian3.distance(startPoint, endPoint);
     var angularity = dist * angularityFactor;
 
-    var startVec = Cesium$1__default.Cartesian3.clone(startPoint);
-    var endVec = Cesium$1__default.Cartesian3.clone(endPoint);
-    var startLength = Cesium$1__default.Cartesian3.distance(
+    var startVec = Cesium$1.Cartesian3.clone(startPoint);
+    var endVec = Cesium$1.Cartesian3.clone(endPoint);
+    var startLength = Cesium$1.Cartesian3.distance(
       startVec,
-      Cesium$1__default.Cartesian3.ZERO
+      Cesium$1.Cartesian3.ZERO
     );
-    var endLength = Cesium$1__default.Cartesian3.distance(endVec, Cesium$1__default.Cartesian3.ZERO);
-    Cesium$1__default.Cartesian3.normalize(startVec, startVec);
-    Cesium$1__default.Cartesian3.normalize(endVec, endVec);
-    if (Cesium$1__default.Cartesian3.distance(startVec, endVec) == 0) {
+    var endLength = Cesium$1.Cartesian3.distance(endVec, Cesium$1.Cartesian3.ZERO);
+    Cesium$1.Cartesian3.normalize(startVec, startVec);
+    Cesium$1.Cartesian3.normalize(endVec, endVec);
+    if (Cesium$1.Cartesian3.distance(startVec, endVec) == 0) {
       return result;
     }
     // var cosOmega = Cesium.Cartesian3.dot(startVec, endVec);
     // var omega = Math.acos(cosOmega);
-    var omega = Cesium$1__default.Cartesian3.angleBetween(startVec, endVec);
+    var omega = Cesium$1.Cartesian3.angleBetween(startVec, endVec);
 
     result.push(startPoint);
     for (var i = 1; i < numOfSingleLine - 1; i++) {
@@ -1109,27 +1105,27 @@
       var startScalar = Math.sin(invT * omega) / Math.sin(omega);
       var endScalar = Math.sin(t * omega) / Math.sin(omega);
 
-      var startScalarVec = Cesium$1__default.Cartesian3.multiplyByScalar(
+      var startScalarVec = Cesium$1.Cartesian3.multiplyByScalar(
         startVec,
         startScalar,
-        new Cesium$1__default.Cartesian3()
+        new Cesium$1.Cartesian3()
       );
-      var endScalarVec = Cesium$1__default.Cartesian3.multiplyByScalar(
+      var endScalarVec = Cesium$1.Cartesian3.multiplyByScalar(
         endVec,
         endScalar,
-        new Cesium$1__default.Cartesian3()
+        new Cesium$1.Cartesian3()
       );
 
-      var centerVec = Cesium$1__default.Cartesian3.add(
+      var centerVec = Cesium$1.Cartesian3.add(
         startScalarVec,
         endScalarVec,
-        new Cesium$1__default.Cartesian3()
+        new Cesium$1.Cartesian3()
       );
 
       var ht = t * Math.PI;
       var centerLength =
         startLength * invT + endLength * t + Math.sin(ht) * angularity;
-      centerVec = Cesium$1__default.Cartesian3.multiplyByScalar(
+      centerVec = Cesium$1.Cartesian3.multiplyByScalar(
         centerVec,
         centerLength,
         centerVec
@@ -1217,7 +1213,7 @@
    * 经纬度坐标转cesium坐标
    */
   function lonlat2cartesian(coord, defHeight) {
-    return Cesium$1__default.Cartesian3.fromDegrees(
+    return Cesium$1.Cartesian3.fromDegrees(
       coords[0],
       coords[1],
       coords[2] || defHeight || 0
@@ -1241,11 +1237,11 @@
    * Cesium坐标 转 经纬度坐标 [用于geojson]
    */
   function cartesian2lonlat(cartesian) {
-    var carto = Cesium$1__default.Cartographic.fromCartesian(cartesian);
+    var carto = Cesium$1.Cartographic.fromCartesian(cartesian);
     if (carto == null) return {};
-    var x = formatNum(Cesium$1__default.Math.toDegrees(carto.longitude), 6);
-    var y = formatNum(Cesium$1__default.Math.toDegrees(carto.latitude), 6);
-    var z = formatNum(Cesium$1__default.Math.toDegrees(carto.latitude), 6);
+    var x = formatNum(Cesium$1.Math.toDegrees(carto.longitude), 6);
+    var y = formatNum(Cesium$1.Math.toDegrees(carto.latitude), 6);
+    var z = formatNum(Cesium$1.Math.toDegrees(carto.latitude), 6);
     return [x, y, z];
   }
 
@@ -1275,11 +1271,11 @@
     }
   }
 
-  var Util$1 = ({
+  var Util = /*#__PURE__*/Object.freeze({
     extend: extend$1,
     create: create,
     bind: bind,
-    lastId: lastId,
+    get lastId () { return lastId; },
     stamp: stamp,
     throttle: throttle,
     wrapNum: wrapNum,
@@ -1465,7 +1461,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-28 09:45:03
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-27 14:46:20
+   * @LastEditTime: 2020-09-29 10:17:20
    */
 
   //定义一些常量
@@ -1678,7 +1674,7 @@
     return [x, y];
   }
 
-  var PointConvert = ({
+  var PointConvert = /*#__PURE__*/Object.freeze({
     bd2gcj: bd2gcj,
     gcj2bd: gcj2bd,
     wgs2gcj: wgs2gcj,
@@ -1780,7 +1776,6 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-27 14:55:31
    */
-
   /**
    * 格式化
    * @param {*} num 数字
@@ -1797,10 +1792,10 @@
    * @param {*} position
    */
   function formatPosition(position) {
-    var carto = Cesium$1__default.Cartographic.fromCartesian(position);
+    var carto = Cesium$1.Cartographic.fromCartesian(position);
     var result = {};
-    result.y = this.formatNum(Cesium$1__default.Math.toDegrees(carto.latitude), 6);
-    result.x = this.formatNum(Cesium$1__default.Math.toDegrees(carto.longitude), 6);
+    result.y = this.formatNum(Cesium$1.Math.toDegrees(carto.latitude), 6);
+    result.x = this.formatNum(Cesium$1.Math.toDegrees(carto.longitude), 6);
     result.z = this.formatNum(carto.height, 2);
     return result;
   }
@@ -1820,7 +1815,7 @@
     }
 
     for (var i = 0; i < positions.length; i++) {
-      var tempCarto = Cesium$1__default.Cartographic.fromCartesian(positions[i]);
+      var tempCarto = Cesium$1.Cartographic.fromCartesian(positions[i]);
       if (tempCarto.height > maxHeight) {
         maxHeight = tempCarto.height;
       }
@@ -1839,8 +1834,8 @@
     if (positions instanceof Array) {
       var arr = [];
       for (var i = 0, len = positions.length; i < len; i++) {
-        var car = Cesium$1__default.Cartographic.fromCartesian(positions[i]);
-        var point = Cesium$1__default.Cartesian3.fromRadians(
+        var car = Cesium$1.Cartographic.fromCartesian(positions[i]);
+        var point = Cesium$1.Cartesian3.fromRadians(
           car.longitude,
           car.latitude,
           car.height + addHeight
@@ -1849,8 +1844,8 @@
       }
       return arr;
     } else {
-      var car = Cesium$1__default.Cartographic.fromCartesian(positions);
-      return Cesium$1__default.Cartesian3.fromRadians(
+      var car = Cesium$1.Cartographic.fromCartesian(positions);
+      return Cesium$1.Cartesian3.fromRadians(
         car.longitude,
         car.latitude,
         car.height + addHeight
@@ -1869,8 +1864,8 @@
     if (positions instanceof Array) {
       var arr = [];
       for (var i = 0, len = positions.length; i < len; i++) {
-        var car = Cesium$1__default.Cartographic.fromCartesian(positions[i]);
-        var point = Cesium$1__default.Cartesian3.fromRadians(
+        var car = Cesium$1.Cartographic.fromCartesian(positions[i]);
+        var point = Cesium$1.Cartesian3.fromRadians(
           car.longitude,
           car.latitude,
           height
@@ -1879,8 +1874,8 @@
       }
       return arr;
     } else {
-      var car = Cesium$1__default.Cartographic.fromCartesian(positions);
-      return Cesium$1__default.Cartesian3.fromRadians(car.longitude, car.latitude, height);
+      var car = Cesium$1.Cartographic.fromCartesian(positions);
+      return Cesium$1.Cartesian3.fromRadians(car.longitude, car.latitude, height);
     }
   }
 
@@ -1891,10 +1886,10 @@
    */
   function updateHeightForClampToGround(viewer, position) {
     //TODO viewer?
-    var carto = Cesium$1__default.Cartographic.fromCartesian(position);
+    var carto = Cesium$1.Cartographic.fromCartesian(position);
     var _heightNew = viewer.scene.sampleHeight(carto);
     if (_heightNew != null && _heightNew > 0) {
-      var positionNew = Cesium$1__default.Cartesian3.fromRadians(
+      var positionNew = Cesium$1.Cartesian3.fromRadians(
         carto.longitude,
         carto.latitude,
         _heightNew + 1
@@ -1914,7 +1909,7 @@
     var cartesian;
     // 模型上提取坐标
     var pickedObject = scene.pick(position);
-    if (scene.pickPositionSupported && Cesium$1__default.defined(pickedObject)) {
+    if (scene.pickPositionSupported && Cesium$1.defined(pickedObject)) {
       // pickPositionSupported: 判断是否支持深度拾取
       if (
         noPickEntity == null ||
@@ -1923,14 +1918,14 @@
           pickedObject.primitive !== noPickEntity)
       ) {
         var cartesian = scene.pickPosition(position);
-        if (Cesium$1__default.defined(cartesian)) {
-          var cartographic = Cesium$1__default.Cartographic.fromCartesian(cartesian);
+        if (Cesium$1.defined(cartesian)) {
+          var cartographic = Cesium$1.Cartographic.fromCartesian(cartesian);
           var height = cartographic.height; // 模型高度
           if (height >= 0) {
             return cartesian;
           }
           // 不是entity时，支持3dtitles地下
-          if (!Cesium$1__default.defined(pickedObject.id) && height >= -500) {
+          if (!Cesium$1.defined(pickedObject.id) && height >= -500) {
             return cartesian;
           }
         }
@@ -1941,7 +1936,7 @@
     //2. scene.pickPosition只有在开启地形深度检测，且不使用默认地形时是准确的。
     //注意点： 1. globe.pick只能求交地形； 2. scene.pickPosition不仅可以求交地形，还可以求交除地形以外其他所有写深度的物体。
     //提取鼠标点的地理坐标
-    if (scene.mode === Cesium$1__default.SceneMode.SCENE3D) {
+    if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
       // 三维模式下
       var pickRay = scene.camera.getPickRay(position);
       cartesian = scene.globe.pick(pickRay, scene);
@@ -1966,7 +1961,7 @@
       var carto = scene.camera.positionCartographic.clone();
       var height = globe.getHeight(carto);
       carto.height = height || 0;
-      bestTarget = Cesium$1__default.Ellipsoid.WGS84.cartographicToCartesian(carto);
+      bestTarget = Cesium$1.Ellipsoid.WGS84.cartographicToCartesian(carto);
     }
 
     var result = this.formatPosition(bestTarget);
@@ -1974,7 +1969,7 @@
       result = viewer.card.point2wgs(result); // 坐标转换为wgs
     }
     // 获取地球中心点世界位置与摄像机的世界位置之间的距离
-    var distance = Cesium$1__default.Cartesian3.distance(
+    var distance = Cesium$1.Cartesian3.distance(
       bestTarget,
       viewer.scene.camera.positionWC
     );
@@ -1984,7 +1979,7 @@
 
   function pickCenterPoint(scene) {
     var canvas = scene.canvas;
-    var center = new Cesium$1__default.Cartesian2(
+    var center = new Cesium$1.Cartesian2(
       canvas.clientWidth / 2,
       canvas.clientHeight / 2
     );
@@ -2014,14 +2009,14 @@
 
     // canvas 左上角
     var car3_lt = viewer.camera.pickEllipsoid(
-      new Cesium$1__default.Cartesian2(0, 0),
+      new Cesium$1.Cartesian2(0, 0),
       ellipsoid
     );
     if (car3_lt) {
       // 在椭球体上
       var carto_lt = ellipsoid.cartesianToCartographic(car3_lt);
-      extent.xmin = Cesium$1__default.Math.toDegrees(carto_lt.longitude);
-      extent.ymax = Cesium$1__default.Math.toDegrees(carto_lt.latitude);
+      extent.xmin = Cesium$1.Math.toDegrees(carto_lt.longitude);
+      extent.ymax = Cesium$1.Math.toDegrees(carto_lt.latitude);
     } else {
       // 不在椭球体上
       var xMax = canvas.width / 2;
@@ -2031,28 +2026,28 @@
       for (var yIdx = 0; yIdx <= yMax; yIdx += 10) {
         var xIdx = yIdx <= xMax ? yIdx : xMax;
         car3_lt2 = viewer.camera.pickEllipsoid(
-          new Cesium$1__default.Cartesian2(xIdx, yIdx),
+          new Cesium$1.Cartesian2(xIdx, yIdx),
           ellipsoid
         );
         if (car3_lt2) break;
       }
       if (car3_lt2) {
         var carto_lt = ellipsoid.cartesianToCartographic(car3_lt2);
-        extend.xmin = Cesium$1__default.Math.toDegrees(carto_lt.longitude);
-        extend.ymax = Cesium$1__default.Math.toDegrees(carto_lt.latitude);
+        extend.xmin = Cesium$1.Math.toDegrees(carto_lt.longitude);
+        extend.ymax = Cesium$1.Math.toDegrees(carto_lt.latitude);
       }
     }
 
     // canvas 右下角
     var car3_rb = viewer.camera.pickEllipsoid(
-      new Cesium$1__default.Cartesian2(canvas.width, canvas.height),
+      new Cesium$1.Cartesian2(canvas.width, canvas.height),
       ellipsoid
     );
     if (car3_rb) {
       // 在椭球体上
       var carto_rb = ellipsoid.cartesianToCartographic(car3_rb);
-      extent.xmax = Cesium$1__default.Math.toDegrees(carto_rb.longitude);
-      extent.ymin = Cesium$1__default.Math.toDegrees(carto_rb.latitude);
+      extent.xmax = Cesium$1.Math.toDegrees(carto_rb.longitude);
+      extent.ymin = Cesium$1.Math.toDegrees(carto_rb.latitude);
     } else {
       // 不在椭球体上
       var xMax = canvas.width / 2;
@@ -2062,15 +2057,15 @@
       for (var yIdx = canvas.height; yIdx >= yMax; yIdx -= 10) {
         var xIdx = yIdx >= xMax ? yIdx : xMax;
         car3_rb2 = view.camera.pickEllipsoid(
-          new Cesium$1__default.Cartesian2(xIdx, yIdx),
+          new Cesium$1.Cartesian2(xIdx, yIdx),
           ellipsoid
         );
         if (car3_rb) break;
       }
       if (car3_rb2) {
         var carto_rb = ellipsoid.cartesianToCartographic(car3_rb2);
-        extent.xmax = Cesium$1__default.Math.toDegrees(carto_rb.longitude);
-        extent.ymin = Cesium$1__default.Math.toDegrees(carto_rb.latitude);
+        extent.xmax = Cesium$1.Math.toDegrees(carto_rb.longitude);
+        extent.ymin = Cesium$1.Math.toDegrees(carto_rb.latitude);
       }
     }
 
@@ -2116,14 +2111,14 @@
     var position = camera.positionCartographic;
 
     var bookmark = {};
-    bookmark.y = this.formatNum(Cesium$1__default.Math.toDegrees(position.latitude), 6);
-    bookmark.x = this.formatNum(Cesium$1__default.Math.toDegrees(position.longitude), 6);
+    bookmark.y = this.formatNum(Cesium$1.Math.toDegrees(position.latitude), 6);
+    bookmark.x = this.formatNum(Cesium$1.Math.toDegrees(position.longitude), 6);
     bookmark.z = this.formatNum(position.height, 2);
     bookmark.heading = this.formatNum(
-      Cesium$1__default.Math.toDegrees(camera.heading || -90),
+      Cesium$1.Math.toDegrees(camera.heading || -90),
       1
     );
-    bookmark.pitch = this.formatNum(Cesium$1__default.Math.toDegrees(camera.roll || 0), 1);
+    bookmark.pitch = this.formatNum(Cesium$1.Math.toDegrees(camera.roll || 0), 1);
 
     if (isToWgs) {
       bookmark = viewer.card.point2wgs(bookmark); // 坐标转换wgs
@@ -2131,7 +2126,7 @@
     return bookmark;
   }
 
-  var Point = ({
+  var Point = /*#__PURE__*/Object.freeze({
     formatNum: formatNum$1,
     formatPosition: formatPosition,
     getMaxHeight: getMaxHeight,
@@ -2145,32 +2140,32 @@
     getCameraView: getCameraView
   });
 
-  const matrix3Scratch = new Cesium$1__default.Matrix3(); //一些涉及矩阵计算的方法
-  const matrix4Scratch = new Cesium$1__default.Matrix4();
-  const cartesian3 = new Cesium$1__default.Cartesian3();
-  const rotationScratch = new Cesium$1__default.Matrix3();
+  const matrix3Scratch = new Cesium$1.Matrix3(); //一些涉及矩阵计算的方法
+  const matrix4Scratch = new Cesium$1.Matrix4();
+  const cartesian3 = new Cesium$1.Cartesian3();
+  const rotationScratch = new Cesium$1.Matrix3();
 
   // 根据模型的matrix矩阵求方位角
   //Cesium.Transforms.fixedFrameToHeadingPitchRoll
   function getHeadingPitchRollByMatrix(position, matrix) {
     // 计算当前模型中心处的变换矩阵
-    let m1 = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(
+    let m1 = Cesium$1.Transforms.eastNorthUpToFixedFrame(
       position,
-      Cesium$1__default.Ellipsoid.WGS84,
-      new _Cesium2.default.Matrix4()
+      Cesium$1.Ellipsoid.WGS84,
+      new Cesium$1.Matrix4()
     );
     // 矩阵相除
-    let m3 = Cesium$1__default.Matrix4.multiply(
-      Cesium$1__default.Matrix4.inverse(m1, new Cesium$1__default.Matrix4()),
+    let m3 = Cesium$1.Matrix4.multiply(
+      Cesium$1.Matrix4.inverse(m1, new Cesium$1.Matrix4()),
       matrix,
-      new Cesium$1__default.Matrix4()
+      new Cesium$1.Matrix4()
     );
     // 得到旋转矩阵
-    let mat3 = Cesium$1__default.Matrix4.getRotation(m3, new Cesium$1__default.Matrix3());
+    let mat3 = Cesium$1.Matrix4.getRotation(m3, new Cesium$1.Matrix3());
     // 计算四元数
-    let q = Cesium$1__default.Quaternion.fromRotationMatrix(mat3);
+    let q = Cesium$1.Quaternion.fromRotationMatrix(mat3);
     // 计算旋转角(弧度)
-    let hpr = Cesium$1__default.HeadingPitchRoll.fromQuaternion(q);
+    let hpr = Cesium$1.HeadingPitchRoll.fromQuaternion(q);
 
     // 得到角度
     //let heading = Cesium.Math.toDegrees(hpr.heading);
@@ -2183,8 +2178,8 @@
 
   // 根据模型的orientation求方位角
   function getHeadingPitchRollByOrientation(position, orientation) {
-    let matrix = Cesium$1__default.Matrix4.fromRotationTranslation(
-      Cesium$1__default.Matrix3.fromQuaternion(orientation, matrix3Scratch),
+    let matrix = Cesium$1.Matrix4.fromRotationTranslation(
+      Cesium$1.Matrix3.fromQuaternion(orientation, matrix3Scratch),
       position,
       matrix4Scratch
     );
@@ -2194,28 +2189,28 @@
 
   //求localStart点到localEnd点的方向
   function getHeadingPitchRollForLine(localStart, localEnd, ellipsoid) {
-    ellipsoid = ellipsoid || Cesium$1__default.Ellipsoid.WGS84;
+    ellipsoid = ellipsoid || Cesium$1.Ellipsoid.WGS84;
 
-    let velocity = Cesium$1__default.Cartesian3.normalize(
-      Cesium$1__default.Cartesian3.subtract(localEnd, localStart, cartesian3),
+    let velocity = Cesium$1.Cartesian3.normalize(
+      Cesium$1.Cartesian3.subtract(localEnd, localStart, cartesian3),
       cartesian3
     );
     //TODO rotationMatrixFromPositionVelocity方法不存在
-    Cesium$1__default.Transforms.rotationMatrixFromPositionVelocity(
+    Cesium$1.Transforms.rotationMatrixFromPositionVelocity(
       localStart,
       velocity,
       ellipsoid,
       rotationScratch
     );
-    let modelMatrix = Cesium$1__default.Matrix4.fromRotationTranslation(
+    let modelMatrix = Cesium$1.Matrix4.fromRotationTranslation(
       rotationScratch,
       localStart,
       matrix4Scratch
     );
 
-    Cesium$1__default.Matrix4.multiplyTransformation(
+    Cesium$1.Matrix4.multiplyTransformation(
       modelMatrix,
-      Cesium$1__default.Axis.Z_UP_TO_X_UP,
+      Cesium$1.Axis.Z_UP_TO_X_UP,
       modelMatrix
     );
 
@@ -2226,26 +2221,26 @@
   //获取点point1绕点center的地面法向量旋转顺时针angle角度后新坐标
   function getRotateCenterPoint(center, point1, angle) {
     // 计算center的地面法向量
-    let chicB = Cesium$1__default.Cartographic.fromCartesian(center);
+    let chicB = Cesium$1.Cartographic.fromCartesian(center);
     chicB.height = 0;
-    let dB = Cesium$1__default.Cartographic.toCartesian(chicB);
-    let normaB = Cesium$1__default.Cartesian3.normalize(
-      Cesium$1__default.Cartesian3.subtract(dB, center, new _Cesium2.default.Cartesian3()),
-      new Cesium$1__default.Cartesian3()
+    let dB = Cesium$1.Cartographic.toCartesian(chicB);
+    let normaB = Cesium$1.Cartesian3.normalize(
+      Cesium$1.Cartesian3.subtract(dB, center, new Cesium$1.Cartesian3()),
+      new Cesium$1.Cartesian3()
     );
 
     // 构造基于center的法向量旋转90度的矩阵
-    let Q = Cesium$1__default.Quaternion.fromAxisAngle(normaB, Cesium$1__default.Math.toRadians(angle));
-    let m3 = Cesium$1__default.Matrix3.fromQuaternion(Q);
-    let m4 = Cesium$1__default.Matrix4.fromRotationTranslation(m3);
+    let Q = Cesium$1.Quaternion.fromAxisAngle(normaB, Cesium$1.Math.toRadians(angle));
+    let m3 = Cesium$1.Matrix3.fromQuaternion(Q);
+    let m4 = Cesium$1.Matrix4.fromRotationTranslation(m3);
 
     // 计算point1点相对center点的坐标A1
-    let A1 = Cesium$1__default.Cartesian3.subtract(point1, center, new Cesium$1__default.Cartesian3());
+    let A1 = Cesium$1.Cartesian3.subtract(point1, center, new Cesium$1.Cartesian3());
 
     //对A1应用旋转矩阵
-    let p = Cesium$1__default.Matrix4.multiplyByPoint(m4, A1, new Cesium$1__default.Cartesian3());
+    let p = Cesium$1.Matrix4.multiplyByPoint(m4, A1, new Cesium$1.Cartesian3());
     // 新点的坐标
-    let pointNew = Cesium$1__default.Cartesian3.add(p, center, new Cesium$1__default.Cartesian3());
+    let pointNew = Cesium$1.Cartesian3.add(p, center, new Cesium$1.Cartesian3());
 
     return pointNew;
   }
@@ -2255,40 +2250,40 @@
     degree = degree || 0;
     type = type || "z";
 
-    let rotate = Cesium$1__default.Math.toRadians(-degree); //转成弧度
+    let rotate = Cesium$1.Math.toRadians(-degree); //转成弧度
     type = "UNIT_" + type.toUpperCase();
-    let quaternion = Cesium$1__default.Quaternion.fromAxisAngle(
-      Cesium$1__default.Cartesian3[type],
+    let quaternion = Cesium$1.Quaternion.fromAxisAngle(
+      Cesium$1.Cartesian3[type],
       rotate
     ); //quaternion为围绕这个z轴旋转d度的四元数
-    let rotateMatrix3 = Cesium$1__default.Matrix3.fromQuaternion(quaternion); //rotateMatrix3为根据四元数求得的旋转矩阵
-    let pointCartesian3 = new Cesium$1__default.Cartesian3(offest.x, offest.y, offest.z); //point的局部坐标
-    let rotateTranslationMatrix4 = Cesium$1__default.Matrix4.fromRotationTranslation(
+    let rotateMatrix3 = Cesium$1.Matrix3.fromQuaternion(quaternion); //rotateMatrix3为根据四元数求得的旋转矩阵
+    let pointCartesian3 = new Cesium$1.Cartesian3(offest.x, offest.y, offest.z); //point的局部坐标
+    let rotateTranslationMatrix4 = Cesium$1.Matrix4.fromRotationTranslation(
       rotateMatrix3,
-      Cesium$1__default.Cartesian3.ZERO
+      Cesium$1.Cartesian3.ZERO
     ); //rotateTranslationMatrix4为旋转加平移的4x4变换矩阵，这里平移为(0,0,0)，故填个Cesium.Cartesian3.ZERO
-    Cesium$1__default.Matrix4.multiplyByTranslation(
+    Cesium$1.Matrix4.multiplyByTranslation(
       rotateTranslationMatrix4,
       pointCartesian3,
       rotateTranslationMatrix4
     ); //rotateTranslationMatrix4 = rotateTranslationMatrix4  X  pointCartesian3
-    let originPositionCartesian3 = Cesium$1__default.Ellipsoid.WGS84.cartographicToCartesian(
-      Cesium$1__default.Cartographic.fromCartesian(position)
+    let originPositionCartesian3 = Cesium$1.Ellipsoid.WGS84.cartographicToCartesian(
+      Cesium$1.Cartographic.fromCartesian(position)
     ); //得到局部坐标原点的全局坐标
-    let originPositionTransform = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(
+    let originPositionTransform = Cesium$1.Transforms.eastNorthUpToFixedFrame(
       originPositionCartesian3
     ); //m1为局部坐标的z轴垂直于地表，局部坐标的y轴指向正北的4x4变换矩阵
-    Cesium$1__default.Matrix4.multiplyTransformation(
+    Cesium$1.Matrix4.multiplyTransformation(
       originPositionTransform,
       rotateTranslationMatrix4,
       rotateTranslationMatrix4
     ); //rotateTranslationMatrix4 = rotateTranslationMatrix4 X originPositionTransform
-    let pointCartesian = new Cesium$1__default.Cartesian3();
-    Cesium$1__default.Matrix4.getTranslation(rotateTranslationMatrix4, pointCartesian); //根据最终变换矩阵m得到p2
+    let pointCartesian = new Cesium$1.Cartesian3();
+    Cesium$1.Matrix4.getTranslation(rotateTranslationMatrix4, pointCartesian); //根据最终变换矩阵m得到p2
     return pointCartesian;
   }
 
-  var Matrix = ({
+  var Matrix = /*#__PURE__*/Object.freeze({
     getHeadingPitchRollByMatrix: getHeadingPitchRollByMatrix,
     getHeadingPitchRollByOrientation: getHeadingPitchRollByOrientation,
     getHeadingPitchRollForLine: getHeadingPitchRollForLine,
@@ -2302,9 +2297,8 @@
    * @Author: 宁四凯
    * @Date: 2020-08-24 13:19:53
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-27 15:39:14
+   * @LastEditTime: 2020-09-29 11:10:00
    */
-
   var cameraFunc; //键盘漫游  第一人称漫游
 
   function bind$1(viewer) {
@@ -2337,22 +2331,22 @@
 
     var speedRatio = 100;
 
-    var handler = new Cesium$1__default.ScreenSpaceEventHandler(canvas);
+    var handler = new Cesium$1.ScreenSpaceEventHandler(canvas);
 
     handler.setInputAction(function (movement) {
       flags.looking = true;
-      mousePosition = startMousePosition = _Cesium2.default.Cartesian3.clone(
+      mousePosition = startMousePosition = Cesium$1.Cartesian3.clone(
         movement.position
       );
-    }, Cesium$1__default.ScreenSpaceEventType.LEFT_DOWN);
+    }, Cesium$1.ScreenSpaceEventType.LEFT_DOWN);
 
     handler.setInputAction(function (movement) {
       mousePosition = movement.endPosition;
-    }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
+    }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
 
     handler.setInputAction(function (position) {
       flags.looking = false;
-    }, Cesium$1__default.ScreenSpaceEventType.LEFT_UP);
+    }, Cesium$1.ScreenSpaceEventType.LEFT_UP);
 
     handler.setInputAction(function (delta) {
       if (delta > 0) {
@@ -2361,7 +2355,7 @@
         speedRatio = speedRatio * 1.2;
       }
       console.log(delta);
-    }, Cesium$1__default.ScreenSpaceEventType.WHEEL);
+    }, Cesium$1.ScreenSpaceEventType.WHEEL);
 
     function getFlagForKeyCode(keyCode) {
       switch (keyCode) {
@@ -2416,24 +2410,24 @@
       var camera = viewer.camera;
       var direction = camera.direction;
       //获得此位置默认的向上方向
-      var up = Cesium$1__default.Cartesian3.normalize(
+      var up = Cesium$1.Cartesian3.normalize(
         camera.position,
-        new Cesium$1__default.Cartesian3()
+        new Cesium$1.Cartesian3()
       );
 
       // right = direction * up
-      var right = Cesium$1__default.Cartesian3.cross(direction, up, new Cesium$1__default.Cartesian3());
+      var right = Cesium$1.Cartesian3.cross(direction, up, new Cesium$1.Cartesian3());
 
-      direction = Cesium$1__default.Cartesian3.cross(up, right, new Cesium$1__default.Cartesian3());
+      direction = Cesium$1.Cartesian3.cross(up, right, new Cesium$1.Cartesian3());
 
-      direction = Cesium$1__default.Cartesian3.normalize(direction, direction);
-      direction = Cesium$1__default.Cartesian3.multiplyByScalar(
+      direction = Cesium$1.Cartesian3.normalize(direction, direction);
+      direction = Cesium$1.Cartesian3.multiplyByScalar(
         direction,
         distance,
         direction
       );
 
-      camera.position = Cesium$1__default.Cartesian3.add(
+      camera.position = Cesium$1.Cartesian3.add(
         camera.position,
         direction,
         camera.position
@@ -2459,19 +2453,19 @@
         //获得direction 方向
         var direction = camera.direction;
         //获得此位置默认的向上方向
-        var up = Cesium$1__default.Cartesian3.normalize(
+        var up = Cesium$1.Cartesian3.normalize(
           camera.position,
-          new Cesium$1__default.Cartesian3()
+          new Cesium$1.Cartesian3()
         );
 
         // right = direction * up
-        var right = Cesium$1__default.Cartesian3.cross(
+        var right = Cesium$1.Cartesian3.cross(
           direction,
           up,
-          new Cesium$1__default.Cartesian3()
+          new Cesium$1.Cartesian3()
         );
         // up = right * direction
-        up = Cesium$1__default.Cartesian3.cross(right, direction, new Cesium$1__default.Cartesian3());
+        up = Cesium$1.Cartesian3.cross(right, direction, new Cesium$1.Cartesian3());
 
         camera.up = up;
         camera.right = right;
@@ -2539,10 +2533,10 @@
   };
   // 拖拽点颜色
   var PointColor = {
-    Control: new Cesium$1__default.Color.fromCssColorString("#2c197d"), // 位置控制拖拽点
-    MoveHeight: new Cesium$1__default.Color.fromCssColorString("#9500eb"), // 上下移动高度的拖拽点
-    EditAttr: new Cesium$1__default.Color.fromCssColorString("#f73163"), // 辅助修改属性（如半径）的拖拽点
-    AddMidPoint: new Cesium$1__default.Color.fromCssColorString("#04c2c9").withAlpha(0.3), // 增加新点，辅助拖拽点
+    Control: new Cesium$1.Color.fromCssColorString("#2c197d"), // 位置控制拖拽点
+    MoveHeight: new Cesium$1.Color.fromCssColorString("#9500eb"), // 上下移动高度的拖拽点
+    EditAttr: new Cesium$1.Color.fromCssColorString("#f73163"), // 辅助修改属性（如半径）的拖拽点
+    AddMidPoint: new Cesium$1.Color.fromCssColorString("#04c2c9").withAlpha(0.3), // 增加新点，辅助拖拽点
   };
 
   /**
@@ -2558,19 +2552,19 @@
       var attr = {
         scale: 1,
         pixelSize: this.PixelSize,
-        outlineColor: new Cesium$1__default.Color.fromCssColorString("#ffffff").withAlpha(
+        outlineColor: new Cesium$1.Color.fromCssColorString("#ffffff").withAlpha(
           0.5
         ),
         outlineWidth: 2,
-        scaleByDistance: new Cesium$1__default.NearFarScalar(1000, 1, 1000000, 0.5),
+        scaleByDistance: new Cesium$1.NearFarScalar(1000, 1, 1000000, 0.5),
         heightReference: options.clamToGround
-          ? Cesium$1__default.HeightReference.CLAMP_TO_GROUND
-          : Cesium$1__default.HeightReference.NONE,
+          ? Cesium$1.HeightReference.CLAMP_TO_GROUND
+          : Cesium$1.HeightReference.NONE,
       };
       attr = this.getAttrForType(options.type, attr);
 
       dragger = data.entities.add({
-        position: Cesium$1__default.defaultValue(options.position, Cesium$1__default.Cartesian3.ZERO),
+        position: Cesium$1.defaultValue(options.position, Cesium$1.Cartesian3.ZERO),
         point: attr,
         draw_tooltip: options.tooltip || TooltipUtil.message.dragger.def,
       });
@@ -2578,13 +2572,13 @@
 
     dragger._isDragger = true;
     dragger._pointType = options.type || this.PointType.Control; // 默认是位置控制拖拽点
-    dragger.onDragStart = Cesium$1__default.defaultValue(options.onDragStart, null);
-    dragger.onDrag = Cesium$1__default.defaultValue(options.onDrag, null);
-    dragger.onDragEnd = Cesium$1__default.defaultValue(options.onDragEnd, null);
+    dragger.onDragStart = Cesium$1.defaultValue(options.onDragStart, null);
+    dragger.onDrag = Cesium$1.defaultValue(options.onDrag, null);
+    dragger.onDragEnd = Cesium$1.defaultValue(options.onDragEnd, null);
     return dragger;
   };
 
-  var Dragger$1 = ({
+  var Dragger$1 = /*#__PURE__*/Object.freeze({
     PointType: PointType,
     PointColor: PointColor,
     createDragger: createDragger$1
@@ -2667,7 +2661,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 10:18:10
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 13:54:54
+   * @LastEditTime: 2020-09-29 11:06:20
    */
 
   var BaseWidget = Class.extend({
@@ -3082,7 +3076,7 @@
     //==============直接添加到index上=================
     _appendView: function (viewopt) {
       if (this.isCreate && viewopt._dom) {
-        (0, _jquery2.default)(viewopt._dom).show({
+        $(viewopt._dom).show({
           duration: 500,
         });
         this._startActivate(viewopt._dom);
@@ -3090,9 +3084,7 @@
         var view_url = this._getUrl(viewopt.url);
         var that = this;
         that.getHtml(view_url, function (html) {
-          viewopt._dom = (0, _jquery2.default)(html).appendTo(
-            viewopt.parent || "body"
-          );
+          viewopt._dom = $(html).appendTo(viewopt.parent || "body");
 
           that.winCreateOK(viewopt, html);
 
@@ -3226,7 +3218,7 @@
     },
   });
 
-  var BaseWidget$1 = ({
+  var BaseWidget$1 = /*#__PURE__*/Object.freeze({
     BaseWidget: BaseWidget
   });
 
@@ -3255,11 +3247,11 @@
       "</div> ";
     $$1("#" + viewer$1._container.id).append(infoDiv);
 
-    handler = new Cesium$1__default.ScreenSpaceEventHandler(viewer$1.scene.canvas);
+    handler = new Cesium$1.ScreenSpaceEventHandler(viewer$1.scene.canvas);
     //鼠标移动事件
     handler.setInputAction(
       mouseMovingPicking,
-      Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE
+      Cesium$1.ScreenSpaceEventType.MOUSE_MOVE
     );
   }
 
@@ -3280,7 +3272,7 @@
 
     var position = event.endPosition;
     var pickedObject = viewer$1.scene.pick(position);
-    if (pickedObject && Cesium$1__default.defined(pickedObject.id)) {
+    if (pickedObject && Cesium$1.defined(pickedObject.id)) {
       //普通entity对象 && viewer.scene.pickPositionSupported
       var entity = pickedObject.id;
 
@@ -3300,7 +3292,7 @@
 
       var cartesian = getCurrentMousePosition(viewer$1.scene, position);
       show(entity, cartesian, position);
-    } else if (pickedObject && Cesium$1__default.defined(pickedObject.primitive)) {
+    } else if (pickedObject && Cesium$1.defined(pickedObject.primitive)) {
       //primitive对象 && viewer.scene.pickPositionSupported
       var primitive = pickedObject.primitive;
       if (primitive.popup || primitive.click || primitive.cursorCSS) {
@@ -3324,7 +3316,7 @@
 
     //计算显示位置
     if (position == null)
-      position = Cesium$1__default.SceneTransforms.wgs84ToWindowCoordinates(
+      position = Cesium$1.SceneTransforms.wgs84ToWindowCoordinates(
         viewer$1.scene,
         cartesian
       );
@@ -3396,7 +3388,7 @@
     handler.destroy();
   }
 
-  var Tooltip$1 = ({
+  var Tooltip$1 = /*#__PURE__*/Object.freeze({
     init: init$1,
     show: show,
     close: close,
@@ -3409,11 +3401,261 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 14:24:48
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 13:46:58
+   * @LastEditTime: 2020-09-29 13:16:56
    */
 
-  var Popup = ({
+  function isOnly(value) {
+  }
 
+  function setEnable(value) {
+    this._enable = value;
+    if (!value) {
+      this.close();
+    }
+  }
+
+  function getEnable() {
+    return this._enable;
+  }
+
+  function init$2() {
+    // 添加弹出框
+    var infoDiv = '<div id="popup-all-view"></div>';
+    $$1("#" + viewer._container.id).append(infoDiv);
+    this._handler = new Cesium$1.ScreenSpaceEventHandler(this._viewer.scene.canvas);
+    // 单击事件
+    this._handler.setInputAction(
+      this.mousePickingClick,
+      Cesium$1.ScreenSpaceEventType.LEFT_CLICK
+    );
+    // 移动时间
+    this._viewer.scene.postRender.addEventListener(this._bind2Scene);
+  }
+
+  // popup 处理
+  function show$1(entity, cartesian) {
+    if (entity == null || entity.popup == null) return;
+    var eleId =
+      "popup_" +
+      ((entity.id || "") + "").replace(new RegExp("[^0-9a-zA-Z_]", "gm"), "_");
+    this.close(eleId);
+    // 更新高度
+    // if (this._viewer.scene.sampleHeightSupported) {
+    //   cartesian = updateHeightForClampToGround(cartesian);
+    // }
+    this._objPopup[eleId] = {
+      id: entity.id,
+      popup: entity.popup,
+      cartesian: cartesian,
+    };
+
+    // 显示内容
+    var inHtml;
+    if (typeof entity.popup === "object") {
+      inHtml = entity.popup.html;
+    } else {
+      inHtml = entity.popup;
+    }
+    if (!inHtml) return;
+    if (!inHtml) {
+      return;
+    }
+    this._showHtml(inHtml, eleId, entity, cartesian);
+  }
+
+  function close$1(eleId) {
+    if (!this._isOnly && eleId) {
+      for (var i in this._objPopup) {
+        if (eleId == this._objPopup[i].id || eleId == i) {
+          $$1("#" + i).remove();
+          delete this._objPopup[i];
+          break;
+        }
+      }
+    } else {
+      $$1("#popup-all-view").empty();
+      this._objPopup = {};
+    }
+  }
+
+  function destroy$1() {
+    this.close();
+    this._handler.destroy();
+    this._viewer.scene.postRender.removeEventListener(this._bind2Scene);
+  }
+
+  // 通用， 统一配置popup的方式
+  function getPopupForConfig(cfg, attr) {
+    var _title = cfg.popupNameField ? attr[cfg.popupNameField] : cfg.name;
+    if (cfg.popup) {
+      return this.getPopup(cfg.popup, attr, _title);
+    } else if (cfg.columns) {
+      return this.getPopup(cfg.columns, attr, _title);
+    }
+    return false;
+  }
+
+  // 格式化Popup或Tooltip格式化字符串
+  function getPopup(cfg, attr, title) {
+    if (!attr) return false;
+
+    title = title || "";
+
+    if (isArray(cfg)) {
+      //数组
+      var countsok = 0;
+      var inhtml =
+        '<div class="card-popup-titile">' +
+        title +
+        '</div><div class="card-popup-content" >';
+      for (var i = 0; i < cfg.length; i++) {
+        var thisfield = cfg[i];
+
+        var col = thisfield.field;
+        if (
+          _typeof(attr[col]) === "object" &&
+          attr[col].hasOwnProperty("getValue")
+        )
+          attr[col] = attr[col].getValue();
+        if (typeof attr[col] === "function") continue;
+
+        if (thisfield.type == "details") {
+          //详情按钮
+          var showval = $$1.trim(attr[col || "OBJECTID"]);
+          if (
+            showval == null ||
+            showval == "" ||
+            showval == "Null" ||
+            showval == "Unknown"
+          )
+            continue;
+
+          inhtml +=
+            '<div style="text-align: center;padding: 10px 0;"><button type="button" onclick="' +
+            thisfield.calback +
+            "('" +
+            showval +
+            '\');" " class="btn btn-info  btn-sm">' +
+            (thisfield.name || "查看详情") +
+            "</button></div>";
+          continue;
+        }
+
+        var showval = $$1.trim(attr[col]);
+        if (
+          showval == null ||
+          showval == "" ||
+          showval == "Null" ||
+          showval == "Unknown" ||
+          showval == "0" ||
+          showval.length == 0
+        )
+          continue;
+
+        if (thisfield.format) {
+          //格式化
+          try {
+            showval = eval(thisfield.format + "(" + showval + ")");
+          } catch (e) {
+            console.log("getPopupByConfig error:" + thisfield.format);
+          }
+        }
+        if (thisfield.unit) {
+          showval += thisfield.unit;
+        }
+
+        inhtml +=
+          "<div><label>" + thisfield.name + "</label>" + showval + "</div>";
+        countsok++;
+      }
+      inhtml += "</div>";
+
+      if (countsok == 0) return false;
+      return inhtml;
+    } else if (
+      (typeof cfg === "undefined" ? "undefined" : _typeof(cfg)) === "object"
+    ) {
+      //对象,type区分逻辑
+      switch (cfg.type) {
+        case "iframe":
+          var _url = _util.template(cfg.url, attr);
+
+          var inhtml =
+            '<iframe id="ifarm" src="' +
+            _url +
+            '"  style="width:' +
+            (cfg.width || "300") +
+            "px;height:" +
+            (cfg.height || "300") +
+            'px;overflow:hidden;margin:0;" scrolling="no" frameborder="0" ></iframe>';
+          return inhtml;
+          break;
+        case "javascript":
+          //回调方法
+          return eval(cfg.calback + "(" + JSON.stringify(attr) + ")");
+          break;
+      }
+    } else if (cfg == "all") {
+      //全部显示
+      var countsok = 0;
+      var inhtml =
+        '<div class="card-popup-title">' +
+        title +
+        '</div><div class="card-popup-content" >';
+      for (var col in attr) {
+        if (
+          col == "Shape" ||
+          col == "FID" ||
+          col == "OBJECTID" ||
+          col == "_definitionChanged" ||
+          col == "_propertyNames"
+        )
+          continue; //不显示的字段
+
+        if (col.substr(0, 1) == "_") {
+          col = col.substring(1); //cesium 内部属性
+        }
+
+        if (typeof attr[col] === "object" && attr[col].hasOwnProperty("getValue"))
+          attr[col] = attr[col].getValue();
+        if (typeof attr[col] === "function") continue;
+
+        var showval = $$1.trim(attr[col]);
+        if (
+          showval == null ||
+          showval == "" ||
+          showval == "Null" ||
+          showval == "Unknown" ||
+          showval == "0" ||
+          showval.length == 0
+        )
+          continue; //不显示空值，更美观友好
+
+        inhtml += "<div><label>" + col + "</label>" + showval + "</div>";
+        countsok++;
+      }
+      inhtml += "</div>";
+
+      if (countsok == 0) return false;
+      return inhtml;
+    } else {
+      //格式化字符串
+      return this.template(cfg, attr);
+    }
+
+    return false;
+  }
+
+  var Popup = /*#__PURE__*/Object.freeze({
+    isOnly: isOnly,
+    setEnable: setEnable,
+    getEnable: getEnable,
+    init: init$2,
+    show: show$1,
+    close: close$1,
+    destroy: destroy$1,
+    getPopup: getPopup,
+    getPopupForConfig: getPopupForConfig
   });
 
   /*
@@ -3431,7 +3673,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-28 10:49:10
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 13:52:46
+   * @LastEditTime: 2020-09-29 10:20:42
    */
 
   function initMap(id, config, options) {
@@ -3492,13 +3734,13 @@
     }
 
     //一些默认值的修改【by 木遥】
-    Cesium$1__default.BingMapsApi.defaultKey =
+    Cesium$1.BingMapsApi.defaultKey =
       "AtkX3zhnRe5fyGuLU30uZw8r3sxdBDnpQly7KfFTCB2rGlDgXBG3yr-qEiQEicEc"; //，默认 key
-    if (Cesium$1__default.Ion)
-      Cesium$1__default.Ion.defaultAccessToken =
+    if (Cesium$1.Ion)
+      Cesium$1.Ion.defaultAccessToken =
         configData.ionToken ||
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NjM5MjMxOS1lMWVkLTQyNDQtYTM4Yi0wZjA4ZDMxYTlmNDMiLCJpZCI6MTQ4MiwiaWF0IjoxNTI4Njc3NDQyfQ.vVoSexHMqQhKK5loNCv6gCA5d5_z3wE2M0l_rWnIP_w";
-    Cesium$1__default.AnimationViewModel.defaultTicks = configData.animationTicks || [
+    Cesium$1.AnimationViewModel.defaultTicks = configData.animationTicks || [
       0.1,
       0.25,
       0.5,
@@ -3545,14 +3787,14 @@
       //无baseLayerPicker插件时,按内部规则
       if (options.imageryProvider == null) {
         hasRemoveImagery = true;
-        options.imageryProvider = Cesium$1__default.createTileMapServiceImageryProvider({
-          url: Cesium$1__default.buildModuleUrl("Assets/Textures/NaturalEarthII"),
+        options.imageryProvider = Cesium$1.createTileMapServiceImageryProvider({
+          url: Cesium$1.buildModuleUrl("Assets/Textures/NaturalEarthII"),
         });
       }
     }
 
     //地球初始化
-    viewer = new Cesium$1__default.Viewer(id, options);
+    viewer = new Cesium$1.Viewer(id, options);
     viewer.cesiumWidget.creditContainer.style.display = "none"; //去cesium logo
 
     //====绑定方法到viewer上====
@@ -3696,13 +3938,13 @@
     }
 
     // 绑定popup
-    undefined(viewer);
+    init$2(viewer);
     // 绑定tooltip
     init$1(viewer);
 
     //地球一些属性设置
     var scene = viewer.scene;
-    scene.globe.baseColor = new Cesium$1__default.Color.fromCssColorString(
+    scene.globe.baseColor = new Cesium$1.Color.fromCssColorString(
       configData.baseColor || "#546a53"
     ); //默认背景色
     if (configData.style) {
@@ -3730,9 +3972,9 @@
     //scene.screenSpaceCameraController.minimumCollisionTerrainHeight = 1;  //在测试与地形碰撞之前摄像机必须达到的最小高度。
 
     //解决Cesium显示画面模糊的问题 https://zhuanlan.zhihu.com/p/41794242
-    viewer._cesiumWidget._supportsImageRenderingPixelated = Cesium$1__default.FeatureDetection.supportsImageRenderingPixelated();
+    viewer._cesiumWidget._supportsImageRenderingPixelated = Cesium$1.FeatureDetection.supportsImageRenderingPixelated();
     viewer._cesiumWidget._forceResize = true;
-    if (Cesium$1__default.FeatureDetection.supportsImageRenderingPixelated()) {
+    if (Cesium$1.FeatureDetection.supportsImageRenderingPixelated()) {
       var _dpr = window.devicePixelRatio;
       // 适度降低分辨率
       while (_dpr >= 2.0) {
@@ -3745,7 +3987,7 @@
     viewer.camera.changed.addEventListener(function () {
       if (
         viewer.camera._suspendTerrainAdjustment &&
-        viewer.scene.mode === Cesium$1__default.SceneMode.SCENE3D
+        viewer.scene.mode === Cesium$1.SceneMode.SCENE3D
       ) {
         viewer.camera._suspendTerrainAdjustment = false;
         viewer.camera._adjustHeightForTerrain();
@@ -3757,19 +3999,19 @@
       $$1("#" + viewerDivId).append(
         '<div class="cesium-mousezoom"><div class="zoomimg"/></div>'
       );
-      var handler = new Cesium$1__default.ScreenSpaceEventHandler(scene.canvas);
+      var handler = new Cesium$1.ScreenSpaceEventHandler(scene.canvas);
       handler.setInputAction(function (evnet) {
         $$1(".cesium-mousezoom").addClass("cesium-mousezoom-visible");
         setTimeout(function () {
           $$1(".cesium-mousezoom").removeClass("cesium-mousezoom-visible");
         }, 200);
-      }, Cesium$1__default.ScreenSpaceEventType.WHEEL);
+      }, Cesium$1.ScreenSpaceEventType.WHEEL);
       handler.setInputAction(function (evnet) {
         $$1(".cesium-mousezoom").css({
           top: evnet.endPosition.y + "px",
           left: evnet.endPosition.x + "px",
         });
-      }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
     }
 
     function destroy$$1() {
@@ -3883,7 +4125,7 @@
             }';
           eval(funstr);
 
-          var imgModel = new Cesium$1__default.ProviderViewModel({
+          var imgModel = new Cesium$1.ProviderViewModel({
             name: item.name || "未命名",
             tooltip: item.name || "未命名",
             iconUrl: item.icon || "",
@@ -3897,22 +4139,22 @@
 
     function getTerrainProviderViewModelsArr() {
       return [
-        new Cesium$1__default.ProviderViewModel({
+        new Cesium$1.ProviderViewModel({
           name: "无地形",
-          iconUrl: Cesium$1__default.buildModuleUrl(
+          iconUrl: Cesium$1.buildModuleUrl(
             "Widgets/Images/TerrainProviders/Ellipsoid.png"
           ),
           tooltip: "WGS84标准椭球，即 EPSG:4326",
           category: "",
           creationFunction: function creationFunction() {
-            return new Cesium$1__default.EllipsoidTerrainProvider({
-              ellipsoid: Cesium$1__default.Ellipsoid.WGS84,
+            return new Cesium$1.EllipsoidTerrainProvider({
+              ellipsoid: Cesium$1.Ellipsoid.WGS84,
             });
           },
         }),
-        new Cesium$1__default.ProviderViewModel({
+        new Cesium$1.ProviderViewModel({
           name: "有地形",
-          iconUrl: Cesium$1__default.buildModuleUrl(
+          iconUrl: Cesium$1.buildModuleUrl(
             "Widgets/Images/TerrainProviders/CesiumWorldTerrain.png"
           ),
           tooltip: "提供的高分辨率全球地形",
@@ -3961,7 +4203,7 @@
           ymax = pt2.y;
         }
 
-        var rectangle = Cesium$1__default.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
+        var rectangle = Cesium$1.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
         viewer.camera.flyTo({
           destination: rectangle,
           duration: options.duration,
@@ -3977,15 +4219,15 @@
         if (centeropt.z != null && centeropt.z != 0) height = centeropt.z;
 
         viewer.camera.flyTo({
-          destination: Cesium$1__default.Cartesian3.fromDegrees(
+          destination: Cesium$1.Cartesian3.fromDegrees(
             centeropt.x,
             centeropt.y,
             height
           ), //经度、纬度、高度
           orientation: {
-            heading: Cesium$1__default.Math.toRadians(centeropt.heading || 0), //绕垂直于地心的轴旋转
-            pitch: Cesium$1__default.Math.toRadians(centeropt.pitch || -90), //绕纬度线旋转
-            roll: Cesium$1__default.Math.toRadians(centeropt.roll || 0), //绕经度线旋转
+            heading: Cesium$1.Math.toRadians(centeropt.heading || 0), //绕垂直于地心的轴旋转
+            pitch: Cesium$1.Math.toRadians(centeropt.pitch || -90), //绕纬度线旋转
+            roll: Cesium$1.Math.toRadians(centeropt.roll || 0), //绕经度线旋转
           },
           duration: options.duration,
           complete: options.complete,
@@ -4005,18 +4247,18 @@
 
       _isFlyAnimation = true;
       viewer.camera.setView({
-        destination: Cesium$1__default.Cartesian3.fromDegrees(-85.16, 13.71, 23000000.0),
+        destination: Cesium$1.Cartesian3.fromDegrees(-85.16, 13.71, 23000000.0),
       });
       viewer.camera.flyTo({
-        destination: Cesium$1__default.Cartesian3.fromDegrees(view.x, view.y, 23000000.0),
+        destination: Cesium$1.Cartesian3.fromDegrees(view.x, view.y, 23000000.0),
         duration: 2,
-        easingFunction: Cesium$1__default.EasingFunction.LINEAR_NONE,
+        easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
         complete: function complete() {
           var z = (view.z || 90000) * 1.2 + 8000;
           if (z > 23000000) z = 23000000;
 
           viewer.camera.flyTo({
-            destination: Cesium$1__default.Cartesian3.fromDegrees(view.x, view.y, z),
+            destination: Cesium$1.Cartesian3.fromDegrees(view.x, view.y, z),
             complete: function complete() {
               centerAt(view, {
                 duration: 2,
@@ -4037,48 +4279,48 @@
 
       //动画 1/3
       viewer.camera.flyTo({
-        destination: Cesium$1__default.Cartesian3.fromDegrees(
+        destination: Cesium$1.Cartesian3.fromDegrees(
           first.x + 120,
           first.y,
           first.z
         ),
         orientation: {
-          heading: Cesium$1__default.Math.toRadians(first.heading),
-          pitch: Cesium$1__default.Math.toRadians(first.pitch),
-          roll: Cesium$1__default.Math.toRadians(first.roll),
+          heading: Cesium$1.Math.toRadians(first.heading),
+          pitch: Cesium$1.Math.toRadians(first.pitch),
+          roll: Cesium$1.Math.toRadians(first.roll),
         },
         duration: duration3,
-        easingFunction: Cesium$1__default.EasingFunction.LINEAR_NONE,
+        easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
         complete: function complete() {
           //动画 2/3
           viewer.camera.flyTo({
-            destination: Cesium$1__default.Cartesian3.fromDegrees(
+            destination: Cesium$1.Cartesian3.fromDegrees(
               first.x + 240,
               first.y,
               first.z
             ),
             orientation: {
-              heading: Cesium$1__default.Math.toRadians(first.heading),
-              pitch: Cesium$1__default.Math.toRadians(first.pitch),
-              roll: Cesium$1__default.Math.toRadians(first.roll),
+              heading: Cesium$1.Math.toRadians(first.heading),
+              pitch: Cesium$1.Math.toRadians(first.pitch),
+              roll: Cesium$1.Math.toRadians(first.roll),
             },
             duration: duration3,
-            easingFunction: Cesium$1__default.EasingFunction.LINEAR_NONE,
+            easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
             complete: function complete() {
               //动画 3/3
               viewer.camera.flyTo({
-                destination: Cesium$1__default.Cartesian3.fromDegrees(
+                destination: Cesium$1.Cartesian3.fromDegrees(
                   first.x,
                   first.y,
                   first.z
                 ),
                 orientation: {
-                  heading: Cesium$1__default.Math.toRadians(first.heading),
-                  pitch: Cesium$1__default.Math.toRadians(first.pitch),
-                  roll: Cesium$1__default.Math.toRadians(first.roll),
+                  heading: Cesium$1.Math.toRadians(first.heading),
+                  pitch: Cesium$1.Math.toRadians(first.pitch),
+                  roll: Cesium$1.Math.toRadians(first.roll),
                 },
                 duration: duration3,
-                easingFunction: Cesium$1__default.EasingFunction.LINEAR_NONE,
+                easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
                 complete: function complete() {
                   if (endfun) endfun();
                 },
@@ -4114,12 +4356,12 @@
       var locationData = {};
 
       function setXYZ2Data(cartesian) {
-        var cartographic = Cesium$1__default.Cartographic.fromCartesian(cartesian);
+        var cartographic = Cesium$1.Cartographic.fromCartesian(cartesian);
 
         locationData.z = cartographic.height.toFixed(1);
 
-        var jd = Cesium$1__default.Math.toDegrees(cartographic.longitude);
-        var wd = Cesium$1__default.Math.toDegrees(cartographic.latitude);
+        var jd = Cesium$1.Math.toDegrees(cartographic.longitude);
+        var wd = Cesium$1.Math.toDegrees(cartographic.latitude);
 
         switch (item.crs) {
           default:
@@ -4162,7 +4404,7 @@
         }
       }
 
-      var handler = new Cesium$1__default.ScreenSpaceEventHandler(viewer.scene.canvas);
+      var handler = new Cesium$1.ScreenSpaceEventHandler(viewer.scene.canvas);
       handler.setInputAction(function (movement) {
         var cartesian = point.getCurrentMousePosition(
           viewer.scene,
@@ -4175,10 +4417,10 @@
             locationData.height = viewer.camera.positionCartographic.height.toFixed(
               1
             );
-            locationData.heading = Cesium$1__default.Math.toDegrees(
+            locationData.heading = Cesium$1.Math.toDegrees(
               viewer.camera.heading
             ).toFixed(0);
-            locationData.pitch = Cesium$1__default.Math.toDegrees(
+            locationData.pitch = Cesium$1.Math.toDegrees(
               viewer.camera.pitch
             ).toFixed(0);
           }
@@ -4186,17 +4428,17 @@
           var inhtml = _util.template(item.format, locationData);
           $$1("#location_mars_jwd").html(inhtml);
         }
-      }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
 
       //相机移动结束事件
       viewer.scene.camera.changed.addEventListener(function (event) {
         locationData.height = viewer.camera.positionCartographic.height.toFixed(
           1
         );
-        locationData.heading = Cesium$1__default.Math.toDegrees(
+        locationData.heading = Cesium$1.Math.toDegrees(
           viewer.camera.heading
         ).toFixed(0);
-        locationData.pitch = Cesium$1__default.Math.toDegrees(viewer.camera.pitch).toFixed(
+        locationData.pitch = Cesium$1.Math.toDegrees(viewer.camera.pitch).toFixed(
           0
         );
 
@@ -4211,10 +4453,10 @@
 
     //添加“导航”控件
     function addNavigationWidget(item) {
-      if (!Cesium$1__default.viewerCesiumNavigationMixin) return;
+      if (!Cesium$1.viewerCesiumNavigationMixin) return;
 
-      viewer.extend(Cesium$1__default.viewerCesiumNavigationMixin, {
-        defaultResetView: Cesium$1__default.Rectangle.fromDegrees(110, 20, 120, 30),
+      viewer.extend(Cesium$1.viewerCesiumNavigationMixin, {
+        defaultResetView: Cesium$1.Rectangle.fromDegrees(110, 20, 120, 30),
         enableZoomControls: true,
       });
 
@@ -4373,7 +4615,6 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-28 13:58:22
    */
-
   var BaseLayer = Class.extend({
     config: {}, // 配置的config信息
     viewer: null,
@@ -4478,7 +4719,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-21 13:59:42
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-10 10:29:05
+   * @LastEditTime: 2020-09-29 10:19:58
    */
   var GroupLayer = BaseLayer.extend({
     create: function () {
@@ -4578,7 +4819,7 @@
         var xmax = options.rectangle.xmax;
         var ymin = options.rectangle.ymin;
         var ymax = options.rectangle.ymax;
-        var rectangle = Cesium$1__default.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
+        var rectangle = Cesium$1.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
         this.rectangle = rectangle;
         imageryOpt.rectangle = rectangle;
       }
@@ -4594,7 +4835,7 @@
       if (options.maximumTerrainLevel)
         imageryOpt.maximumTerrainLevel = options.maximumTerrainLevel;
 
-      this.layer = new Cesium$1__default.ImageryLayer(imageryProvider, imageryOpt);
+      this.layer = new Cesium$1.ImageryLayer(imageryProvider, imageryOpt);
       this.layer.config = this.config;
 
       this.viewer.imageryLayers.add(this.layer);
@@ -4637,7 +4878,7 @@
         var rectangle = this.layer.imageryProvider.rectangle; //arcgis图层等，读取配置信息
         if (
           rectangle &&
-          rectangle != Cesium$1__default.Rectangle.MAX_VALUE &&
+          rectangle != Cesium$1.Rectangle.MAX_VALUE &&
           rectangle.west > 0 &&
           rectangle.south > 0 &&
           rectangle.east > 0 &&
@@ -4684,9 +4925,8 @@
    * @Author: 宁四凯
    * @Date: 2020-08-14 16:49:20
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-08 11:24:37
+   * @LastEditTime: 2020-09-29 11:11:00
    */
-
   var GraticuleLayer = BaseLayer.extend({
     model: null,
     // 添加
@@ -4707,8 +4947,8 @@
       function GraticuleLayer(description, scene) {
         description = description || {};
         this._tilingScheme =
-          description._tilingScheme || new Cesium$1__default.GeographicTilingScheme();
-        this._color = description.color || new Cesium$1__default.Color(1.0, 1.0, 1.0, 0.4);
+          description._tilingScheme || new Cesium$1.GeographicTilingScheme();
+        this._color = description.color || new Cesium$1.Color(1.0, 1.0, 1.0, 0.4);
         this._tileWidth = description.tileWidth || 256;
         this._tileHeight = description.tileHeight || 256;
         this._ready = true;
@@ -4717,9 +4957,9 @@
         this._numLines = description.numLines || 50;
 
         this._scene = scene;
-        this._lables = new Cesium$1__default.LabelCollection();
+        this._lables = new Cesium$1.LabelCollection();
         scene.primitives.add(this._lables);
-        this._polylines = new Cesium$1__default.PolylineCollection();
+        this._polylines = new Cesium$1.PolylineCollection();
         scene.primitives.add(this._polylines);
         this._ellipsoid = scene.globe.ellipsoid;
         var canvas = document.createElement("canvas");
@@ -4833,19 +5073,19 @@
       GraticuleLayer.prototype.makeLabel = function (lng, lat, text, top, color) {
         this._lables.add({
           position: this._ellipsoid.cartographicToCartesian(
-            new Cesium$1__default.Cartographic(lng, lat, 10.0)
+            new Cesium$1.Cartographic(lng, lat, 10.0)
           ),
           text: text,
           font: "16px Helvetica",
-          style: Cesium$1__default.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium$1__default.Color.AZURE,
-          outlineColor: Cesium$1__default.Color.BLACK,
+          style: Cesium$1.LabelStyle.FILL_AND_OUTLINE,
+          fillColor: Cesium$1.Color.AZURE,
+          outlineColor: Cesium$1.Color.BLACK,
           outlineWidth: 2,
-          pixelOffset: Cesium$1__default.Cartesian3.ZERO,
-          horizontalOrigin: Cesium$1__default.HorizontalOrigin.LEFT,
+          pixelOffset: Cesium$1.Cartesian3.ZERO,
+          horizontalOrigin: Cesium$1.HorizontalOrigin.LEFT,
           verticalOrigin: top
-            ? Cesium$1__default.VerticalOrigin.BOTTOM
-            : Cesium$1__default.VerticalOrigin.TOP,
+            ? Cesium$1.VerticalOrigin.BOTTOM
+            : Cesium$1.VerticalOrigin.TOP,
           scale: 1.0,
         });
       };
@@ -4905,7 +5145,7 @@
         var ellipsoid = this._ellipsoid;
         var lat,
           lng,
-          granularity = _Cesium2.default.Math.toRadians(1);
+          granularity = Cesium$1.Math.toRadians(1);
 
         // labels positions
         var latitudeText =
@@ -4914,14 +5154,14 @@
           // draw meridian
           var path = [];
           for (lat = minLat; lat < maxLat; lat += granularity) {
-            path.push(new Cesium$1__default.Cartographic(lng, lat));
+            path.push(new Cesium$1.Cartographic(lng, lat));
           }
-          path.push(new Cesium$1__default.Cartographic(lng, maxLat));
+          path.push(new Cesium$1.Cartographic(lng, maxLat));
           this._polylines.add({
             positions: ellipsoid.cartographicArrayToCartesianArray(path),
             width: 1,
           });
-          var degLng = Cesium$1__default.Math.toDegrees(lng);
+          var degLng = Cesium$1.Math.toDegrees(lng);
           this.makeLabel(
             lng,
             latitudeText,
@@ -4939,14 +5179,14 @@
           // draw parallels
           var path = [];
           for (lng = minLng; lng < maxLng; lng += granularity) {
-            path.push(new Cesium$1__default.Cartographic(lng, lat));
+            path.push(new Cesium$1.Cartographic(lng, lat));
           }
-          path.push(new Cesium$1__default.Cartographic(maxLng, lat));
+          path.push(new Cesium$1.Cartographic(maxLng, lat));
           this._polylines.add({
             positions: ellipsoid.cartographicArrayToCartesianArray(path),
             width: 1,
           });
-          var degLat = Cesium$1__default.Math.toDegrees(lat);
+          var degLat = Cesium$1.Math.toDegrees(lat);
           this.makeLabel(
             longitudeText,
             lat,
@@ -4995,29 +5235,26 @@
         var camera = this._scene.camera;
         var canvas = this._scene.canvas;
         var corners = [
+          camera.pickEllipsoid(new Cesium$1.Cartesian2(0, 0), this._ellipsoid),
           camera.pickEllipsoid(
-            new _Cesium2.default.Cartesian2(0, 0),
+            new Cesium$1.Cartesian2(canvas.width, 0),
             this._ellipsoid
           ),
           camera.pickEllipsoid(
-            new Cesium$1__default.Cartesian2(canvas.width, 0),
+            new Cesium$1.Cartesian2(0, canvas.height),
             this._ellipsoid
           ),
           camera.pickEllipsoid(
-            new Cesium$1__default.Cartesian2(0, canvas.height),
-            this._ellipsoid
-          ),
-          camera.pickEllipsoid(
-            new Cesium$1__default.Cartesian2(canvas.width, canvas.height),
+            new Cesium$1.Cartesian2(canvas.width, canvas.height),
             this._ellipsoid
           ),
         ];
         for (var index = 0; index < 4; index++) {
           if (corners[index] === undefined) {
-            return Cesium$1__default.default.Rectangle.MAX_VALUE;
+            return Cesium$1.Rectangle.MAX_VALUE;
           }
         }
-        return Cesium$1__default.default.Rectangle.fromCartographicArray(
+        return Cesium$1.Rectangle.fromCartographicArray(
           this._ellipsoid.cartesianArrayToCartographicArray(corners)
         );
       };
@@ -5030,14 +5267,14 @@
       }
 
       var mins = [
-        Cesium$1__default.Math.toRadians(0.05),
-        Cesium$1__default.Math.toRadians(0.1),
-        Cesium$1__default.Math.toRadians(0.2),
-        Cesium$1__default.Math.toRadians(0.5),
-        Cesium$1__default.Math.toRadians(1.0),
-        Cesium$1__default.Math.toRadians(2.0),
-        Cesium$1__default.Math.toRadians(5.0),
-        Cesium$1__default.Math.toRadians(10.0),
+        Cesium$1.Math.toRadians(0.05),
+        Cesium$1.Math.toRadians(0.1),
+        Cesium$1.Math.toRadians(0.2),
+        Cesium$1.Math.toRadians(0.5),
+        Cesium$1.Math.toRadians(1.0),
+        Cesium$1.Math.toRadians(2.0),
+        Cesium$1.Math.toRadians(5.0),
+        Cesium$1.Math.toRadians(10.0),
       ];
 
       this.model = new GraticuleLayer(
@@ -5055,14 +5292,14 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 15:48:16
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-08 11:08:01
+   * @LastEditTime: 2020-09-29 10:19:39
    */
   var FeatureGridLayer = TileLayer.extend({
     dataSource: null,
     hasOpacity: false,
     create: function () {
-      this.dataSource = new Cesium$1__default.CustomDataSource(); // 用于entity
-      this.primitives = new Cesium$1__default.PrimitiveCollection(); // 用于primitive
+      this.dataSource = new Cesium$1.CustomDataSource(); // 用于entity
+      this.primitives = new Cesium$1.PrimitiveCollection(); // 用于primitive
       var that = this;
       this.config.type_new = "custom_featuregrid";
       this.config.addImageryCache = function (opts) {
@@ -5103,7 +5340,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 13:14:35
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 08:37:24
+   * @LastEditTime: 2020-09-29 10:16:11
    */
 
   // 属性赋值到entity
@@ -5114,8 +5351,8 @@
       //默认
       entityAttr = {
         scale: 1,
-        horizontalOrigin: Cesium$1__default.HorizontalOrigin.CENTER,
-        verticalOrigin: Cesium$1__default.VerticalOrigin.BOTTOM,
+        horizontalOrigin: Cesium$1.HorizontalOrigin.CENTER,
+        verticalOrigin: Cesium$1.VerticalOrigin.BOTTOM,
       };
     }
 
@@ -5136,18 +5373,18 @@
           break;
         case "opacity":
           //透明度
-          entityAttr.color = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.color = new Cesium$1.Color.fromCssColorString(
             "#FFFFFF"
           ).withAlpha(Number(value || 1.0));
           break;
         case "rotation":
           //旋转角度
-          entityAttr.rotation = Cesium$1__default.Math.toRadians(value);
+          entityAttr.rotation = Cesium$1.Math.toRadians(value);
           break;
         case "scaleByDistance":
           //是否按视距缩放
           if (value) {
-            entityAttr.scaleByDistance = new Cesium$1__default.NearFarScalar(
+            entityAttr.scaleByDistance = new Cesium$1.NearFarScalar(
               Number(style.scaleByDistance_near || 1000),
               Number(style.scaleByDistance_nearValue || 1.0),
               Number(style.scaleByDistance_far || 1000000),
@@ -5160,7 +5397,7 @@
         case "distanceDisplayCondition":
           //是否按视距显示
           if (value) {
-            entityAttr.distanceDisplayCondition = new Cesium$1__default.DistanceDisplayCondition(
+            entityAttr.distanceDisplayCondition = new Cesium$1.DistanceDisplayCondition(
               Number(style.distanceDisplayCondition_near || 0),
               Number(style.distanceDisplayCondition_far || 100000)
             );
@@ -5172,14 +5409,14 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
-                Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+                Cesium$1.HeightReference.RELATIVE_TO_GROUND;
               break;
             default:
               entityAttr.heightReference = value;
@@ -5217,7 +5454,7 @@
     };
   }
 
-  var AttrBillboard = ({
+  var AttrBillboard = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity,
     getPositions: getPositions,
     getCoordinates: getCoordinates,
@@ -5264,19 +5501,19 @@
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.material = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
         case "rotation":
           //旋转角度
-          entityAttr.rotation = Cesium$1__default.Math.toRadians(value);
+          entityAttr.rotation = Cesium$1.Math.toRadians(value);
           break;
         case "height":
           entityAttr.height = Number(value);
@@ -5298,7 +5535,7 @@
 
     //如果未设置任何material，设置默认颜色
     if (entityAttr.material == null) {
-      entityAttr.material = Cesium$1__default.Color.fromRandom({
+      entityAttr.material = Cesium$1.Color.fromRandom({
         minimumGreen: 0.75,
         maximumBlue: 0.75,
         alpha: Number(style.opacity || 1.0),
@@ -5333,7 +5570,7 @@
     };
   }
 
-  var AttrCircle = ({
+  var AttrCircle = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$1,
     getPositions: getPositions$1,
     getCoordinates: getCoordinates$1,
@@ -5346,7 +5583,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-26 15:09:41
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-14 09:29:12
+   * @LastEditTime: 2020-09-29 10:16:22
    */
 
   // 属性赋值到entity
@@ -5370,26 +5607,26 @@
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.material = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
         case "cornerType":
           switch (value) {
             case "BEVELED":
-              entityAttr.cornerType = Cesium$1__default.CornerType.BEVELED;
+              entityAttr.cornerType = Cesium$1.CornerType.BEVELED;
               break;
             case "MITERED":
-              entityAttr.cornerType = Cesium$1__default.CornerType.MITERED;
+              entityAttr.cornerType = Cesium$1.CornerType.MITERED;
               break;
             case "ROUNDED":
-              entityAttr.cornerType = Cesium$1__default.CornerType.ROUNDED;
+              entityAttr.cornerType = Cesium$1.CornerType.ROUNDED;
               break;
             default:
               entityAttr.cornerType = value;
@@ -5401,7 +5638,7 @@
 
     //如果未设置任何material，设置默认颜色
     if (entityAttr.material == null) {
-      entityAttr.material = Cesium$1__default.Color.fromRandom({
+      entityAttr.material = Cesium$1.Color.fromRandom({
         minimumGreen: 0.75,
         maximumBlue: 0.75,
         alpha: Number(style.opacity || 1.0),
@@ -5436,7 +5673,7 @@
     };
   }
 
-  var AttrCorridor = ({
+  var AttrCorridor = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$2,
     getPositions: getPositions$2,
     getCoordinates: getCoordinates$2,
@@ -5476,13 +5713,13 @@
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.material = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
@@ -5491,7 +5728,7 @@
           var extentRadii = style.extentRadii || 100;
           var widthRadii = style.widthRadii || 100;
           var heightRadii = style.heightRadii || 100;
-          entityAttr.radii = new Cesium$1__default.Cartesian3(
+          entityAttr.radii = new Cesium$1.Cartesian3(
             extentRadii,
             widthRadii,
             heightRadii
@@ -5502,7 +5739,7 @@
 
     //如果未设置任何material，设置默认颜色
     if (entityAttr.material == null) {
-      entityAttr.material = Cesium$1__default.Color.fromRandom({
+      entityAttr.material = Cesium$1.Color.fromRandom({
         minimumGreen: 0.75,
         maximumBlue: 0.75,
         alpha: Number(style.opacity || 1.0),
@@ -5537,7 +5774,7 @@
     };
   }
 
-  var AttrEllipsoid = ({
+  var AttrEllipsoid = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$3,
     getPositions: getPositions$3,
     getCoordinates: getCoordinates$3,
@@ -5559,8 +5796,8 @@
       // 默认值
       entityAttr = {
         scale: 1.0,
-        horizontalOrigin: Cesium$1__default.HorizontalOrigin.CENTER,
-        verticalOrigin: Cesium$1__default.VerticalOrigin.BOTTOM,
+        horizontalOrigin: Cesium$1.HorizontalOrigin.CENTER,
+        verticalOrigin: Cesium$1.VerticalOrigin.BOTTOM,
       };
     }
 
@@ -5592,7 +5829,7 @@
           break;
         case "color":
           //颜色
-          entityAttr.fillColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.fillColor = new Cesium$1.Color.fromCssColorString(
             value || "#ffffff"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
@@ -5600,12 +5837,12 @@
         case "border":
           //是否衬色
           entityAttr.style = value
-            ? Cesium$1__default.LabelStyle.FILL_AND_OUTLINE
-            : Cesium$1__default.LabelStyle.FILL;
+            ? Cesium$1.LabelStyle.FILL_AND_OUTLINE
+            : Cesium$1.LabelStyle.FILL;
           break;
         case "border_color":
           //衬色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#000000"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
@@ -5618,24 +5855,24 @@
           break;
         case "background_color":
           //背景色
-          entityAttr.backgroundColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.backgroundColor = new Cesium$1.Color.fromCssColorString(
             value || "#000000"
           ).withAlpha(Number(style.background_opacity || style.opacity || 0.5));
           break;
         case "pixelOffset":
           //偏移量
-          entityAttr.pixelOffset = new Cesium$1__default.Cartesian2(
+          entityAttr.pixelOffset = new Cesium$1.Cartesian2(
             style.pixelOffset[0],
             style.pixelOffset[1]
           );
           break;
         case "hasPixelOffset":
           //是否存在偏移量
-          if (!value) entityAttr.pixelOffset = new Cesium$1__default.Cartesian2(0, 0);
+          if (!value) entityAttr.pixelOffset = new Cesium$1.Cartesian2(0, 0);
           break;
         case "pixelOffsetX":
           //偏移量
-          entityAttr.pixelOffset = new Cesium$1__default.Cartesian2(
+          entityAttr.pixelOffset = new Cesium$1.Cartesian2(
             value,
             style.pixelOffsetY
           );
@@ -5643,7 +5880,7 @@
         case "scaleByDistance":
           //是否按视距缩放
           if (value) {
-            entityAttr.scaleByDistance = new Cesium$1__default.NearFarScalar(
+            entityAttr.scaleByDistance = new Cesium$1.NearFarScalar(
               Number(style.scaleByDistance_near || 1000),
               Number(style.scaleByDistance_nearValue || 1.0),
               Number(style.scaleByDistance_far || 1000000),
@@ -5656,7 +5893,7 @@
         case "distanceDisplayCondition":
           //是否按视距显示
           if (value) {
-            entityAttr.distanceDisplayCondition = new Cesium$1__default.DistanceDisplayCondition(
+            entityAttr.distanceDisplayCondition = new Cesium$1.DistanceDisplayCondition(
               Number(style.distanceDisplayCondition_near || 0),
               Number(style.distanceDisplayCondition_far || 100000)
             );
@@ -5668,14 +5905,14 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
-                Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+                Cesium$1.HeightReference.RELATIVE_TO_GROUND;
               break;
             default:
               emptyImageUrl.heightReference = value;
@@ -5724,7 +5961,7 @@
     };
   }
 
-  var AttrLabel$1 = ({
+  var AttrLabel$1 = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$4,
     getPositions: getPositions$4,
     getCoordinates: getCoordinates$4,
@@ -5737,7 +5974,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 10:36:42
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 08:38:16
+   * @LastEditTime: 2020-09-29 10:16:32
    */
 
   function style2Entity$5(style, entityAttr) {
@@ -5770,14 +6007,14 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
-                Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+                Cesium$1.HeightReference.RELATIVE_TO_GROUND;
               break;
             default:
               entityAttr.heightReference = value;
@@ -5788,7 +6025,7 @@
 
     // 轮廓
     if (style.silhouette) {
-      entityAttr.silhouetteColor = new Cesium$1__default.Color.fromCssColorString(
+      entityAttr.silhouetteColor = new Cesium$1.Color.fromCssColorString(
         style.silhouetteColor || "#FFFFFF"
       ).withAlpha(Number(style.silhouetteAlpha || 1.0));
       entityAttr.silhouetteSize = Number(style.silhouetteSize || 1.0);
@@ -5799,11 +6036,11 @@
     // 透明度、颜色
     var opacity = style.hasOwnProperty("opacity") ? Number(style.opacity) : 1;
     if (style.fill)
-      entityAttr.color = new Cesium$1__default.Color.fromCssColorString(
+      entityAttr.color = new Cesium$1.Color.fromCssColorString(
         style.color || "#FFFFFF"
       ).withAlpha(opacity);
     else
-      entityAttr.color = new Cesium$1__default.Color.fromCssColorString("#FFFFFF").withAlpha(
+      entityAttr.color = new Cesium$1.Color.fromCssColorString("#FFFFFF").withAlpha(
         opacity
       );
 
@@ -5837,7 +6074,7 @@
     };
   }
 
-  var AttrModel = ({
+  var AttrModel = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$5,
     getPositions: getPositions$5,
     getCoordinates: getCoordinates$5,
@@ -5879,7 +6116,7 @@
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
@@ -5892,7 +6129,7 @@
         case "scaleByDistance":
           //是否按视距缩放
           if (value) {
-            entityAttr.scaleByDistance = new Cesium$1__default.NearFarScalar(
+            entityAttr.scaleByDistance = new Cesium$1.NearFarScalar(
               Number(style.scaleByDistance_near || 1000),
               Number(style.scaleByDistance_nearValue || 1.0),
               Number(style.scaleByDistance_far || 1000000),
@@ -5917,14 +6154,14 @@
         case "heightReference":
           switch (value) {
             case "NONE":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.NONE;
+              entityAttr.heightReference = Cesium$1.HeightReference.NONE;
               break;
             case "CLAMP_TO_GROUND":
-              entityAttr.heightReference = Cesium$1__default.HeightReference.CLAMP_TO_GROUND;
+              entityAttr.heightReference = Cesium$1.HeightReference.CLAMP_TO_GROUND;
               break;
             case "RELATIVE_TO_GROUND":
               entityAttr.heightReference =
-                Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+                Cesium$1.HeightReference.RELATIVE_TO_GROUND;
               break;
             default:
               entityAttr.heightReference = value;
@@ -5965,7 +6202,7 @@
     };
   }
 
-  var AttrPoint = ({
+  var AttrPoint = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$6,
     getPositions: getPositions$6,
     getCoordinates: getCoordinates$6,
@@ -5987,7 +6224,7 @@
       //默认值
       entityAttr = {
         fill: true,
-        classificationType: Cesium$1__default.ClassificationType.BOTH,
+        classificationType: Cesium$1.ClassificationType.BOTH,
       };
     }
 
@@ -6004,13 +6241,13 @@
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.material = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || style.color || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
@@ -6034,7 +6271,7 @@
 
     //如果未设置任何material，默认设置随机颜色
     if (style.color == null) {
-      entityAttr.material = Cesium$1__default.Color.fromRandom({
+      entityAttr.material = Cesium$1.Color.fromRandom({
         minimumGreen: 0.75,
         maximumBlue: 0.75,
         alpha: Number(style.opacity || 1.0),
@@ -6074,7 +6311,7 @@
     };
   }
 
-  var AttrPolygon = ({
+  var AttrPolygon = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$7,
     getPositions: getPositions$7,
     getCoordinates: getCoordinates$7,
@@ -6087,8 +6324,9 @@
    * @Author: 宁四凯
    * @Date: 2020-08-14 13:34:00
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-11 08:54:28
+   * @LastEditTime: 2020-09-29 10:16:40
    */
+
   function style2Entity$8(style, entityAttr) {
     style = style || {};
     if (entityAttr == null) {
@@ -6116,10 +6354,10 @@
     }
 
     if (style.color || style.lineType) {
-      var color = new Cesium$2.Color.fromCssColorString(
+      var color = new Cesium$1.Color.fromCssColorString(
         style.color || "#FFFF00"
       ).withAlpha(Number(style.opacity || 1.0));
-      var outlineColor = new Cesium$2.Color.fromCssColorString(
+      var outlineColor = new Cesium$1.Color.fromCssColorString(
         style.outlineColor || "#FFFF00"
       ).withAlpha(Number(style.opacity || 1.0));
       switch (style.lineType) {
@@ -6128,7 +6366,7 @@
           // 实线
           if (style.outline) {
             // 存在衬色时
-            entityAttr.material = new Cesium$2.PolylineOutlineMaterialProperty({
+            entityAttr.material = new Cesium$1.PolylineOutlineMaterialProperty({
               color: color,
               outlineWidth: Number(style.outlineWidth || 1.0),
               outlineColor: outlineColor,
@@ -6141,15 +6379,15 @@
           // 虚线
           if (style.outline) {
             // 存在衬色时
-            entityAttr.material = new Cesium$2.PolylineDashMaterialProperty({
+            entityAttr.material = new Cesium$1.PolylineDashMaterialProperty({
               dashLength: style.dashLength || style.outlineWidth || 16.0,
               color: color,
-              gapColor: new Cesium$2.Color.fromCssColorString(
+              gapColor: new Cesium$1.Color.fromCssColorString(
                 style.outlineColor || "#FFFF00"
               ).withAlpha(Number(style.outlineOpacity || style.opacity || 1.0)),
             });
           } else {
-            entityAttr.material = new Cesium$2.PolylineDashMaterialProperty({
+            entityAttr.material = new Cesium$1.PolylineDashMaterialProperty({
               dashLength: style.dashLength || 16.0,
               color: color,
             });
@@ -6157,14 +6395,14 @@
           break;
         case "glow":
           // 发光线
-          entityAttr.material = new Cesium$2.PolylineGlowMaterialProperty({
+          entityAttr.material = new Cesium$1.PolylineGlowMaterialProperty({
             glowPower: style.glowPower || 0.1,
             color: color,
           });
           break;
         case "arrow":
           // 箭头线
-          entityAttr.material = new Cesium$2.PolylineArrowMaterialProperty(color);
+          entityAttr.material = new Cesium$1.PolylineArrowMaterialProperty(color);
           break;
       }
     }
@@ -6209,7 +6447,7 @@
     return _positions_show;
   }
 
-  var AttrPolyline = ({
+  var AttrPolyline = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$8,
     getPositions: getPositions$8,
     getCoordinates: getCoordinates$8,
@@ -6222,7 +6460,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 14:37:50
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 08:38:37
+   * @LastEditTime: 2020-09-29 11:09:20
    */
 
   // 赋值到entity
@@ -6248,13 +6486,13 @@
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.material = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
@@ -6286,18 +6524,18 @@
 
     var pss = [];
     for (var i = startAngle; i <= endAngle; i++) {
-      var radians = _Cesium2.default.Math.toRadians(i);
+      var radians = Cesium$1.Math.toRadians(i);
       pss.push(
-        new _Cesium2.default.Cartesian2(
+        new Cesium$1.Cartesian2(
           radius * Math.cos(radians),
           radius * Math.sin(radians)
         )
       );
     }
     for (var i = endAngle; i >= startAngle; i--) {
-      var radians = _Cesium2.default.Math.toRadians(i);
+      var radians = Cesium$1.Math.toRadians(i);
       pss.push(
-        new _Cesium2.default.Cartesian2(
+        new Cesium$1.Cartesian2(
           (radius - hd) * Math.cos(radians),
           (radius - hd) * Math.sin(radians)
         )
@@ -6313,9 +6551,9 @@
 
     var pss = [];
     for (var i = startAngle; i <= endAngle; i++) {
-      var radians = Cesium$1__default.Math.toRadians(i);
+      var radians = Cesium$1.Math.toRadians(i);
       pss.push(
-        new Cesium$1__default.Cartesian2(
+        new Cesium$1.Cartesian2(
           radius * Math.cos(radians),
           radius * Math.sin(radians)
         )
@@ -6332,7 +6570,7 @@
     var pss = new Array(length);
     for (var i = 0; i < length; i++) {
       var r = i % 2 === 0 ? radius : radius / 3;
-      pss[i] = new Cesium$1__default.Cartesian2(
+      pss[i] = new Cesium$1.Cartesian2(
         Math.cos(i * angle) * r,
         Math.sin(i * angle) * r
       );
@@ -6368,7 +6606,7 @@
     };
   }
 
-  var AttrPolylineVolume = ({
+  var AttrPolylineVolume = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$9,
     getCorridorShape1: getCorridorShape1,
     getCorridorShape2: getCorridorShape2,
@@ -6415,7 +6653,7 @@
           break;
         case "outlineColor":
           // 边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
@@ -6427,34 +6665,34 @@
           break;
         case "color":
           // 填充颜色
-          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.material = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).alpha.withAlpha(Number(style.opacity || 1.0));
           break;
         case "image":
           // 填充图片
-          entityAttr.material = new Cesium$1__default.ImageMaterialProperty({
+          entityAttr.material = new Cesium$1.ImageMaterialProperty({
             image: style.image,
-            color: new Cesium$1__default.Color.fromCssColorString("#FFFFFF").withAlpha(
+            color: new Cesium$1.Color.fromCssColorString("#FFFFFF").withAlpha(
               Number(style.opacity || 1.0)
             ),
           });
           break;
         case "rotation":
           // 旋转角度
-          entityAttr.rotation = Cesium$1__default.Math.toRadians(value);
+          entityAttr.rotation = Cesium$1.Math.toRadians(value);
           if (!style.stRotation)
-            entityAttr.stRotation = Cesium$1__default.Math.toRadians(value);
+            entityAttr.stRotation = Cesium$1.Math.toRadians(value);
           break;
         case "stRotation":
-          entityAttr.stRotation = Cesium$1__default.Math.toRadians(value);
+          entityAttr.stRotation = Cesium$1.Math.toRadians(value);
           break;
       }
     }
 
     // 如果未设置任何material,设置默认颜色
     if (entityAttr.material == null) {
-      entityAttr.material = Cesium$1__default.Color.fromRandom({
+      entityAttr.material = Cesium$1.Color.fromRandom({
         minimumGreen: 0.75,
         maximumBlue: 0.75,
         alpha: Number(style.opacity || 1.0),
@@ -6472,8 +6710,8 @@
     var re = entity.rectangle.coordinates.getValue(); // Rectangle
     var height = entity.rectangle.height ? entity.rectangle.height.getValue() : 0;
 
-    var pt1 = Cesium$1__default.Cartesian3.fromRadians(re.west, re.south, height);
-    var pt2 = Cesium$1__default.Cartesian3.fromRadians(re.east, re.north, height);
+    var pt1 = Cesium$1.Cartesian3.fromRadians(re.west, re.south, height);
+    var pt2 = Cesium$1.Cartesian3.fromRadians(re.east, re.north, height);
     return [pt1, pt2];
   }
 
@@ -6496,7 +6734,7 @@
     };
   }
 
-  var AttrRectangle = ({
+  var AttrRectangle = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$a,
     getPositions: getPositions$a,
     getCoordinates: getCoordinates$a,
@@ -6509,8 +6747,9 @@
    * @Author: 宁四凯
    * @Date: 2020-08-24 10:02:53
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 08:38:47
+   * @LastEditTime: 2020-09-29 10:16:50
    */
+
   //属性赋值到entity
   function style2Entity$b(style, entityAttr) {
     style = style || {};
@@ -6534,13 +6773,13 @@
           break;
         case "outlineColor":
           //边框颜色
-          entityAttr.outlineColor = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.outlineColor = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(style.outlineOpacity || style.opacity || 1.0);
           break;
         case "color":
           //填充颜色
-          entityAttr.material = new Cesium$1__default.Color.fromCssColorString(
+          entityAttr.material = new Cesium$1.Color.fromCssColorString(
             value || "#FFFF00"
           ).withAlpha(Number(style.opacity || 1.0));
           break;
@@ -6549,7 +6788,7 @@
 
     //如果未设置任何material，设置默认颜色
     if (entityAttr.material == null) {
-      entityAttr.material = Cesium$1__default.Color.fromRandom({
+      entityAttr.material = Cesium$1.Color.fromRandom({
         minimumGreen: 0.75,
         maximumBlue: 0.75,
         alpha: Number(style.opacity || 1.0),
@@ -6584,7 +6823,7 @@
     };
   }
 
-  var AttrWall = ({
+  var AttrWall = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$b,
     getPositions: getPositions$b,
     getCoordinates: getCoordinates$b,
@@ -6600,7 +6839,7 @@
    * @LastEditTime: 2020-09-28 11:22:40
    */
 
-  var Attr = ({
+  var Attr = /*#__PURE__*/Object.freeze({
     AttrBillboard: AttrBillboard,
     AttrCircle: AttrCircle,
     AttrCorridor: AttrCorridor,
@@ -6621,7 +6860,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 16:54:59
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:03:28
+   * @LastEditTime: 2020-09-29 11:10:41
    */
   var CustomFeatureGridLayer = FeatureGridLayer.extend({
     _cacheGrid: {}, // 网络缓存，存放矢量对象id集合
@@ -6821,7 +7060,7 @@
         ) {
           this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
         } else if (entity.billboard) {
-          entity.billboard.color = new _Cesium2.default.Color.fromCssColorString(
+          entity.billboard.color = new Cesium$1.Color.fromCssColorString(
             "#FFFFFF"
           ).withAlpha(this._opacity);
 
@@ -6849,7 +7088,7 @@
         var name = entity.properties.OBJECTID;
         var color = this.colorHash[name];
         if (!color) {
-          color = Cesium$1__default.Color.fromRandom({
+          color = Cesium$1.Color.fromRandom({
             minimumGreen: 0.75,
             maximumBlue: 0.75,
             alpha: this._opacity,
@@ -6858,12 +7097,12 @@
         }
         entity.polygon.material = color;
         entity.polygon.outline = true;
-        entity.polygon.outlineColor = Cesium$1__default.Color.WHITE;
+        entity.polygon.outlineColor = Cesium$1.Color.WHITE;
       } else if (entity.polyline) {
         var name = entity.properties.OBJECTID;
         var color = this.colorHash[name];
         if (!color) {
-          color = Cesium$1__default.Color.fromRandom({
+          color = Cesium$1.Color.fromRandom({
             minimumGreen: 0.75,
             maximumBlue: 0.75,
             alpha: this._opacity,
@@ -6874,8 +7113,8 @@
         entity.polyline.width = 2;
       } else if (entity.billboard) {
         entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin = Cesium$1__default.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin = Cesium$1__default.VerticalOrigin.BOTTOM;
+        entity.billboard.horizontalOrigin = Cesium$1.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1.VerticalOrigin.BOTTOM;
       }
     },
 
@@ -6885,7 +7124,7 @@
         var name = entity.properties.OBJECTID;
         var color = this.colorHash[name];
         if (!color) {
-          color = Cesium$1__default.Color.fromRandom({
+          color = Cesium$1.Color.fromRandom({
             minimumGreen: 0.75,
             maximumBlue: 0.75,
             alpha: this._opacity,
@@ -6894,12 +7133,12 @@
         }
         entity.polygon.material = color;
         entity.polygon.outline = true;
-        entity.polygon.outlineColor = Cesium$1__default.Color.WHITE;
+        entity.polygon.outlineColor = Cesium$1.Color.WHITE;
       } else if (entity.polyline) {
         var name = entity.properties.OBJECTID;
         var color = this.colorHash[name];
         if (!color) {
-          color = Cesium$1__default.Color.fromRandom({
+          color = Cesium$1.Color.fromRandom({
             minimumGreen: 0.75,
             maximumBlue: 0.75,
             alpha: this._opacity,
@@ -6910,8 +7149,8 @@
         entity.polyline.width = 2;
       } else if (entity.billboard) {
         entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin = Cesium$1__default.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin = Cesium$1__default.VerticalOrigin.BOTTOM;
+        entity.billboard.horizontalOrigin = Cesium$1.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1.VerticalOrigin.BOTTOM;
       }
     },
     //外部配置的symbol
@@ -6963,13 +7202,13 @@
         style2Entity$8(styleOpt, entity.polyline);
       } else if (entity.billboard) {
         entity.billboard.heightReference =
-          Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+          Cesium$1.HeightReference.RELATIVE_TO_GROUND;
         AttrEntity(styleOpt, entity.billboard);
 
         //加上文字标签
         if (styleOpt.label && styleOpt.label.field) {
           styleOpt.label.heightReference =
-            Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
 
           entity.label = style2Entity$4(styleOpt.label);
           entity.label.text = attr[styleOpt.label.field];
@@ -6984,7 +7223,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-21 14:00:31
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:03:02
+   * @LastEditTime: 2020-09-29 10:20:08
    */
   var POILayer = CustomFeatureGridLayer.extend({
     _keys: null,
@@ -7065,7 +7304,7 @@
 
       var entityOptions = {
         name: attributes.name,
-        position: Cesium$1__default.Cartesian3.fromDegrees(
+        position: Cesium$1.Cartesian3.fromDegrees(
           lnglat.x,
           lnglat.y,
           this.config.height || 3
@@ -7094,7 +7333,7 @@
         if (styleOpt.image) {
           entityOptions.billboard = style2Entity(styleOpt);
           entityOptions.billboard.heightReference =
-            Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
         } else {
           entityOptions.point = style2Entity$6(styleOpt);
         }
@@ -7103,32 +7342,32 @@
         if (styleOpt.label) {
           entityOptions.label = AttrLabel.style2Entity(styleOpt.label);
           entityOptions.label.heightReference =
-            Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
           entityOptions.label.text = attributes.name;
         }
       } else {
         //无配置时的默认值
         entityOptions.point = {
-          color: new Cesium$1__default.Color.fromCssColorString("#3388ff"),
+          color: new Cesium$1.Color.fromCssColorString("#3388ff"),
           pixelSize: 10,
-          outlineColor: new Cesium$1__default.Color.fromCssColorString("#ffffff"),
+          outlineColor: new Cesium$1.Color.fromCssColorString("#ffffff"),
           outlineWidth: 2,
-          heightReference: Cesium$1__default.HeightReference.RELATIVE_TO_GROUND,
-          scaleByDistance: new Cesium$1__default.NearFarScalar(1000, 1, 20000, 0.5),
+          heightReference: Cesium$1.HeightReference.RELATIVE_TO_GROUND,
+          scaleByDistance: new Cesium$1.NearFarScalar(1000, 1, 20000, 0.5),
         };
         entityOptions.label = {
           text: attributes.name,
           font: "normal small-caps normal 16px 楷体",
-          style: Cesium$1__default.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium$1__default.Color.AZURE,
-          outlineColor: Cesium$1__default.Color.BLACK,
+          style: Cesium$1.LabelStyle.FILL_AND_OUTLINE,
+          fillColor: Cesium$1.Color.AZURE,
+          outlineColor: Cesium$1.Color.BLACK,
           outlineWidth: 2,
-          horizontalOrigin: Cesium$1__default.HorizontalOrigin.CENTER,
-          verticalOrigin: Cesium$1__default.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium$1__default.Cartesian2(0, -15), //偏移量
-          heightReference: Cesium$1__default.HeightReference.RELATIVE_TO_GROUND, //是地形上方的高度
-          scaleByDistance: new Cesium$1__default.NearFarScalar(1000, 1, 5000, 0.8),
-          distanceDisplayCondition: new Cesium$1__default.DistanceDisplayCondition(
+          horizontalOrigin: Cesium$1.HorizontalOrigin.CENTER,
+          verticalOrigin: Cesium$1.VerticalOrigin.BOTTOM,
+          pixelOffset: new Cesium$1.Cartesian2(0, -15), //偏移量
+          heightReference: Cesium$1.HeightReference.RELATIVE_TO_GROUND, //是地形上方的高度
+          scaleByDistance: new Cesium$1.NearFarScalar(1000, 1, 5000, 0.8),
+          distanceDisplayCondition: new Cesium$1.DistanceDisplayCondition(
             0.0,
             5000
           ),
@@ -7213,13 +7452,13 @@
         }
 
         if (entity.billboard) {
-          entity.billboard.color = new Cesium$1__default.Color.fromCssColorString(
+          entity.billboard.color = new Cesium$1.Color.fromCssColorString(
             "#FFFFFF"
           ).withAlpha(this._opacity);
         }
 
         if (entity.model) {
-          entity.model.color = new Cesium$1__default.Color.fromCssColorString(
+          entity.model.color = new Cesium$1.Color.fromCssColorString(
             "#FFFFFF"
           ).withAlpha(this._opacity);
         }
@@ -7245,7 +7484,7 @@
 
     queryData: function () {
       let that = this;
-      let dataSource = Cesium$1__default.GeoJsonDataSource.load(this.config.url, {
+      let dataSource = Cesium$1.GeoJsonDataSource.load(this.config.url, {
         clampToGround: this.config.clampToGround,
       });
       dataSource
@@ -7322,7 +7561,7 @@
         let name = attr.id || attr.OBJECTID || 0;
         let color = this.colorHash[name];
         if (!color) {
-          color = Cesium$1__default.Color.fromRandom({
+          color = Cesium$1.Color.fromRandom({
             minimumGreen: 0.75,
             maximumBlue: 0.75,
             alpha: this._opacity,
@@ -7332,12 +7571,12 @@
 
         entity.polygon.material = color;
         entity.polygon.outline = true;
-        entity.polygon.outlineColor = Cesium$1__default.Color.WHITE;
+        entity.polygon.outlineColor = Cesium$1.Color.WHITE;
       } else if (entity.polyline) {
         let name = attr.id || attr.OBJECTID || 0;
         let color = this.colorHash[name];
         if (!color) {
-          color = Cesium$1__default.Color.fromRandom({
+          color = Cesium$1.Color.fromRandom({
             minimumGreen: 0.75,
             maximumBlue: 0.75,
             alpha: this._opacity,
@@ -7348,8 +7587,8 @@
         entity.polyline.width = 2;
       } else if (entity.billboard) {
         entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin = Cesium$1__default.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin = Cesium$1__default.VerticalOrigin.BOTTOM;
+        entity.billboard.horizontalOrigin = Cesium$1.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1.VerticalOrigin.BOTTOM;
       }
     },
 
@@ -7401,19 +7640,19 @@
 
       if (entity.label) {
         styleOpt.heightReference =
-          styleOpt.heightReference || Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+          styleOpt.heightReference || Cesium$1.HeightReference.RELATIVE_TO_GROUND;
         style2Entity$4(styleOpt, entity.label);
       }
 
       if (entity.billboard) {
         styleOpt.heightReference =
-          styleOpt.heightReference || Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+          styleOpt.heightReference || Cesium$1.HeightReference.RELATIVE_TO_GROUND;
         style2Entity(styleOpt, entity.billboard);
         // 加上文字标签
         if (styleOpt.label && styleOpt.label.field) {
           styleOpt.label.heightReference =
             styleOpt.label.heightReference ||
-            Cesium$1__default.HeightReference.RELATIVE_TO_GROUND;
+            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
           entity.label = AttrEntity(styleOpt.label);
           entity.label.text = attr[styleOpt.label.field] || "";
         }
@@ -7429,7 +7668,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-10 11:24:07
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-27 14:47:03
+   * @LastEditTime: 2020-09-29 13:17:34
    */
 
   var ArcFeatureLayer = GeoJsonLayer.extend({
@@ -7440,7 +7679,7 @@
       if (this.config.layers && this.config.layers.length > 0)
         url += "/" + this.config.layers[0];
 
-      var query = leaflet.esri.query({
+      var query = L.esri.query({
         url: url,
       });
       if (this.config.where) query.where(this.config.where);
@@ -7473,12 +7712,9 @@
           }
           featureCollection.features = featuresOK;
 
-          var dataSource = _Cesium2.default.GeoJsonDataSource.load(
-            featureCollection,
-            {
-              clampToGround: true,
-            }
-          );
+          var dataSource = Cesium$1.GeoJsonDataSource.load(featureCollection, {
+            clampToGround: true,
+          });
           dataSource
             .then(function (dataSource) {
               that.showResult(dataSource);
@@ -7497,9 +7733,8 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 11:10:46
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-08 11:23:09
+   * @LastEditTime: 2020-09-29 10:19:49
    */
-
   var GltfLayer = BaseLayer.extend({
     model: null,
     hasOpacity: true,
@@ -7537,12 +7772,12 @@
     initData: function () {
       var cfg = this.config.position;
       cfg = this.viewer.card.point2map(cfg); // 转换坐标系
-      var position = Cesium$1__default.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
-      var heading = Cesium$1__default.Math.toRadians(cfg.heading || 0);
-      var pitch = Cesium$1__default.Math.toRadians(cfg.pitch || 0);
-      var roll = Cesium$1__default.Math.toRadians(cfg.roll || 0);
-      var hpr = new Cesium$1__default.HeadingPitchRoll(heading, pitch, roll);
-      var orientation = Cesium$1__default.Transforms.headingPitchRollQuaternion(
+      var position = Cesium$1.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
+      var heading = Cesium$1.Math.toRadians(cfg.heading || 0);
+      var pitch = Cesium$1.Math.toRadians(cfg.pitch || 0);
+      var roll = Cesium$1.Math.toRadians(cfg.roll || 0);
+      var hpr = new Cesium$1.HeadingPitchRoll(heading, pitch, roll);
+      var orientation = Cesium$1.Transforms.headingPitchRollQuaternion(
         position,
         hpr
       );
@@ -7577,13 +7812,11 @@
 
     setOpacity: function (value) {
       if (this.model == null) return;
-      this.model.model.color = new Cesium$1__default.Color.fromCssColorString(
+      this.model.model.color = new Cesium$1.Color.fromCssColorString(
         "#FFFFFF"
       ).withAlpha(value);
     },
   });
-
-  const { Matrix4, Matrix3 } = require("cesium");
 
   /*
    * @Description:
@@ -7591,7 +7824,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 10:19:53
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-08 15:52:35
+   * @LastEditTime: 2020-09-29 13:09:02
    */
   var Axis = {
     /**
@@ -7600,8 +7833,8 @@
      * @type {Matrix4}
      * @constant
      */
-    Y_UP_TO_Z_UP: Matrix4.fromRotationTranslation(
-      Matrix3.fromRotationX(CesiumMath.PI_OVER_TWO)
+    Y_UP_TO_Z_UP: Cesium$1.Matrix4.fromRotationTranslation(
+      Cesium$1.Matrix3.fromRotationX(Cesium$1.Math.PI_OVER_TWO)
     ),
 
     /**
@@ -7610,8 +7843,8 @@
      * @type {Matrix4}
      * @constant
      */
-    Z_UP_TO_Y_UP: Matrix4.fromRotationTranslation(
-      Matrix3.fromRotationX(-CesiumMath.PI_OVER_TWO)
+    Z_UP_TO_Y_UP: Cesium$1.Matrix4.fromRotationTranslation(
+      Cesium$1.Matrix3.fromRotationX(-Cesium$1.Math.PI_OVER_TWO)
     ),
 
     /**
@@ -7620,8 +7853,8 @@
      * @type {Matrix4}
      * @constant
      */
-    X_UP_TO_Z_UP: Matrix4.fromRotationTranslation(
-      Matrix3.fromRotationY(-CesiumMath.PI_OVER_TWO)
+    X_UP_TO_Z_UP: Cesium$1.Matrix4.fromRotationTranslation(
+      Cesium$1.Matrix3.fromRotationY(-Cesium$1.Math.PI_OVER_TWO)
     ),
 
     /**
@@ -7630,8 +7863,8 @@
      * @type {Matrix4}
      * @constant
      */
-    Z_UP_TO_X_UP: Matrix4.fromRotationTranslation(
-      Matrix3.fromRotationY(CesiumMath.PI_OVER_TWO)
+    Z_UP_TO_X_UP: Cesium$1.Matrix4.fromRotationTranslation(
+      Cesium$1.Matrix3.fromRotationY(Cesium$1.Math.PI_OVER_TWO)
     ),
 
     /**
@@ -7640,8 +7873,8 @@
      * @type {Matrix4}
      * @constant
      */
-    X_UP_TO_Y_UP: Matrix4.fromRotationTranslation(
-      Matrix3.fromRotationZ(CesiumMath.PI_OVER_TWO)
+    X_UP_TO_Y_UP: Cesium$1.Matrix4.fromRotationTranslation(
+      Cesium$1.Matrix3.fromRotationZ(Cesium$1.Math.PI_OVER_TWO)
     ),
 
     /**
@@ -7650,8 +7883,8 @@
      * @type {Matrix4}
      * @constant
      */
-    Y_UP_TO_X_UP: Matrix4.fromRotationTranslation(
-      Matrix3.fromRotationZ(-CesiumMath.PI_OVER_TWO)
+    Y_UP_TO_X_UP: Cesium$1.Matrix4.fromRotationTranslation(
+      Cesium$1.Matrix3.fromRotationZ(-Cesium$1.Math.PI_OVER_TWO)
     ),
   };
 
@@ -7691,7 +7924,7 @@
         });
       } else if (this.boundingSphere) {
         this.viewer.camera.flyToBoundingSphere(this.boundingSphere, {
-          offset: new Cesium$1__default.HeadingPitchRange(0.0, -0.5, this.boundingSphere),
+          offset: new Cesium$1.HeadingPitchRange(0.0, -0.5, this.boundingSphere),
           duration: duration,
         });
       }
@@ -7703,7 +7936,7 @@
         this.config.maximumScreenSpaceError || 2; // 默认16
       this.config.maximumMemoryUsage = this.config.maximumMemoryUsage || 2048; // 提升内存到2GB， 默认512MB
       this.model = this.viewer.scene.primitives.add(
-        new Cesium$1__default.Cesium3DTileset(this.config)
+        new Cesium$1.Cesium3DTileset(this.config)
       );
       this.model._config = this.config;
       this.model.tooltip = this.config.tooltip;
@@ -7720,12 +7953,12 @@
         var boundingSphere = tileset.boundingSphere;
         that.boundingSphere = boundingSphere;
         if (tileset._root && tileset._root.transform) {
-          that.originMatrixInverse = Cesium$1__default.Matrix4.inverse(
-            Cesium$1__default.Matrix4.fromArray(tileset._root.transform),
-            new Cesium$1__default.Matrix4()
+          that.originMatrixInverse = Cesium$1.Matrix4.inverse(
+            Cesium$1.Matrix4.fromArray(tileset._root.transform),
+            new Cesium$1.Matrix4()
           );
           if (that.config.scale > 0 && that.config.scale != -1) {
-            tileset._root.transform = Cesium$1__default.Matrix4.multiplyByUniformScale(
+            tileset._root.transform = Cesium$1.Matrix4.multiplyByUniformScale(
               tileset._root.transform,
               that.config.scale,
               tileset._root.transform
@@ -7734,14 +7967,14 @@
         }
 
         var position = boundingSphere.center; // 模型原始的中心店
-        var cartographic = Cesium$1__default.Cartographic.fromCartesian(position);
+        var cartographic = Cesium$1.Cartographic.fromCartesian(position);
 
         var height = Number(cartographic.height.toFixed(2));
         var longitude = Number(
-          Cesium$1__default.Math.toDegrees(cartographic.longitude).toFixed(6)
+          Cesium$1.Math.toDegrees(cartographic.longitude).toFixed(6)
         );
         var latitude = Number(
-          Cesium$1__default.Math.toDegrees(cartographic.latitude).toFixed(6)
+          Cesium$1.Math.toDegrees(cartographic.latitude).toFixed(6)
         );
         that.originalCenter = {
           x: longitude,
@@ -7823,7 +8056,7 @@
         return;
       }
 
-      this.model._root.transform = Cesium$1__default.Matrix4.multiplyTransformation(
+      this.model._root.transform = Cesium$1.Matrix4.multiplyTransformation(
         this.model._root.transform,
         rightAxis,
         this.model._root.transform
@@ -7844,50 +8077,50 @@
         this.model._root.transform
       ) {
         // 有自带世界矩阵，进行旋转操作。
-        var mat = Cesium$1__default.Matrix4.fromArray(this.model._root.transform);
-        var pos = Cesium$1__default.Matrix4.fromArray(mat, new Cesium$1__default.Cartesian3());
-        var wpos = Cesium$1__default.Cartographic.fromCartesian(pos);
+        var mat = Cesium$1.Matrix4.fromArray(this.model._root.transform);
+        var pos = Cesium$1.Matrix4.fromArray(mat, new Cesium$1.Cartesian3());
+        var wpos = Cesium$1.Cartographic.fromCartesian(pos);
         if (wpos) {
-          var position = Cesium$1__default.Cartesian3.fromDegrees(
+          var position = Cesium$1.Cartesian3.fromDegrees(
             offsetopt.x,
             offsetopt.y,
             offsetopt.z
           );
-          var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(position);
-          var rotationX = Cesium$1__default.Matrix4.fromRotationTranslation(
-            Cesium$1__default.Matrix3.fromRotationZ(
-              Cesium$1__default.Math.toRadians(offsetopt.heading || 0)
+          var mat = Cesium$1.Transforms.eastNorthUpToFixedFrame(position);
+          var rotationX = Cesium$1.Matrix4.fromRotationTranslation(
+            Cesium$1.Matrix3.fromRotationZ(
+              Cesium$1.Math.toRadians(offsetopt.heading || 0)
             )
           );
-          Cesium$1__default.Matrix4.multiply(mat, rotationX, mat);
+          Cesium$1.Matrix4.multiply(mat, rotationX, mat);
           if (this.config.scale > 0 && this.config.scale != 1) {
-            Cesium$1__default.Matrix4.multiplyByUniformScale(mat, this.config.scale, mat);
+            Cesium$1.Matrix4.multiplyByUniformScale(mat, this.config.scale, mat);
             isOK = true;
           }
         }
         if (isOK) {
           var boundingSphere = this.model.boundingSphere;
-          var cartographic = Cesium$1__default.Cartesian3.fromRadians(
+          var cartographic = Cesium$1.Cartesian3.fromRadians(
             cartographic.longitude,
             cartographic.latitude,
             0.0
           );
-          var surface = Cesium$1__default.Cartesian3.fromRadians(
+          var surface = Cesium$1.Cartesian3.fromRadians(
             cartographic.longitude,
             cartographic.latitude,
             0.0
           );
-          var offset = Cesium$1__default.Cartesian3.fromDegrees(
+          var offset = Cesium$1.Cartesian3.fromDegrees(
             offsetopt.x,
             offsetopt.y,
             offsetopt.z
           );
-          var translation = Cesium$1__default.Cartesian3.subtract(
+          var translation = Cesium$1.Cartesian3.subtract(
             offset,
             surface,
-            new Cesium$1__default.Cartesian3()
+            new Cesium$1.Cartesian3()
           );
-          this.model.modelMatrix = Cesium$1__default.Matrix4.fromTranslation(translation);
+          this.model.modelMatrix = Cesium$1.Matrix4.fromTranslation(translation);
         }
       }
     },
@@ -7919,7 +8152,7 @@
     setOpacity: function (value) {
       this._opacity = value;
       if (this.model) {
-        this.model.style = new Cesium$1__default.Cesium3DTileStyle({
+        this.model.style = new Cesium$1.Cesium3DTileStyle({
           color: "color() *vec4(1,1,1," + value + ")",
         });
       }
@@ -7937,7 +8170,7 @@
   var KmlLayer = GeoJsonLayer.extend({
     queryData: function () {
       var that = this;
-      var dataSource = Cesium$1__default.KmlDataSource.load(this.config.url, {
+      var dataSource = Cesium$1.KmlDataSource.load(this.config.url, {
         camera: this.viewer.scene.camera,
         canvas: this.viewer.scene.canvas,
         clampToGround: this.config.clampToGround,
@@ -7971,11 +8204,10 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-27 14:44:57
    */
-
   var CzmlLayer = GeoJsonLayer.extend({
     queryData: function () {
       var that = this;
-      var dataSource = Cesium$1__default.CzmlDataSource.load(this.config.url);
+      var dataSource = Cesium$1.CzmlDataSource.load(this.config.url);
       dataSource
         .then(function (dataSource) {
           that.showResult(dataSource);
@@ -8038,7 +8270,7 @@
    * @LastEditTime: 2020-09-09 10:41:46
    */
 
-  var EventType$1 = ({
+  var EventType$1 = /*#__PURE__*/Object.freeze({
     DrawEventType: DrawEventType,
     EditEventType: EditEventType
   });
@@ -8049,10 +8281,10 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 10:35:38
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 13:55:12
+   * @LastEditTime: 2020-09-29 13:17:56
    */
 
-  var Draw$$1 = leaflet.Evented.extend({
+  var Draw$$1 = L.Evented.extend({
     dataSource: null,
     primitives: null,
     drawCtrl: null,
@@ -8523,7 +8755,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-14 13:01:47
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:04:40
+   * @LastEditTime: 2020-09-29 10:17:43
    */
 
   var DrawBase = Class.extend({
@@ -8536,7 +8768,7 @@
 
       if (!this.dataSource) {
         // 没有单独指定Cesium.CustomDataSource时
-        this.dataSource = new Cesium$1__default.CustomDataSource();
+        this.dataSource = new Cesium$1.CustomDataSource();
         this.viewer.dataSources.add(this.dataSource);
       }
 
@@ -8620,7 +8852,7 @@
     // ============ 事件相关 ===================
     getHandler: function () {
       if (!this.handler || this.handler.isDestroyed()) {
-        this.handler = new Cesium$1__default.ScreenSpaceEventHandler(
+        this.handler = new Cesium$1.ScreenSpaceEventHandler(
           this.viewer.scene.canvas
         );
       }
@@ -8776,18 +9008,18 @@
     // 拖拽点事件
     bindEvent: function () {
       var _this = this;
-      var scratchBoundingSphere = new Cesium$1__default.BoundingSphere();
-      var zOffset = new Cesium$1__default.Cartesian3();
-      var draggerHandler = new Cesium$1__default.ScreenSpaceEventHandler(this.viewer.canvas);
+      var scratchBoundingSphere = new Cesium$1.BoundingSphere();
+      var zOffset = new Cesium$1.Cartesian3();
+      var draggerHandler = new Cesium$1.ScreenSpaceEventHandler(this.viewer.canvas);
       draggerHandler.dragger = null;
 
       // 选中后拖动
       draggerHandler.setInputAction((event) => {
         var pickObject = _this.viewer.scene.pick(event.position);
-        if (Cesium$1__default.defined(pickObject)) {
+        if (Cesium$1.defined(pickObject)) {
           var entity =
             pickObject.id || pickObject.primitive.id || pickObject.primitive;
-          if (entity && Cesium$1__default.defaultValue(entity.isDragger, false)) {
+          if (entity && Cesium$1.defaultValue(entity.isDragger, false)) {
             _this.viewer.scene.screenSpaceCameraController.enableRotate = false;
             _this.viewer.scene.screenSpaceCameraController.enableTilt = false;
             _this.viewer.scene.screenSpaceCameraController.enableTranslate = false;
@@ -8804,7 +9036,7 @@
             }
           }
         }
-      }, Cesium$1__default.ScreenSpaceEventType.LEFT_DOWN);
+      }, Cesium$1.ScreenSpaceEventType.LEFT_DOWN);
 
       draggerHandler.setInputAction((event) => {
         var dragger = draggerHandler.dragger;
@@ -8817,7 +9049,7 @@
               var position = dragger.position;
               if (position && position.getValue) position = position.getValue();
 
-              var tangentPlane = new Cesium$1__default.EllipsoidTangentPlane(position);
+              var tangentPlane = new Cesium$1.EllipsoidTangentPlane(position);
               scratchBoundingSphere.center = position;
               scratchBoundingSphere.radius = 1;
 
@@ -8828,13 +9060,13 @@
                   _this.viewer.scene.frameState.context.drawingBufferHeight
                 ) * 1.5;
 
-              Cesium$1__default.Cartesian3.multiplyByScalar(
+              Cesium$1.Cartesian3.multiplyByScalar(
                 tangentPlane.zAxis,
                 -dy * metersPerPixel,
                 zOffset
               );
-              var newPosition = Cesium$1__default.Cartesian3.clone(position);
-              Cesium$1__default.Cartesian3.add(position, zOffset, newPosition);
+              var newPosition = Cesium$1.Cartesian3.clone(position);
+              Cesium$1.Cartesian3.add(position, zOffset, newPosition);
 
               dragger.position = newPosition;
               if (dragger.onDrag) {
@@ -8865,11 +9097,11 @@
         } else {
           _this.tooltip.setVisible(false);
           var pickedObject = _this.viewer.scene.pick(event.endPosition);
-          if (Cesium$1__default.defined(pickedObject)) {
+          if (Cesium$1.defined(pickedObject)) {
             var entity = pickedObject.id;
             if (
               entity &&
-              Cesium$1__default.defaultValue(entity._isDragger, false) &&
+              Cesium$1.defaultValue(entity._isDragger, false) &&
               entity.draw_tooltip
             ) {
               var draw_tooltip = entity.draw_tooltip;
@@ -8887,7 +9119,7 @@
             }
           }
         }
-      }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
 
       dragger.setInputAction((event) => {
         var dragger = draggerHandler.dragger;
@@ -8913,17 +9145,17 @@
           _this.viewer.scene.screenSpaceCameraController.enableTranslate = true;
           _this.viewer.scene.screenSpaceCameraController.enableInputs = true;
         }
-      }, Cesium$1__default.ScreenSpaceEventType.LEFT_UP);
+      }, Cesium$1.ScreenSpaceEventType.LEFT_UP);
 
       // 右击删除
       draggerHandler.setInputAction((event) => {
         // 右击删除上一个点
         var pickObject = _this.viewer.scene.pick(event.position);
-        if (Cesium$1__default.defined(pickObject)) {
+        if (Cesium$1.defined(pickObject)) {
           var entity = pickObject.id;
           if (
             entity &&
-            Cesium$1__default.defaultValue(entity._isDragger, false) &&
+            Cesium$1.defaultValue(entity._isDragger, false) &&
             Dragger.PointType.Control == entity._pointType
           ) {
             var isDelOk = _this.deletePointForDragger(entity, event.position);
@@ -8936,7 +9168,7 @@
             }
           }
         }
-      }, Cesium$1__default.ScreenSpaceEventType.RIGHT_CLICK);
+      }, Cesium$1.ScreenSpaceEventType.RIGHT_CLICK);
 
       this.draggerHandler = draggerHandler;
     },
@@ -8998,7 +9230,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-26 08:32:51
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:09:48
+   * @LastEditTime: 2020-09-29 10:18:56
    */
   var EditPolyline = EditBase.extend({
     // 坐标位置相关
@@ -9045,10 +9277,10 @@
             if (hasMidPoint) {
               if (dragger.index > 0) {
                 //与前一个点之间的中点
-                var midpoint = Cesium$1__default.Cartesian3.midpoint(
+                var midpoint = Cesium$1.Cartesian3.midpoint(
                   position,
                   positions[dragger.index - 1],
-                  new Cesium$1__default.Cartesian3()
+                  new Cesium$1.Cartesian3()
                 );
                 if (clampToGround) {
                   //贴地时求贴模型和贴地的高度
@@ -9058,10 +9290,10 @@
               }
               if (dragger.index < positions.length - 1) {
                 //与后一个点之间的中点
-                let midpoint = Cesium$1__default.Cartesian3.midpoint(
+                let midpoint = Cesium$1.Cartesian3.midpoint(
                   position,
                   positions[dragger.index + 1],
-                  new Cesium$1__default.Cartesian3()
+                  new Cesium$1.Cartesian3()
                 );
                 if (clampToGround) {
                   //贴地时求贴模型和贴地的高度
@@ -9079,10 +9311,10 @@
         if (hasMidPoint) {
           let nextIndex = i + 1;
           if (nextIndex < len) {
-            let midpoint = Cesium$1__default.Cartesian3.midpoint(
+            let midpoint = Cesium$1.Cartesian3.midpoint(
               loc,
               positions[nextIndex],
-              new Cesium$1__default.Cartesian3()
+              new Cesium$1.Cartesian3()
             );
             if (clampToGround) {
               //贴地时求贴模型和贴地的高度
@@ -9117,7 +9349,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-25 18:02:18
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:08:26
+   * @LastEditTime: 2020-09-29 10:18:36
    */
   var EditCircle = EditPolyline.extend({
     //修改坐标会回调，提高显示的效率
@@ -9154,8 +9386,8 @@
       var clampToGround = this.isClampToGround();
       var positions = this.getPosition();
 
-      var diff = new Cesium$1__default.Cartesian3();
-      var newPos = new Cesium$1__default.Cartesian3();
+      var diff = new Cesium$1.Cartesian3();
+      var newPos = new Cesium$1.Cartesian3();
       var style = this.entity.attribute.style;
 
       //中心点
@@ -9170,14 +9402,14 @@
         position: position,
         //clampToGround: clampToGround,
         onDrag: function (dragger, position) {
-          Cesium$1__default.Cartesian3.subtract(position, positions[dragger.index], diff); //记录差值
+          Cesium$1.Cartesian3.subtract(position, positions[dragger.index], diff); //记录差值
 
           positions[dragger.index] = position;
 
           //============高度处理=============
           if (!style.clampToGround) {
             let height = that.formatNum(
-              Cesium$1__default.Cartographic.fromCartesian(position).height,
+              Cesium$1.Cartographic.fromCartesian(position).height,
               2
             );
             that.entity.ellipse.height = height;
@@ -9185,7 +9417,7 @@
           }
 
           //============半径同步处理=============
-          Cesium$1__default.Cartesian3.add(
+          Cesium$1.Cartesian3.add(
             dragger.majorDragger.position.getValue(),
             diff,
             newPos
@@ -9193,7 +9425,7 @@
           dragger.majorDragger.position = newPos;
 
           if (dragger.minorDragger) {
-            Cesium$1__default.Cartesian3.add(
+            Cesium$1.Cartesian3.add(
               dragger.minorDragger.position.getValue(),
               diff,
               newPos
@@ -9210,12 +9442,12 @@
       this.draggers.push(dragger);
 
       //获取椭圆上的坐标点数组
-      var cep = Cesium$1__default.EllipseGeometryLibrary.computeEllipsePositions(
+      var cep = Cesium$1.EllipseGeometryLibrary.computeEllipsePositions(
         {
           center: position,
           semiMajorAxis: this.entity.ellipse.semiMajorAxis.getValue(), //长半轴
           semiMinorAxis: this.entity.ellipse.semiMinorAxis.getValue(), //短半轴
-          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
+          rotation: Cesium$1.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -9223,7 +9455,7 @@
       );
 
       //长半轴上的坐标点
-      var majorPos = new Cesium$1__default.Cartesian3(
+      var majorPos = new Cesium$1.Cartesian3(
         cep.positions[0],
         cep.positions[1],
         cep.positions[2]
@@ -9247,7 +9479,7 @@
           positions[dragger.index] = position;
 
           var radius = that.formatNum(
-            Cesium$1__default.Cartesian3.distance(positions[0], position),
+            Cesium$1.Cartesian3.distance(positions[0], position),
             2
           );
           that.entity.ellipse.semiMajorAxis = radius;
@@ -9272,7 +9504,7 @@
       if (this._maxPointNum == 3) {
         //椭圆
         //短半轴上的坐标点
-        var minorPos = new Cesium$1__default.Cartesian3(
+        var minorPos = new Cesium$1.Cartesian3(
           cep.positions[3],
           cep.positions[4],
           cep.positions[5]
@@ -9296,7 +9528,7 @@
             positions[dragger.index] = position;
 
             var radius = that.formatNum(
-              Cesium$1__default.Cartesian3.distance(positions[0], position),
+              Cesium$1.Cartesian3.distance(positions[0], position),
               2
             );
             that.entity.ellipse.semiMinorAxis = radius;
@@ -9416,7 +9648,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-26 11:00:14
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:06:20
+   * @LastEditTime: 2020-09-29 10:18:47
    */
   var EditEllipsoid = EditBase.extend({
     _positions_draw: null,
@@ -9430,7 +9662,7 @@
     },
     //更新半径
     updateRadii: function (style) {
-      var radii = new Cesium$1__default.Cartesian3(
+      var radii = new Cesium$1.Cartesian3(
         Number(style.extentRadii),
         Number(style.widthRadii),
         Number(style.heightRadii)
@@ -9456,12 +9688,12 @@
       this.draggers.push(dragger);
 
       //获取椭圆上的坐标点数组
-      var cep = Cesium$1__default.EllipseGeometryLibrary.computeEllipsePositions(
+      var cep = Cesium$1.EllipseGeometryLibrary.computeEllipsePositions(
         {
           center: position,
           semiMajorAxis: Number(style.extentRadii), //长半轴
           semiMinorAxis: Number(style.widthRadii), //短半轴
-          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
+          rotation: Cesium$1.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -9469,7 +9701,7 @@
       );
 
       //长半轴上的坐标点
-      var majorPos = new Cesium$1__default.Cartesian3(
+      var majorPos = new Cesium$1.Cartesian3(
         cep.positions[0],
         cep.positions[1],
         cep.positions[2]
@@ -9479,13 +9711,13 @@
         type: PointType.EditAttr,
         tooltip: Tooltip.message.dragger.editRadius,
         onDrag: function onDrag(dragger, position) {
-          var newHeight = Cesium$1__default.Cartographic.fromCartesian(that._positions_draw)
+          var newHeight = Cesium$1.Cartographic.fromCartesian(that._positions_draw)
             .height;
           position = setPositionsHeight(position, newHeight);
           dragger.position = position;
 
           var radius = that.formatNum(
-            Cesium$1__default.Cartesian3.distance(that._positions_draw, position),
+            Cesium$1.Cartesian3.distance(that._positions_draw, position),
             2
           );
           style.extentRadii = radius; //短半轴
@@ -9498,7 +9730,7 @@
       this.draggers.push(majorDragger);
 
       //短半轴上的坐标点
-      var minorPos = new Cesium$1__default.Cartesian3(
+      var minorPos = new Cesium$1.Cartesian3(
         cep.positions[3],
         cep.positions[4],
         cep.positions[5]
@@ -9508,13 +9740,13 @@
         type: PointType.EditAttr,
         tooltip: Tooltip.message.dragger.editRadius,
         onDrag: function (dragger, position) {
-          var newHeight = Cesium$1__default.Cartographic.fromCartesian(that._positions_draw)
+          var newHeight = Cesium$1.Cartographic.fromCartesian(that._positions_draw)
             .height;
           position = setPositionsHeight(position, newHeight);
           dragger.position = position;
 
           var radius = that.formatNum(
-            Cesium$1__default.Cartesian3.distance(that._positions_draw, position),
+            Cesium$1.Cartesian3.distance(that._positions_draw, position),
             2
           );
           style.widthRadii = radius; //长半轴
@@ -9574,21 +9806,21 @@
     getModelMatrix: function (position) {
       var cfg = this.entity.attribute.style;
 
-      var hpRoll = new Cesium$1__default.HeadingPitchRoll(
-        Cesium$1__default.Math.toRadians(cfg.heading || 0),
-        Cesium$1__default.Math.toRadians(cfg.pitch || 0),
-        Cesium$1__default.Math.toRadians(cfg.roll || 0)
+      var hpRoll = new Cesium$1.HeadingPitchRoll(
+        Cesium$1.Math.toRadians(cfg.heading || 0),
+        Cesium$1.Math.toRadians(cfg.pitch || 0),
+        Cesium$1.Math.toRadians(cfg.roll || 0)
       );
-      var fixedFrameTransform = Cesium$1__default.Transforms.eastNorthUpToFixedFrame;
+      var fixedFrameTransform = Cesium$1.Transforms.eastNorthUpToFixedFrame;
 
-      var modelMatrix = Cesium$1__default.Transforms.headingPitchRollToFixedFrame(
+      var modelMatrix = Cesium$1.Transforms.headingPitchRollToFixedFrame(
         position || this.entity.position,
         hpRoll,
         this.viewer.scene.globe.ellipsoid,
         fixedFrameTransform
       );
       if (cfg.scale)
-        Cesium$1__default.Matrix4.multiplyByUniformScale(
+        Cesium$1.Matrix4.multiplyByUniformScale(
           modelMatrix,
           cfg.scale,
           modelMatrix
@@ -9621,13 +9853,13 @@
       let style = this.entity.attribute.style;
 
       let position = this.entity.position;
-      let height = Cesium$1__default.Cartographic.fromCartesian(position).height;
+      let height = Cesium$1.Cartographic.fromCartesian(position).height;
       let radius = this.entity.boundingSphere.radius;
 
       //辅助显示：创建角度调整底部圆
       this.entityAngle = this.dataSource.entities.add({
         name: "角度调整底部圆",
-        position: new Cesium$1__default.CallbackProperty(function (time) {
+        position: new Cesium$1.CallbackProperty(function (time) {
           return that.entity.position;
         }, false),
         ellipse: Circle.style2Entity({
@@ -9678,7 +9910,7 @@
         type: PointType.MoveHeight,
         tooltip: Tooltip.message.dragger.editScale,
         onDrag: function onDrag(dragger, positionNew) {
-          let radiusNew = Cesium$1__default.Cartesian3.distance(positionNew, position);
+          let radiusNew = Cesium$1.Cartesian3.distance(positionNew, position);
 
           let radiusOld = dragger.radius / style.scale;
           let scaleNew = radiusNew / radiusOld;
@@ -9725,47 +9957,47 @@
       var radius = this.entity.boundingSphere.radius;
       var angle = -Number(this.entity.attribute.style.heading || 0);
 
-      var rotpos = new Cesium$1__default.Cartesian3(radius, 0.0, 0.0);
+      var rotpos = new Cesium$1.Cartesian3(radius, 0.0, 0.0);
 
-      var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(position);
-      var rotationX = Cesium$1__default.Matrix4.fromRotationTranslation(
-        Cesium$1__default.Matrix3.fromRotationZ(Cesium$1__default.Math.toRadians(angle))
+      var mat = Cesium$1.Transforms.eastNorthUpToFixedFrame(position);
+      var rotationX = Cesium$1.Matrix4.fromRotationTranslation(
+        Cesium$1.Matrix3.fromRotationZ(Cesium$1.Math.toRadians(angle))
       );
-      Cesium$1__default.Matrix4.multiply(mat, rotationX, mat);
+      Cesium$1.Matrix4.multiply(mat, rotationX, mat);
 
-      mat = Cesium$1__default.Matrix4.getRotation(mat, new Cesium$1__default.Matrix3());
-      rotpos = Cesium$1__default.Matrix3.multiplyByVector(mat, rotpos, rotpos);
-      rotpos = Cesium$1__default.Cartesian3.add(position, rotpos, rotpos);
+      mat = Cesium$1.Matrix4.getRotation(mat, new Cesium$1.Matrix3());
+      rotpos = Cesium$1.Matrix3.multiplyByVector(mat, rotpos, rotpos);
+      rotpos = Cesium$1.Cartesian3.add(position, rotpos, rotpos);
       return rotpos;
     },
     getHeading: function (positionCenter, positionNew) {
       //获取该位置的默认矩阵
-      var mat = Cesium$1__default.Transforms.eastNorthUpToFixedFrame(positionCenter);
-      mat = Cesium$1__default.Matrix4.getRotation(mat, new Cesium$1__default.Matrix3());
+      var mat = Cesium$1.Transforms.eastNorthUpToFixedFrame(positionCenter);
+      mat = Cesium$1.Matrix4.getRotation(mat, new Cesium$1.Matrix3());
 
-      var xaxis = Cesium$1__default.Matrix3.getColumn(mat, 0, new Cesium$1__default.Cartesian3());
-      var yaxis = Cesium$1__default.Matrix3.getColumn(mat, 1, new Cesium$1__default.Cartesian3());
-      var zaxis = Cesium$1__default.Matrix3.getColumn(mat, 2, new Cesium$1__default.Cartesian3());
+      var xaxis = Cesium$1.Matrix3.getColumn(mat, 0, new Cesium$1.Cartesian3());
+      var yaxis = Cesium$1.Matrix3.getColumn(mat, 1, new Cesium$1.Cartesian3());
+      var zaxis = Cesium$1.Matrix3.getColumn(mat, 2, new Cesium$1.Cartesian3());
 
       //计算该位置 和  positionCenter 的 角度值
-      var dir = Cesium$1__default.Cartesian3.subtract(
+      var dir = Cesium$1.Cartesian3.subtract(
         positionNew,
         positionCenter,
-        new Cesium$1__default.Cartesian3()
+        new Cesium$1.Cartesian3()
       );
       //z crosss (dirx cross z) 得到在 xy平面的向量
-      dir = Cesium$1__default.Cartesian3.cross(dir, zaxis, dir);
-      dir = Cesium$1__default.Cartesian3.cross(zaxis, dir, dir);
-      dir = Cesium$1__default.Cartesian3.normalize(dir, dir);
+      dir = Cesium$1.Cartesian3.cross(dir, zaxis, dir);
+      dir = Cesium$1.Cartesian3.cross(zaxis, dir, dir);
+      dir = Cesium$1.Cartesian3.normalize(dir, dir);
 
-      var heading = Cesium$1__default.Cartesian3.angleBetween(xaxis, dir);
+      var heading = Cesium$1.Cartesian3.angleBetween(xaxis, dir);
 
-      var ay = Cesium$1__default.Cartesian3.angleBetween(yaxis, dir);
+      var ay = Cesium$1.Cartesian3.angleBetween(yaxis, dir);
       if (ay > Math.PI * 0.5) {
         heading = 2 * Math.PI - heading;
       }
 
-      return -Cesium$1__default.Math.toDegrees(heading);
+      return -Cesium$1.Math.toDegrees(heading);
     },
   });
 
@@ -9834,10 +10066,10 @@
                 nextPositionIdx = dragger.index - 1;
               }
 
-              var midPoint = Cesium$1__default.Cartesian3.midPoint(
+              var midPoint = Cesium$1.Cartesian3.midPoint(
                 position,
                 positions[nextPositionIdx],
-                new Cesium$1__default.Cartesian3()
+                new Cesium$1.Cartesian3()
               );
               if (clampToGround) {
                 // 贴地时，求贴模型和贴地的高度
@@ -9854,10 +10086,10 @@
                 nextPositionIdx = dragger.index + 1;
               }
               // TODO midpoint undefined
-              var midPoint = Cesium$1__default.Cartesian3.midpoint(
+              var midPoint = Cesium$1.Cartesian3.midpoint(
                 position,
                 positions[nextPositionIdx],
-                new Cesium$1__default.Cartesian3()
+                new Cesium$1.Cartesian3()
               );
               if (clampToGround) {
                 // 贴地时，求贴模型和贴地的高度
@@ -9872,10 +10104,10 @@
         // 中间点，拖动后新增点
         if (hasMidPoint) {
           var nextIndex = (i + 1) % len;
-          var midpoint = Cesium$1__default.Cartesian3.midpoint(
+          var midpoint = Cesium$1.Cartesian3.midpoint(
             loc,
             positions[nextIndex],
-            new Cesium$1__default.Cartesian3()
+            new Cesium$1.Cartesian3()
           );
 
           if (clampToGround) {
@@ -9926,7 +10158,7 @@
           type: PointType.MoveHeight,
           tooltip: Tooltip.message.dragger.moveHeight,
           onDrag: function (dragger, position) {
-            var thisHeight = Cesium$1__default.Cartographic.fromCartesian(position).height;
+            var thisHeight = Cesium$1.Cartographic.fromCartesian(position).height;
             polygon.extrudedHeight = thisHeight;
 
             var maxHeight = point.getMaxHeight(that.getPosition());
@@ -9964,13 +10196,12 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-08 10:36:57
    */
-
   var EditPolylineVolume = EditPolyline.extend({
     // 修改坐标会回调，提高显示的效率
     changePositionsToCallback: function () {
       var that = this;
       this._positions_draw = this.entity.polylineVolume.positions.getValue();
-      this.entity.polylineVolume.positions = new Cesium$1__default.CallbackProperty(
+      this.entity.polylineVolume.positions = new Cesium$1.CallbackProperty(
         (time) => {
           return that.getPosition();
         },
@@ -9990,9 +10221,8 @@
    * @Author: 宁四凯
    * @Date: 2020-08-26 14:38:36
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:10:00
+   * @LastEditTime: 2020-09-29 10:19:03
    */
-
   var EditRectangle = EditPolygon.extend({
     // 修改坐标会回调，提高显示的效率
     changePositionsToCallback: function () {
@@ -10063,15 +10293,15 @@
     changePositionsToCallback: function () {
       var that = this;
       this._positions_draw = this.entity.wall.positions.getValue();
-      this.entity.wall.positions = new Cesium$1__default.CallbackProperty((time) => {
+      this.entity.wall.positions = new Cesium$1.CallbackProperty((time) => {
         return that.getPosition();
       }, false);
       this.minimumHeights = this.entity.wall.minimumHeights.getValue();
-      this.entity.wall.minimumHeights = new Cesium$1__default.CallbackProperty((time) => {
+      this.entity.wall.minimumHeights = new Cesium$1.CallbackProperty((time) => {
         return that.getMinimumHeights();
       }, false);
       this.maximumHeights = this.entity.wall.maximumHeights.getValue();
-      this.entity.wall.maximumHeights = new Cesium$1__default.CallbackProperty((time) => {
+      this.entity.wall.maximumHeights = new Cesium$1.CallbackProperty((time) => {
         return that.getMaximumHeights();
       }, false);
     },
@@ -10094,7 +10324,7 @@
       this.minimumHeights = new Array(len);
 
       for (var i = 0; i < len; i++) {
-        var height = Cesium$1__default.Cartographic.fromCartesian(position[i]).height;
+        var height = Cesium$1.Cartographic.fromCartesian(position[i]).height;
         this.minimumHeights[i] = height;
         this.maximumHeights[i] = height + Number(style.extrudedHeight);
       }
@@ -10136,20 +10366,20 @@
                 // 与前一个点之间的中点
                 that.draggers[
                   dragger.index * 2 - 1
-                ].position = Cesium$1__default.Cartesian3.midpoint(
+                ].position = Cesium$1.Cartesian3.midpoint(
                   position,
                   positions[dragger.index - 1],
-                  new Cesium$1__default.Cartesian3()
+                  new Cesium$1.Cartesian3()
                 );
               }
               if (dragger.index < positions.length - 1) {
                 // 与后一个点之间的中点
                 that.draggers[
                   dragger.index * 2 + 1
-                ].position = Cesium$1__default.Cartesian3.midpoint(
+                ].position = Cesium$1.Cartesian3.midpoint(
                   position,
                   positions[dragger.index + 1],
-                  new Cesium$1__default.Cartesian3()
+                  new Cesium$1.Cartesian3()
                 );
               }
             }
@@ -10166,7 +10396,7 @@
             var midpoint = Cesium2.Cartesian3.midpoint(
               loc,
               positions[nextIndex],
-              new Cesium$1__default.Cartesian3()
+              new Cesium$1.Cartesian3()
             );
             var draggerMid = createDragger$1(this.dataSource, {
               position: midpoint,
@@ -10211,7 +10441,7 @@
           type: PointType.MoveHeight,
           tooltip: Tooltip.message.dragger.moveHeight,
           onDrag: (dragger, position) => {
-            var thisHeight = Cesium$1__default.Cartographic.fromCartesian(position).height;
+            var thisHeight = Cesium$1.Cartographic.fromCartesian(position).height;
             style.extrudedHeight = that.formatNum(
               thisHeight - that.minimumHeights[dragger.index],
               2
@@ -10259,7 +10489,7 @@
       this._positions_draw = null;
       var that = this;
       var addAttr = {
-        position: new Cesium$1__default.CallbackProperty((time) => {
+        position: new Cesium$1.CallbackProperty((time) => {
           return that.getDrawPosition();
         }, false),
         point: style2Entity$6(attribute.style),
@@ -10286,7 +10516,7 @@
           _this._positions_draw = point;
           _this.disable();
         }
-      }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
     },
 
     // 获取编辑对象类
@@ -10322,7 +10552,7 @@
       this._positions_draw = null;
       var that = this;
       var addAttr = {
-        position: new Cesium$1__default.CallbackProperty((time) => {
+        position: new Cesium$1.CallbackProperty((time) => {
           return that.getDrawPosition();
         }, false),
         billboard: style2Entity(attribute.style),
@@ -10352,7 +10582,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 08:32:11
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:05:38
+   * @LastEditTime: 2020-09-29 10:18:16
    */
   var DrawPolyline = DrawBase.extend({
     type: "polyline",
@@ -10379,7 +10609,7 @@
         attribute: attribute,
       };
 
-      addAttr.polyline.positions = new Cesium$1__default.CallbackProperty((time) => {
+      addAttr.polyline.positions = new Cesium$1.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false);
 
@@ -10446,7 +10676,7 @@
             _this.disable();
           }
         }
-      }, Cesium$1__default.ScreenSpaceEventType.LEFT_CLICK);
+      }, Cesium$1.ScreenSpaceEventType.LEFT_CLICK);
 
       this.getHandler().setInputAction((event) => {
         // 右击删除上一个点
@@ -10475,7 +10705,7 @@
           _this._positions_draw.push(point);
           _this.updateAttrForDrawing();
         }
-      }, Cesium$1__default.ScreenSpaceEventType.RIGHT_CLICK);
+      }, Cesium$1.ScreenSpaceEventType.RIGHT_CLICK);
 
       this.getHandler().setInputAction((event) => {
         // 鼠标移动
@@ -10523,7 +10753,7 @@
             positions: _this._positions_draw,
           });
         }
-      }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
 
       this.getHandler().setInputAction((event) => {
         // 双击结束标绘
@@ -10534,7 +10764,7 @@
         }
         _this.updateAttrForDrawing();
         _this.disable();
-      }, Cesium$1__default.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+      }, Cesium$1.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     },
 
     // 获取编辑对象
@@ -10554,7 +10784,7 @@
       var entity = this.entity;
       entity.editing = this.getEditClass(entity); // 绑定编辑对象
       entity._positions_draw = this.getDrawPosition();
-      entity.polyline.positions = new Cesium$1__default.CallbackProperty((time) => {
+      entity.polyline.positions = new Cesium$1.CallbackProperty((time) => {
         return entity._positions_draw;
       }, false);
     },
@@ -10566,7 +10796,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 08:33:15
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 11:26:58
+   * @LastEditTime: 2020-09-29 10:17:54
    */
   var DrawCircle = DrawPolyline.extend({
     type: "ellipse",
@@ -10594,7 +10824,7 @@
 
       var that = this;
       var addAttr = {
-        position: new Cesium$1__default.CallbackProperty((time) => {
+        position: new Cesium$1.CallbackProperty((time) => {
           return that.getShowPosition();
         }, false),
         ellipse: style2Entity$1(attribute.style),
@@ -10628,7 +10858,7 @@
       // 高度处理
       if (!style.clampToGround) {
         var height = this.formatNum(
-          Cesium$1__default.Cartographic.fromCartesian(this._positions_draw[0]).height,
+          Cesium$1.Cartographic.fromCartesian(this._positions_draw[0]).height,
           2
         );
         this.entity.ellipse.height = height;
@@ -10642,7 +10872,7 @@
 
       // 半径处理
       var radius = this.formatNum(
-        Cesium$1__default.Cartesian3.distance(
+        Cesium$1.Cartesian3.distance(
           this._positions_draw[0],
           this._positions_draw[1]
         ),
@@ -10656,7 +10886,7 @@
         var semiMajorAxis;
         if (this._positions_draw.length == 3) {
           semiMajorAxis = this.formatNum(
-            Cesium$1__default.Cartesian3.distance(
+            Cesium$1.Cartesian3.distance(
               this._positions_draw[0],
               this._positions_draw[2]
             ),
@@ -10681,12 +10911,12 @@
       var style = this.entity.attribute.style;
 
       // 获取椭圆上的坐标点数组 TODO EllipseGeometryLibrary undefined
-      var cep = Cesium$1__default.EllipseGeometryLibrary.computeEllipsePositions(
+      var cep = Cesium$1.EllipseGeometryLibrary.computeEllipsePositions(
         {
           center: position,
           semiMajorAxis: this.entity.ellipse.semiMajorAxis.getValue(), // 长半轴
           semiMinorAxis: this.entity.ellipse.semiMinorAxis.getValue(), // 短半轴
-          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
+          rotation: Cesium$1.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -10694,7 +10924,7 @@
       );
 
       // 长半轴上的坐标点
-      var majorPos = new Cesium$1__default.Cartesian3(
+      var majorPos = new Cesium$1.Cartesian3(
         cep.positions[0],
         cep.positions[1],
         cep.positions[2]
@@ -10704,7 +10934,7 @@
       if (_this._maxPointNum == 3) {
         // 椭圆
         // 短半轴上的坐标点
-        var minorPos = new Cesium$1__default.Cartesian3(
+        var minorPos = new Cesium$1.Cartesian3(
           cep.positions[3],
           cep.positions[4],
           cep.positions[5]
@@ -10731,7 +10961,7 @@
       var entity = this.entity;
       entity.editing = this.getEditClass(entity); // 绑定编辑对象
       entity._positions_draw = this._positions_draw;
-      entity.position = new Cesium$1__default.CallbackProperty((time) => {
+      entity.position = new Cesium$1.CallbackProperty((time) => {
         if (entity._positions_draw && entity._positions_draw.length > 0) {
           return entity._positions_draw[0];
         }
@@ -10773,7 +11003,7 @@
         corridor: style2Entity$2(attribute.style),
         attribute: attribute,
       };
-      addAttr.corridor.positions = new Cesium$1__default.CallbackProperty((time) => {
+      addAttr.corridor.positions = new Cesium$1.CallbackProperty((time) => {
         return that.getDrawPosition();
       }, false);
 
@@ -10804,7 +11034,7 @@
       entity.editing = this.getEditClass(entity); //绑定编辑对象
 
       entity._positions_draw = this.getDrawPosition();
-      entity.corridor.positions = new Cesium$1__default.CallbackProperty(function (time) {
+      entity.corridor.positions = new Cesium$1.CallbackProperty(function (time) {
         return entity._positions_draw;
       }, false);
     },
@@ -10863,7 +11093,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 08:33:25
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 11:29:01
+   * @LastEditTime: 2020-09-29 10:18:02
    */
   var DrawEllipsoid = DrawPolyline.extend({
     type: "ellipsoid",
@@ -10881,7 +11111,7 @@
       this._positions_draw = [];
       var that = this;
       var addAttr = {
-        position: new Cesium$1__default.CallbackProperty((time) => {
+        position: new Cesium$1.CallbackProperty((time) => {
           return that.getShowPosition();
         }),
         ellipsoid: style2Entity$3(attribute.style),
@@ -10907,7 +11137,7 @@
 
       //半径处理
       var radius = this.formatNum(
-        Cesium$1__default.Cartesian3.distance(
+        Cesium$1.Cartesian3.distance(
           this._positions_draw[0],
           this._positions_draw[1]
         ),
@@ -10920,7 +11150,7 @@
       var semiMajorAxis;
       if (this._positions_draw.length == 3) {
         semiMajorAxis = this.formatNum(
-          Cesium$1__default.Cartesian3.distance(
+          Cesium$1.Cartesian3.distance(
             this._positions_draw[0],
             this._positions_draw[2]
           ),
@@ -10936,7 +11166,7 @@
 
     updateRadii: function (style) {
       this.entity.ellipsoid.radii.setValue(
-        new Cesium$1__default.Cartesian3(
+        new Cesium$1.Cartesian3(
           style.extentRadii,
           style.widthRadii,
           style.heightRadii
@@ -10950,12 +11180,12 @@
       var style = this.entity.attribute.style;
 
       //获取椭圆上的坐标点数组
-      var cep = Cesium$1__default.EllipseGeometryLibrary.computeEllipsePositions(
+      var cep = Cesium$1.EllipseGeometryLibrary.computeEllipsePositions(
         {
           center: position,
           semiMajorAxis: Number(style.extentRadii), //长半轴
           semiMinorAxis: Number(style.widthRadii), //短半轴
-          rotation: Cesium$1__default.Math.toRadians(Number(style.rotation || 0)),
+          rotation: Cesium$1.Math.toRadians(Number(style.rotation || 0)),
           granularity: 2.0,
         },
         true,
@@ -10963,7 +11193,7 @@
       );
 
       //长半轴上的坐标点
-      var majorPos = new Cesium$1__default.Cartesian3(
+      var majorPos = new Cesium$1.Cartesian3(
         cep.positions[0],
         cep.positions[1],
         cep.positions[2]
@@ -10971,7 +11201,7 @@
       this._positions_draw.push(majorPos);
 
       //短半轴上的坐标点
-      var minorPos = new Cesium$1__default.Cartesian3(
+      var minorPos = new Cesium$1.Cartesian3(
         cep.positions[3],
         cep.positions[4],
         cep.positions[5]
@@ -11015,7 +11245,7 @@
       this._positions_draw = null;
       var that = this;
       var addAttr = {
-        position: new Cesium$1__default.CallbackProperty((time) => {
+        position: new Cesium$1.CallbackProperty((time) => {
           return that.getDrawPosition();
         }, false),
         label: style2Entity$4(attribute.style),
@@ -11094,17 +11324,17 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 08:33:41
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:04:58
+   * @LastEditTime: 2020-09-29 10:18:09
    */
   var DrawPModel = DrawBase.extend({
     type: "point",
     // 根据attribute参数创建Entity
     createFeature: function (attribute) {
       var _this = this;
-      this._positions_draw = Cesium$1__default.Cartesian3.ZERO;
+      this._positions_draw = Cesium$1.Cartesian3.ZERO;
       var style = attribute.style;
       var modelPrimitive = this.primitives.add(
-        Cesium$1__default.Model.fromGltf({
+        Cesium$1.Model.fromGltf({
           url: style.modelUrl,
           modelMatrix: _this.getModelMatrix(style),
           minimumPixelSize: style.minimumPixelSize || 30,
@@ -11121,14 +11351,14 @@
     },
 
     getModelMatrix: function (cfg, position) {
-      var hpRoll = new Cesium$1__default.HeadingPitchRoll(
-        Cesium$1__default.Math.toRadians(cfg.heading || 0),
-        Cesium$1__default.Math.toRadians(cfg.pitch || 0),
-        Cesium$1__default.Math.toRadians(cfg.roll || 0)
+      var hpRoll = new Cesium$1.HeadingPitchRoll(
+        Cesium$1.Math.toRadians(cfg.heading || 0),
+        Cesium$1.Math.toRadians(cfg.pitch || 0),
+        Cesium$1.Math.toRadians(cfg.roll || 0)
       );
 
-      var fixedFrameTransform = Cesium$1__default.Transforms.eastNorthUpToFixedFrame;
-      var modelMatrix = Cesium$1__default.Transforms.headingPitchRollToFixedFrame(
+      var fixedFrameTransform = Cesium$1.Transforms.eastNorthUpToFixedFrame;
+      var modelMatrix = Cesium$1.Transforms.headingPitchRollToFixedFrame(
         position || this._positions_draw,
         hpRoll,
         this.viewer.scene.globe.ellipsoid,
@@ -11136,7 +11366,7 @@
       );
 
       if (cfg.scale) {
-        Cesium$1__default.Matrix4.multiplyByScale(modelMatrix, cfg.scale, modelMatrix);
+        Cesium$1.Matrix4.multiplyByScale(modelMatrix, cfg.scale, modelMatrix);
       }
       return modelMatrix;
     },
@@ -11165,7 +11395,7 @@
           event.endPosition,
           Tooltip.message.draw.point.start
         );
-      }, Cesium$1__default.ScreenSpaceEventType.MOUSE_MOVE);
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
 
       this.getHandler().setInputAction((event) => {
         var point = getCurrentMousePosition(
@@ -11177,7 +11407,7 @@
           _this2._positions_draw = point;
           _this2.disable();
         }
-      }, Cesium$1__default.ScreenSpaceEventType.LEFT_CLICK);
+      }, Cesium$1.ScreenSpaceEventType.LEFT_CLICK);
     },
 
     getEditClass: function (entity) {
@@ -11349,7 +11579,7 @@
         polylineVolume: style2Entity$9(attribute.style),
         attribute: attribute,
       };
-      addAttr.polylineVolume.positions = new Cesium$1__default.CallbackProperty(function (
+      addAttr.polylineVolume.positions = new Cesium$1.CallbackProperty(function (
         time
       ) {
         return that.getDrawPosition();
@@ -11401,7 +11631,7 @@
     getRectangle: function () {
       let positions = this.getDrawPosition();
       if (positions.length < 2) return null;
-      return Cesium$1__default.Rectangle.fromCartesianArray(positions);
+      return Cesium$1.Rectangle.fromCartesianArray(positions);
     },
     //根据attribute参数创建Entity
     createFeature: function (attribute) {
@@ -11412,7 +11642,7 @@
         rectangle: Rectangle.style2Entity(attribute.style),
         attribute: attribute,
       };
-      addAttr.rectangle.coordinates = new Cesium$1__default.CallbackProperty(function (
+      addAttr.rectangle.coordinates = new Cesium$1.CallbackProperty(function (
         time
       ) {
         return that.getRectangle();
@@ -11435,7 +11665,7 @@
     },
     bindOutline: function (entity) {
       //是否显示：边线宽度大于1时
-      entity.polyline.show = new Cesium$1__default.CallbackProperty(function (time) {
+      entity.polyline.show = new Cesium$1.CallbackProperty(function (time) {
         return (
           entity.rectangle.outline &&
           entity.rectangle.outline.getValue() &&
@@ -11443,7 +11673,7 @@
           entity.rectangle.outlineWidth.getValue() > 1
         );
       }, false);
-      entity.polyline.positions = new Cesium$1__default.CallbackProperty(function (time) {
+      entity.polyline.positions = new Cesium$1.CallbackProperty(function (time) {
         if (!entity.polyline.show.getValue()) return null;
 
         var positions = entity._draw_positions;
@@ -11451,19 +11681,19 @@
           ? entity.rectangle.height.getValue()
           : 0;
 
-        var re = Cesium$1__default.Rectangle.fromCartesianArray(positions);
-        var pt1 = Cesium$1__default.Cartesian3.fromRadians(re.west, re.south, height);
-        var pt2 = Cesium$1__default.Cartesian3.fromRadians(re.east, re.south, height);
-        var pt3 = Cesium$1__default.Cartesian3.fromRadians(re.east, re.north, height);
-        var pt4 = Cesium$1__default.Cartesian3.fromRadians(re.west, re.north, height);
+        var re = Cesium$1.Rectangle.fromCartesianArray(positions);
+        var pt1 = Cesium$1.Cartesian3.fromRadians(re.west, re.south, height);
+        var pt2 = Cesium$1.Cartesian3.fromRadians(re.east, re.south, height);
+        var pt3 = Cesium$1.Cartesian3.fromRadians(re.east, re.north, height);
+        var pt4 = Cesium$1.Cartesian3.fromRadians(re.west, re.north, height);
 
         return [pt1, pt2, pt3, pt4, pt1];
       }, false);
-      entity.polyline.width = new Cesium$1__default.CallbackProperty(function (time) {
+      entity.polyline.width = new Cesium$1.CallbackProperty(function (time) {
         return entity.rectangle.outlineWidth;
       }, false);
-      entity.polyline.material = new Cesium$1__default.ColorMaterialProperty(
-        new Cesium$1__default.CallbackProperty(function (time) {
+      entity.polyline.material = new Cesium$1.ColorMaterialProperty(
+        new Cesium$1.CallbackProperty(function (time) {
           return entity.rectangle.outlineColor.getValue();
         }, false)
       );
@@ -11500,9 +11730,9 @@
 
       entity._positions_draw = this._positions_draw;
       //entity.rectangle.coordinates = this.getRectangle();
-      entity.rectangle.coordinates = new Cesium$1__default.CallbackProperty(function (time) {
+      entity.rectangle.coordinates = new Cesium$1.CallbackProperty(function (time) {
         if (entity._positions_draw.length < 2) return null;
-        return Cesium$1__default.Rectangle.fromCartesianArray(entity._positions_draw);
+        return Cesium$1.Rectangle.fromCartesianArray(entity._positions_draw);
       }, false);
     },
   });
@@ -11513,7 +11743,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 08:33:33
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 11:34:47
+   * @LastEditTime: 2020-09-29 10:18:26
    */
 
   const def_minPointNum$4 = 2;
@@ -11543,13 +11773,13 @@
         wall: style2Entity$b(attribute.style),
         attribute: attribute,
       };
-      addAttr.wall.positions = new Cesium$1__default.CallbackProperty(function (time) {
+      addAttr.wall.positions = new Cesium$1.CallbackProperty(function (time) {
         return that.getDrawPosition();
       }, false);
-      addAttr.wall.minimumHeights = new Cesium$1__default.CallbackProperty(function (time) {
+      addAttr.wall.minimumHeights = new Cesium$1.CallbackProperty(function (time) {
         return that.getMinimumHeights();
       }, false);
-      addAttr.wall.maximumHeights = new Cesium$1__default.CallbackProperty(function (time) {
+      addAttr.wall.maximumHeights = new Cesium$1.CallbackProperty(function (time) {
         return that.getMaximumHeights();
       }, false);
 
@@ -11575,7 +11805,7 @@
       this.minimumHeights = new Array(len);
 
       for (let i = 0; i < len; i++) {
-        let height = Cesium$1__default.Cartographic.fromCartesian(position[i]).height;
+        let height = Cesium$1.Cartographic.fromCartesian(position[i]).height;
         this.minimumHeights[i] = height;
         this.maximumHeights[i] = height + Number(style.extrudedHeight);
       }
@@ -11716,7 +11946,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-09 13:32:28
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-10 10:37:38
+   * @LastEditTime: 2020-09-29 11:30:00
    */
   var height = 33746824;
   var width = 33554054;
@@ -11766,9 +11996,9 @@
     this._tileHeight = 256;
     this._maximumLevel = 18;
 
-    var rectangleSouthwestInMeters = new Cesium$1__default.Cartesian2(-width, -height);
-    var rectangleNortheastInMeters = new Cesium$1__default.Cartesian2(width, height);
-    this._tilingScheme = new Cesium$1__default.WebMercatorTilingScheme({
+    var rectangleSouthwestInMeters = new Cesium$1.Cartesian2(-width, -height);
+    var rectangleNortheastInMeters = new Cesium$1.Cartesian2(width, height);
+    this._tilingScheme = new Cesium$1.WebMercatorTilingScheme({
       rectangleSouthwestInMeters: rectangleSouthwestInMeters,
       rectangleNortheastInMeters: rectangleNortheastInMeters,
     });
@@ -11777,7 +12007,7 @@
     this._rectangle = this._tilingScheme.rectangle;
     this._ready = true;
   }
-  Cesium$1__default.defineProperties(BaiduImageryProvider.prototype, {
+  Cesium$1.defineProperties(BaiduImageryProvider.prototype, {
     url: {
       get: function get() {
         return this._url;
@@ -11957,10 +12187,10 @@
       .replace("{z}", level)
       .replace("{s}", Math.floor(Math.random() * 10));
 
-    return Cesium$1__default.ImageryProvider.loadImage(this, url);
+    return Cesium$1.ImageryProvider.loadImage(this, url);
   };
 
-  var BaiduImageryProvider$1 = ({
+  var BaiduImageryProvider$1 = /*#__PURE__*/Object.freeze({
     BaiduImageryProvider: BaiduImageryProvider
   });
 
@@ -11970,14 +12200,13 @@
    * @Author: 宁四凯
    * @Date: 2020-09-28 08:42:26
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 09:16:24
+   * @LastEditTime: 2020-09-29 10:19:12
    */
-
   function FeatureGridImageryProvider(options) {
-    options = Cesium$1__default.defaultValue(options, Cesium$1__default.defaultValue.EMPTY_OBJECT);
+    options = Cesium$1.defaultValue(options, Cesium$1.defaultValue.EMPTY_OBJECT);
     this.options = options;
-    this._tileWidth = Cesium$1__default.defaultValue(options.tileWidth, 256);
-    this._minimumLevel = Cesium$1__default.defaultValue(options.minimumLevel, 0);
+    this._tileWidth = Cesium$1.defaultValue(options.tileWidth, 256);
+    this._minimumLevel = Cesium$1.defaultValue(options.minimumLevel, 0);
     this._maximumLevel = options.maximumLevel;
     if (
       options.rectangle &&
@@ -11990,32 +12219,32 @@
       var xmax = options.rectangle.xmax;
       var ymin = options.rectangle.ymin;
       var ymax = options.rectangle.ymax;
-      options.rectangle = Cesium$1__default.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
+      options.rectangle = Cesium$1.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
     }
-    this._tilingScheme = Cesium$1__default.defaultValue(
+    this._tilingScheme = Cesium$1.defaultValue(
       options.tilingScheme,
-      new Cesium$1__default.GeographicTilingScheme({
+      new Cesium$1.GeographicTilingScheme({
         ellipsoid: options.ellipsoid,
       })
     );
 
-    this._rectangle = Cesium$1__default.defaultValue(
+    this._rectangle = Cesium$1.defaultValue(
       options.rectangle,
       this._tilingScheme.rectangle
     );
 
-    this._rectangle = Cesium$1__default.Rectangle.intersection(
+    this._rectangle = Cesium$1.Rectangle.intersection(
       this._rectangle,
       this._tilingScheme.rectangle
     );
-    this._hasAlphaChannel = Cesium$1__default.defaultValue(options.hasAlphaChannel, true);
-    this._errorEvent = new Cesium$1__default.Event();
-    this._readyPromise = Cesium$1__default.WeightSpline.resolve(true);
+    this._hasAlphaChannel = Cesium$1.defaultValue(options.hasAlphaChannel, true);
+    this._errorEvent = new Cesium$1.Event();
+    this._readyPromise = Cesium$1.WeightSpline.resolve(true);
     this._credit = undefined;
     this._ready = true;
   }
 
-  Cesium$1__default.defineProperties(FeatureGridImageryProvider.prototype, {
+  Cesium$1.defineProperties(FeatureGridImageryProvider.prototype, {
     url: {
       get: function () {
         return this._url;
@@ -12231,7 +12460,7 @@
     };
   };
 
-  var FeatureGridImageryProvider$1 = ({
+  var FeatureGridImageryProvider$1 = /*#__PURE__*/Object.freeze({
     FeatureGridImageryProvider: FeatureGridImageryProvider
   });
 
@@ -12402,21 +12631,21 @@
           break;
         case "crs":
           if (value == "4326" || value.toUpperCase() == "EPSG4326")
-            opts.tilingScheme = new Cesium$1__default.GeographicTilingScheme({
+            opts.tilingScheme = new Cesium$1.GeographicTilingScheme({
               numberOfLevelZeroTilesX: item.numberOfLevelZeroTilesX || 2,
               numberOfLevelZeroTilesY: item.numberOfLevelZeroTilesY || 1,
             });
           else
-            opts.tilingScheme = new Cesium$1__default.WebMercatorTilingScheme({
+            opts.tilingScheme = new Cesium$1.WebMercatorTilingScheme({
               numberOfLevelZeroTilesX: item.numberOfLevelZeroTilesX || 1,
               numberOfLevelZeroTilesY: item.numberOfLevelZeroTilesY || 1,
             });
           break;
         case "proxy":
-          opts.proxy = new Cesium$1__default.DefaultProxy(value);
+          opts.proxy = new Cesium$1.DefaultProxy(value);
           break;
         case "rectangle":
-          opts.rectangle = Cesium$1__default.Rectangle.fromDegrees(
+          opts.rectangle = Cesium$1.Rectangle.fromDegrees(
             value.xmin,
             value.ymin,
             value.xmax,
@@ -12427,7 +12656,7 @@
     }
 
     if (opts.proxy) {
-      opts.url = new Cesium$1__default.Resource({
+      opts.url = new Cesium$1.Resource({
         url: opts.url,
         proxy: opts.proxy,
       });
@@ -12438,7 +12667,7 @@
       //===============地图底图====================
       case "single":
       case "image":
-        layer = new Cesium$1__default.SingleTileImageryProvider(opts);
+        layer = new Cesium$1.SingleTileImageryProvider(opts);
         break;
       case "xyz":
       case "tile":
@@ -12447,34 +12676,34 @@
             return level + 1;
           },
         };
-        layer = new Cesium$1__default.UrlTemplateImageryProvider(opts);
+        layer = new Cesium$1.UrlTemplateImageryProvider(opts);
         break;
       case "wms":
-        layer = new Cesium$1__default.WebMapServiceImageryProvider(opts);
+        layer = new Cesium$1.WebMapServiceImageryProvider(opts);
         break;
       case "tms":
         if (!opts.url)
-          opts.url = Cesium$1__default.buildModuleUrl("Assets/Textures/NaturalEarthII");
-        layer = new Cesium$1__default.createTileMapServiceImageryProvider(opts);
+          opts.url = Cesium$1.buildModuleUrl("Assets/Textures/NaturalEarthII");
+        layer = new Cesium$1.createTileMapServiceImageryProvider(opts);
         break;
       case "wmts":
-        layer = new Cesium$1__default.WebMapTileServiceImageryProvider(opts);
+        layer = new Cesium$1.WebMapTileServiceImageryProvider(opts);
         break;
       case "gee":
         //谷歌地球
-        layer = new Cesium$1__default.GoogleEarthEnterpriseImageryProvider({
-          metadata: new Cesium$1__default.GoogleEarthEnterpriseMetadata(opts),
+        layer = new Cesium$1.GoogleEarthEnterpriseImageryProvider({
+          metadata: new Cesium$1.GoogleEarthEnterpriseMetadata(opts),
         });
         break;
       case "arcgis":
       case "arcgis_tile":
       case "arcgis_dynamic":
-        layer = new Cesium$1__default.ArcGisMapServerImageryProvider(opts);
+        layer = new Cesium$1.ArcGisMapServerImageryProvider(opts);
         break;
       case "arcgis_cache":
         //layer = new _ArcTileImageryProvider(opts);
-        if (!Cesium$1__default.UrlTemplateImageryProvider.prototype.padLeft0) {
-          Cesium$1__default.UrlTemplateImageryProvider.prototype.padLeft0 = function (
+        if (!Cesium$1.UrlTemplateImageryProvider.prototype.padLeft0) {
+          Cesium$1.UrlTemplateImageryProvider.prototype.padLeft0 = function (
             numStr,
             n
           ) {
@@ -12509,7 +12738,7 @@
             return imageryProvider.padLeft0(level.toString(), 2).toUpperCase();
           },
         };
-        layer = new Cesium$1__default.UrlTemplateImageryProvider(opts);
+        layer = new Cesium$1.UrlTemplateImageryProvider(opts);
         break;
 
       //===============互联网常用地图====================
@@ -12560,9 +12789,9 @@
             "&style={style}&tilerow={TileRow}&tilecol={TileCol}&tilematrixset={TileMatrixSet}&format=tiles&tk=" +
             _key;
 
-          layer = new Cesium$1__default.WebMapTileServiceImageryProvider({
+          layer = new Cesium$1.WebMapTileServiceImageryProvider({
             url: opts.proxy
-              ? new Cesium$1__default.Resource({
+              ? new Cesium$1.Resource({
                   url: _url,
                   proxy: opts.proxy,
                 })
@@ -12573,7 +12802,7 @@
             tileMatrixSetID: "c",
             subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
             tileMatrixLabels: matrixIds,
-            tilingScheme: new Cesium$1__default.GeographicTilingScheme(), //WebMercatorTilingScheme、GeographicTilingScheme
+            tilingScheme: new Cesium$1.GeographicTilingScheme(), //WebMercatorTilingScheme、GeographicTilingScheme
             maximumLevel: maxLevel,
           });
         } else {
@@ -12590,9 +12819,9 @@
             "&style={style}&tilerow={TileRow}&tilecol={TileCol}&tilematrixset={TileMatrixSet}&format=tiles&tk=" +
             _key;
 
-          layer = new Cesium$1__default.WebMapTileServiceImageryProvider({
+          layer = new Cesium$1.WebMapTileServiceImageryProvider({
             url: opts.proxy
-              ? new Cesium$1__default.Resource({
+              ? new Cesium$1.Resource({
                   url: _url.replace("{s}", "0"),
                   proxy: opts.proxy,
                 })
@@ -12603,7 +12832,7 @@
             tileMatrixSetID: "w",
             subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
             tileMatrixLabels: matrixIds,
-            tilingScheme: new Cesium$1__default.WebMercatorTilingScheme(),
+            tilingScheme: new Cesium$1.WebMercatorTilingScheme(),
             maximumLevel: maxLevel,
           });
         }
@@ -12639,9 +12868,9 @@
             break;
         }
 
-        layer = new Cesium$1__default.UrlTemplateImageryProvider({
+        layer = new Cesium$1.UrlTemplateImageryProvider({
           url: opts.proxy
-            ? new Cesium$1__default.Resource({
+            ? new Cesium$1.Resource({
                 url: _url,
                 proxy: opts.proxy,
               })
@@ -12689,9 +12918,9 @@
           }
         }
 
-        layer = new Cesium$1__default.UrlTemplateImageryProvider({
+        layer = new Cesium$1.UrlTemplateImageryProvider({
           url: opts.proxy
-            ? new Cesium$1__default.Resource({
+            ? new Cesium$1.Resource({
                 url: _url,
                 proxy: opts.proxy,
               })
@@ -12704,9 +12933,9 @@
       case "www_osm":
         //OSM开源地图
         var _url = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-        layer = new Cesium$1__default.UrlTemplateImageryProvider({
+        layer = new Cesium$1.UrlTemplateImageryProvider({
           url: opts.proxy
-            ? new Cesium$1__default.Resource({
+            ? new Cesium$1.Resource({
                 url: _url,
                 proxy: opts.proxy,
               })
@@ -12724,10 +12953,10 @@
         //矢量道路  Road
         //OrdnanceSurvey,
         //CollinsBart
-        var style = opts.layer || Cesium$1__default.BingMapsStyle.Aerial;
-        layer = new Cesium$1__default.BingMapsImageryProvider({
+        var style = opts.layer || Cesium$1.BingMapsStyle.Aerial;
+        layer = new Cesium$1.BingMapsImageryProvider({
           url: opts.proxy
-            ? new Cesium$1__default.Resource({
+            ? new Cesium$1.Resource({
                 url: _url,
                 proxy: opts.proxy,
               })
@@ -12742,11 +12971,11 @@
       //===============内部定义的图层====================
       case "custom_grid":
         //网格线
-        layer = new Cesium$1__default.GridImageryProvider();
+        layer = new Cesium$1.GridImageryProvider();
         break;
       case "custom_tilecoord":
         //瓦片信息
-        layer = new Cesium$1__default.TileCoordinatesImageryProvider();
+        layer = new Cesium$1.TileCoordinatesImageryProvider();
         break;
       case "custom_featuregrid":
         //自定义矢量网格图层
@@ -12761,7 +12990,7 @@
     return layer;
   }
 
-  var Layer = ({
+  var Layer = /*#__PURE__*/Object.freeze({
     createLayer: createLayer,
     createImageryProvider: createImageryProvider
   });
@@ -12772,7 +13001,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-01 09:25:31
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 13:54:29
+   * @LastEditTime: 2020-09-29 11:07:02
    */
 
   const _labelAttr = {
@@ -12907,9 +13136,9 @@
     var dataSource = drawControl.getDataSource();
   };
 
-  var Measure$1 = ({
+  var Measure$1 = /*#__PURE__*/Object.freeze({
     Measure: Measure,
-    'default': Measure
+    default: Measure
   });
 
   /*
@@ -12918,18 +13147,16 @@
    * @Author: 宁四凯
    * @Date: 2020-09-28 09:29:10
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 09:41:08
+   * @LastEditTime: 2020-09-29 11:11:12
    */
-
-  var Color = Cesium$1__default.Color;
-  var defaultValue = Cesium$1__default.defaultValue;
-  var defined = Cesium$1__default.defined;
-  var definedProperties = Cesium$1__default.definedProperties;
-  var Event = Cesium$1__default.Event;
-  var createPropertyDescriptor = Cesium$1__default.createPropertyDescriptor;
-  var Property = Cesium$1__default.Property;
-  var Material = Cesium$1__default.Material;
-  var defaultColor = new Cesium$1__default.Color(0, 0, 0, 0);
+  var Color = Cesium$1.Color;
+  var defaultValue = Cesium$1.defaultValue;
+  var defined = Cesium$1.defined;
+  var Event = Cesium$1.Event;
+  var createPropertyDescriptor = Cesium$1.createPropertyDescriptor;
+  var Property = Cesium$1.Property;
+  var Material = Cesium$1.Material;
+  var defaultColor = new Cesium$1.Color(0, 0, 0, 0);
 
   function AnimationLineMaterialProperty(options) {
     options = defaultValue(options, defaultValue.EMPTY_OBJECT);
@@ -13050,7 +13277,7 @@
           color: new Color(1, 0, 0, 1.0),
           image: Material[imageName],
           time: 0,
-          repeat: repeat || new _Cesium2.default.Cartesian2(1.0, 1.0),
+          repeat: repeat || new Cesium$1.Cartesian2(1.0, 1.0),
         },
         //source: "czm_material czm_getMaterial(czm_materialInput materialInput)\n\
         //    {\n\
@@ -13102,14 +13329,13 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-28 13:57:22
    */
-
-  var Color$1 = Cesium$1__default.Color;
-  var defaultValue$1 = Cesium$1__default.defaultValue;
-  var defined$1 = Cesium$1__default.defined;
-  var defineProperties$1 = Cesium$1__default.defineProperties;
-  var Event$1 = Cesium$1__default.Event;
-  var createPropertyDescriptor$1 = Cesium$1__default.createPropertyDescriptor;
-  var Property$1 = Cesium$1__default.Property;
+  var Color$1 = Cesium$1.Color;
+  var defaultValue$1 = Cesium$1.defaultValue;
+  var defined$1 = Cesium$1.defined;
+  var defineProperties$1 = Cesium$1.defineProperties;
+  var Event$1 = Cesium$1.Event;
+  var createPropertyDescriptor$1 = Cesium$1.createPropertyDescriptor;
+  var Property$1 = Cesium$1.Property;
   var defaultColor$1 = Color$1.WHITE;
 
   function EllipsoidFadeMaterialProperty(options) {
@@ -13204,7 +13430,7 @@
   };
 
   // 材质处理开始
-  var Material$1 = Cesium$1__default.Material;
+  var Material$1 = Cesium$1.Material;
   Material$1.EllipsoidFadeType = "EllipsoidFade"; // 渐变的气泡
   Material$1._materialCache.addMaterial(Material$1.EllipsoidFadeType, {
     fabric: {
@@ -13272,13 +13498,13 @@
       // 移动事件
       viewer.scene.postRender.addEventListener(this.updateViewPoint, this);
     },
-    backAngle: Cesium$1__default.Math.toRadians(75),
+    backAngle: Cesium$1.Math.toRadians(75),
     updateViewPoint: function () {
       if (!this._visible) {
         return;
       }
       var scene = this.viewer.scene;
-      var point = Cesium$1__default.SceneTransforms.wgs84ToDrawingBufferCoordinates(
+      var point = Cesium$1.SceneTransforms.wgs84ToDrawingBufferCoordinates(
         scene,
         this.position
       );
@@ -13286,11 +13512,11 @@
         return;
       }
       // 判断是否在球的背面
-      var h1 = Cesium$1__default.Cartesian3.distance(scene.camera.position, this.position);
+      var h1 = Cesium$1.Cartesian3.distance(scene.camera.position, this.position);
       var h2 =
         scene.camera.positionCartographic.height +
         this.viewer.scene.globe.ellipsoid.maximumRadius;
-      var angle = Cesium$1__default.Cartesian3.angleBetween(
+      var angle = Cesium$1.Cartesian3.angleBetween(
         scene.camera.position,
         this.position
       );
@@ -13356,11 +13582,11 @@
   var pointconvert = PointConvert;
   var latlng = Point; // 兼容旧版本
   var point$1 = Point;
-  var util$1 = Util$1;
+  var util$1 = Util;
   var matrix = Matrix;
 
   var draw = {
-    util: Util$1,
+    util: Util,
     event: EventType$1,
     dragger: Dragger$1,
     attr: Attr,
@@ -13389,5 +13615,7 @@
   exports.Draw = Draw$$1;
   exports.draw = draw;
   exports.widget = widget;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 })));

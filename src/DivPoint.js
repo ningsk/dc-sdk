@@ -6,7 +6,7 @@
  * @LastEditors: 宁四凯
  * @LastEditTime: 2020-09-28 10:33:46
  */
-import Cesium from "cesium";
+import * as Cesium from "cesium";
 import { Class } from "./core/Class";
 import $ from "jquery";
 export var DivPoint = Class.extend({
