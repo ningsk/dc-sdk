@@ -2830,7 +2830,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 10:36:52
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 16:05:58
+   * @LastEditTime: 2020-09-29 17:40:57
    */
 
   var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
@@ -3454,38 +3454,42 @@
 
     _openWindow: function (viewopt) {
       var that = this;
-      var viewUrl = this._getUrl(viewopt.url);
+      var view_url = this._getUrl(viewopt.url);
+
       var opts = {
         type: 2,
-        content: [viewUrl, "no"],
-        success: (layero) => {
+        content: [view_url, "no"],
+        success: function (layero) {
           viewopt._layerOpening = false;
           viewopt._dom = layero;
-          // 得到iframe页的窗口对象，执行iframe页的方法，如viewWindow.method();
+
+          //得到iframe页的窗口对象，执行iframe页的方法：viewWindow.method();
           var viewWindow = window[layero.find("iframe")[0]["name"]];
-          // 隐藏弹窗
-          if (that.config.hasOwnProperty("visible") && !that.config.visible) {
+
+          //隐藏弹窗
+          if (that.config.hasOwnProperty("visible") && !that.config.visible)
             $(layero).hide();
-            layero.setTop(layero);
-            that.winCreateOK(viewopt, viewWindow);
-            that._viewCreateOkCount++;
-            if (that._viewCreateOkCount >= that._viewCreateAllCount) {
-              that._startActivate(layero);
-            }
-            // 通知页面，页面需要定义initWidgetView方法
-            if (viewWindow && viewWindow.initWidgetView) {
-              viewWindow.initWidgetView(that);
-            } else {
-              console.error(
-                "" +
-                  viewUrl +
-                  "页面没有定义function initWidgetView(widget)方法，无法初始化widget页面！"
-              );
-            }
-          }
+
+          layer.setTop(layero);
+          that.winCreateOK(viewopt, viewWindow);
+
+          that._viewcreate_okcount++;
+          if (that._viewcreate_okcount >= that._viewcreate_allcount)
+            that._startActivate(layero);
+
+          //通知页面,页面需要定义initWidgetView方法
+          if (viewWindow && viewWindow.initWidgetView)
+            viewWindow.initWidgetView(that);
+          else
+            console.error(
+              "" +
+                view_url +
+                "页面没有定义function initWidgetView(widget)方法，无法初始化widget页面!"
+            );
         },
       };
       if (viewopt._layerIdx > 0) ;
+
       viewopt._layerOpening = true;
       viewopt._layerIdx = layer.open(this._getWinOpt(viewopt, opts));
     },
