@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 11:07:02
+ * @LastEditTime: 2020-09-29 15:38:49
  */
 import * as Cesium from "cesium";
 import { Draw } from "./draw/index";
@@ -40,7 +40,7 @@ export var Measure = function (opts) {
       _labelAttr[key] = opts.label[key];
     }
   }
-  var drawControl = new Draw(that._viewer, {
+  var drawControl = new Draw(viewer, {
     hasEdit: false,
   });
 

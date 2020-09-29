@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 13:17:56
+ * @LastEditTime: 2020-09-29 15:30:40
  */
 
 import { Tooltip, Util as DrawUtil } from "../core/index";
@@ -32,16 +32,15 @@ export var Draw = L.Evented.extend({
   dataSource: null,
   primitives: null,
   drawCtrl: null,
-  initialize: function () {
+  initialize: function (viewer, options) {
     console.log("draw initialize");
     this.currEditFeature = null; // 当前编辑的要素
     this._hasEdit = null;
 
     this.viewer = viewer;
     this.options = options || {};
-    this.dataSource = new Cesium.CustomDataSource(); // 用于entity
+    this.dataSource = new Cesium.CustomDataSource(); //用于entity
     this.viewer.dataSources.add(this.dataSource);
-
     this.primitives = new Cesium.PrimitiveCollection(); // 用于primitive
     this.viewer.scene.primitives.add(this.primitives);
     if (Cesium.defaultValue(this.options.removeScreenSpaceEvent, true)) {

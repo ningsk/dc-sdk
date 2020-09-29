@@ -2830,7 +2830,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 10:36:52
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 15:12:44
+   * @LastEditTime: 2020-09-29 15:16:50
    */
 
   var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
@@ -2997,7 +2997,7 @@
   function clone$1(from, to) {
     if (
       from == null ||
-      (typeof from === "undefined" ? "undefined" : _typeof(from)) != "object"
+      (typeof from === "undefined" ? "undefined" : typeof from) != "object"
     )
       return from;
     if (from.constructor != Object && from.constructor != Array) return from;
@@ -3876,11 +3876,11 @@
    * @LastEditTime: 2020-09-28 08:40:52
    */
 
-  var viewer$1;
+  var viewer;
   var handler;
 
   function init$1(_viewer) {
-    viewer$1 = _viewer;
+    viewer = _viewer;
 
     //添加弹出框
     var infoDiv =
@@ -3890,9 +3890,9 @@
       "     </div>" +
       '     <div class="cesium-popup-tip-container"><div class="cesium-popup-tip  cesium-popup-background"></div></div>' +
       "</div> ";
-    $$1("#" + viewer$1._container.id).append(infoDiv);
+    $$1("#" + viewer._container.id).append(infoDiv);
 
-    handler = new Cesium$1.ScreenSpaceEventHandler(viewer$1.scene.canvas);
+    handler = new Cesium$1.ScreenSpaceEventHandler(viewer.scene.canvas);
     //鼠标移动事件
     handler.setInputAction(
       mouseMovingPicking,
@@ -3907,16 +3907,16 @@
     $$1(".cesium-viewer").css("cursor", "");
 
     if (
-      viewer$1.scene.screenSpaceCameraController.enableRotate === false ||
-      viewer$1.scene.screenSpaceCameraController.enableTilt === false ||
-      viewer$1.scene.screenSpaceCameraController.enableTranslate === false
+      viewer.scene.screenSpaceCameraController.enableRotate === false ||
+      viewer.scene.screenSpaceCameraController.enableTilt === false ||
+      viewer.scene.screenSpaceCameraController.enableTranslate === false
     ) {
       close();
       return;
     }
 
     var position = event.endPosition;
-    var pickedObject = viewer$1.scene.pick(position);
+    var pickedObject = viewer.scene.pick(position);
     if (pickedObject && Cesium$1.defined(pickedObject.id)) {
       //普通entity对象 && viewer.scene.pickPositionSupported
       var entity = pickedObject.id;
@@ -3935,7 +3935,7 @@
         lastEntity = entity;
       }
 
-      var cartesian = getCurrentMousePosition(viewer$1.scene, position);
+      var cartesian = getCurrentMousePosition(viewer.scene, position);
       show(entity, cartesian, position);
     } else if (pickedObject && Cesium$1.defined(pickedObject.primitive)) {
       //primitive对象 && viewer.scene.pickPositionSupported
@@ -3949,7 +3949,7 @@
         return;
       }
 
-      var cartesian = getCurrentMousePosition(viewer$1.scene, position);
+      var cartesian = getCurrentMousePosition(viewer.scene, position);
       show(primitive, cartesian, position);
     } else {
       close();
@@ -3962,7 +3962,7 @@
     //计算显示位置
     if (position == null)
       position = Cesium$1.SceneTransforms.wgs84ToWindowCoordinates(
-        viewer$1.scene,
+        viewer.scene,
         cartesian
       );
     if (position == null) {
@@ -4049,7 +4049,7 @@
    * @LastEditTime: 2020-09-29 14:34:06
    */
 
-  var viewer$2;
+  var viewer$1;
   var handler$1;
   var objPopup = {};
 
@@ -4072,18 +4072,18 @@
   }
 
   function init$2(_viewer) {
-    viewer$2 = _viewer;
+    viewer$1 = _viewer;
     // 添加弹出框
     var infoDiv = '<div id="popup-all-view"></div>';
-    $$1("#" + viewer$2._container.id).append(infoDiv);
-    handler$1 = new Cesium$1.ScreenSpaceEventHandler(viewer$2.scene.canvas);
+    $$1("#" + viewer$1._container.id).append(infoDiv);
+    handler$1 = new Cesium$1.ScreenSpaceEventHandler(viewer$1.scene.canvas);
     // 单击事件
     handler$1.setInputAction(
       mousePickingClick,
       Cesium$1.ScreenSpaceEventType.LEFT_CLICK
     );
     // 移动时间
-    viewer$2.scene.postRender.addEventListener(_bind2Scene);
+    viewer$1.scene.postRender.addEventListener(_bind2Scene);
   }
 
   // 鼠标点击事件
@@ -4096,13 +4096,13 @@
       return;
     }
     var position = event.position;
-    var pickedObject = viewer$2.scene.pick(position);
+    var pickedObject = viewer$1.scene.pick(position);
     // 普通entity对象 && viewer.scene.pickPositionSupported
     if (pickedObject && Cesium$1.defined(pickedObject.id)) {
       var entity = pickedObject.id;
       // popup
       if (Cesium$1.defined(entity.popup)) {
-        var cartesian = getCurrentMousePosition(viewer$2.scene, position);
+        var cartesian = getCurrentMousePosition(viewer$1.scene, position);
         //if (entity.billboard || entity.label || entity.point) {
         //    cartesian = pickedObject.primitive.position;
         //} else {
@@ -4127,13 +4127,13 @@
     if (_lastShowFeature == null) {
       return;
     }
-    viewer$2.dataSources.remove(_lastShowFeature);
+    viewer$1.dataSources.remove(_lastShowFeature);
     _lastShowFeature = null;
   }
 
   // 瓦片图层上的矢量对象，动态获取
   function pickImageryLayerFeatures(position) {
-    var scene = viewer$2.scene;
+    var scene = viewer$1.scene;
     var pickRay = scene.camera.getPickRay(position);
     var imageryLayerFeaturePromise = scene.imageryLayers.pickImageryLayerFeatures(
       pickRay,
@@ -4170,7 +4170,7 @@
         );
         if (result) {
           var cartesian = getCurrentMousePosition(
-            viewer$2.scene,
+            viewer$1.scene,
             position
           );
           show$1(
@@ -4231,7 +4231,7 @@
     });
     dataSource
       .then((dataSource) => {
-        viewer$2.dataSources.add(dataSource);
+        viewer$1.dataSources.add(dataSource);
         _lastShowFeature = dataSource;
       })
       .otherwise((error) => {
@@ -4297,12 +4297,12 @@
 
   function updateViewPoint(eleId, cartesian, popup) {
     var point = Cesium$1.SceneTransforms.wgs84ToDrawingBufferCoordinates(
-      viewer$2.scene,
+      viewer$1.scene,
       cartesian
     );
     if (point == null) return false;
     // 判断是否在球的背面
-    var scene = viewer$2.scene;
+    var scene = viewer$1.scene;
     var cartesianNew;
     if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
       // 三维模式下
@@ -4363,7 +4363,7 @@
   function destroy$1() {
     close$1();
     handler$1.destroy();
-    viewer$2.scene.postRender.removeEventListener(_bind2Scene);
+    viewer$1.scene.postRender.removeEventListener(_bind2Scene);
   }
 
   function template$1(str, data) {
@@ -4973,7 +4973,7 @@
     }
 
     function changeBaseMap(idorName) {
-      var baseMaps = viewer.gisData.config.baseMaps;
+      var baseMaps = viewer.gisdata.config.baseMaps;
       for (var i = 0; i < baseMaps.length; i++) {
         var item = baseMaps[i];
         if (item.type == "group" && item.layers == null) continue;
@@ -5480,12 +5480,12 @@
     var viewer = initMap(opt.id, configData, opt);
 
     //记录到全局变量，其他地方使用
-    var gisData = {};
-    gisData.config = configData;
+    var gisdata = {};
+    gisdata.config = configData;
 
-    viewer.gisData = gisData;
+    viewer.gisdata = gisdata;
 
-    if (opt.success) opt.success(viewer, gisData, jsonData);
+    if (opt.success) opt.success(viewer, gisdata, jsonData);
 
     return viewer;
   }
@@ -9164,23 +9164,22 @@
    * @Author: 宁四凯
    * @Date: 2020-08-19 10:35:38
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 13:17:56
+   * @LastEditTime: 2020-09-29 15:30:40
    */
 
   var Draw$$1 = L.Evented.extend({
     dataSource: null,
     primitives: null,
     drawCtrl: null,
-    initialize: function () {
+    initialize: function (viewer, options) {
       console.log("draw initialize");
       this.currEditFeature = null; // 当前编辑的要素
       this._hasEdit = null;
 
       this.viewer = viewer;
       this.options = options || {};
-      this.dataSource = new Cesium.CustomDataSource(); // 用于entity
+      this.dataSource = new Cesium.CustomDataSource(); //用于entity
       this.viewer.dataSources.add(this.dataSource);
-
       this.primitives = new Cesium.PrimitiveCollection(); // 用于primitive
       this.viewer.scene.primitives.add(this.primitives);
       if (Cesium.defaultValue(this.options.removeScreenSpaceEvent, true)) {
@@ -13884,7 +13883,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-01 09:25:31
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 11:07:02
+   * @LastEditTime: 2020-09-29 15:38:49
    */
 
   const _labelAttr = {
@@ -13913,7 +13912,7 @@
         _labelAttr[key] = opts.label[key];
       }
     }
-    var drawControl = new Draw$$1(that._viewer, {
+    var drawControl = new Draw$$1(viewer, {
       hasEdit: false,
     });
 
@@ -14018,11 +14017,6 @@
 
     var dataSource = drawControl.getDataSource();
   };
-
-  var Measure$1 = /*#__PURE__*/Object.freeze({
-    Measure: Measure,
-    default: Measure
-  });
 
   /*
    * @Description:
@@ -14448,7 +14442,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-09 10:50:47
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 14:11:37
+   * @LastEditTime: 2020-09-29 15:24:39
    */
 
   // ================  模块对外公开的属性和方法  ======================
@@ -14487,7 +14481,7 @@
   exports.point = point$1;
   exports.util = util$1;
   exports.matrix = matrix;
-  exports.Measure = Measure$1;
+  exports.Measure = Measure;
   exports.AnimationLineMaterialProperty = AnimationLineMaterialProperty;
   exports.EllipsoidFadeMaterialProperty = EllipsoidFadeMaterialProperty;
   exports.DivPoint = DivPoint;

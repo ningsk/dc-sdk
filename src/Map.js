@@ -435,7 +435,7 @@ function initMap(id, config, options) {
   }
 
   function changeBaseMap(idorName) {
-    var baseMaps = viewer.gisData.config.baseMaps;
+    var baseMaps = viewer.gisdata.config.baseMaps;
     for (var i = 0; i < baseMaps.length; i++) {
       var item = baseMaps[i];
       if (item.type == "group" && item.layers == null) continue;
@@ -982,12 +982,12 @@ function createMapByData(opt, configData, jsonData) {
   var viewer = initMap(opt.id, configData, opt);
 
   //记录到全局变量，其他地方使用
-  var gisData = {};
-  gisData.config = configData;
+  var gisdata = {};
+  gisdata.config = configData;
 
-  viewer.gisData = gisData;
+  viewer.gisdata = gisdata;
 
-  if (opt.success) opt.success(viewer, gisData, jsonData);
+  if (opt.success) opt.success(viewer, gisdata, jsonData);
 
   return viewer;
 }

@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:36:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 15:12:44
+ * @LastEditTime: 2020-09-29 15:16:50
  */
 
 import { Loader } from "../dom/index";
@@ -174,7 +174,7 @@ export function getDefWindowOptions() {
 export function clone(from, to) {
   if (
     from == null ||
-    (typeof from === "undefined" ? "undefined" : _typeof(from)) != "object"
+    (typeof from === "undefined" ? "undefined" : typeof from) != "object"
   )
     return from;
   if (from.constructor != Object && from.constructor != Array) return from;

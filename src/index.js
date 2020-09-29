@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:50:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 14:11:37
+ * @LastEditTime: 2020-09-29 15:24:39
  */
 
 import * as Map from "./Map";
 import * as Layer from "./layer/Layer";
 import { PointConvert, PointUtil as Point, Util, Matrix } from "./core/index";
-import * as Measure from "./Measure";
+import { Measure } from "./Measure";
 import {
   EllipsoidFadeMaterialProperty,
   AnimationLineMaterialProperty,
