@@ -7,7 +7,7 @@ import * as Cesium from "cesium";
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:08:08
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 10:17:00
+ * @LastEditTime: 2020-09-29 17:17:57
  */
 export function GaodePOIGeocoder(options) {
   options = options || {};
@@ -59,7 +59,7 @@ GaodePOIGeocoder.prototype.geocode = function (query, geocodeType) {
     return results.pois.map((resultObject) => {
       var arrjwd = resultObject.location.split(",");
       arrjwd = PointConvert.gcj2wgs(arrjwd); // 纠偏
-      var lnglat = that.viewer.card.point2map({
+      var lnglat = that.viewer.mars.point2map({
         x: arrjwd[0],
         y: arrjwd[1],
       });

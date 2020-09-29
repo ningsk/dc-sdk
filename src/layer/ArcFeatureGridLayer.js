@@ -6,7 +6,7 @@ import * as Cesium from "cesium";
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:53:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 13:17:17
+ * @LastEditTime: 2020-09-29 17:18:42
  */
 export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
   // 获取网格内的数据，callback为回调方法，参数传数据数组
@@ -103,7 +103,7 @@ export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
     if (this.config.columns || this.config.popup) {
       entity.popup = {
         html: function (entity) {
-          return that.viewer.card.popup.getPopupForConfig(
+          return that.viewer.mars.popup.getPopupForConfig(
             that.config,
             entity.properties
           );
@@ -115,7 +115,7 @@ export var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
     if (this.config.tooltip) {
       entity.tooltip = {
         html: function (entity) {
-          return that.viewer.card.popup.getPopupForConfig(
+          return that.viewer.mars.popup.getPopupForConfig(
             {
               popup: that.config.tooltip,
             },

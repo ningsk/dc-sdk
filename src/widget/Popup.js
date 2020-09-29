@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:24:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 14:34:06
+ * @LastEditTime: 2020-09-29 17:20:24
  */
 import * as Cesium from "cesium";
 import $ from "jquery";
@@ -49,7 +49,7 @@ function init(_viewer) {
 
 // 鼠标点击事件
 function mousePickingClick(event) {
-  emoveFeature();
+  removeFeature();
   if (_isOnly) {
     close();
   }
@@ -242,7 +242,7 @@ function _showHtml(inHtml, eleId, entity, cartesian) {
     '<div id="' +
       eleId +
       '" class="cesium-popup">' +
-      '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.card.popup.close(\'' +
+      '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.mars.popup.close(\'' +
       eleId +
       "')\">×</a>" +
       '            <div class="cesium-popup-content-wrapper cesium-popup-background">' +

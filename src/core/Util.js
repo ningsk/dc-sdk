@@ -975,7 +975,7 @@ export function getTerrainProvider(cfg) {
 
 // 创建模型
 export function createModel(cfg, viewer) {
-  cfg = viewer.card.point2map(cfg); // 转换坐标系
+  cfg = viewer.mars.point2map(cfg); // 转换坐标系
   var position = Cesium.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
   var heading = Cesium.Math.toRadians(cfg.heading || 0);
   var pitch = Cesium.Math.toRadians(cfg.pitch || 0);

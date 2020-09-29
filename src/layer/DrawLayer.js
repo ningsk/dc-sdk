@@ -8,7 +8,7 @@ import $ from "jquery";
  * @Author: 宁四凯
  * @Date: 2020-08-25 10:20:12
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 17:09:25
+ * @LastEditTime: 2020-09-29 17:19:08
  */
 export var DrawLayer = BaseLayer.extend({
   hasOpacity: false,
@@ -73,7 +73,7 @@ export var DrawLayer = BaseLayer.extend({
             var attr = entity.attribute.attr;
             attr.draw_type = entity.attribute.type;
             attr.draw_typename = entity.attribute.name;
-            return that.viewer.card.popup.getPopupConfig(that.config, attr);
+            return that.viewer.mars.popup.getPopupConfig(that.config, attr);
           },
           anchor: this.config.popupAnchor || [0, -15],
         };
@@ -85,7 +85,7 @@ export var DrawLayer = BaseLayer.extend({
             var attr = entity.attribute.attr;
             attr.draw_type = entity.attribute.type;
             attr.draw_typename = entity.attribute.name;
-            return that.viewer.card.popup.getPopupConfig(
+            return that.viewer.mars.popup.getPopupConfig(
               {
                 popup: that.config.tooltip,
               },

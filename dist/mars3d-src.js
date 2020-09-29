@@ -981,7 +981,7 @@
 
   // 创建模型
   function createModel(cfg, viewer) {
-    cfg = viewer.card.point2map(cfg); // 转换坐标系
+    cfg = viewer.mars.point2map(cfg); // 转换坐标系
     var position = Cesium$1.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
     var heading = Cesium$1.Math.toRadians(cfg.heading || 0);
     var pitch = Cesium$1.Math.toRadians(cfg.pitch || 0);
@@ -1801,7 +1801,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-13 14:23:37
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-27 14:55:31
+   * @LastEditTime: 2020-09-29 17:18:23
    */
   /**
    * 格式化
@@ -1993,7 +1993,7 @@
 
     var result = this.formatPosition(bestTarget);
     if (isToWgs) {
-      result = viewer.card.point2wgs(result); // 坐标转换为wgs
+      result = viewer.mars.point2wgs(result); // 坐标转换为wgs
     }
     // 获取地球中心点世界位置与摄像机的世界位置之间的距离
     var distance = Cesium$1.Cartesian3.distance(
@@ -2098,13 +2098,13 @@
 
     if (isToWgs) {
       // 坐标转换为wgs
-      var pt1 = viewer.card.point2wgs({
+      var pt1 = viewer.mars.point2wgs({
         x: extent.xmin,
         y: extent.ymin,
       });
       extent.xmin = pt1.x;
       extent.ymin = pt1.y;
-      var pt2 = viewer.card.point2wgs({
+      var pt2 = viewer.mars.point2wgs({
         x: extent.xmax,
         y: extent.ymax,
       });
@@ -2148,7 +2148,7 @@
     bookmark.pitch = this.formatNum(Cesium$1.Math.toDegrees(camera.roll || 0), 1);
 
     if (isToWgs) {
-      bookmark = viewer.card.point2wgs(bookmark); // 坐标转换wgs
+      bookmark = viewer.mars.point2wgs(bookmark); // 坐标转换wgs
     }
     return bookmark;
   }
@@ -4046,7 +4046,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 14:24:48
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 14:34:06
+   * @LastEditTime: 2020-09-29 17:20:24
    */
 
   var viewer$1;
@@ -4088,7 +4088,7 @@
 
   // 鼠标点击事件
   function mousePickingClick(event) {
-    emoveFeature();
+    removeFeature();
     if (_isOnly) {
       close$1();
     }
@@ -4275,7 +4275,7 @@
       '<div id="' +
         eleId +
         '" class="cesium-popup">' +
-        '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.card.popup.close(\'' +
+        '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.mars.popup.close(\'' +
         eleId +
         "')\">×</a>" +
         '            <div class="cesium-popup-content-wrapper cesium-popup-background">' +
@@ -4566,7 +4566,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 08:41:02
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 13:58:22
+   * @LastEditTime: 2020-09-29 17:18:54
    */
   var BaseLayer = Class.extend({
     config: {}, // 配置的config信息
@@ -4639,7 +4639,7 @@
     // 定位到数据区域
     centerAt: function (duration) {
       if (this.config.extent || this.config.center) {
-        this.viewer.card.centerAt(this.config.extent || this.config.center, {
+        this.viewer.mars.centerAt(this.config.extent || this.config.center, {
           duration: duration,
           isWgs84: true,
         });
@@ -4818,7 +4818,7 @@
       if (this.layer == null) return;
 
       if (this.config.extent || this.config.center) {
-        this.viewer.card.centerAt(this.config.extent || this.config.center, {
+        this.viewer.mars.centerAt(this.config.extent || this.config.center, {
           duration: duration,
           isWgs84: true,
         });
@@ -7337,7 +7337,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 11:22:51
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:03:43
+   * @LastEditTime: 2020-09-29 17:19:22
    */
   var GeoJsonLayer = BaseLayer.extend({
     dataSource: null,
@@ -7362,7 +7362,7 @@
     // 定位至数据区域
     centerAt: function (duration) {
       if (this.config.extent || this.config.center) {
-        this.viewer.card.centerAt(this.config.extent || this.config.center, {
+        this.viewer.mars.centerAt(this.config.extent || this.config.center, {
           duration: duration,
           isWgs84: true,
         });
@@ -7471,7 +7471,7 @@
               let attr = that.getEntityAttr(entity);
               if (isString(attr)) return attr;
               else
-                return that.viewer.card.popup.getPopupForConfig(
+                return that.viewer.mars.popup.getPopupForConfig(
                   that.config,
                   attr
                 );
@@ -7486,7 +7486,7 @@
               let attr = that.getEntityAttr(entity);
               if (isString(attr)) return attr;
               else
-                return that.viewer.card.popup.getPopupForConfig(
+                return that.viewer.mars.popup.getPopupForConfig(
                   {
                     popup: that.config.tooltip,
                   },
@@ -7685,7 +7685,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 11:10:46
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 10:19:49
+   * @LastEditTime: 2020-09-29 17:19:47
    */
   var GltfLayer = BaseLayer.extend({
     model: null,
@@ -7708,13 +7708,13 @@
     centerAt: function (duration) {
       if (this.model == null) return;
       if (this.config.extent || this.config.center) {
-        this.viewer.card.centerAt(this.config.extent || this.config.center, {
+        this.viewer.mars.centerAt(this.config.extent || this.config.center, {
           duration: duration,
           isWgs84: true,
         });
       } else {
         var cfg = this.config.position;
-        this.viewer.card.centerAt(cfg, {
+        this.viewer.mars.centerAt(cfg, {
           duration: duration,
           isWgs84: true,
         });
@@ -7723,7 +7723,7 @@
 
     initData: function () {
       var cfg = this.config.position;
-      cfg = this.viewer.card.point2map(cfg); // 转换坐标系
+      cfg = this.viewer.mars.point2map(cfg); // 转换坐标系
       var position = Cesium$1.Cartesian3.fromDegrees(cfg.x, cfg.y, cfg.z || 0);
       var heading = Cesium$1.Math.toRadians(cfg.heading || 0);
       var pitch = Cesium$1.Math.toRadians(cfg.pitch || 0);
@@ -7846,7 +7846,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 09:04:46
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:04:01
+   * @LastEditTime: 2020-09-29 17:20:11
    */
 
   var Tiles3dLayer = BaseLayer.extend({
@@ -7870,7 +7870,7 @@
     // 定位到数据区域
     centerAt: function (duration) {
       if (this.config.extent || this.config.center) {
-        this.viewer.card.centerAt(this.config.extent || this.config.center, {
+        this.viewer.mars.centerAt(this.config.extent || this.config.center, {
           duration: duration,
           isWgs84: true,
         });
@@ -7938,7 +7938,7 @@
           JSON.stringify(that.originalCenter);
 
         // 转换坐标系【如果是高德、谷歌、国测局坐标系转换坐标进行加偏，其他的原样返回】
-        var rawCenter = that.viewer.card.point2map(that.originalCenter);
+        var rawCenter = that.viewer.mars.point2map(that.originalCenter);
         if (
           rawCenter.x != that.originalCenter.x ||
           rawCenter.y != that.originalCenter.y ||
@@ -7946,7 +7946,7 @@
         ) {
           that.config.offset = that.config.offset || {}; // 配置信息中指定的坐标信息或高度信息
           if (that.config.offset.x && that.config.offset.y) {
-            that.config.offset = that.viewer.card.point2map(that.config.offset); // 转换坐标系【如果是高德、谷歌、国测局坐标系转换坐标进行加偏，其他的原样返回】
+            that.config.offset = that.viewer.mars.point2map(that.config.offset); // 转换坐标系【如果是高德、谷歌、国测局坐标系转换坐标进行加偏，其他的原样返回】
           }
           var offsetopt = {
             x: that.config.offset.x || rawCenter.x,
@@ -11787,7 +11787,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-25 10:20:12
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 17:09:25
+   * @LastEditTime: 2020-09-29 17:19:08
    */
   var DrawLayer = BaseLayer.extend({
     hasOpacity: false,
@@ -11852,7 +11852,7 @@
               var attr = entity.attribute.attr;
               attr.draw_type = entity.attribute.type;
               attr.draw_typename = entity.attribute.name;
-              return that.viewer.card.popup.getPopupConfig(that.config, attr);
+              return that.viewer.mars.popup.getPopupConfig(that.config, attr);
             },
             anchor: this.config.popupAnchor || [0, -15],
           };
@@ -11864,7 +11864,7 @@
               var attr = entity.attribute.attr;
               attr.draw_type = entity.attribute.type;
               attr.draw_typename = entity.attribute.name;
-              return that.viewer.card.popup.getPopupConfig(
+              return that.viewer.mars.popup.getPopupConfig(
                 {
                   popup: that.config.tooltip,
                 },

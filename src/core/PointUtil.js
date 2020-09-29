@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 14:23:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-27 14:55:31
+ * @LastEditTime: 2020-09-29 17:18:23
  */
 import * as Cesium from "cesium";
 /**
@@ -197,7 +197,7 @@ export function getCenter(viewer, isToWgs) {
 
   var result = this.formatPosition(bestTarget);
   if (isToWgs) {
-    result = viewer.card.point2wgs(result); // 坐标转换为wgs
+    result = viewer.mars.point2wgs(result); // 坐标转换为wgs
   }
   // 获取地球中心点世界位置与摄像机的世界位置之间的距离
   var distance = Cesium.Cartesian3.distance(
@@ -302,13 +302,13 @@ export function getExtent(viewer, isToWgs) {
 
   if (isToWgs) {
     // 坐标转换为wgs
-    var pt1 = viewer.card.point2wgs({
+    var pt1 = viewer.mars.point2wgs({
       x: extent.xmin,
       y: extent.ymin,
     });
     extent.xmin = pt1.x;
     extent.ymin = pt1.y;
-    var pt2 = viewer.card.point2wgs({
+    var pt2 = viewer.mars.point2wgs({
       x: extent.xmax,
       y: extent.ymax,
     });
@@ -352,7 +352,7 @@ export function getCameraView(viewer, isToWgs) {
   bookmark.pitch = this.formatNum(Cesium.Math.toDegrees(camera.roll || 0), 1);
 
   if (isToWgs) {
-    bookmark = viewer.card.point2wgs(bookmark); // 坐标转换wgs
+    bookmark = viewer.mars.point2wgs(bookmark); // 坐标转换wgs
   }
   return bookmark;
 }

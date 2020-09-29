@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 09:04:46
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 14:04:01
+ * @LastEditTime: 2020-09-29 17:20:11
  */
 import { BaseLayer } from "./BaseLayer";
 import * as Cesium from "cesium";
@@ -32,7 +32,7 @@ export var Tiles3dLayer = BaseLayer.extend({
   // 定位到数据区域
   centerAt: function (duration) {
     if (this.config.extent || this.config.center) {
-      this.viewer.card.centerAt(this.config.extent || this.config.center, {
+      this.viewer.mars.centerAt(this.config.extent || this.config.center, {
         duration: duration,
         isWgs84: true,
       });
@@ -100,7 +100,7 @@ export var Tiles3dLayer = BaseLayer.extend({
         JSON.stringify(that.originalCenter);
 
       // 转换坐标系【如果是高德、谷歌、国测局坐标系转换坐标进行加偏，其他的原样返回】
-      var rawCenter = that.viewer.card.point2map(that.originalCenter);
+      var rawCenter = that.viewer.mars.point2map(that.originalCenter);
       if (
         rawCenter.x != that.originalCenter.x ||
         rawCenter.y != that.originalCenter.y ||
@@ -108,7 +108,7 @@ export var Tiles3dLayer = BaseLayer.extend({
       ) {
         that.config.offset = that.config.offset || {}; // 配置信息中指定的坐标信息或高度信息
         if (that.config.offset.x && that.config.offset.y) {
-          that.config.offset = that.viewer.card.point2map(that.config.offset); // 转换坐标系【如果是高德、谷歌、国测局坐标系转换坐标进行加偏，其他的原样返回】
+          that.config.offset = that.viewer.mars.point2map(that.config.offset); // 转换坐标系【如果是高德、谷歌、国测局坐标系转换坐标进行加偏，其他的原样返回】
         }
         var offsetopt = {
           x: that.config.offset.x || rawCenter.x,
