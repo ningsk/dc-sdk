@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 14:18:56
+ * @LastEditTime: 2020-09-29 14:36:49
  */
 import * as Cesium from "cesium";
 import $ from "jquery";
 import { Tooltip, Popup } from "./widget/index";
-import { FirstPerson, Util } from "./core/index";
+import { FirstPerson, Util, PointUtil } from "./core/index";
 
 //版权信息
 var copyright = false;
@@ -761,7 +761,7 @@ function initMap(id, config, options) {
 
     var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
     handler.setInputAction(function (movement) {
-      var cartesian = point.getCurrentMousePosition(
+      var cartesian = PointUtil.getCurrentMousePosition(
         viewer.scene,
         movement.endPosition
       );

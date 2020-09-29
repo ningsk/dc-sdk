@@ -392,7 +392,7 @@ function getPopup(cfg, attr, title) {
 
         inhtml +=
           '<div style="text-align: center;padding: 10px 0;"><button type="button" onclick="' +
-          thisfield.calback +
+          thisfield.callback +
           "('" +
           showval +
           '\');" " class="btn btn-info  btn-sm">' +
@@ -452,7 +452,7 @@ function getPopup(cfg, attr, title) {
         break;
       case "javascript":
         //回调方法
-        return eval(cfg.calback + "(" + JSON.stringify(attr) + ")");
+        return eval(cfg.callback + "(" + JSON.stringify(attr) + ")");
         break;
     }
   } else if (cfg == "all") {

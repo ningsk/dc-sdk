@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:36:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 14:12:45
+ * @LastEditTime: 2020-09-29 15:12:44
  */
 
 import { Loader } from "../dom/index";
@@ -473,6 +473,8 @@ export function getBasePath() {
   return basePath;
 }
 
+var _resources_cache = [];
+
 export var BaseWidget = Class.extend({
   viewer: null,
   options: {},
@@ -524,14 +526,15 @@ export var BaseWidget = Class.extend({
       if (this.options.resources && this.options.resources.length > 0) {
         let resources = [];
         for (let i = 0; i < this.options.resources.length; i++) {
-          let _resource = this._getUrl(_resource);
-          if (this._resource_cache.indexOf(_resource) != -1) continue; // 不加重复资源
+          let _resource = this.options.resources;
+          _resource = this._getUrl(_resource);
+          if (_resources_cache.indexOf(_resource) != -1) continue; // 不加重复资源
           resources.push(_resource);
         }
 
-        this._resource_cache = this._resource_cache.concat(resources); // 不加重复资源
+        _resources_cache = _resources_cache.concat(resources); // 不加重复资源
         Loader.async(resources, () => {
-          var result = that.isCreate(() => {
+          var result = that.create(() => {
             that._createWidgetView();
             that.isCreate = true;
           });
@@ -704,7 +707,7 @@ export var BaseWidget = Class.extend({
 
   _getUrl: function (url) {
     url = this.addCacheVersion(url);
-    if (url.startWith("/") || url.startWith(".") || url.startWith("http")) {
+    if (url.startsWith("/") || url.startsWith(".") || url.startsWith("http")) {
       return url;
     } else {
       return this.path + url;
@@ -713,7 +716,7 @@ export var BaseWidget = Class.extend({
 
   _getWinOpt: function (viewopt, opts) {
     // 优先使用config中配置，覆盖js中的定义
-    var def = WidgetManager.getDefWindowOptions();
+    var def = getDefWindowOptions();
     var windowOptions = $.extend(def, viewopt.windowOptions);
     windowOptions = $.extend(windowOptions, this.config.windowOptions);
     viewopt.windowOptions = windowOptions; // 赋值
