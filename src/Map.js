@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 10:20:42
+ * @LastEditTime: 2020-09-29 14:18:56
  */
 import * as Cesium from "cesium";
 import $ from "jquery";
 import { Tooltip, Popup } from "./widget/index";
-import { FirstPerson } from "./core/index";
+import { FirstPerson, Util } from "./core/index";
 
 //版权信息
 var copyright = false;
@@ -350,7 +350,7 @@ function initMap(id, config, options) {
   }
 
   //鼠标滚轮缩放美化样式
-  if (configData.mouseZoom && _util.isPCBroswer()) {
+  if (configData.mouseZoom && Util.isPCBroswer()) {
     $("#" + viewerDivId).append(
       '<div class="cesium-mousezoom"><div class="zoomimg"/></div>'
     );
@@ -399,7 +399,7 @@ function initMap(id, config, options) {
   }
 
   function getConfig() {
-    return _util.clone(configData);
+    return Util.clone(configData);
   }
 
   var stkTerrainProvider;
@@ -416,21 +416,21 @@ function initMap(id, config, options) {
           .replace("$host$", location.host);
       }
 
-      stkTerrainProvider = _util.getTerrainProvider(cfg);
+      stkTerrainProvider = Util.getTerrainProvider(cfg);
     }
     return stkTerrainProvider;
   }
 
   function hasTerrain() {
     if (stkTerrainProvider == null) return false;
-    return viewer.terrainProvider != _util.getEllipsoidTerrain();
+    return viewer.terrainProvider != Util.getEllipsoidTerrain();
   }
 
   function updateTerrainProvider(isStkTerrain) {
     if (isStkTerrain) {
       viewer.terrainProvider = getTerrainProvider();
     } else {
-      viewer.terrainProvider = _util.getEllipsoidTerrain();
+      viewer.terrainProvider = Util.getEllipsoidTerrain();
     }
   }
 
@@ -458,27 +458,27 @@ function initMap(id, config, options) {
         var item = layersCfg[i];
         if (item.type == "group" && item.layers == null) continue;
 
-        var funstr =
-          "window._temp_baseMaps" +
+        var funStr =
+          "window._temp_basemaps" +
           i +
           " = function () {\
-                var item = " +
+            var item = " +
           JSON.stringify(item) +
           ';\
-                if (item.type == "group") {\
-                    var arrVec = [];\
-                    for (var index = 0; index < item.layers.length; index++) {\
-                        var temp = window._temp_createImageryProvider(item.layers[index]);\
-                        if (temp == null) continue;\
-                        arrVec.push(temp);\
-                    }\
-                    return arrVec;\
+            if (item.type == "group") {\
+                var arrVec = [];\
+                for (var index = 0; index < item.layers.length; index++) {\
+                    var temp = window._temp_createImageryProvider(item.layers[index]);\
+                    if (temp == null) continue;\
+                    arrVec.push(temp);\
                 }\
-                else {\
-                    return window._temp_createImageryProvider(item);\
-                } \
-            }';
-        eval(funstr);
+                return arrVec;\
+            }\
+            else {\
+                return window._temp_createImageryProvider(item);\
+            } \
+        }';
+        eval(funStr);
 
         var imgModel = new Cesium.ProviderViewModel({
           name: item.name || "未命名",
@@ -523,7 +523,7 @@ function initMap(id, config, options) {
 
   function centerAt(centeropt, options) {
     if (options == null) options = {};
-    else if (_util.isNumber(options))
+    else if (Util.isNumber(options))
       options = {
         duration: options,
       }; //兼容旧版本
@@ -727,8 +727,8 @@ function initMap(id, config, options) {
           break;
         case "degree":
           //度分秒形式
-          locationData.x = _util.formatDegree(jd);
-          locationData.y = _util.formatDegree(wd);
+          locationData.x = Util.formatDegree(jd);
+          locationData.y = Util.formatDegree(wd);
           break;
         case "project":
           //投影坐标
@@ -753,8 +753,8 @@ function initMap(id, config, options) {
             x: jd,
             y: wd,
           }); //坐标转换为wgs
-          locationData.x = _util.formatDegree(wgsPoint.x);
-          locationData.y = _util.formatDegree(wgsPoint.y);
+          locationData.x = Util.formatDegree(wgsPoint.x);
+          locationData.y = Util.formatDegree(wgsPoint.y);
           break;
       }
     }
@@ -780,7 +780,7 @@ function initMap(id, config, options) {
           ).toFixed(0);
         }
 
-        var inhtml = _util.template(item.format, locationData);
+        var inhtml = Util.template(item.format, locationData);
         $("#location_mars_jwd").html(inhtml);
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -801,7 +801,7 @@ function initMap(id, config, options) {
         setXYZ2Data(viewer.camera.position);
       }
 
-      var inhtml = _util.template(item.format, locationData);
+      var inhtml = Util.template(item.format, locationData);
       $("#location_mars_jwd").html(inhtml);
     });
   }
@@ -855,7 +855,7 @@ function initMap(id, config, options) {
 
   function point2map(point) {
     if (crs == "gcj") {
-      var point_clone = _util.clone(point);
+      var point_clone = Util.clone(point);
 
       var newpoint = _pointconvert2.default.wgs2gcj([
         point_clone.x,
@@ -865,7 +865,7 @@ function initMap(id, config, options) {
       point_clone.y = newpoint[1];
       return point_clone;
     } else if (crs == "baidu") {
-      var point_clone = _util.clone(point);
+      var point_clone = Util.clone(point);
 
       var newpoint = _pointconvert2.default.wgs2bd([
         point_clone.x,
@@ -881,7 +881,7 @@ function initMap(id, config, options) {
 
   function point2wgs(point) {
     if (crs == "gcj") {
-      var point_clone = _util.clone(point);
+      var point_clone = Util.clone(point);
       var newpoint = _pointconvert2.default.gcj2wgs([
         point_clone.x,
         point_clone.y,
@@ -890,7 +890,7 @@ function initMap(id, config, options) {
       point_clone.y = newpoint[1];
       return point_clone;
     } else if (crs == "baidu") {
-      var point_clone = _util.clone(point);
+      var point_clone = Util.clone(point);
       var newpoint = _pointconvert2.default.bd2gcj([
         point_clone.x,
         point_clone.y,
@@ -923,7 +923,7 @@ function createMap(opt) {
       },
       error: function error(XMLHttpRequest, textStatus, errorThrown) {
         console.log("Json文件" + opt.url + "加载失败！");
-        _util.alert("Json文件" + opt.url + "加载失败！");
+        Util.alert("Json文件" + opt.url + "加载失败！");
       },
     });
     return null;
@@ -978,16 +978,6 @@ function createMapByData(opt, configData, jsonData) {
       );
     } catch (e) {}
   }
-
-  //var token = {
-  //    hostname: 'marsgis',
-  //    start: '2018-11-25 00:00:00',
-  //    end: '2018-12-25 00:00:00',
-  //    msg: unescape('%u5F53%u524D%u7CFB%u7EDF%u8BB8%u53EF%u5DF2%u5230%u671F%uFF0C%u8BF7%u8054%u7CFB%u4F9B%u5E94%u5546%u201C%u706B%u661F%u79D1%u6280%u201D%uFF01'),
-  //};
-  //if (!_util.checkToken(token)) {
-  //    return;
-  //}
 
   var viewer = initMap(opt.id, configData, opt);
 

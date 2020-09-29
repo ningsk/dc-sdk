@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-09-09 10:50:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 11:24:20
+ * @LastEditTime: 2020-09-29 14:11:37
  */
 
 import * as Map from "./Map";
@@ -24,8 +24,7 @@ import * as EventType from "./event/index";
 
 import * as Dragger from "./dom/Dragger";
 
-import * as Widget from "./widget/WidgetManager";
-import * as BaseWidget from "./widget/BaseWidget";
+import * as widget from "./widget/WidgetManager";
 
 import { Draw } from "./draw/Draw";
 
@@ -53,11 +52,6 @@ var draw = {
   dragger: Dragger,
   attr: Attr,
 };
-
-// widget
-var widget = widget;
-
-widget.BaseWidget = BaseWidget;
 
 export {
   name,

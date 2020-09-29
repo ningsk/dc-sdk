@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-09-28 09:29:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 13:21:21
+ * @LastEditTime: 2020-09-29 13:30:00
  */
 import * as Cesium from "cesium";
 var Color = Cesium.Color;
 var defaultValue = Cesium.defaultValue;
 var defined = Cesium.defined;
-var definedProperties = Cesium.definedProperties;
+var defineProperties = Cesium.defineProperties;
 var Event = Cesium.Event;
 var createPropertyDescriptor = Cesium.createPropertyDescriptor;
 var Property = Cesium.Property;
@@ -34,7 +34,7 @@ export function AnimationLineMaterialProperty(options) {
   this._time = undefined;
 }
 
-definedProperties(AnimationLineMaterialProperty.prototype, {
+defineProperties(AnimationLineMaterialProperty.prototype, {
   /**
    * Gets a value indicating if this property is constant.  A property is considered
    * constant if getValue always returns the same result for the current definition.

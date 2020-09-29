@@ -1270,6 +1270,32 @@
         throw new Error("Invalid GeoJson object.");
     }
   }
+  function isPCBroswer() {
+    var sUserAgent = navigator.userAgent.toLowerCase();
+
+    var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+    var bIsIphoneOs = sUserAgent.match(/iphone/i) == "iphone";
+    var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+    var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+    var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+    var bIsAndroid = sUserAgent.match(/android/i) == "android";
+    var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+    var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+    if (
+      bIsIpad ||
+      bIsIphoneOs ||
+      bIsMidp ||
+      bIsUc7 ||
+      bIsUc ||
+      bIsAndroid ||
+      bIsCE ||
+      bIsWM
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   var Util = /*#__PURE__*/Object.freeze({
     extend: extend$1,
@@ -1316,7 +1342,8 @@
     lonlat2cartesian: lonlat2cartesian,
     lonlats2cartesians: lonlats2cartesians,
     cartesian2lonlat: cartesian2lonlat,
-    getPositionByGeoJSON: getPositionByGeoJSON
+    getPositionByGeoJSON: getPositionByGeoJSON,
+    isPCBroswer: isPCBroswer
   });
 
   // @class Class
@@ -2592,6 +2619,9 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-27 15:11:27
    */
+
+  // cssExpr用来判断资源是否是css
+  var cssExpr = new RegExp("\\.css");
   var nHead = document.head || document.getElementsByTagName("head")[0];
   // `onload` 在webkit < 535.23, Firefox < 9.0 不被支持
   var isOldWebKit =
@@ -2599,6 +2629,174 @@
       /.*(?:AppleWebKit|AndroidWebKit)\/?(\d+).*/i,
       "$1"
     ) < 536;
+  // 判断对应的node节点是否已经载入完成
+  function isReady(node) {
+    return node.readyState === "complete" || node.readyState === "loaded";
+  }
+
+  // loadCss用于载入css资源
+  function loadCss(url, setting, callback) {
+    var node = document.createElement("link");
+    node.rel = "stylesheet";
+    addOnload(node, callback, "css");
+    node.async = true;
+    node.href = url;
+    nHead.appendChild(node);
+  }
+
+  function loadJs(url, setting, callback) {
+    var node = document.createElement("script");
+    node.charset = "utf-8";
+    addOnload(node, callback, "js");
+    node.async = !setting.sync;
+    node.src = url;
+    nHead.appendChild(node);
+  }
+
+  // 在老的webkit中，因为不支持load事件，这里用轮询sheet来保证
+  function pollCss(node, callback) {
+    var isLoaded;
+    if (node.sheet) {
+      isLoaded = true;
+    }
+
+    setTimeout(() => {
+      // 这里callback是为了让样式有足够的时间渲染
+      if (isLoaded) {
+        callback();
+      } else {
+        pollCss(node, callback);
+      }
+    }, 20);
+  }
+
+  // 用于给指定的节点绑定onload回调
+  // 监听元素载入完成事件
+  function addOnload(node, callback, type) {
+    var supportOnload = "onload" in node;
+    var isCss = type === "css";
+
+    // 对老的webkit和老的firefox的兼容
+    if (isCss && (isOldWebKit || !supportOnload)) {
+      setTimeout(() => {
+        pollCss(node, callback);
+      }, 1);
+      return;
+    }
+
+    if (supportOnload) {
+      node.onload = onload;
+      node.onerror = () => {
+        node.onerror = null;
+        if (type == "css") console.error("该css文件不存在", +node.href);
+        else console.error("该js文件不存在：" + node.src);
+        onload();
+      };
+    } else {
+      node.onreadystatechange = () => {
+        if (isReady(node)) {
+          onload();
+        }
+      };
+    }
+  }
+
+  function onload() {
+    // 执行一次后清除，防止重复执行
+    node.onload = node.onreadystatechange = null;
+    node = null;
+    callback();
+  }
+
+  // 资源下载入口，根绝文件类型的不同，调用loadCss或者loadJs
+  function loadItem(url, list, setting, callback) {
+    // 如果加载的url为空，就直接成功返回
+    if (!url) {
+      setTimeout(() => {
+        onFinishLoading(list, callback);
+      });
+      return;
+    }
+
+    if (cssExpr.test(url)) {
+      loadCss(url, setting, onFinishLoading);
+    } else {
+      loadJs(url, setting, onFinishLoading);
+    }
+  }
+
+  // 每次资源下载完成后，检验是否结束整个list下载过程
+  // 若已经完成所有下载，执行回调函数
+  function onFinishLoading(list, callback) {
+    var urlIndex = list.indexOf(url);
+    if (urlIndex > -1) {
+      list.splice(urlIndex, 1);
+    }
+    if (list.length === 0) {
+      callback();
+    }
+  }
+
+  function doInit(list, setting, callback) {
+    var cb = function cb() {
+      callback && callback();
+    };
+
+    list = Array.prototype.slice.call(list || []);
+
+    if (list.length === 0) {
+      cb();
+      return;
+    }
+
+    for (var i = 0, len = list.length; i < len; i++) {
+      loadItem(list[i], list, setting, cb);
+    }
+  }
+
+  // 判断当前页面是否加载完
+  // 加载完，立即执行下载
+  // 未加载完，等待页面load时间以后，再进行下载
+  function ready(node, callback) {
+    if (isReady(node)) {
+      callback();
+    } else {
+      // 1500ms以后，直接开始下载资源文件，不再等待load事件
+      var timeLeft = 1500;
+      var isExecute = false;
+      window.addEventListener("load", () => {
+        if (!isExecute) {
+          callback();
+          isExecute = true;
+        }
+      });
+
+      setTimeout(() => {
+        if (!isExecute) {
+          callback();
+          isExecute = true;
+        }
+      }, timeLeft);
+    }
+  }
+
+  // 暴露出去的Loader
+  // 提供async， sync两个函数
+  // async 用作异步下载执行用，不阻塞页面渲染
+  // sync  用作异步下载，顺序执行，保证下载的js按照数组顺序执行
+  var Loader = {
+    async: function (list, callback) {
+      ready(document, () => {
+        doInit(list, {}, callback);
+      });
+    },
+
+    sync: function (list, callback) {
+      ready(document, () => {
+        doInit(list, { sync: true }, callback);
+      });
+    },
+  };
 
   /*
    * @Description:
@@ -2606,7 +2804,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-27 15:11:33
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 14:07:40
+   * @LastEditTime: 2020-09-29 14:13:15
    */
 
   /*
@@ -2615,10 +2813,165 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 10:36:52
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-27 15:45:19
+   * @LastEditTime: 2020-09-29 14:12:45
    */
+
+  var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
   var defOptions;
   var cacheVersion;
+  var isDebug;
+
+  var thisMap;
+  var widgetsData = [];
+
+  //初始化插件
+  function init(map, widgetCfg, _basePath) {
+    thisMap = map;
+    widgetCfg = widgetCfg || {};
+    basePath = _basePath || "";
+
+    widgetsData = [];
+    defOptions = widgetCfg.defaultOptions || {
+      windowOptions: {
+        position: "rt",
+        maxmin: false,
+        resize: true,
+      },
+      autoDisable: true,
+      disableOhter: true,
+    };
+
+    cacheVersion = widgetCfg.version;
+    if (cacheVersion == "time") cacheVersion = new Date().getTime();
+
+    //将自启动的加入
+    var arrtemp = widgetCfg.widgetsAtStart;
+    if (arrtemp && arrtemp.length > 0) {
+      for (var i = 0; i < arrtemp.length; i++) {
+        var item = arrtemp[i];
+        if (!item.hasOwnProperty("uri") || item.uri == "") {
+          console.log("widget未配置uri：" + JSON.stringify(item));
+          continue;
+        }
+        if (item.hasOwnProperty("visible") && !item.visible) continue;
+
+        item.autoDisable = false;
+        item.openAtStart = true;
+        item._nodebug = true;
+
+        binddefOptions(item);
+        widgetsData.push(item);
+      }
+    }
+
+    //显示测试栏
+    //为了方便测试，所有widget会在页面下侧生成一排按钮，每个按钮对应一个widget，单击后激活对应widget
+    isDebug = widgetCfg["debugger"];
+    if (isDebug) {
+      var inhtml =
+        '<div id="widget-testbar" class="widgetbar animation-slide-bottom no-print-view" > ' +
+        '     <div style="height: 30px; line-height:30px;"><b style="color: #4db3ff;">widget测试栏</b>&nbsp;&nbsp;<button  id="widget-testbar-remove"  type="button" class="btn btn-link btn-xs">关闭</button> </div>' +
+        '     <button id="widget-testbar-disableAll" type="button" class="btn btn-info" ><i class="fa fa-globe"></i>漫游</button>' +
+        "</div>";
+      $("body").append(inhtml);
+
+      $("#widget-testbar-remove").click(function (e) {
+        removeDebugeBar();
+      });
+      $("#widget-testbar-disableAll").click(function (e) {
+        disableAll();
+      });
+    }
+
+    //将配置的加入
+    arrtemp = widgetCfg.widgets;
+    if (arrtemp && arrtemp.length > 0) {
+      for (var i = 0; i < arrtemp.length; i++) {
+        var item = arrtemp[i];
+        if (item.type == "group") {
+          var inhtml =
+            ' <div class="btn-group dropup">  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-align-justify"></i>' +
+            item.name +
+            ' <span class="caret"></span></button> <ul class="dropdown-menu">';
+          for (var j = 0; j < item.children.length; j++) {
+            var childItem = item.children[j];
+            if (!childItem.hasOwnProperty("uri") || childItem.uri == "") {
+              console.log("widget未配置uri：" + JSON.stringify(childItem));
+              continue;
+            }
+
+            inhtml +=
+              ' <li data-widget="' +
+              childItem.uri +
+              '" class="widget-btn" ><a href="#"><i class="fa fa-star"></i>' +
+              childItem.name +
+              "</a></li>";
+
+            binddefOptions(childItem);
+            widgetsData.push(childItem); //将配置的加入
+          }
+          inhtml += "</ul></div>";
+
+          if (isDebug && !item._nodebug) {
+            $("#widget-testbar").append(inhtml);
+          }
+        } else {
+          if (!item.hasOwnProperty("uri") || item.uri == "") {
+            console.log("widget未配置uri：" + JSON.stringify(item));
+            continue;
+          }
+
+          //显示测试栏
+          if (isDebug && !item._nodebug) {
+            var inhtml =
+              '<button type="button" class="btn btn-primary widget-btn" data-widget="' +
+              item.uri +
+              '"  > <i class="fa fa-globe"></i>' +
+              item.name +
+              " </button>";
+            $("#widget-testbar").append(inhtml);
+          }
+
+          binddefOptions(item);
+          widgetsData.push(item); //将配置的加入
+        }
+      }
+
+      if (isDebug) {
+        $("#widget-testbar .widget-btn").each(function () {
+          $(this).click(function (e) {
+            var uri = $(this).attr("data-widget");
+            if (uri == null || uri == "") return;
+
+            if (isActivate(uri)) {
+              disable(uri);
+            } else {
+              activate(uri);
+            }
+          });
+        });
+      }
+    }
+
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
+
+      if (item.openAtStart || item.createAtStart) {
+        _arrLoadWidget.push(item);
+      }
+    }
+
+    $(window).resize(function () {
+      for (var i = 0; i < widgetsData.length; i++) {
+        var item = widgetsData[i];
+        if (item._class) {
+          item._class.indexResize(); //BaseWidget: indexResize
+        }
+      }
+    });
+
+    loadWidgetJs();
+  }
 
   function getDefWindowOptions() {
     return clone$1(defOptions.windowOptions);
@@ -2651,18 +3004,272 @@
     return to;
   }
 
+  function binddefOptions(item) {
+    //赋默认值至options（跳过已存在设置值）
+    if (defOptions) {
+      for (var aa in defOptions) {
+        if (aa == "windowOptions") ; else if (!item.hasOwnProperty(aa)) {
+          item[aa] = defOptions[aa];
+        }
+      }
+    }
+
+    //赋值内部使用属性
+    item.path = getFilePath(basePath + item.uri);
+    item.name = item.name || item.label; //兼容name和label命名
+  }
+
+  //激活指定模块
+  function activate(item, noDisableOther) {
+    if (thisMap == null && item.viewer) {
+      init(item.viewer);
+    }
+
+    //参数是字符串id或uri时
+    if (typeof item === "string") {
+      item = {
+        uri: item,
+      };
+
+      if (noDisableOther != null) item.disableOhter = !noDisableOther; //是否释放其他已激活的插件
+    } else {
+      if (item.uri == null) {
+        console.error("activate激活widget时需要uri参数！");
+      }
+    }
+
+    var thisItem;
+    for (var i = 0; i < widgetsData.length; i++) {
+      var othitem = widgetsData[i];
+      if (item.uri == othitem.uri || (othitem.id && item.uri == othitem.id)) {
+        thisItem = othitem;
+        if (thisItem.isloading) return thisItem; //激活了正在loading的widget 防止快速双击了菜单
+
+        //赋值
+        for (var aa in item) {
+          if (aa == "uri") continue;
+          thisItem[aa] = item[aa];
+        }
+        break;
+      }
+    }
+    if (thisItem == null) {
+      binddefOptions(item);
+      thisItem = item;
+      //非config中配置的，外部传入，首次激活
+      widgetsData.push(item);
+    }
+
+    if (isDebug) console.log("开始激活widget：" + thisItem.uri);
+
+    //释放其他已激活的插件
+    if (thisItem.disableOhter) {
+      disableAll(thisItem.uri, thisItem.group);
+    } else {
+      disableGroup(thisItem.group, thisItem.uri);
+    }
+
+    //激活本插件
+    if (thisItem._class) {
+      if (thisItem._class.isActivate) {
+        //已激活时
+        if (thisItem._class.update) {
+          //刷新
+          thisItem._class.update();
+        } else {
+          //重启
+          thisItem._class.disableBase();
+          var timetemp = setInterval(function () {
+            if (thisItem._class.isActivate) return;
+            thisItem._class.activateBase();
+            clearInterval(timetemp);
+          }, 200);
+        }
+      } else {
+        thisItem._class.activateBase(); // BaseWidget: activateBase
+      }
+    } else {
+      for (var i = 0; i < _arrLoadWidget.length; i++) {
+        if (_arrLoadWidget[i].uri == thisItem.uri)
+          //如果已在加载列表中的直接跳出
+          return _arrLoadWidget[i];
+      }
+      _arrLoadWidget.push(thisItem);
+
+      if (_arrLoadWidget.length == 1) {
+        loadWidgetJs();
+      }
+    }
+    return thisItem;
+  }
+
+  function getWidget(id) {
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
+
+      if (id == item.uri || id == item.id) {
+        return item;
+      }
+    }
+  }
+
+  function getClass(id) {
+    var item = getWidget(id);
+    if (item) return item._class;
+    else return null;
+  }
+
+  function isActivate(id) {
+    var _class = getClass(id);
+    if (_class == null) return false;
+    return _class.isActivate;
+  }
+
+  function disable(id) {
+    if (id == null) return;
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
+
+      if (item._class && (id == item.uri || id == item.id)) {
+        item._class.disableBase();
+        break;
+      }
+    }
+  }
+
+  //释放所有widget
+  function disableAll(nodisable, group) {
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
+
+      if (group && item.group == group) ; else {
+        if (!item.autoDisable) continue;
+      }
+
+      //指定不释放的跳过
+      if (nodisable && (nodisable == item.uri || nodisable == item.id)) continue;
+
+      if (item._class) {
+        item._class.disableBase(); ////BaseWidget: disableBase
+      }
+    }
+  }
+
+  //释放同组widget
+  function disableGroup(group, nodisable) {
+    if (group == null) return;
+
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
+      if (item.group == group) {
+        //指定不释放的跳过
+        if (nodisable && (nodisable == item.uri || nodisable == item.id))
+          continue;
+        if (item._class) {
+          item._class.disableBase(); ////BaseWidget: disableBase
+        }
+      }
+    }
+  }
+
+  function eachWidget(callback) {
+    for (var i = 0; i < widgetsData.length; i++) {
+      var item = widgetsData[i];
+      callback(item);
+    }
+  }
+
+  var _arrLoadWidget = [];
+  var loadItem$1;
+  var isloading;
+
+  function loadWidgetJs() {
+    if (_arrLoadWidget.length == 0) return;
+
+    if (isloading) {
+      setTimeout(loadWidgetJs, 500);
+      return;
+    }
+    isloading = true;
+
+    loadItem$1 = _arrLoadWidget[0];
+    loadItem$1.isloading = true;
+    var _uri = loadItem$1.uri;
+    if (cacheVersion) {
+      if (_uri.indexOf("?") == -1) _uri += "?time=" + cacheVersion;
+      else _uri += "&time=" + cacheVersion;
+    }
+
+    if (window.NProgress) {
+      NProgress.start();
+    }
+
+    if (isDebug) console.log("开始加载js：" + basePath + _uri);
+
+    Loader.async([basePath + _uri], function () {
+      isloading = false;
+      loadItem$1.isloading = false;
+      if (isDebug) console.log("完成js加载：" + basePath + _uri);
+
+      if (window.NProgress) {
+        NProgress.done(true);
+      }
+
+      _arrLoadWidget.shift();
+      loadWidgetJs();
+    });
+  }
+
+  function bindClass(_class) {
+    if (loadItem$1 == null) {
+      var _jspath = getThisJSPath();
+      for (var i = 0; i < widgetsData.length; i++) {
+        var item = widgetsData[i];
+        if (_jspath.endsWith(item.uri)) {
+          item.isloading = false;
+          item._class = new _class(item, thisMap);
+          item._class.activateBase(); // BaseWidget: activateBase
+          return item._class;
+        }
+      }
+    } else {
+      loadItem$1.isloading = false;
+      loadItem$1._class = new _class(loadItem$1, thisMap);
+      loadItem$1._class.activateBase(); // BaseWidget: activateBase
+      return loadItem$1._class;
+    }
+  }
+
+  function getThisJSPath() {
+    var jsPath;
+    var js = document.scripts;
+    for (var i = js.length - 1; i >= 0; i--) {
+      jsPath = js[i].src;
+      if (jsPath == null || jsPath == "") continue;
+      if (jsPath.indexOf("widgets") == -1) continue;
+      //jsPath = jsPath.substring(0, jsPath.lastIndexOf("/") + 1);
+      return jsPath;
+    }
+    return "";
+  }
+
+  //获取路径
+  function getFilePath(file) {
+    var pos = file.lastIndexOf("/");
+    return file.substring(0, pos + 1);
+  }
+
+  function removeDebugeBar() {
+    $("#widget-testbar").remove();
+  }
+
   function getCacheVersion() {
     return cacheVersion;
   }
 
-  /*
-   * @Description:
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-20 10:18:10
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 11:06:20
-   */
+  function getBasePath() {
+    return basePath;
+  }
 
   var BaseWidget = Class.extend({
     viewer: null,
@@ -2721,7 +3328,7 @@
           }
 
           this._resource_cache = this._resource_cache.concat(resources); // 不加重复资源
-          undefined(resources, () => {
+          Loader.async(resources, () => {
             var result = that.isCreate(() => {
               that._createWidgetView();
               that.isCreate = true;
@@ -2902,7 +3509,7 @@
 
     _getWinOpt: function (viewopt, opts) {
       // 优先使用config中配置，覆盖js中的定义
-      var def = getDefWindowOptions();
+      var def = WidgetManager.getDefWindowOptions();
       var windowOptions = $.extend(def, viewopt.windowOptions);
       windowOptions = $.extend(windowOptions, this.config.windowOptions);
       viewopt.windowOptions = windowOptions; // 赋值
@@ -3218,7 +3825,25 @@
     },
   });
 
-  var BaseWidget$1 = /*#__PURE__*/Object.freeze({
+  var WidgetManager$1 = /*#__PURE__*/Object.freeze({
+    init: init,
+    getDefWindowOptions: getDefWindowOptions,
+    clone: clone$1,
+    binddefOptions: binddefOptions,
+    activate: activate,
+    default: getWidget,
+    getClass: getClass,
+    isActivate: isActivate,
+    disable: disable,
+    disableAll: disableAll,
+    disableGroup: disableGroup,
+    eachWidget: eachWidget,
+    bindClass: bindClass,
+    getThisJSPath: getThisJSPath,
+    getFilePath: getFilePath,
+    removeDebugeBar: removeDebugeBar,
+    getCacheVersion: getCacheVersion,
+    getBasePath: getBasePath,
     BaseWidget: BaseWidget
   });
 
@@ -3664,7 +4289,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-03 09:43:45
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-11 09:13:35
+   * @LastEditTime: 2020-09-29 14:10:50
    */
 
   /*
@@ -3673,7 +4298,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-28 10:49:10
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 10:20:42
+   * @LastEditTime: 2020-09-29 14:18:56
    */
 
   function initMap(id, config, options) {
@@ -3995,7 +4620,7 @@
     });
 
     //鼠标滚轮缩放美化样式
-    if (configData.mouseZoom && _util.isPCBroswer()) {
+    if (configData.mouseZoom && isPCBroswer()) {
       $$1("#" + viewerDivId).append(
         '<div class="cesium-mousezoom"><div class="zoomimg"/></div>'
       );
@@ -4044,7 +4669,7 @@
     }
 
     function getConfig() {
-      return _util.clone(configData);
+      return clone(configData);
     }
 
     var stkTerrainProvider;
@@ -4061,21 +4686,21 @@
             .replace("$host$", location.host);
         }
 
-        stkTerrainProvider = _util.getTerrainProvider(cfg);
+        stkTerrainProvider = getTerrainProvider(cfg);
       }
       return stkTerrainProvider;
     }
 
     function hasTerrain() {
       if (stkTerrainProvider == null) return false;
-      return viewer.terrainProvider != _util.getEllipsoidTerrain();
+      return viewer.terrainProvider != getEllipsoidTerrain();
     }
 
     function updateTerrainProvider(isStkTerrain) {
       if (isStkTerrain) {
         viewer.terrainProvider = getTerrainProvider$$1();
       } else {
-        viewer.terrainProvider = _util.getEllipsoidTerrain();
+        viewer.terrainProvider = getEllipsoidTerrain();
       }
     }
 
@@ -4103,27 +4728,27 @@
           var item = layersCfg[i];
           if (item.type == "group" && item.layers == null) continue;
 
-          var funstr =
-            "window._temp_baseMaps" +
+          var funStr =
+            "window._temp_basemaps" +
             i +
             " = function () {\
-                var item = " +
+            var item = " +
             JSON.stringify(item) +
             ';\
-                if (item.type == "group") {\
-                    var arrVec = [];\
-                    for (var index = 0; index < item.layers.length; index++) {\
-                        var temp = window._temp_createImageryProvider(item.layers[index]);\
-                        if (temp == null) continue;\
-                        arrVec.push(temp);\
-                    }\
-                    return arrVec;\
+            if (item.type == "group") {\
+                var arrVec = [];\
+                for (var index = 0; index < item.layers.length; index++) {\
+                    var temp = window._temp_createImageryProvider(item.layers[index]);\
+                    if (temp == null) continue;\
+                    arrVec.push(temp);\
                 }\
-                else {\
-                    return window._temp_createImageryProvider(item);\
-                } \
-            }';
-          eval(funstr);
+                return arrVec;\
+            }\
+            else {\
+                return window._temp_createImageryProvider(item);\
+            } \
+        }';
+          eval(funStr);
 
           var imgModel = new Cesium$1.ProviderViewModel({
             name: item.name || "未命名",
@@ -4168,7 +4793,7 @@
 
     function centerAt(centeropt, options) {
       if (options == null) options = {};
-      else if (_util.isNumber(options))
+      else if (isNumber(options))
         options = {
           duration: options,
         }; //兼容旧版本
@@ -4372,8 +4997,8 @@
             break;
           case "degree":
             //度分秒形式
-            locationData.x = _util.formatDegree(jd);
-            locationData.y = _util.formatDegree(wd);
+            locationData.x = formatDegree(jd);
+            locationData.y = formatDegree(wd);
             break;
           case "project":
             //投影坐标
@@ -4398,8 +5023,8 @@
               x: jd,
               y: wd,
             }); //坐标转换为wgs
-            locationData.x = _util.formatDegree(wgsPoint.x);
-            locationData.y = _util.formatDegree(wgsPoint.y);
+            locationData.x = formatDegree(wgsPoint.x);
+            locationData.y = formatDegree(wgsPoint.y);
             break;
         }
       }
@@ -4425,7 +5050,7 @@
             ).toFixed(0);
           }
 
-          var inhtml = _util.template(item.format, locationData);
+          var inhtml = template(item.format, locationData);
           $$1("#location_mars_jwd").html(inhtml);
         }
       }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
@@ -4446,7 +5071,7 @@
           setXYZ2Data(viewer.camera.position);
         }
 
-        var inhtml = _util.template(item.format, locationData);
+        var inhtml = template(item.format, locationData);
         $$1("#location_mars_jwd").html(inhtml);
       });
     }
@@ -4500,7 +5125,7 @@
 
     function point2map(point) {
       if (crs == "gcj") {
-        var point_clone = _util.clone(point);
+        var point_clone = clone(point);
 
         var newpoint = _pointconvert2.default.wgs2gcj([
           point_clone.x,
@@ -4510,7 +5135,7 @@
         point_clone.y = newpoint[1];
         return point_clone;
       } else if (crs == "baidu") {
-        var point_clone = _util.clone(point);
+        var point_clone = clone(point);
 
         var newpoint = _pointconvert2.default.wgs2bd([
           point_clone.x,
@@ -4526,7 +5151,7 @@
 
     function point2wgs(point) {
       if (crs == "gcj") {
-        var point_clone = _util.clone(point);
+        var point_clone = clone(point);
         var newpoint = _pointconvert2.default.gcj2wgs([
           point_clone.x,
           point_clone.y,
@@ -4535,7 +5160,7 @@
         point_clone.y = newpoint[1];
         return point_clone;
       } else if (crs == "baidu") {
-        var point_clone = _util.clone(point);
+        var point_clone = clone(point);
         var newpoint = _pointconvert2.default.bd2gcj([
           point_clone.x,
           point_clone.y,
@@ -4568,7 +5193,7 @@
         },
         error: function error(XMLHttpRequest, textStatus, errorThrown) {
           console.log("Json文件" + opt.url + "加载失败！");
-          _util.alert("Json文件" + opt.url + "加载失败！");
+          alert("Json文件" + opt.url + "加载失败！");
         },
       });
       return null;
@@ -4583,16 +5208,6 @@
       console.log("配置信息不能为空！");
       return;
     }
-
-    //var token = {
-    //    hostname: 'marsgis',
-    //    start: '2018-11-25 00:00:00',
-    //    end: '2018-12-25 00:00:00',
-    //    msg: unescape('%u5F53%u524D%u7CFB%u7EDF%u8BB8%u53EF%u5DF2%u5230%u671F%uFF0C%u8BF7%u8054%u7CFB%u4F9B%u5E94%u5546%u201C%u706B%u661F%u79D1%u6280%u201D%uFF01'),
-    //};
-    //if (!_util.checkToken(token)) {
-    //    return;
-    //}
 
     var viewer = initMap(opt.id, configData, opt);
 
@@ -13147,11 +13762,12 @@
    * @Author: 宁四凯
    * @Date: 2020-09-28 09:29:10
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 11:11:12
+   * @LastEditTime: 2020-09-29 13:30:00
    */
   var Color = Cesium$1.Color;
   var defaultValue = Cesium$1.defaultValue;
   var defined = Cesium$1.defined;
+  var defineProperties = Cesium$1.defineProperties;
   var Event = Cesium$1.Event;
   var createPropertyDescriptor = Cesium$1.createPropertyDescriptor;
   var Property = Cesium$1.Property;
@@ -13564,7 +14180,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-09 10:50:47
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-28 11:24:20
+   * @LastEditTime: 2020-09-29 14:11:37
    */
 
   // ================  模块对外公开的属性和方法  ======================
@@ -13592,11 +14208,6 @@
     attr: Attr,
   };
 
-  // widget
-  var widget = widget;
-
-  widget.BaseWidget = BaseWidget$1;
-
   exports.name = name;
   exports.version = version;
   exports.author = author;
@@ -13614,7 +14225,7 @@
   exports.DivPoint = DivPoint;
   exports.Draw = Draw$$1;
   exports.draw = draw;
-  exports.widget = widget;
+  exports.widget = WidgetManager$1;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

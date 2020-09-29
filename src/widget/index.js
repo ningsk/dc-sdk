@@ -4,11 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-09-03 09:43:45
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 09:13:35
+ * @LastEditTime: 2020-09-29 14:10:50
  */
-import { BaseWidget } from "./BaseWidget";
 import * as WidgetManager from "./WidgetManager";
 import * as Tooltip from "./Tooltip";
 import * as Popup from "./Popup";
 
-export { BaseWidget, WidgetManager, Tooltip, Popup };
+export { WidgetManager, Tooltip, Popup };
