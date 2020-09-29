@@ -4,14 +4,14 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 10:36:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 15:16:50
+ * @LastEditTime: 2020-09-29 16:05:58
  */
 
 import { Loader } from "../dom/index";
 import { Class } from "../core/index";
 
 var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
-var defOptions;
+var defoptions;
 var cacheVersion;
 var isDebug;
 
@@ -25,7 +25,7 @@ export function init(map, widgetCfg, _basePath) {
   basePath = _basePath || "";
 
   widgetsData = [];
-  defOptions = widgetCfg.defaultOptions || {
+  defoptions = widgetCfg.defaultOptions || {
     windowOptions: {
       position: "rt",
       maxmin: false,
@@ -53,7 +53,7 @@ export function init(map, widgetCfg, _basePath) {
       item.openAtStart = true;
       item._nodebug = true;
 
-      binddefOptions(item);
+      bindDefOptions(item);
       widgetsData.push(item);
     }
   }
@@ -101,7 +101,7 @@ export function init(map, widgetCfg, _basePath) {
             childItem.name +
             "</a></li>";
 
-          binddefOptions(childItem);
+          bindDefOptions(childItem);
           widgetsData.push(childItem); //将配置的加入
         }
         inhtml += "</ul></div>";
@@ -126,7 +126,7 @@ export function init(map, widgetCfg, _basePath) {
           $("#widget-testbar").append(inhtml);
         }
 
-        binddefOptions(item);
+        bindDefOptions(item);
         widgetsData.push(item); //将配置的加入
       }
     }
@@ -168,7 +168,7 @@ export function init(map, widgetCfg, _basePath) {
 }
 
 export function getDefWindowOptions() {
-  return clone(defOptions.windowOptions);
+  return clone(defoptions.windowOptions);
 }
 
 export function clone(from, to) {
@@ -198,10 +198,10 @@ export function clone(from, to) {
   return to;
 }
 
-export function binddefOptions(item) {
+export function bindDefOptions(item) {
   //赋默认值至options（跳过已存在设置值）
-  if (defOptions) {
-    for (var aa in defOptions) {
+  if (defoptions) {
+    for (var aa in defoptions) {
       if (aa == "windowOptions") {
         //for (var jj in defOptions['windowOptions']) {
         //    if (!item['windowOptions'].hasOwnProperty(jj)) {
@@ -209,7 +209,7 @@ export function binddefOptions(item) {
         //    }
         //}
       } else if (!item.hasOwnProperty(aa)) {
-        item[aa] = defOptions[aa];
+        item[aa] = defoptions[aa];
       }
     }
   }
@@ -254,7 +254,7 @@ export function activate(item, noDisableOther) {
     }
   }
   if (thisItem == null) {
-    binddefOptions(item);
+    bindDefOptions(item);
     thisItem = item;
     //非config中配置的，外部传入，首次激活
     widgetsData.push(item);

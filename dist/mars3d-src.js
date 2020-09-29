@@ -307,7 +307,7 @@
   function clone(obj) {
     if (
       null == obj ||
-      "object" != (typeof obj === "undefined" ? "undefined" : _typeof(obj))
+      "object" != (typeof obj === "undefined" ? "undefined" : typeof obj)
     )
       return obj;
 
@@ -328,7 +328,7 @@
     }
 
     // Handle Object
-    if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object") {
+    if ((typeof obj === "undefined" ? "undefined" : typeof obj) === "object") {
       var copy = {};
       for (var attr in obj) {
         if (attr == "_layer" || attr == "_layers" || attr == "_parent") continue;
@@ -2830,11 +2830,11 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 10:36:52
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 15:16:50
+   * @LastEditTime: 2020-09-29 16:05:58
    */
 
   var basePath = ""; //widgets目录统一前缀，如果widgets目录不在当前页面的同级目录，在其他处时可以传入basePath参数，参数值为：widgets目录相对于当前页面的路径
-  var defOptions;
+  var defoptions;
   var cacheVersion;
   var isDebug;
 
@@ -2848,7 +2848,7 @@
     basePath = _basePath || "";
 
     widgetsData = [];
-    defOptions = widgetCfg.defaultOptions || {
+    defoptions = widgetCfg.defaultOptions || {
       windowOptions: {
         position: "rt",
         maxmin: false,
@@ -2876,7 +2876,7 @@
         item.openAtStart = true;
         item._nodebug = true;
 
-        binddefOptions(item);
+        bindDefOptions(item);
         widgetsData.push(item);
       }
     }
@@ -2924,7 +2924,7 @@
               childItem.name +
               "</a></li>";
 
-            binddefOptions(childItem);
+            bindDefOptions(childItem);
             widgetsData.push(childItem); //将配置的加入
           }
           inhtml += "</ul></div>";
@@ -2949,7 +2949,7 @@
             $("#widget-testbar").append(inhtml);
           }
 
-          binddefOptions(item);
+          bindDefOptions(item);
           widgetsData.push(item); //将配置的加入
         }
       }
@@ -2991,7 +2991,7 @@
   }
 
   function getDefWindowOptions() {
-    return clone$1(defOptions.windowOptions);
+    return clone$1(defoptions.windowOptions);
   }
 
   function clone$1(from, to) {
@@ -3021,12 +3021,12 @@
     return to;
   }
 
-  function binddefOptions(item) {
+  function bindDefOptions(item) {
     //赋默认值至options（跳过已存在设置值）
-    if (defOptions) {
-      for (var aa in defOptions) {
+    if (defoptions) {
+      for (var aa in defoptions) {
         if (aa == "windowOptions") ; else if (!item.hasOwnProperty(aa)) {
-          item[aa] = defOptions[aa];
+          item[aa] = defoptions[aa];
         }
       }
     }
@@ -3071,7 +3071,7 @@
       }
     }
     if (thisItem == null) {
-      binddefOptions(item);
+      bindDefOptions(item);
       thisItem = item;
       //非config中配置的，外部传入，首次激活
       widgetsData.push(item);
@@ -3849,7 +3849,7 @@
     init: init,
     getDefWindowOptions: getDefWindowOptions,
     clone: clone$1,
-    binddefOptions: binddefOptions,
+    bindDefOptions: bindDefOptions,
     activate: activate,
     default: getWidget,
     getClass: getClass,
@@ -3974,7 +3974,7 @@
 
     //显示内容
     var inhtml;
-    if (_typeof(entity.tooltip) === "object") {
+    if (typeof entity.tooltip === "object") {
       inhtml = entity.tooltip.html;
       if (entity.tooltip.check) {
         if (!entity.tooltip.check()) {
@@ -4001,7 +4001,7 @@
     var tooltip = entity.tooltip;
     if (
       tooltip &&
-      (typeof tooltip === "undefined" ? "undefined" : _typeof(tooltip)) ===
+      (typeof tooltip === "undefined" ? "undefined" : typeof tooltip) ===
         "object" &&
       tooltip.anchor
     ) {
@@ -4466,7 +4466,7 @@
       if (countsok == 0) return false;
       return inhtml;
     } else if (
-      (typeof cfg === "undefined" ? "undefined" : _typeof(cfg)) === "object"
+      (typeof cfg === "undefined" ? "undefined" : typeof cfg) === "object"
     ) {
       //对象,type区分逻辑
       switch (cfg.type) {
@@ -4559,936 +4559,6 @@
    * @LastEditors: 宁四凯
    * @LastEditTime: 2020-09-29 14:10:50
    */
-
-  /*
-   * @Description:
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-28 10:49:10
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 14:36:49
-   */
-
-  function initMap(id, config, options) {
-    //============模块内部私有属性及方法============
-
-    //类内部使用
-    var viewer;
-    var viewerDivId;
-    var configData;
-    var crs; //坐标系
-
-    viewerDivId = id;
-    configData = config;
-
-    //如果options未设置时的默认参数
-    var defOptions = {
-      animation: false, //是否创建动画小器件，左下角仪表
-      timeline: false, //是否显示时间线控件
-      fullscreenButton: true, //右下角全屏按钮
-      vrButton: false, //右下角vr虚拟现实按钮
-      geocoder: false, //是否显示地名查找控件
-      sceneModePicker: false, //是否显示投影方式控件
-      homeButton: true, //回到默认视域按钮
-      navigationHelpButton: true, //是否显示帮助信息控件
-      navigationInstructionsInitiallyVisible: false, //在用户明确单击按钮之前是否自动显示
-
-      infoBox: true, //是否显示点击要素之后显示的信息
-      selectionIndicator: false, //选择模型是是否显示绿色框,
-      shouldAnimate: true,
-      showRenderLoopErrors: true, //是否显示错误弹窗信息
-
-      baseLayerPicker: false, //地图底图
-    };
-
-    //config中可以配置map所有options
-    for (var key in configData) {
-      if (
-        key === "crs" ||
-        key === "controls" ||
-        key === "minZoom" ||
-        key === "maxZoom" ||
-        key === "center" ||
-        key === "style" ||
-        key === "terrain" ||
-        key === "baseMaps" ||
-        key === "operationalLayers"
-      )
-        continue;
-      defOptions[key] = configData[key];
-    }
-
-    //赋默认值（如果已存在设置值跳过）
-    if (options == null) options = {};
-    for (var i in defOptions) {
-      if (!options.hasOwnProperty(i)) {
-        options[i] = defOptions[i];
-      }
-    }
-
-    //一些默认值的修改【by 木遥】
-    Cesium$1.BingMapsApi.defaultKey =
-      "AtkX3zhnRe5fyGuLU30uZw8r3sxdBDnpQly7KfFTCB2rGlDgXBG3yr-qEiQEicEc"; //，默认 key
-    if (Cesium$1.Ion)
-      Cesium$1.Ion.defaultAccessToken =
-        configData.ionToken ||
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NjM5MjMxOS1lMWVkLTQyNDQtYTM4Yi0wZjA4ZDMxYTlmNDMiLCJpZCI6MTQ4MiwiaWF0IjoxNTI4Njc3NDQyfQ.vVoSexHMqQhKK5loNCv6gCA5d5_z3wE2M0l_rWnIP_w";
-    Cesium$1.AnimationViewModel.defaultTicks = configData.animationTicks || [
-      0.1,
-      0.25,
-      0.5,
-      1.0,
-      2.0,
-      5.0,
-      10.0,
-      15.0,
-      30.0,
-      60.0,
-      120.0,
-      300.0,
-      600.0,
-      900.0,
-      1800.0,
-      3600.0,
-    ];
-
-    //坐标系
-    configData.crs = configData.crs || "3857";
-    crs = configData.crs;
-
-    //自定义搜索栏Geocoder
-    if (options.geocoder === true) {
-      options.geocoder = new _GaodePOIGeocoder.GaodePOIGeocoder(
-        options.geocoderConfig
-      );
-    }
-
-    //地形
-    if (configData.terrain && configData.terrain.visible) {
-      options.terrainProvider = getTerrainProvider$$1();
-    }
-
-    //地图底图图层预处理
-    var hasRemoveImagery = false;
-    if (options.baseLayerPicker) {
-      //有baseLayerPicker插件时
-      if (!options.imageryProviderViewModels)
-        options.imageryProviderViewModels = getImageryProviderArr();
-      if (!options.terrainProviderViewModels)
-        options.terrainProviderViewModels = getTerrainProviderViewModelsArr();
-    } else {
-      //无baseLayerPicker插件时,按内部规则
-      if (options.imageryProvider == null) {
-        hasRemoveImagery = true;
-        options.imageryProvider = Cesium$1.createTileMapServiceImageryProvider({
-          url: Cesium$1.buildModuleUrl("Assets/Textures/NaturalEarthII"),
-        });
-      }
-    }
-
-    //地球初始化
-    viewer = new Cesium$1.Viewer(id, options);
-    viewer.cesiumWidget.creditContainer.style.display = "none"; //去cesium logo
-
-    //====绑定方法到viewer上====
-    viewer.mars = {
-      popup: Popup,
-      tooltip: Tooltip$1,
-      keyboard: function keyboard(isBind) {
-        if (isBind) bind$1(viewer);
-        else unbind(viewer);
-      },
-      centerAt: centerAt,
-      getConfig: getConfig,
-      getLayer: getLayer,
-      changeBaseMap: changeBaseMap,
-      hasTerrain: hasTerrain,
-      updateTerrainProvider: updateTerrainProvider,
-      isFlyAnimation: isFlyAnimation,
-      openFlyAnimation: openFlyAnimation,
-      rotateAnimation: rotateAnimation,
-      getCrs: getCrs,
-      point2map: point2map,
-      point2wgs: point2wgs,
-      destroy: destroy$$1,
-
-      //地图底图图层
-    };
-    if (hasRemoveImagery) {
-      var imageryLayerCollection = viewer.imageryLayers;
-      var length = imageryLayerCollection.length;
-      for (var i = 0; i < length; i++) {
-        var layer = imageryLayerCollection.get(0);
-        imageryLayerCollection.remove(layer, true);
-      }
-    }
-
-    //默认定位地点相关设置，默认home键和初始化镜头视角
-    if (viewer.homeButton) {
-      viewer.homeButton.viewModel.command.beforeExecute.addEventListener(
-        function (commandInfo) {
-          centerAt();
-          commandInfo.cancel = true;
-        }
-      );
-    }
-    centerAt(null, {
-      duration: 0,
-    });
-
-    var orderLayers = []; //计算order
-
-    //没baseLayerPicker插件时才按内部规则处理。
-    if (!options.baseLayerPicker) {
-      var layersCfg = configData.baseMaps;
-      if (layersCfg && layersCfg.length > 0) {
-        for (var i = 0; i < layersCfg.length; i++) {
-          var item = layersCfg[i];
-          if (item.visible && item.crs) crs = item.crs;
-
-          (0, _layer.createLayer)(
-            item,
-            viewer,
-            config.serverURL,
-            options.layerToMap
-          );
-
-          orderLayers.push(item);
-          if (item.type == "group" && item.layers) {
-            for (var idx = 0; idx < item.layers.length; idx++) {
-              var childitem = item.layers[idx];
-              orderLayers.push(childitem);
-            }
-          }
-        }
-      }
-    }
-
-    //可叠加图层
-    var layersCfg = configData.operationalLayers;
-    if (layersCfg && layersCfg.length > 0) {
-      for (var i = 0; i < layersCfg.length; i++) {
-        var item = layersCfg[i];
-        (0, _layer.createLayer)(
-          item,
-          viewer,
-          config.serverURL,
-          options.layerToMap
-        );
-
-        orderLayers.push(item);
-        if (item.type == "group" && item.layers) {
-          for (var idx = 0; idx < item.layers.length; idx++) {
-            var childitem = item.layers[idx];
-            orderLayers.push(childitem);
-          }
-        }
-      }
-    }
-    //计算 顺序字段,
-    for (var i = 0; i < orderLayers.length; i++) {
-      var item = orderLayers[i];
-
-      //计算层次顺序
-      var order = Number(item.order);
-      if (isNaN(order)) order = i;
-      item.order = order;
-
-      //图层的处理
-      if (item._layer != null) {
-        item._layer.setZIndex(order);
-      }
-    }
-
-    //切换场景
-    var lastCameraView;
-    viewer.scene.morphStart.addEventListener(function (event) {
-      //切换场景前事件
-      lastCameraView = point.getCameraView(viewer);
-    });
-
-    viewer.scene.morphComplete.addEventListener(function (event) {
-      //切换场景后事件
-      setTimeout(function () {
-        centerAt(lastCameraView, {
-          duration: 2,
-        });
-      }, 100);
-    });
-
-    //地图自定义控件 （兼容旧版controls参数）
-    if (configData.navigation) {
-      //导航工具栏
-      addNavigationWidget(configData.navigation);
-    }
-    if (configData.location) {
-      //鼠标提示
-      addLocationWidget(configData.location);
-    }
-
-    if (options.geocoder) {
-      options.geocoder.viewer = viewer;
-    }
-
-    // 绑定popup
-    init$2(viewer);
-    // 绑定tooltip
-    init$1(viewer);
-
-    //地球一些属性设置
-    var scene = viewer.scene;
-    scene.globe.baseColor = new Cesium$1.Color.fromCssColorString(
-      configData.baseColor || "#546a53"
-    ); //默认背景色
-    if (configData.style) {
-      //深度监测
-      scene.globe.depthTestAgainstTerrain = configData.style.testTerrain;
-
-      //光照渲染（阳光照射区域高亮）
-      scene.globe.enableLighting = configData.style.lighting;
-
-      //大气渲染
-      scene.skyAtmosphere.show = configData.style.atmosphere;
-      scene.globe.showGroundAtmosphere = configData.style.atmosphere;
-
-      //雾化效果
-      scene.fog.enabled = configData.style.fog;
-    }
-
-    //限制缩放级别
-    scene.screenSpaceCameraController.maximumZoomDistance =
-      configData.maxZoom || 20000000; //变焦时相机位置的最大值（以米为单位）
-    scene.screenSpaceCameraController.minimumZoomDistance =
-      configData.minZoom || 1; //变焦时相机位置的最小量级（以米为单位）。默认为1.0。
-
-    //scene.screenSpaceCameraController.enableCollisionDetection = true;    //启用地形相机碰撞检测。
-    //scene.screenSpaceCameraController.minimumCollisionTerrainHeight = 1;  //在测试与地形碰撞之前摄像机必须达到的最小高度。
-
-    //解决Cesium显示画面模糊的问题 https://zhuanlan.zhihu.com/p/41794242
-    viewer._cesiumWidget._supportsImageRenderingPixelated = Cesium$1.FeatureDetection.supportsImageRenderingPixelated();
-    viewer._cesiumWidget._forceResize = true;
-    if (Cesium$1.FeatureDetection.supportsImageRenderingPixelated()) {
-      var _dpr = window.devicePixelRatio;
-      // 适度降低分辨率
-      while (_dpr >= 2.0) {
-        _dpr /= 2.0;
-      }
-      viewer.resolutionScale = _dpr;
-    }
-
-    //解决限定相机进入地下 https://github.com/AnalyticalGraphicsInc/cesium/issues/5837
-    viewer.camera.changed.addEventListener(function () {
-      if (
-        viewer.camera._suspendTerrainAdjustment &&
-        viewer.scene.mode === Cesium$1.SceneMode.SCENE3D
-      ) {
-        viewer.camera._suspendTerrainAdjustment = false;
-        viewer.camera._adjustHeightForTerrain();
-      }
-    });
-
-    //鼠标滚轮缩放美化样式
-    if (configData.mouseZoom && isPCBroswer()) {
-      $$1("#" + viewerDivId).append(
-        '<div class="cesium-mousezoom"><div class="zoomimg"/></div>'
-      );
-      var handler = new Cesium$1.ScreenSpaceEventHandler(scene.canvas);
-      handler.setInputAction(function (evnet) {
-        $$1(".cesium-mousezoom").addClass("cesium-mousezoom-visible");
-        setTimeout(function () {
-          $$1(".cesium-mousezoom").removeClass("cesium-mousezoom-visible");
-        }, 200);
-      }, Cesium$1.ScreenSpaceEventType.WHEEL);
-      handler.setInputAction(function (evnet) {
-        $$1(".cesium-mousezoom").css({
-          top: evnet.endPosition.y + "px",
-          left: evnet.endPosition.x + "px",
-        });
-      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
-    }
-
-    function destroy$$1() {
-      viewer.mars.tooltip.destroy();
-      viewer.mars.tooltip.destroy();
-    }
-
-    //获取指定图层 keyName默认为名称
-    function getLayer(key, keyName) {
-      if (keyName == null) keyName = "name";
-
-      var layersCfg = configData.baseMaps;
-      if (layersCfg && layersCfg.length > 0) {
-        for (var i = 0; i < layersCfg.length; i++) {
-          var item = layersCfg[i];
-          if (item == null || item[keyName] != key) continue;
-          return item._layer;
-        }
-      }
-
-      layersCfg = configData.operationalLayers;
-      if (layersCfg && layersCfg.length > 0) {
-        for (var i = 0; i < layersCfg.length; i++) {
-          var item = layersCfg[i];
-          if (item == null || item[keyName] != key) continue;
-          return item._layer;
-        }
-      }
-      return null;
-    }
-
-    function getConfig() {
-      return clone(configData);
-    }
-
-    var stkTerrainProvider;
-
-    function getTerrainProvider$$1() {
-      if (stkTerrainProvider == null) {
-        var cfg = configData.terrain;
-        if (cfg.url) {
-          if (configData.serverURL) {
-            cfg.url = cfg.url.replace("$serverURL$", configData.serverURL);
-          }
-          cfg.url = cfg.url
-            .replace("$hostname$", location.hostname)
-            .replace("$host$", location.host);
-        }
-
-        stkTerrainProvider = getTerrainProvider(cfg);
-      }
-      return stkTerrainProvider;
-    }
-
-    function hasTerrain() {
-      if (stkTerrainProvider == null) return false;
-      return viewer.terrainProvider != getEllipsoidTerrain();
-    }
-
-    function updateTerrainProvider(isStkTerrain) {
-      if (isStkTerrain) {
-        viewer.terrainProvider = getTerrainProvider$$1();
-      } else {
-        viewer.terrainProvider = getEllipsoidTerrain();
-      }
-    }
-
-    function changeBaseMap(idorName) {
-      var baseMaps = viewer.gisdata.config.baseMaps;
-      for (var i = 0; i < baseMaps.length; i++) {
-        var item = baseMaps[i];
-        if (item.type == "group" && item.layers == null) continue;
-        if (item._layer == null) continue;
-
-        if (idorName == item.name || idorName == item.id)
-          item._layer.setVisible(true);
-        else item._layer.setVisible(false);
-      }
-    }
-
-    //获取自定义底图切换
-    function getImageryProviderArr() {
-      var providerViewModels = [];
-      window._temp_createImageryProvider = _layer.createImageryProvider;
-
-      var layersCfg = configData.baseMaps;
-      if (layersCfg && layersCfg.length > 0) {
-        for (var i = 0; i < layersCfg.length; i++) {
-          var item = layersCfg[i];
-          if (item.type == "group" && item.layers == null) continue;
-
-          var funStr =
-            "window._temp_basemaps" +
-            i +
-            " = function () {\
-            var item = " +
-            JSON.stringify(item) +
-            ';\
-            if (item.type == "group") {\
-                var arrVec = [];\
-                for (var index = 0; index < item.layers.length; index++) {\
-                    var temp = window._temp_createImageryProvider(item.layers[index]);\
-                    if (temp == null) continue;\
-                    arrVec.push(temp);\
-                }\
-                return arrVec;\
-            }\
-            else {\
-                return window._temp_createImageryProvider(item);\
-            } \
-        }';
-          eval(funStr);
-
-          var imgModel = new Cesium$1.ProviderViewModel({
-            name: item.name || "未命名",
-            tooltip: item.name || "未命名",
-            iconUrl: item.icon || "",
-            creationFunction: eval("window._temp_baseMaps" + i),
-          });
-          providerViewModels.push(imgModel);
-        }
-      }
-      return providerViewModels;
-    }
-
-    function getTerrainProviderViewModelsArr() {
-      return [
-        new Cesium$1.ProviderViewModel({
-          name: "无地形",
-          iconUrl: Cesium$1.buildModuleUrl(
-            "Widgets/Images/TerrainProviders/Ellipsoid.png"
-          ),
-          tooltip: "WGS84标准椭球，即 EPSG:4326",
-          category: "",
-          creationFunction: function creationFunction() {
-            return new Cesium$1.EllipsoidTerrainProvider({
-              ellipsoid: Cesium$1.Ellipsoid.WGS84,
-            });
-          },
-        }),
-        new Cesium$1.ProviderViewModel({
-          name: "有地形",
-          iconUrl: Cesium$1.buildModuleUrl(
-            "Widgets/Images/TerrainProviders/CesiumWorldTerrain.png"
-          ),
-          tooltip: "提供的高分辨率全球地形",
-          category: "",
-          creationFunction: function creationFunction() {
-            return getTerrainProvider$$1();
-          },
-        }),
-      ];
-    }
-
-    function centerAt(centeropt, options) {
-      if (options == null) options = {};
-      else if (isNumber(options))
-        options = {
-          duration: options,
-        }; //兼容旧版本
-
-      if (centeropt == null) {
-        //让镜头飞行（动画）到配置默认区域
-        options.isWgs84 = true;
-        centeropt = configData.extent || configData.center;
-      }
-
-      if (centeropt.xmin && centeropt.xmax && centeropt.ymin && centeropt.ymax) {
-        //使用extent配置
-        var xmin = centeropt.xmin;
-        var xmax = centeropt.xmax;
-        var ymin = centeropt.ymin;
-        var ymax = centeropt.ymax;
-
-        if (options.isWgs84) {
-          //坐标转换为wgs
-          var pt1 = point2map({
-            x: xmin,
-            y: ymin,
-          });
-          xmin = pt1.x;
-          ymin = pt1.y;
-
-          var pt2 = point2map({
-            x: xmax,
-            y: ymax,
-          });
-          xmax = pt2.x;
-          ymax = pt2.y;
-        }
-
-        var rectangle = Cesium$1.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
-        viewer.camera.flyTo({
-          destination: rectangle,
-          duration: options.duration,
-          complete: options.complete,
-        });
-      } else {
-        //使用xyz
-        if (options.isWgs84) centeropt = point2map(centeropt);
-
-        var height = options.minz || 2500;
-        if (viewer.camera.positionCartographic.height < height)
-          height = viewer.camera.positionCartographic.height;
-        if (centeropt.z != null && centeropt.z != 0) height = centeropt.z;
-
-        viewer.camera.flyTo({
-          destination: Cesium$1.Cartesian3.fromDegrees(
-            centeropt.x,
-            centeropt.y,
-            height
-          ), //经度、纬度、高度
-          orientation: {
-            heading: Cesium$1.Math.toRadians(centeropt.heading || 0), //绕垂直于地心的轴旋转
-            pitch: Cesium$1.Math.toRadians(centeropt.pitch || -90), //绕纬度线旋转
-            roll: Cesium$1.Math.toRadians(centeropt.roll || 0), //绕经度线旋转
-          },
-          duration: options.duration,
-          complete: options.complete,
-        });
-      }
-    }
-
-    //开场动画
-    var _isFlyAnimation = false;
-
-    function isFlyAnimation() {
-      return _isFlyAnimation;
-    }
-
-    function openFlyAnimation(endfun, centeropt) {
-      var view = centeropt || point.getCameraView(viewer); //默认为原始视角
-
-      _isFlyAnimation = true;
-      viewer.camera.setView({
-        destination: Cesium$1.Cartesian3.fromDegrees(-85.16, 13.71, 23000000.0),
-      });
-      viewer.camera.flyTo({
-        destination: Cesium$1.Cartesian3.fromDegrees(view.x, view.y, 23000000.0),
-        duration: 2,
-        easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
-        complete: function complete() {
-          var z = (view.z || 90000) * 1.2 + 8000;
-          if (z > 23000000) z = 23000000;
-
-          viewer.camera.flyTo({
-            destination: Cesium$1.Cartesian3.fromDegrees(view.x, view.y, z),
-            complete: function complete() {
-              centerAt(view, {
-                duration: 2,
-                complete: function complete() {
-                  _isFlyAnimation = false;
-                  if (endfun) endfun();
-                },
-              });
-            },
-          });
-        },
-      });
-    }
-    //旋转地球
-    function rotateAnimation(endfun, duration) {
-      var first = point.getCameraView(viewer); //默认为原始视角
-      var duration3 = duration / 3;
-
-      //动画 1/3
-      viewer.camera.flyTo({
-        destination: Cesium$1.Cartesian3.fromDegrees(
-          first.x + 120,
-          first.y,
-          first.z
-        ),
-        orientation: {
-          heading: Cesium$1.Math.toRadians(first.heading),
-          pitch: Cesium$1.Math.toRadians(first.pitch),
-          roll: Cesium$1.Math.toRadians(first.roll),
-        },
-        duration: duration3,
-        easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
-        complete: function complete() {
-          //动画 2/3
-          viewer.camera.flyTo({
-            destination: Cesium$1.Cartesian3.fromDegrees(
-              first.x + 240,
-              first.y,
-              first.z
-            ),
-            orientation: {
-              heading: Cesium$1.Math.toRadians(first.heading),
-              pitch: Cesium$1.Math.toRadians(first.pitch),
-              roll: Cesium$1.Math.toRadians(first.roll),
-            },
-            duration: duration3,
-            easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
-            complete: function complete() {
-              //动画 3/3
-              viewer.camera.flyTo({
-                destination: Cesium$1.Cartesian3.fromDegrees(
-                  first.x,
-                  first.y,
-                  first.z
-                ),
-                orientation: {
-                  heading: Cesium$1.Math.toRadians(first.heading),
-                  pitch: Cesium$1.Math.toRadians(first.pitch),
-                  roll: Cesium$1.Math.toRadians(first.roll),
-                },
-                duration: duration3,
-                easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
-                complete: function complete() {
-                  if (endfun) endfun();
-                },
-              });
-              //动画3/3 end
-            },
-          });
-          //动画2/3 end
-        },
-      });
-      //动画1/3 end
-    }
-
-    //添加“鼠标经纬度提示”控件
-    function addLocationWidget(item) {
-      var inhtml =
-        '<div id="location_mars_jwd"  class="location-bar animation-slide-bottom no-print" ></div>';
-      $$1("#" + viewerDivId).prepend(inhtml);
-
-      if (item.style) $$1("#location_mars_jwd").css(item.style);
-      else {
-        $$1("#location_mars_jwd").css({
-          left: viewer.animation ? "170px" : "0",
-          right: "0",
-          bottom: viewer.timeline ? "25px" : "0",
-        });
-      }
-
-      item.format =
-        item.format ||
-        "<div>视高：{height}米</div><div>俯仰角：{pitch}度</div><div>方向：{heading}度</div><div>海拔：{z}米</div><div>纬度:{y}</div><div>经度:{x}</div>";
-
-      var locationData = {};
-
-      function setXYZ2Data(cartesian) {
-        var cartographic = Cesium$1.Cartographic.fromCartesian(cartesian);
-
-        locationData.z = cartographic.height.toFixed(1);
-
-        var jd = Cesium$1.Math.toDegrees(cartographic.longitude);
-        var wd = Cesium$1.Math.toDegrees(cartographic.latitude);
-
-        switch (item.crs) {
-          default:
-            //和地图一致的原坐标
-            var fixedLen = item.hasOwnProperty("toFixed") ? item.toFixed : 6;
-            locationData.x = jd.toFixed(fixedLen);
-            locationData.y = wd.toFixed(fixedLen);
-            break;
-          case "degree":
-            //度分秒形式
-            locationData.x = formatDegree(jd);
-            locationData.y = formatDegree(wd);
-            break;
-          case "project":
-            //投影坐标
-            var fixedLen = item.hasOwnProperty("toFixed") ? item.toFixed : 0;
-            locationData.x = cartesian.x.toFixed(fixedLen);
-            locationData.y = cartesian.y.toFixed(fixedLen);
-            break;
-
-          case "wgs":
-            //标准wgs84格式坐标
-            var fixedLen = item.hasOwnProperty("toFixed") ? item.toFixed : 6;
-            var wgsPoint = point2wgs({
-              x: jd,
-              y: wd,
-            }); //坐标转换为wgs
-            locationData.x = wgsPoint.x.toFixed(fixedLen);
-            locationData.y = wgsPoint.y.toFixed(fixedLen);
-            break;
-          case "wgs-degree":
-            //标准wgs84格式坐标
-            var wgsPoint = point2wgs({
-              x: jd,
-              y: wd,
-            }); //坐标转换为wgs
-            locationData.x = formatDegree(wgsPoint.x);
-            locationData.y = formatDegree(wgsPoint.y);
-            break;
-        }
-      }
-
-      var handler = new Cesium$1.ScreenSpaceEventHandler(viewer.scene.canvas);
-      handler.setInputAction(function (movement) {
-        var cartesian = getCurrentMousePosition(
-          viewer.scene,
-          movement.endPosition
-        );
-        if (cartesian) {
-          setXYZ2Data(cartesian);
-
-          if (locationData.height == null) {
-            locationData.height = viewer.camera.positionCartographic.height.toFixed(
-              1
-            );
-            locationData.heading = Cesium$1.Math.toDegrees(
-              viewer.camera.heading
-            ).toFixed(0);
-            locationData.pitch = Cesium$1.Math.toDegrees(
-              viewer.camera.pitch
-            ).toFixed(0);
-          }
-
-          var inhtml = template(item.format, locationData);
-          $$1("#location_mars_jwd").html(inhtml);
-        }
-      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
-
-      //相机移动结束事件
-      viewer.scene.camera.changed.addEventListener(function (event) {
-        locationData.height = viewer.camera.positionCartographic.height.toFixed(
-          1
-        );
-        locationData.heading = Cesium$1.Math.toDegrees(
-          viewer.camera.heading
-        ).toFixed(0);
-        locationData.pitch = Cesium$1.Math.toDegrees(viewer.camera.pitch).toFixed(
-          0
-        );
-
-        if (locationData.x == null) {
-          setXYZ2Data(viewer.camera.position);
-        }
-
-        var inhtml = template(item.format, locationData);
-        $$1("#location_mars_jwd").html(inhtml);
-      });
-    }
-
-    //添加“导航”控件
-    function addNavigationWidget(item) {
-      if (!Cesium$1.viewerCesiumNavigationMixin) return;
-
-      viewer.extend(Cesium$1.viewerCesiumNavigationMixin, {
-        defaultResetView: Cesium$1.Rectangle.fromDegrees(110, 20, 120, 30),
-        enableZoomControls: true,
-      });
-
-      if (viewer.animation) {
-        $$1(".distance-legend").css({
-          left: "150px",
-          bottom: "25px",
-          border: "none",
-          background: "rgba(0, 0, 0, 0)",
-          "z-index": "992",
-        });
-      } else {
-        $$1(".distance-legend").css({
-          left: "-10px",
-          bottom: "-1px",
-          border: "none",
-          background: "rgba(0, 0, 0, 0)",
-          "z-index": "992",
-        });
-      }
-      if (item.legend) $$1(".distance-legend").css(item.legend);
-
-      //$(".navigation-controls").css({
-      //    "right": "5px",
-      //    "bottom": "30px",
-      //    "top": "auto"
-      //});
-      $$1(".navigation-controls").hide();
-
-      if (item.compass) $$1(".compass").css(item.compass);
-      else
-        $$1(".compass").css({
-          top: "10px",
-          left: "10px",
-        });
-    }
-
-    function getCrs() {
-      return crs;
-    }
-
-    function point2map(point) {
-      if (crs == "gcj") {
-        var point_clone = clone(point);
-
-        var newpoint = _pointconvert2.default.wgs2gcj([
-          point_clone.x,
-          point_clone.y,
-        ]);
-        point_clone.x = newpoint[0];
-        point_clone.y = newpoint[1];
-        return point_clone;
-      } else if (crs == "baidu") {
-        var point_clone = clone(point);
-
-        var newpoint = _pointconvert2.default.wgs2bd([
-          point_clone.x,
-          point_clone.y,
-        ]);
-        point_clone.x = newpoint[0];
-        point_clone.y = newpoint[1];
-        return point_clone;
-      } else {
-        return point;
-      }
-    }
-
-    function point2wgs(point) {
-      if (crs == "gcj") {
-        var point_clone = clone(point);
-        var newpoint = _pointconvert2.default.gcj2wgs([
-          point_clone.x,
-          point_clone.y,
-        ]);
-        point_clone.x = newpoint[0];
-        point_clone.y = newpoint[1];
-        return point_clone;
-      } else if (crs == "baidu") {
-        var point_clone = clone(point);
-        var newpoint = _pointconvert2.default.bd2gcj([
-          point_clone.x,
-          point_clone.y,
-        ]);
-        point_clone.x = newpoint[0];
-        point_clone.y = newpoint[1];
-        return point_clone;
-      } else {
-        return point;
-      }
-    }
-
-    return viewer;
-  }
-
-  function createMap(opt) {
-    if (opt.url) {
-      $$1.ajax({
-        type: "get",
-        dataType: "json",
-        url: opt.url,
-        timeout: 0, //永不超时
-        success: function (config) {
-          //map初始化
-          var configData = config.map3d;
-          if (config.serverURL) configData.serverURL = config.serverURL;
-          if (opt.serverURL) configData.serverURL = opt.serverURL;
-
-          createMapByData(opt, configData, config);
-        },
-        error: function error(XMLHttpRequest, textStatus, errorThrown) {
-          console.log("Json文件" + opt.url + "加载失败！");
-          alert("Json文件" + opt.url + "加载失败！");
-        },
-      });
-      return null;
-    } else {
-      if (opt.serverURL && opt.data) opt.data.serverURL = opt.serverURL;
-      return createMapByData(opt, opt.data);
-    }
-  }
-
-  function createMapByData(opt, configData, jsonData) {
-    if (configData == null) {
-      console.log("配置信息不能为空！");
-      return;
-    }
-
-    var viewer = initMap(opt.id, configData, opt);
-
-    //记录到全局变量，其他地方使用
-    var gisdata = {};
-    gisdata.config = configData;
-
-    viewer.gisdata = gisdata;
-
-    if (opt.success) opt.success(viewer, gisdata, jsonData);
-
-    return viewer;
-  }
 
   /*
    * @Description: 图层封装基类
@@ -5594,627 +4664,6 @@
     destroy: function () {
       this.setVisible(false);
     },
-  });
-
-  /*
-   * @Description:
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-21 13:59:42
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 10:19:58
-   */
-  var GroupLayer = BaseLayer.extend({
-    create: function () {
-      var arr = this.config._layers;
-      for (var i = 0, len = arr.length; i < len; i++) {
-        this.hasOpacity = arr[i].hasOpacity;
-        this.hasZIndex = arr[i].hasZIndex;
-      }
-    },
-
-    setVisible: function (val) {
-      var arr = this.config._layers;
-      for (var i = 0, len = arr.length; i < len; i++) {
-        arr[i].setVisible(val);
-      }
-    },
-
-    // 添加
-    add: function () {
-      var arr = this.config._layers;
-      for (var i = 0, len = arr.length; i < len; i++) {
-        arr[i].setVisible(true);
-      }
-    },
-
-    // 移除
-    remove: function () {
-      var arr = this.config._layers;
-      for (var i = 0, len = arr.length; i < len; i++) {
-        arr[i].setVisible(false);
-      }
-    },
-
-    // 定位至数据区域
-    centerAt: function (duration) {
-      var arr = this.config._layers;
-      for (var i = 0, len = arr.length; i < len; i++) {
-        arr[i].centerAt(duration);
-      }
-    },
-
-    // 设置透明度
-    setOpacity: function (value) {
-      var arr = this.config._layers;
-      for (var i = 0, len = arr.length; i < len; i++) {
-        arr[i].setOpacity(value);
-      }
-    },
-
-    // 设置叠加顺序
-    setZIndex: function (value) {
-      var arr = this.config._layers;
-      for (var i = 0; i < arr.length; i++) {
-        arr[i].setZIndex(value);
-      }
-    },
-  });
-
-  /*
-   * @Description: 瓦片底图图层
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-15 14:22:35
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-11 09:12:15
-   */
-
-  var TileLayer = BaseLayer.extend({
-    layer: null,
-
-    // 添加
-    add: function () {
-      if (this.layer != null) {
-        this.remove();
-      }
-      this.addEx();
-      var imageryProvider = createImageryProvider(this.config);
-      if (imageryProvider == null) {
-        return;
-      }
-
-      var options = this.config;
-
-      var imageryOpt = {
-        show: true,
-        alpha: this._opacity,
-      };
-
-      if (
-        options.rectangle &&
-        options.rectangle.xmin &&
-        options.rectangle.xmax &&
-        options.rectangle.ymin &&
-        options.rectangle.ymax
-      ) {
-        var xmin = options.rectangle.xmin;
-        var xmax = options.rectangle.xmax;
-        var ymin = options.rectangle.ymin;
-        var ymax = options.rectangle.ymax;
-        var rectangle = Cesium$1.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
-        this.rectangle = rectangle;
-        imageryOpt.rectangle = rectangle;
-      }
-      if (options.brightness) imageryOpt.brightness = options.brightness;
-      if (options.contrast) imageryOpt.contrast = options.contrast;
-      if (options.hue) imageryOpt.hue = options.hue;
-      if (options.saturation) imageryOpt.saturation = options.saturation;
-      if (options.gamma) imageryOpt.gamma = options.gamma;
-      if (options.maximumAnisotropy)
-        imageryOpt.maximumAnisotropy = options.maximumAnisotropy;
-      if (options.minimumTerrainLevel)
-        imageryOpt.minimumTerrainLevel = options.minimumTerrainLevel;
-      if (options.maximumTerrainLevel)
-        imageryOpt.maximumTerrainLevel = options.maximumTerrainLevel;
-
-      this.layer = new Cesium$1.ImageryLayer(imageryProvider, imageryOpt);
-      this.layer.config = this.config;
-
-      this.viewer.imageryLayers.add(this.layer);
-
-      this.setZIndex(this.config.order);
-    },
-
-    addEx: function () {
-      // 子类使用
-    },
-    // 移除
-    remove: function () {
-      if (this.layer == null) {
-        return;
-      }
-      this.removeEx();
-      this.viewer.imageryLayers.remove(this.layer, true);
-      this.layer = null;
-    },
-
-    removeEx: function () {
-      // 子类使用
-    },
-
-    // 定位至数据区域
-    centerAt: function (duration) {
-      if (this.layer == null) return;
-
-      if (this.config.extent || this.config.center) {
-        this.viewer.card.centerAt(this.config.extent || this.config.center, {
-          duration: duration,
-          isWgs84: true,
-        });
-      } else if (this.rectangle) {
-        this.viewer.camera.flyTo({
-          destination: this.rectangle,
-          duration: duration,
-        });
-      } else {
-        var rectangle = this.layer.imageryProvider.rectangle; //arcgis图层等，读取配置信息
-        if (
-          rectangle &&
-          rectangle != Cesium$1.Rectangle.MAX_VALUE &&
-          rectangle.west > 0 &&
-          rectangle.south > 0 &&
-          rectangle.east > 0 &&
-          rectangle.north > 0
-        ) {
-          this.viewer.camera.flyTo({
-            destination: rectangle,
-            duration: duration,
-          });
-        }
-      }
-    },
-    // 设置透明度
-    hasOpacity: true,
-    _opacity: 1,
-
-    setOpacity: function (value) {
-      this._opacity = value;
-      if (this.layer == null) return;
-      this.layer.alpha = value;
-    },
-    // 设置叠加顺序
-    setZIndex: function (order) {
-      if (this.layer == null || order == null) return;
-
-      //先移动到最顶层
-      this.viewer.imageryLayers.raiseToTop(this.layer);
-      var layers = this.viewer.imageryLayers._layers;
-      for (var i = layers.length - 1; i >= 0; i--) {
-        if (layers[i] == this.layer) continue;
-        var _temp = layers[i].config;
-        if (_temp && _temp.order) {
-          if (order < _temp.order) {
-            this.viewer.imageryLayers.lower(this.layer);
-          }
-        }
-      }
-    },
-  });
-
-  /*
-   * @Description:
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-14 16:49:20
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 11:11:00
-   */
-  var GraticuleLayer = BaseLayer.extend({
-    model: null,
-    // 添加
-    add: function () {
-      if (this.model == null) {
-        this.initData();
-      }
-      this.model.setVisible(true);
-    },
-
-    // 移除
-    remove: function () {
-      if (this.model == null) return;
-      this.model.setVisible(false);
-    },
-
-    initData: function () {
-      function GraticuleLayer(description, scene) {
-        description = description || {};
-        this._tilingScheme =
-          description._tilingScheme || new Cesium$1.GeographicTilingScheme();
-        this._color = description.color || new Cesium$1.Color(1.0, 1.0, 1.0, 0.4);
-        this._tileWidth = description.tileWidth || 256;
-        this._tileHeight = description.tileHeight || 256;
-        this._ready = true;
-        // default to decimal intervals.
-        this._sexagesimal = description.sexagesimal || false;
-        this._numLines = description.numLines || 50;
-
-        this._scene = scene;
-        this._lables = new Cesium$1.LabelCollection();
-        scene.primitives.add(this._lables);
-        this._polylines = new Cesium$1.PolylineCollection();
-        scene.primitives.add(this._polylines);
-        this._ellipsoid = scene.globe.ellipsoid;
-        var canvas = document.createElement("canvas");
-        canvas.width = 256;
-        canvas.height = 256;
-        this._canvas = canvas;
-        var that = this;
-        scene.camera.moveEnd.addEventListener(() => {
-          if (!that._show) return;
-          that._polylines.removeAll();
-          that._labels.removeAll();
-          this._currentExtent = null;
-          that._drawGrid(that._getExtentView());
-        });
-        scene.imageryLayers.addImageryProvider(this);
-      }
-
-      var definePropertyWorks = (function () {
-        try {
-          return "x" in Object.defineProperty({}, "x", {});
-        } catch (e) {
-          return false;
-        }
-      })();
-
-      /**
-       * Defines properties on an object, using Object.defineProperties if available,
-       * otherwise returns the object unchanged.  This function should be used in
-       * setup code to prevent errors from completely halting JavaScript execution
-       * in legacy browsers.
-       *
-       * @private
-       *
-       * @exports defineProperties
-       */
-      var defineProperties = Object.defineProperties;
-      if (!definePropertyWorks || !defineProperties) {
-        defineProperties = function defineProperties(o) {
-          return o;
-        };
-      }
-
-      defineProperties(GraticuleLayer.prototype, {
-        url: {
-          get: function () {
-            return undefined;
-          },
-        },
-        proxy: {
-          get: function () {
-            return undefined;
-          },
-        },
-        tileWidth: {
-          get: function () {
-            return this._tileWidth;
-          },
-        },
-        tileHeight: {
-          get: function () {
-            return this._tileHeight;
-          },
-        },
-        maximumLevel: {
-          get: function () {
-            return 18;
-          },
-        },
-        minimumLevel: {
-          get: function () {
-            return 0;
-          },
-        },
-        tilingScheme: {
-          get: function () {
-            return this._tilingScheme;
-          },
-        },
-        rectangle: {
-          get: function () {
-            return this._tilingScheme.rectangle;
-          },
-        },
-        tileDiscardPolicy: {
-          get: function () {
-            return undefined;
-          },
-        },
-        errorEvent: {
-          get: function () {
-            return this._errorEvent;
-          },
-        },
-        ready: {
-          get: function () {
-            return this._ready;
-          },
-        },
-        credit: {
-          get: function () {
-            return this._credit;
-          },
-        },
-        hasAlphaChannel: {
-          get: function () {
-            return true;
-          },
-        },
-      });
-
-      GraticuleLayer.prototype.makeLabel = function (lng, lat, text, top, color) {
-        this._lables.add({
-          position: this._ellipsoid.cartographicToCartesian(
-            new Cesium$1.Cartographic(lng, lat, 10.0)
-          ),
-          text: text,
-          font: "16px Helvetica",
-          style: Cesium$1.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium$1.Color.AZURE,
-          outlineColor: Cesium$1.Color.BLACK,
-          outlineWidth: 2,
-          pixelOffset: Cesium$1.Cartesian3.ZERO,
-          horizontalOrigin: Cesium$1.HorizontalOrigin.LEFT,
-          verticalOrigin: top
-            ? Cesium$1.VerticalOrigin.BOTTOM
-            : Cesium$1.VerticalOrigin.TOP,
-          scale: 1.0,
-        });
-      };
-
-      GraticuleLayer.prototype._drawGrid = function (extent) {
-        if (this._currentExtent && this._currentExtent.equals(extent)) {
-          return;
-        }
-        this._currentExtent = extent;
-        this._polylines.removeAll();
-        this._lables.removeAll();
-        var maxPixel = this._canvasSize;
-
-        var dLat = 0,
-          dLng = 0,
-          index;
-        // get the nearest to the calculated value
-        for (
-          index = 0;
-          index < mins.length && dLat < (extent.north - extent.south) / 10;
-          index++
-        ) {
-          dLat = mins[index];
-        }
-        for (
-          index = 0;
-          index < mins.length && dLng < (extent.east - extent.west) / 10;
-          index++
-        ) {
-          dLng = mins[index];
-        }
-
-        // round iteration limits to the computed grid interval
-        var minLng =
-          (extent.west < 0
-            ? Math.ceil(extent.west / dLng)
-            : Math.floor(extent.west / dLng)) * dLng;
-        var minLat =
-          (extent.south < 0
-            ? Math.ceil(extent.south / dLat)
-            : Math.floor(extent.south / dLat)) * dLat;
-        var maxLng =
-          (extent.east < 0
-            ? Math.ceil(extent.east / dLat)
-            : Math.floor(extent.east / dLat)) * dLat;
-        var maxLat =
-          (extent.north < 0
-            ? Math.ceil(extent.north / dLng)
-            : Math.floor(extent.north / dLng)) * dLng;
-
-        // extend to make sure we cover for non refresh of tiles
-        minLng = Math.max(minLng - 2 * dLng, -Math.PI);
-        maxLng = Math.min(maxLng + 2 * dLng, Math.PI);
-        minLat = Math.max(minLat - 2 * dLat, -Math.PI / 2);
-        maxLat = Math.min(maxLat + 2 * dLng, Math.PI / 2);
-
-        var ellipsoid = this._ellipsoid;
-        var lat,
-          lng,
-          granularity = Cesium$1.Math.toRadians(1);
-
-        // labels positions
-        var latitudeText =
-          minLat + Math.floor((maxLat - minLat) / dLat / 2) * dLat;
-        for (lng = minLng; lng < maxLng; lng += dLng) {
-          // draw meridian
-          var path = [];
-          for (lat = minLat; lat < maxLat; lat += granularity) {
-            path.push(new Cesium$1.Cartographic(lng, lat));
-          }
-          path.push(new Cesium$1.Cartographic(lng, maxLat));
-          this._polylines.add({
-            positions: ellipsoid.cartographicArrayToCartesianArray(path),
-            width: 1,
-          });
-          var degLng = Cesium$1.Math.toDegrees(lng);
-          this.makeLabel(
-            lng,
-            latitudeText,
-            this._sexagesimal
-              ? this._decToSex(degLng)
-              : degLng.toFixed(gridPrecision(dLng)),
-            false
-          );
-        }
-
-        // lats
-        var longitudeText =
-          minLng + Math.floor((maxLng - minLng) / dLng / 2) * dLng;
-        for (lat = minLat; lat < maxLat; lat += dLat) {
-          // draw parallels
-          var path = [];
-          for (lng = minLng; lng < maxLng; lng += granularity) {
-            path.push(new Cesium$1.Cartographic(lng, lat));
-          }
-          path.push(new Cesium$1.Cartographic(maxLng, lat));
-          this._polylines.add({
-            positions: ellipsoid.cartographicArrayToCartesianArray(path),
-            width: 1,
-          });
-          var degLat = Cesium$1.Math.toDegrees(lat);
-          this.makeLabel(
-            longitudeText,
-            lat,
-            this._sexagesimal
-              ? this._decToSex(degLat)
-              : degLat.toFixed(gridPrecision(dLat)),
-            true
-          );
-        }
-      };
-
-      GraticuleLayer.prototype.requestImage = function (x, y, level) {
-        if (this._show) {
-          this._drawGrid(this._getExtentView());
-        }
-
-        return this._canvas;
-      };
-
-      GraticuleLayer.prototype.setVisible = function (visible) {
-        this._show = visible;
-        if (!visible) {
-          this._polylines.removeAll();
-          this._labels.removeAll();
-        } else {
-          this._currentExtent = null;
-          this._drawGrid(this._getExtentView());
-        }
-      };
-
-      GraticuleLayer.prototype.isVisible = function () {
-        return this._show;
-      };
-
-      GraticuleLayer.prototype._decToSex = function (d) {
-        var degs = Math.floor(d);
-        var mins = ((Math.abs(d) - degs) * 60.0).toFixed(2);
-        if (mins == "60.00") {
-          degs += 1.0;
-          mins = "0.00";
-        }
-        return [degs, ":", mins].join("");
-      };
-
-      GraticuleLayer.prototype._getExtentView = function () {
-        var camera = this._scene.camera;
-        var canvas = this._scene.canvas;
-        var corners = [
-          camera.pickEllipsoid(new Cesium$1.Cartesian2(0, 0), this._ellipsoid),
-          camera.pickEllipsoid(
-            new Cesium$1.Cartesian2(canvas.width, 0),
-            this._ellipsoid
-          ),
-          camera.pickEllipsoid(
-            new Cesium$1.Cartesian2(0, canvas.height),
-            this._ellipsoid
-          ),
-          camera.pickEllipsoid(
-            new Cesium$1.Cartesian2(canvas.width, canvas.height),
-            this._ellipsoid
-          ),
-        ];
-        for (var index = 0; index < 4; index++) {
-          if (corners[index] === undefined) {
-            return Cesium$1.Rectangle.MAX_VALUE;
-          }
-        }
-        return Cesium$1.Rectangle.fromCartographicArray(
-          this._ellipsoid.cartesianArrayToCartographicArray(corners)
-        );
-      };
-
-      function gridPrecision(dDeg) {
-        if (dDeg < 0.01) return 2;
-        if (dDeg < 0.1) return 1;
-        if (dDeg < 1) return 0;
-        return 0;
-      }
-
-      var mins = [
-        Cesium$1.Math.toRadians(0.05),
-        Cesium$1.Math.toRadians(0.1),
-        Cesium$1.Math.toRadians(0.2),
-        Cesium$1.Math.toRadians(0.5),
-        Cesium$1.Math.toRadians(1.0),
-        Cesium$1.Math.toRadians(2.0),
-        Cesium$1.Math.toRadians(5.0),
-        Cesium$1.Math.toRadians(10.0),
-      ];
-
-      this.model = new GraticuleLayer(
-        {
-          numLines: 10,
-        },
-        this.viewer.scene
-      );
-    },
-  });
-
-  /*
-   * @Description:
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-20 15:48:16
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 10:19:39
-   */
-  var FeatureGridLayer = TileLayer.extend({
-    dataSource: null,
-    hasOpacity: false,
-    create: function () {
-      this.dataSource = new Cesium$1.CustomDataSource(); // 用于entity
-      this.primitives = new Cesium$1.PrimitiveCollection(); // 用于primitive
-      var that = this;
-      this.config.type_new = "custom_featuregrid";
-      this.config.addImageryCache = function (opts) {
-        return that._addImageryCache(opts);
-      };
-      this.config.removeImageryCache = function (opts) {
-        return that._removeImageryCache(opts);
-      };
-      this.config.removeAllImageryCache = function (opts) {
-        return that._removeAllImageryCache(opts);
-      };
-    },
-
-    getLength: function () {
-      return this.primitives.length + this.dataSource.entities.values.length;
-    },
-
-    addEx: function () {
-      this.viewer.dataSources.add(this.dataSource);
-      this.viewer.scene.primitives.add(this.primitives);
-    },
-
-    removeEx: function () {
-      this.viewer.dataSources.remove(this.dataSource);
-      this.viewer.scene.primitives.remove(this.primitives);
-    },
-
-    _addImageryCache: function (opts) {},
-
-    _removeImageryCache: function (opts) {},
-
-    _removeAllImageryCache: function (opts) {},
   });
 
   /*
@@ -7738,531 +6187,6 @@
   });
 
   /*
-   * @Description: 分块加载图层基类
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-20 16:54:59
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 11:10:41
-   */
-  var CustomFeatureGridLayer = FeatureGridLayer.extend({
-    _cacheGrid: {}, // 网络缓存，存放矢量对象id集合
-    _cacheFeature: {}, // 矢量对象缓存，存放矢量对象和其所对应的网格集合
-    _addImageryCache: function (opts) {
-      this._cacheGrid[opts.key] = {
-        opts: opts,
-        isLoading: true,
-      };
-
-      let that = this;
-      this.getDataForGrid(opts, (arrData) => {
-        if (that._visible) that._showData(opts, arrData);
-      });
-    },
-
-    getDataForGrid: function (opts, callback) {
-      // 子类可继承，callback为回调方法, callback参数传数据数组
-      // 直接使用本类，传参方式
-      if (this.config.getDataForGrid) {
-        this.config.getDataForGrid(opts, callback);
-      }
-    },
-
-    checkHasBreak: function (cacheKey) {
-      if (!this._visible || !this._cacheGrid[cacheKey]) {
-        return true;
-      }
-      return false;
-    },
-
-    _showData: function (opts, arrdata) {
-      var cacheKey = opts.key;
-      if (this.checkHasBreak[cacheKey]) {
-        return; //异步请求结束时,如果已经卸载了网格就直接跳出。
-      }
-
-      var that = this;
-
-      var arrIds = [];
-      for (var i = 0, len = arrdata.length; i < len; i++) {
-        var attributes = arrdata[i];
-        var id = attributes[this.config.IdName || "id"];
-
-        var layer = this._cacheFeature[id];
-        if (layer) {
-          //已存在
-          layer.grid.push(cacheKey);
-          this.updateEntity(layer.entity, attributes);
-        } else {
-          var entity = this.createEntity(opts, attributes, function (entity) {
-            if (that.config.debuggerTileInfo) {
-              //测试用
-              entity._temp_id = id;
-              entity.popup = function (entity) {
-                return JSON.stringify(that._cacheFeature[entity._temp_id].grid);
-              };
-            }
-            that._cacheFeature[id] = {
-              grid: [cacheKey],
-              entity: entity,
-            };
-          });
-          if (entity != null) {
-            if (that.config.debuggerTileInfo) {
-              //测试用
-              entity._temp_id = id;
-              entity.popup = function (entity) {
-                return JSON.stringify(that._cacheFeature[entity._temp_id].grid);
-              };
-            }
-            that._cacheFeature[id] = {
-              grid: [cacheKey],
-              entity: entity,
-            };
-          }
-        }
-        arrIds.push(id);
-      }
-
-      this._cacheGrid[cacheKey] = this._cacheGrid[cacheKey] || {};
-      this._cacheGrid[cacheKey].ids = arrIds;
-      this._cacheGrid[cacheKey].isLoading = false;
-    },
-
-    createEntity: function (opts, attributes, callback) {
-      //子类可以继承,根据数据创造entity
-
-      //直接使用本类,传参方式
-      if (this.config.createEntity) {
-        return this.config.createEntity(opts, attributes, callback);
-      }
-      return null;
-    },
-
-    updateEntity: function (entity, attributes) {
-      //子类可以继承,更新entity（动态数据时有用）
-      //直接使用本类,传参方式
-      if (this.config.updateEntity) {
-        this.config.updateEntity(entity, attributes);
-      }
-    },
-
-    removeEntity: function (entity) {
-      //子类可以继承,移除entity
-      //直接使用本类,传参方式
-      if (this.config.removeEntity) {
-        this.config.removeEntity(entity);
-      } else {
-        this.dataSource.entities.remove(entity);
-      }
-    },
-
-    _removeImageryCache: function (opts) {
-      var cacheKey = opts.key;
-      var layers = this._cacheGrid[cacheKey];
-      if (layers) {
-        if (layers.ids) {
-          for (var i = 0; i < layers.ids.length; i++) {
-            var id = layers.ids[i];
-            var layer = this._cacheFeature[id];
-            if (layer) {
-              layer.grid.remove(cacheKey);
-              if (layer.grid.length == 0) {
-                delete this._cacheFeature[id];
-                this.removeEntity(layer.entity);
-              }
-            }
-          }
-        }
-        delete this._cacheGrid[cacheKey];
-      }
-    },
-
-    _removeAllImageryCache: function () {
-      if (this.config.removeAllEntity) {
-        this.config.removeAllEntity();
-      } else {
-        this.dataSource.entities.removeAll();
-        this.primitives.removeAll();
-      }
-
-      this._cacheFeature = {};
-      this._cacheGrid = {};
-    },
-
-    removeEx: function () {
-      if (this.config.removeAllEntity) {
-        this.config.removeAllEntity();
-      } else {
-        this.dataSource.entities.removeAll();
-        this.primitives.removeAll();
-      }
-
-      this._cacheFeature = {};
-      this._cacheGrid = {};
-
-      this.viewer.dataSources.remove(this.dataSource);
-      this.viewer.scene.primitives.remove(this.primitives);
-    },
-
-    // 重新加载数据
-    reload: function () {
-      var that = this;
-      for (var i in this._cacheGrid) {
-        var item = this._cacheGrid[i];
-        if (item == null || item.opts == null || item.isLoading) continue;
-
-        var opts = item.opts;
-        this.getDataForGrid(opts, function (arrData) {
-          that._showData(opts, arrData);
-        });
-      }
-    },
-    // 设置透明度
-    hasOpacity: true,
-    _opacity: 1,
-    setOpacity: function (value) {
-      this._opacity = value;
-
-      for (var i in this._cacheFeature) {
-        var entity = this._cacheFeature[i].entity;
-
-        if (
-          entity.polygon &&
-          entity.polygon.material &&
-          entity.polygon.material.color
-        ) {
-          this._updateEntityAlpha(entity.polygon.material.color, this._opacity);
-          if (entity.polygon.outlineColor) {
-            this._updateEntityAlpha(entity.polygon.outlineColor, this._opacity);
-          }
-        } else if (
-          entity.polyline &&
-          entity.polyline.material &&
-          entity.polyline.material.color
-        ) {
-          this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
-        } else if (entity.billboard) {
-          entity.billboard.color = new Cesium$1.Color.fromCssColorString(
-            "#FFFFFF"
-          ).withAlpha(this._opacity);
-
-          if (entity.label) {
-            if (entity.label.fillColor)
-              this._updateEntityAlpha(entity.label.fillColor, this._opacity);
-            if (entity.label.outlineColor)
-              this._updateEntityAlpha(entity.label.outlineColor, this._opacity);
-            if (entity.label.backgroundColor)
-              this._updateEntityAlpha(
-                entity.label.backgroundColor,
-                this._opacity
-              );
-          }
-        }
-      }
-    },
-    _updateEntityAlpha: function (color, opacity) {
-      var newColor = color.getValue().withAlpha(opacity);
-      color.setValue(newColor);
-    },
-    colorHash: {},
-    setDefSymbol: function (entity) {
-      if (entity.polygon) {
-        var name = entity.properties.OBJECTID;
-        var color = this.colorHash[name];
-        if (!color) {
-          color = Cesium$1.Color.fromRandom({
-            minimumGreen: 0.75,
-            maximumBlue: 0.75,
-            alpha: this._opacity,
-          });
-          this.colorHash[name] = color;
-        }
-        entity.polygon.material = color;
-        entity.polygon.outline = true;
-        entity.polygon.outlineColor = Cesium$1.Color.WHITE;
-      } else if (entity.polyline) {
-        var name = entity.properties.OBJECTID;
-        var color = this.colorHash[name];
-        if (!color) {
-          color = Cesium$1.Color.fromRandom({
-            minimumGreen: 0.75,
-            maximumBlue: 0.75,
-            alpha: this._opacity,
-          });
-          this.colorHash[name] = color;
-        }
-        entity.polyline.material = color;
-        entity.polyline.width = 2;
-      } else if (entity.billboard) {
-        entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin = Cesium$1.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin = Cesium$1.VerticalOrigin.BOTTOM;
-      }
-    },
-
-    // 外部配置的symbol
-    setConfigSymbol: function (entity, symbol) {
-      if (entity.polygon) {
-        var name = entity.properties.OBJECTID;
-        var color = this.colorHash[name];
-        if (!color) {
-          color = Cesium$1.Color.fromRandom({
-            minimumGreen: 0.75,
-            maximumBlue: 0.75,
-            alpha: this._opacity,
-          });
-          this.colorHash[name] = color;
-        }
-        entity.polygon.material = color;
-        entity.polygon.outline = true;
-        entity.polygon.outlineColor = Cesium$1.Color.WHITE;
-      } else if (entity.polyline) {
-        var name = entity.properties.OBJECTID;
-        var color = this.colorHash[name];
-        if (!color) {
-          color = Cesium$1.Color.fromRandom({
-            minimumGreen: 0.75,
-            maximumBlue: 0.75,
-            alpha: this._opacity,
-          });
-          this.colorHash[name] = color;
-        }
-        entity.polyline.material = color;
-        entity.polyline.width = 2;
-      } else if (entity.billboard) {
-        entity.billboard.scale = 0.5;
-        entity.billboard.horizontalOrigin = Cesium$1.HorizontalOrigin.CENTER;
-        entity.billboard.verticalOrigin = Cesium$1.VerticalOrigin.BOTTOM;
-      }
-    },
-    //外部配置的symbol
-    setConfigSymbol: function (entity, symbol) {
-      var attr = entity.properties;
-      var styleOpt = symbol.styleOptions;
-
-      if (symbol.styleField) {
-        //存在多个symbol,按styleField进行分类
-        var styleFieldVal = attr[symbol.styleField];
-        var styleOptField = symbol.styleFieldOptions[styleFieldVal];
-        if (styleOptField != null) {
-          styleOpt = clone(styleOpt);
-          styleOpt = $$1.extend(styleOpt, styleOptField);
-        }
-      }
-      styleOpt = styleOpt || {};
-
-      this._opacity = styleOpt.opacity || 1; //透明度
-
-      if (entity.polygon) {
-        style2Entity$7(styleOpt, entity.polygon);
-        //加上线宽
-        if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
-          entity.polygon.outline = false;
-
-          var newopt = {
-            color: styleOpt.outlineColor,
-            width: styleOpt.outlineWidth,
-            opacity: styleOpt.outlineOpacity,
-            lineType: "solid",
-            outline: false,
-          };
-          var polyline = style2Entity$8(newopt);
-          polyline.positions = entity.polygon.hierarchy._value.positions;
-          this.dataSource.entities.add({
-            polyline: polyline,
-          });
-        }
-
-        //是建筑物时
-        if (this.config.buildings) {
-          var floor = Number(attr[this.config.buildings.cloumn] || 1); //层数
-          var height = Number(this.config.buildings.height || 5); //层高
-
-          entity.polygon.extrudedHeight = floor * height;
-        }
-      } else if (entity.polyline) {
-        style2Entity$8(styleOpt, entity.polyline);
-      } else if (entity.billboard) {
-        entity.billboard.heightReference =
-          Cesium$1.HeightReference.RELATIVE_TO_GROUND;
-        AttrEntity(styleOpt, entity.billboard);
-
-        //加上文字标签
-        if (styleOpt.label && styleOpt.label.field) {
-          styleOpt.label.heightReference =
-            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
-
-          entity.label = style2Entity$4(styleOpt.label);
-          entity.label.text = attr[styleOpt.label.field];
-        }
-      }
-    },
-  });
-
-  /*
-   * @Description:
-   * @version:
-   * @Author: 宁四凯
-   * @Date: 2020-08-21 14:00:31
-   * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 10:20:08
-   */
-  var POILayer = CustomFeatureGridLayer.extend({
-    _keys: null,
-    _key_index: 0,
-    getKey: function () {
-      if (!this._keys) {
-        this._keys = this.config.key || [
-          "c95467d0ed2a3755836e37dc27369f97",
-          "4320dda936d909d73ab438b4e29cf2a2",
-          "e64a96ed7e361cbdc0ebaeaf3818c564",
-          "df3247b7df64434adecb876da94755d7",
-          "d4375ec477cb0a473c448fb1f83be781",
-          "13fdd7b2b90a9d326ae96867ebcc34ce",
-          "c34502450ae556f42b21760faf6695a0",
-          "57f8ebe12797a73fc5b87f5d4ef859b1",
-        ];
-        var thisidx = this._key_index++ % this._keys.length;
-        return this._keys[thisidx];
-      }
-    },
-
-    getDataForGrid: function (opts, callback) {
-      var jwd1 = wgs2gcj([opts.rectangle.xmin, opts.rectangle.ymax]); // 加偏
-      var jwd2 = wgs2gcj([opts.rectangle.xmax, opts.rectangle.ymin]); // 加偏
-      var polygon = jwd1[0] + "," + jwd1[1] + "|" + jwd2[0] + "," + jwd2[1];
-
-      var filter = this.config.filter || {};
-      filter.output = "json";
-      filter.key = this.getKey();
-      filter.polygon = polygon;
-      if (!filter.offset) filter.offset = 25;
-      if (!filter.types) filter.types = "120000|130000|190000";
-      $$1.ajax({
-        url: "http://restapi.amap.com/v3/place/polygon",
-        type: "get",
-        dataType: "json",
-        timeout: "5000",
-        data: filter,
-        success: function (data) {
-          if (data.infocode !== "10000") {
-            console.log("POI 请求失败(" + data.infocode + "):" + data.info);
-            return;
-          }
-
-          var arrData = data.pois;
-          callback(arrData);
-        },
-        error: function (data) {
-          console.log("POI 请求出错(" + data.status + "):" + data.statusText);
-        },
-      });
-    },
-
-    // 根据数据创造entity
-    createEntity: function (opts, attributes) {
-      var inHtml =
-        "<div>名称：" +
-        attributes.name +
-        "</div>" +
-        "<div>地址：" +
-        attributes.address +
-        "</div>" +
-        "<div>区域：" +
-        attributes.pname +
-        attributes.cityname +
-        attributes.adname +
-        "</div>" +
-        "<div>类别：" +
-        attributes.type +
-        "</div>";
-
-      var arrJwd = attributes.location.split(",");
-      arrJwd = Transform.transformGcjToWGS(arrJwd); // 纠偏
-      var lnglat = this.viewer.card.point2map({
-        x: arrJwd[0],
-        y: arrJwd[1],
-      });
-
-      var entityOptions = {
-        name: attributes.name,
-        position: Cesium$1.Cartesian3.fromDegrees(
-          lnglat.x,
-          lnglat.y,
-          this.config.height || 3
-        ),
-        popup: {
-          html: inHtml,
-          anchor: [0, -15],
-        },
-        properties: attributes,
-      };
-
-      var symbol = this.config.symbol;
-      if (symbol) {
-        var styleOpt = symbol.styleOptions;
-        if (symbol.styleField) {
-          //存在多个symbol，按styleField进行分类
-          var styleFieldVal = attr[symbol.styleField];
-          var styleOptField = symbol.styleFieldOptions[styleFieldVal];
-          if (styleOptField != null) {
-            styleOpt = $$1.extend({}, styleOpt);
-            styleOpt = $$1.extend(styleOpt, styleOptField);
-          }
-        }
-        styleOpt = styleOpt || {};
-
-        if (styleOpt.image) {
-          entityOptions.billboard = style2Entity(styleOpt);
-          entityOptions.billboard.heightReference =
-            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
-        } else {
-          entityOptions.point = style2Entity$6(styleOpt);
-        }
-
-        //加上文字标签
-        if (styleOpt.label) {
-          entityOptions.label = AttrLabel.style2Entity(styleOpt.label);
-          entityOptions.label.heightReference =
-            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
-          entityOptions.label.text = attributes.name;
-        }
-      } else {
-        //无配置时的默认值
-        entityOptions.point = {
-          color: new Cesium$1.Color.fromCssColorString("#3388ff"),
-          pixelSize: 10,
-          outlineColor: new Cesium$1.Color.fromCssColorString("#ffffff"),
-          outlineWidth: 2,
-          heightReference: Cesium$1.HeightReference.RELATIVE_TO_GROUND,
-          scaleByDistance: new Cesium$1.NearFarScalar(1000, 1, 20000, 0.5),
-        };
-        entityOptions.label = {
-          text: attributes.name,
-          font: "normal small-caps normal 16px 楷体",
-          style: Cesium$1.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium$1.Color.AZURE,
-          outlineColor: Cesium$1.Color.BLACK,
-          outlineWidth: 2,
-          horizontalOrigin: Cesium$1.HorizontalOrigin.CENTER,
-          verticalOrigin: Cesium$1.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium$1.Cartesian2(0, -15), //偏移量
-          heightReference: Cesium$1.HeightReference.RELATIVE_TO_GROUND, //是地形上方的高度
-          scaleByDistance: new Cesium$1.NearFarScalar(1000, 1, 5000, 0.8),
-          distanceDisplayCondition: new Cesium$1.DistanceDisplayCondition(
-            0.0,
-            5000
-          ),
-        };
-      }
-
-      var entity = this.dataSource.entities.add(entityOptions);
-      return entity;
-    },
-  });
-
-  /*
    * @Description: GeoJson格式数据图层
    * @version:
    * @Author: 宁四凯
@@ -8607,6 +6531,600 @@
             });
         }
       });
+    },
+  });
+
+  /*
+   * @Description:
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-21 13:59:42
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-29 10:19:58
+   */
+  var GroupLayer = BaseLayer.extend({
+    create: function () {
+      var arr = this.config._layers;
+      for (var i = 0, len = arr.length; i < len; i++) {
+        this.hasOpacity = arr[i].hasOpacity;
+        this.hasZIndex = arr[i].hasZIndex;
+      }
+    },
+
+    setVisible: function (val) {
+      var arr = this.config._layers;
+      for (var i = 0, len = arr.length; i < len; i++) {
+        arr[i].setVisible(val);
+      }
+    },
+
+    // 添加
+    add: function () {
+      var arr = this.config._layers;
+      for (var i = 0, len = arr.length; i < len; i++) {
+        arr[i].setVisible(true);
+      }
+    },
+
+    // 移除
+    remove: function () {
+      var arr = this.config._layers;
+      for (var i = 0, len = arr.length; i < len; i++) {
+        arr[i].setVisible(false);
+      }
+    },
+
+    // 定位至数据区域
+    centerAt: function (duration) {
+      var arr = this.config._layers;
+      for (var i = 0, len = arr.length; i < len; i++) {
+        arr[i].centerAt(duration);
+      }
+    },
+
+    // 设置透明度
+    setOpacity: function (value) {
+      var arr = this.config._layers;
+      for (var i = 0, len = arr.length; i < len; i++) {
+        arr[i].setOpacity(value);
+      }
+    },
+
+    // 设置叠加顺序
+    setZIndex: function (value) {
+      var arr = this.config._layers;
+      for (var i = 0; i < arr.length; i++) {
+        arr[i].setZIndex(value);
+      }
+    },
+  });
+
+  /*
+   * @Description:
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-14 16:49:20
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-29 11:11:00
+   */
+  var GraticuleLayer = BaseLayer.extend({
+    model: null,
+    // 添加
+    add: function () {
+      if (this.model == null) {
+        this.initData();
+      }
+      this.model.setVisible(true);
+    },
+
+    // 移除
+    remove: function () {
+      if (this.model == null) return;
+      this.model.setVisible(false);
+    },
+
+    initData: function () {
+      function GraticuleLayer(description, scene) {
+        description = description || {};
+        this._tilingScheme =
+          description._tilingScheme || new Cesium$1.GeographicTilingScheme();
+        this._color = description.color || new Cesium$1.Color(1.0, 1.0, 1.0, 0.4);
+        this._tileWidth = description.tileWidth || 256;
+        this._tileHeight = description.tileHeight || 256;
+        this._ready = true;
+        // default to decimal intervals.
+        this._sexagesimal = description.sexagesimal || false;
+        this._numLines = description.numLines || 50;
+
+        this._scene = scene;
+        this._lables = new Cesium$1.LabelCollection();
+        scene.primitives.add(this._lables);
+        this._polylines = new Cesium$1.PolylineCollection();
+        scene.primitives.add(this._polylines);
+        this._ellipsoid = scene.globe.ellipsoid;
+        var canvas = document.createElement("canvas");
+        canvas.width = 256;
+        canvas.height = 256;
+        this._canvas = canvas;
+        var that = this;
+        scene.camera.moveEnd.addEventListener(() => {
+          if (!that._show) return;
+          that._polylines.removeAll();
+          that._labels.removeAll();
+          this._currentExtent = null;
+          that._drawGrid(that._getExtentView());
+        });
+        scene.imageryLayers.addImageryProvider(this);
+      }
+
+      var definePropertyWorks = (function () {
+        try {
+          return "x" in Object.defineProperty({}, "x", {});
+        } catch (e) {
+          return false;
+        }
+      })();
+
+      /**
+       * Defines properties on an object, using Object.defineProperties if available,
+       * otherwise returns the object unchanged.  This function should be used in
+       * setup code to prevent errors from completely halting JavaScript execution
+       * in legacy browsers.
+       *
+       * @private
+       *
+       * @exports defineProperties
+       */
+      var defineProperties = Object.defineProperties;
+      if (!definePropertyWorks || !defineProperties) {
+        defineProperties = function defineProperties(o) {
+          return o;
+        };
+      }
+
+      defineProperties(GraticuleLayer.prototype, {
+        url: {
+          get: function () {
+            return undefined;
+          },
+        },
+        proxy: {
+          get: function () {
+            return undefined;
+          },
+        },
+        tileWidth: {
+          get: function () {
+            return this._tileWidth;
+          },
+        },
+        tileHeight: {
+          get: function () {
+            return this._tileHeight;
+          },
+        },
+        maximumLevel: {
+          get: function () {
+            return 18;
+          },
+        },
+        minimumLevel: {
+          get: function () {
+            return 0;
+          },
+        },
+        tilingScheme: {
+          get: function () {
+            return this._tilingScheme;
+          },
+        },
+        rectangle: {
+          get: function () {
+            return this._tilingScheme.rectangle;
+          },
+        },
+        tileDiscardPolicy: {
+          get: function () {
+            return undefined;
+          },
+        },
+        errorEvent: {
+          get: function () {
+            return this._errorEvent;
+          },
+        },
+        ready: {
+          get: function () {
+            return this._ready;
+          },
+        },
+        credit: {
+          get: function () {
+            return this._credit;
+          },
+        },
+        hasAlphaChannel: {
+          get: function () {
+            return true;
+          },
+        },
+      });
+
+      GraticuleLayer.prototype.makeLabel = function (lng, lat, text, top, color) {
+        this._lables.add({
+          position: this._ellipsoid.cartographicToCartesian(
+            new Cesium$1.Cartographic(lng, lat, 10.0)
+          ),
+          text: text,
+          font: "16px Helvetica",
+          style: Cesium$1.LabelStyle.FILL_AND_OUTLINE,
+          fillColor: Cesium$1.Color.AZURE,
+          outlineColor: Cesium$1.Color.BLACK,
+          outlineWidth: 2,
+          pixelOffset: Cesium$1.Cartesian3.ZERO,
+          horizontalOrigin: Cesium$1.HorizontalOrigin.LEFT,
+          verticalOrigin: top
+            ? Cesium$1.VerticalOrigin.BOTTOM
+            : Cesium$1.VerticalOrigin.TOP,
+          scale: 1.0,
+        });
+      };
+
+      GraticuleLayer.prototype._drawGrid = function (extent) {
+        if (this._currentExtent && this._currentExtent.equals(extent)) {
+          return;
+        }
+        this._currentExtent = extent;
+        this._polylines.removeAll();
+        this._lables.removeAll();
+        var maxPixel = this._canvasSize;
+
+        var dLat = 0,
+          dLng = 0,
+          index;
+        // get the nearest to the calculated value
+        for (
+          index = 0;
+          index < mins.length && dLat < (extent.north - extent.south) / 10;
+          index++
+        ) {
+          dLat = mins[index];
+        }
+        for (
+          index = 0;
+          index < mins.length && dLng < (extent.east - extent.west) / 10;
+          index++
+        ) {
+          dLng = mins[index];
+        }
+
+        // round iteration limits to the computed grid interval
+        var minLng =
+          (extent.west < 0
+            ? Math.ceil(extent.west / dLng)
+            : Math.floor(extent.west / dLng)) * dLng;
+        var minLat =
+          (extent.south < 0
+            ? Math.ceil(extent.south / dLat)
+            : Math.floor(extent.south / dLat)) * dLat;
+        var maxLng =
+          (extent.east < 0
+            ? Math.ceil(extent.east / dLat)
+            : Math.floor(extent.east / dLat)) * dLat;
+        var maxLat =
+          (extent.north < 0
+            ? Math.ceil(extent.north / dLng)
+            : Math.floor(extent.north / dLng)) * dLng;
+
+        // extend to make sure we cover for non refresh of tiles
+        minLng = Math.max(minLng - 2 * dLng, -Math.PI);
+        maxLng = Math.min(maxLng + 2 * dLng, Math.PI);
+        minLat = Math.max(minLat - 2 * dLat, -Math.PI / 2);
+        maxLat = Math.min(maxLat + 2 * dLng, Math.PI / 2);
+
+        var ellipsoid = this._ellipsoid;
+        var lat,
+          lng,
+          granularity = Cesium$1.Math.toRadians(1);
+
+        // labels positions
+        var latitudeText =
+          minLat + Math.floor((maxLat - minLat) / dLat / 2) * dLat;
+        for (lng = minLng; lng < maxLng; lng += dLng) {
+          // draw meridian
+          var path = [];
+          for (lat = minLat; lat < maxLat; lat += granularity) {
+            path.push(new Cesium$1.Cartographic(lng, lat));
+          }
+          path.push(new Cesium$1.Cartographic(lng, maxLat));
+          this._polylines.add({
+            positions: ellipsoid.cartographicArrayToCartesianArray(path),
+            width: 1,
+          });
+          var degLng = Cesium$1.Math.toDegrees(lng);
+          this.makeLabel(
+            lng,
+            latitudeText,
+            this._sexagesimal
+              ? this._decToSex(degLng)
+              : degLng.toFixed(gridPrecision(dLng)),
+            false
+          );
+        }
+
+        // lats
+        var longitudeText =
+          minLng + Math.floor((maxLng - minLng) / dLng / 2) * dLng;
+        for (lat = minLat; lat < maxLat; lat += dLat) {
+          // draw parallels
+          var path = [];
+          for (lng = minLng; lng < maxLng; lng += granularity) {
+            path.push(new Cesium$1.Cartographic(lng, lat));
+          }
+          path.push(new Cesium$1.Cartographic(maxLng, lat));
+          this._polylines.add({
+            positions: ellipsoid.cartographicArrayToCartesianArray(path),
+            width: 1,
+          });
+          var degLat = Cesium$1.Math.toDegrees(lat);
+          this.makeLabel(
+            longitudeText,
+            lat,
+            this._sexagesimal
+              ? this._decToSex(degLat)
+              : degLat.toFixed(gridPrecision(dLat)),
+            true
+          );
+        }
+      };
+
+      GraticuleLayer.prototype.requestImage = function (x, y, level) {
+        if (this._show) {
+          this._drawGrid(this._getExtentView());
+        }
+
+        return this._canvas;
+      };
+
+      GraticuleLayer.prototype.setVisible = function (visible) {
+        this._show = visible;
+        if (!visible) {
+          this._polylines.removeAll();
+          this._labels.removeAll();
+        } else {
+          this._currentExtent = null;
+          this._drawGrid(this._getExtentView());
+        }
+      };
+
+      GraticuleLayer.prototype.isVisible = function () {
+        return this._show;
+      };
+
+      GraticuleLayer.prototype._decToSex = function (d) {
+        var degs = Math.floor(d);
+        var mins = ((Math.abs(d) - degs) * 60.0).toFixed(2);
+        if (mins == "60.00") {
+          degs += 1.0;
+          mins = "0.00";
+        }
+        return [degs, ":", mins].join("");
+      };
+
+      GraticuleLayer.prototype._getExtentView = function () {
+        var camera = this._scene.camera;
+        var canvas = this._scene.canvas;
+        var corners = [
+          camera.pickEllipsoid(new Cesium$1.Cartesian2(0, 0), this._ellipsoid),
+          camera.pickEllipsoid(
+            new Cesium$1.Cartesian2(canvas.width, 0),
+            this._ellipsoid
+          ),
+          camera.pickEllipsoid(
+            new Cesium$1.Cartesian2(0, canvas.height),
+            this._ellipsoid
+          ),
+          camera.pickEllipsoid(
+            new Cesium$1.Cartesian2(canvas.width, canvas.height),
+            this._ellipsoid
+          ),
+        ];
+        for (var index = 0; index < 4; index++) {
+          if (corners[index] === undefined) {
+            return Cesium$1.Rectangle.MAX_VALUE;
+          }
+        }
+        return Cesium$1.Rectangle.fromCartographicArray(
+          this._ellipsoid.cartesianArrayToCartographicArray(corners)
+        );
+      };
+
+      function gridPrecision(dDeg) {
+        if (dDeg < 0.01) return 2;
+        if (dDeg < 0.1) return 1;
+        if (dDeg < 1) return 0;
+        return 0;
+      }
+
+      var mins = [
+        Cesium$1.Math.toRadians(0.05),
+        Cesium$1.Math.toRadians(0.1),
+        Cesium$1.Math.toRadians(0.2),
+        Cesium$1.Math.toRadians(0.5),
+        Cesium$1.Math.toRadians(1.0),
+        Cesium$1.Math.toRadians(2.0),
+        Cesium$1.Math.toRadians(5.0),
+        Cesium$1.Math.toRadians(10.0),
+      ];
+
+      this.model = new GraticuleLayer(
+        {
+          numLines: 10,
+        },
+        this.viewer.scene
+      );
+    },
+  });
+
+  /*
+   * @Description:
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-21 14:00:31
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-29 10:20:08
+   */
+  var POILayer = CustomFeatureGridLayer.extend({
+    _keys: null,
+    _key_index: 0,
+    getKey: function () {
+      if (!this._keys) {
+        this._keys = this.config.key || [
+          "c95467d0ed2a3755836e37dc27369f97",
+          "4320dda936d909d73ab438b4e29cf2a2",
+          "e64a96ed7e361cbdc0ebaeaf3818c564",
+          "df3247b7df64434adecb876da94755d7",
+          "d4375ec477cb0a473c448fb1f83be781",
+          "13fdd7b2b90a9d326ae96867ebcc34ce",
+          "c34502450ae556f42b21760faf6695a0",
+          "57f8ebe12797a73fc5b87f5d4ef859b1",
+        ];
+        var thisidx = this._key_index++ % this._keys.length;
+        return this._keys[thisidx];
+      }
+    },
+
+    getDataForGrid: function (opts, callback) {
+      var jwd1 = wgs2gcj([opts.rectangle.xmin, opts.rectangle.ymax]); // 加偏
+      var jwd2 = wgs2gcj([opts.rectangle.xmax, opts.rectangle.ymin]); // 加偏
+      var polygon = jwd1[0] + "," + jwd1[1] + "|" + jwd2[0] + "," + jwd2[1];
+
+      var filter = this.config.filter || {};
+      filter.output = "json";
+      filter.key = this.getKey();
+      filter.polygon = polygon;
+      if (!filter.offset) filter.offset = 25;
+      if (!filter.types) filter.types = "120000|130000|190000";
+      $$1.ajax({
+        url: "http://restapi.amap.com/v3/place/polygon",
+        type: "get",
+        dataType: "json",
+        timeout: "5000",
+        data: filter,
+        success: function (data) {
+          if (data.infocode !== "10000") {
+            console.log("POI 请求失败(" + data.infocode + "):" + data.info);
+            return;
+          }
+
+          var arrData = data.pois;
+          callback(arrData);
+        },
+        error: function (data) {
+          console.log("POI 请求出错(" + data.status + "):" + data.statusText);
+        },
+      });
+    },
+
+    // 根据数据创造entity
+    createEntity: function (opts, attributes) {
+      var inHtml =
+        "<div>名称：" +
+        attributes.name +
+        "</div>" +
+        "<div>地址：" +
+        attributes.address +
+        "</div>" +
+        "<div>区域：" +
+        attributes.pname +
+        attributes.cityname +
+        attributes.adname +
+        "</div>" +
+        "<div>类别：" +
+        attributes.type +
+        "</div>";
+
+      var arrJwd = attributes.location.split(",");
+      arrJwd = Transform.transformGcjToWGS(arrJwd); // 纠偏
+      var lnglat = this.viewer.card.point2map({
+        x: arrJwd[0],
+        y: arrJwd[1],
+      });
+
+      var entityOptions = {
+        name: attributes.name,
+        position: Cesium$1.Cartesian3.fromDegrees(
+          lnglat.x,
+          lnglat.y,
+          this.config.height || 3
+        ),
+        popup: {
+          html: inHtml,
+          anchor: [0, -15],
+        },
+        properties: attributes,
+      };
+
+      var symbol = this.config.symbol;
+      if (symbol) {
+        var styleOpt = symbol.styleOptions;
+        if (symbol.styleField) {
+          //存在多个symbol，按styleField进行分类
+          var styleFieldVal = attr[symbol.styleField];
+          var styleOptField = symbol.styleFieldOptions[styleFieldVal];
+          if (styleOptField != null) {
+            styleOpt = $$1.extend({}, styleOpt);
+            styleOpt = $$1.extend(styleOpt, styleOptField);
+          }
+        }
+        styleOpt = styleOpt || {};
+
+        if (styleOpt.image) {
+          entityOptions.billboard = style2Entity(styleOpt);
+          entityOptions.billboard.heightReference =
+            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
+        } else {
+          entityOptions.point = style2Entity$6(styleOpt);
+        }
+
+        //加上文字标签
+        if (styleOpt.label) {
+          entityOptions.label = AttrLabel.style2Entity(styleOpt.label);
+          entityOptions.label.heightReference =
+            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
+          entityOptions.label.text = attributes.name;
+        }
+      } else {
+        //无配置时的默认值
+        entityOptions.point = {
+          color: new Cesium$1.Color.fromCssColorString("#3388ff"),
+          pixelSize: 10,
+          outlineColor: new Cesium$1.Color.fromCssColorString("#ffffff"),
+          outlineWidth: 2,
+          heightReference: Cesium$1.HeightReference.RELATIVE_TO_GROUND,
+          scaleByDistance: new Cesium$1.NearFarScalar(1000, 1, 20000, 0.5),
+        };
+        entityOptions.label = {
+          text: attributes.name,
+          font: "normal small-caps normal 16px 楷体",
+          style: Cesium$1.LabelStyle.FILL_AND_OUTLINE,
+          fillColor: Cesium$1.Color.AZURE,
+          outlineColor: Cesium$1.Color.BLACK,
+          outlineWidth: 2,
+          horizontalOrigin: Cesium$1.HorizontalOrigin.CENTER,
+          verticalOrigin: Cesium$1.VerticalOrigin.BOTTOM,
+          pixelOffset: new Cesium$1.Cartesian2(0, -15), //偏移量
+          heightReference: Cesium$1.HeightReference.RELATIVE_TO_GROUND, //是地形上方的高度
+          scaleByDistance: new Cesium$1.NearFarScalar(1000, 1, 5000, 0.8),
+          distanceDisplayCondition: new Cesium$1.DistanceDisplayCondition(
+            0.0,
+            5000
+          ),
+        };
+      }
+
+      var entity = this.dataSource.entities.add(entityOptions);
+      return entity;
     },
   });
 
@@ -13876,6 +12394,1618 @@
     createLayer: createLayer,
     createImageryProvider: createImageryProvider
   });
+
+  /*
+   * @Description: 瓦片底图图层
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-15 14:22:35
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-11 09:12:15
+   */
+
+  var TileLayer = BaseLayer.extend({
+    layer: null,
+
+    // 添加
+    add: function () {
+      if (this.layer != null) {
+        this.remove();
+      }
+      this.addEx();
+      var imageryProvider = createImageryProvider(this.config);
+      if (imageryProvider == null) {
+        return;
+      }
+
+      var options = this.config;
+
+      var imageryOpt = {
+        show: true,
+        alpha: this._opacity,
+      };
+
+      if (
+        options.rectangle &&
+        options.rectangle.xmin &&
+        options.rectangle.xmax &&
+        options.rectangle.ymin &&
+        options.rectangle.ymax
+      ) {
+        var xmin = options.rectangle.xmin;
+        var xmax = options.rectangle.xmax;
+        var ymin = options.rectangle.ymin;
+        var ymax = options.rectangle.ymax;
+        var rectangle = Cesium$1.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
+        this.rectangle = rectangle;
+        imageryOpt.rectangle = rectangle;
+      }
+      if (options.brightness) imageryOpt.brightness = options.brightness;
+      if (options.contrast) imageryOpt.contrast = options.contrast;
+      if (options.hue) imageryOpt.hue = options.hue;
+      if (options.saturation) imageryOpt.saturation = options.saturation;
+      if (options.gamma) imageryOpt.gamma = options.gamma;
+      if (options.maximumAnisotropy)
+        imageryOpt.maximumAnisotropy = options.maximumAnisotropy;
+      if (options.minimumTerrainLevel)
+        imageryOpt.minimumTerrainLevel = options.minimumTerrainLevel;
+      if (options.maximumTerrainLevel)
+        imageryOpt.maximumTerrainLevel = options.maximumTerrainLevel;
+
+      this.layer = new Cesium$1.ImageryLayer(imageryProvider, imageryOpt);
+      this.layer.config = this.config;
+
+      this.viewer.imageryLayers.add(this.layer);
+
+      this.setZIndex(this.config.order);
+    },
+
+    addEx: function () {
+      // 子类使用
+    },
+    // 移除
+    remove: function () {
+      if (this.layer == null) {
+        return;
+      }
+      this.removeEx();
+      this.viewer.imageryLayers.remove(this.layer, true);
+      this.layer = null;
+    },
+
+    removeEx: function () {
+      // 子类使用
+    },
+
+    // 定位至数据区域
+    centerAt: function (duration) {
+      if (this.layer == null) return;
+
+      if (this.config.extent || this.config.center) {
+        this.viewer.card.centerAt(this.config.extent || this.config.center, {
+          duration: duration,
+          isWgs84: true,
+        });
+      } else if (this.rectangle) {
+        this.viewer.camera.flyTo({
+          destination: this.rectangle,
+          duration: duration,
+        });
+      } else {
+        var rectangle = this.layer.imageryProvider.rectangle; //arcgis图层等，读取配置信息
+        if (
+          rectangle &&
+          rectangle != Cesium$1.Rectangle.MAX_VALUE &&
+          rectangle.west > 0 &&
+          rectangle.south > 0 &&
+          rectangle.east > 0 &&
+          rectangle.north > 0
+        ) {
+          this.viewer.camera.flyTo({
+            destination: rectangle,
+            duration: duration,
+          });
+        }
+      }
+    },
+    // 设置透明度
+    hasOpacity: true,
+    _opacity: 1,
+
+    setOpacity: function (value) {
+      this._opacity = value;
+      if (this.layer == null) return;
+      this.layer.alpha = value;
+    },
+    // 设置叠加顺序
+    setZIndex: function (order) {
+      if (this.layer == null || order == null) return;
+
+      //先移动到最顶层
+      this.viewer.imageryLayers.raiseToTop(this.layer);
+      var layers = this.viewer.imageryLayers._layers;
+      for (var i = layers.length - 1; i >= 0; i--) {
+        if (layers[i] == this.layer) continue;
+        var _temp = layers[i].config;
+        if (_temp && _temp.order) {
+          if (order < _temp.order) {
+            this.viewer.imageryLayers.lower(this.layer);
+          }
+        }
+      }
+    },
+  });
+
+  /*
+   * @Description:
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-20 15:48:16
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-29 10:19:39
+   */
+  var FeatureGridLayer = TileLayer.extend({
+    dataSource: null,
+    hasOpacity: false,
+    create: function () {
+      this.dataSource = new Cesium$1.CustomDataSource(); // 用于entity
+      this.primitives = new Cesium$1.PrimitiveCollection(); // 用于primitive
+      var that = this;
+      this.config.type_new = "custom_featuregrid";
+      this.config.addImageryCache = function (opts) {
+        return that._addImageryCache(opts);
+      };
+      this.config.removeImageryCache = function (opts) {
+        return that._removeImageryCache(opts);
+      };
+      this.config.removeAllImageryCache = function (opts) {
+        return that._removeAllImageryCache(opts);
+      };
+    },
+
+    getLength: function () {
+      return this.primitives.length + this.dataSource.entities.values.length;
+    },
+
+    addEx: function () {
+      this.viewer.dataSources.add(this.dataSource);
+      this.viewer.scene.primitives.add(this.primitives);
+    },
+
+    removeEx: function () {
+      this.viewer.dataSources.remove(this.dataSource);
+      this.viewer.scene.primitives.remove(this.primitives);
+    },
+
+    _addImageryCache: function (opts) {},
+
+    _removeImageryCache: function (opts) {},
+
+    _removeAllImageryCache: function (opts) {},
+  });
+
+  /*
+   * @Description: 分块加载图层基类
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-20 16:54:59
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-29 11:10:41
+   */
+  var CustomFeatureGridLayer = FeatureGridLayer.extend({
+    _cacheGrid: {}, // 网络缓存，存放矢量对象id集合
+    _cacheFeature: {}, // 矢量对象缓存，存放矢量对象和其所对应的网格集合
+    _addImageryCache: function (opts) {
+      this._cacheGrid[opts.key] = {
+        opts: opts,
+        isLoading: true,
+      };
+
+      let that = this;
+      this.getDataForGrid(opts, (arrData) => {
+        if (that._visible) that._showData(opts, arrData);
+      });
+    },
+
+    getDataForGrid: function (opts, callback) {
+      // 子类可继承，callback为回调方法, callback参数传数据数组
+      // 直接使用本类，传参方式
+      if (this.config.getDataForGrid) {
+        this.config.getDataForGrid(opts, callback);
+      }
+    },
+
+    checkHasBreak: function (cacheKey) {
+      if (!this._visible || !this._cacheGrid[cacheKey]) {
+        return true;
+      }
+      return false;
+    },
+
+    _showData: function (opts, arrdata) {
+      var cacheKey = opts.key;
+      if (this.checkHasBreak[cacheKey]) {
+        return; //异步请求结束时,如果已经卸载了网格就直接跳出。
+      }
+
+      var that = this;
+
+      var arrIds = [];
+      for (var i = 0, len = arrdata.length; i < len; i++) {
+        var attributes = arrdata[i];
+        var id = attributes[this.config.IdName || "id"];
+
+        var layer = this._cacheFeature[id];
+        if (layer) {
+          //已存在
+          layer.grid.push(cacheKey);
+          this.updateEntity(layer.entity, attributes);
+        } else {
+          var entity = this.createEntity(opts, attributes, function (entity) {
+            if (that.config.debuggerTileInfo) {
+              //测试用
+              entity._temp_id = id;
+              entity.popup = function (entity) {
+                return JSON.stringify(that._cacheFeature[entity._temp_id].grid);
+              };
+            }
+            that._cacheFeature[id] = {
+              grid: [cacheKey],
+              entity: entity,
+            };
+          });
+          if (entity != null) {
+            if (that.config.debuggerTileInfo) {
+              //测试用
+              entity._temp_id = id;
+              entity.popup = function (entity) {
+                return JSON.stringify(that._cacheFeature[entity._temp_id].grid);
+              };
+            }
+            that._cacheFeature[id] = {
+              grid: [cacheKey],
+              entity: entity,
+            };
+          }
+        }
+        arrIds.push(id);
+      }
+
+      this._cacheGrid[cacheKey] = this._cacheGrid[cacheKey] || {};
+      this._cacheGrid[cacheKey].ids = arrIds;
+      this._cacheGrid[cacheKey].isLoading = false;
+    },
+
+    createEntity: function (opts, attributes, callback) {
+      //子类可以继承,根据数据创造entity
+
+      //直接使用本类,传参方式
+      if (this.config.createEntity) {
+        return this.config.createEntity(opts, attributes, callback);
+      }
+      return null;
+    },
+
+    updateEntity: function (entity, attributes) {
+      //子类可以继承,更新entity（动态数据时有用）
+      //直接使用本类,传参方式
+      if (this.config.updateEntity) {
+        this.config.updateEntity(entity, attributes);
+      }
+    },
+
+    removeEntity: function (entity) {
+      //子类可以继承,移除entity
+      //直接使用本类,传参方式
+      if (this.config.removeEntity) {
+        this.config.removeEntity(entity);
+      } else {
+        this.dataSource.entities.remove(entity);
+      }
+    },
+
+    _removeImageryCache: function (opts) {
+      var cacheKey = opts.key;
+      var layers = this._cacheGrid[cacheKey];
+      if (layers) {
+        if (layers.ids) {
+          for (var i = 0; i < layers.ids.length; i++) {
+            var id = layers.ids[i];
+            var layer = this._cacheFeature[id];
+            if (layer) {
+              layer.grid.remove(cacheKey);
+              if (layer.grid.length == 0) {
+                delete this._cacheFeature[id];
+                this.removeEntity(layer.entity);
+              }
+            }
+          }
+        }
+        delete this._cacheGrid[cacheKey];
+      }
+    },
+
+    _removeAllImageryCache: function () {
+      if (this.config.removeAllEntity) {
+        this.config.removeAllEntity();
+      } else {
+        this.dataSource.entities.removeAll();
+        this.primitives.removeAll();
+      }
+
+      this._cacheFeature = {};
+      this._cacheGrid = {};
+    },
+
+    removeEx: function () {
+      if (this.config.removeAllEntity) {
+        this.config.removeAllEntity();
+      } else {
+        this.dataSource.entities.removeAll();
+        this.primitives.removeAll();
+      }
+
+      this._cacheFeature = {};
+      this._cacheGrid = {};
+
+      this.viewer.dataSources.remove(this.dataSource);
+      this.viewer.scene.primitives.remove(this.primitives);
+    },
+
+    // 重新加载数据
+    reload: function () {
+      var that = this;
+      for (var i in this._cacheGrid) {
+        var item = this._cacheGrid[i];
+        if (item == null || item.opts == null || item.isLoading) continue;
+
+        var opts = item.opts;
+        this.getDataForGrid(opts, function (arrData) {
+          that._showData(opts, arrData);
+        });
+      }
+    },
+    // 设置透明度
+    hasOpacity: true,
+    _opacity: 1,
+    setOpacity: function (value) {
+      this._opacity = value;
+
+      for (var i in this._cacheFeature) {
+        var entity = this._cacheFeature[i].entity;
+
+        if (
+          entity.polygon &&
+          entity.polygon.material &&
+          entity.polygon.material.color
+        ) {
+          this._updateEntityAlpha(entity.polygon.material.color, this._opacity);
+          if (entity.polygon.outlineColor) {
+            this._updateEntityAlpha(entity.polygon.outlineColor, this._opacity);
+          }
+        } else if (
+          entity.polyline &&
+          entity.polyline.material &&
+          entity.polyline.material.color
+        ) {
+          this._updateEntityAlpha(entity.polyline.material.color, this._opacity);
+        } else if (entity.billboard) {
+          entity.billboard.color = new Cesium$1.Color.fromCssColorString(
+            "#FFFFFF"
+          ).withAlpha(this._opacity);
+
+          if (entity.label) {
+            if (entity.label.fillColor)
+              this._updateEntityAlpha(entity.label.fillColor, this._opacity);
+            if (entity.label.outlineColor)
+              this._updateEntityAlpha(entity.label.outlineColor, this._opacity);
+            if (entity.label.backgroundColor)
+              this._updateEntityAlpha(
+                entity.label.backgroundColor,
+                this._opacity
+              );
+          }
+        }
+      }
+    },
+    _updateEntityAlpha: function (color, opacity) {
+      var newColor = color.getValue().withAlpha(opacity);
+      color.setValue(newColor);
+    },
+    colorHash: {},
+    setDefSymbol: function (entity) {
+      if (entity.polygon) {
+        var name = entity.properties.OBJECTID;
+        var color = this.colorHash[name];
+        if (!color) {
+          color = Cesium$1.Color.fromRandom({
+            minimumGreen: 0.75,
+            maximumBlue: 0.75,
+            alpha: this._opacity,
+          });
+          this.colorHash[name] = color;
+        }
+        entity.polygon.material = color;
+        entity.polygon.outline = true;
+        entity.polygon.outlineColor = Cesium$1.Color.WHITE;
+      } else if (entity.polyline) {
+        var name = entity.properties.OBJECTID;
+        var color = this.colorHash[name];
+        if (!color) {
+          color = Cesium$1.Color.fromRandom({
+            minimumGreen: 0.75,
+            maximumBlue: 0.75,
+            alpha: this._opacity,
+          });
+          this.colorHash[name] = color;
+        }
+        entity.polyline.material = color;
+        entity.polyline.width = 2;
+      } else if (entity.billboard) {
+        entity.billboard.scale = 0.5;
+        entity.billboard.horizontalOrigin = Cesium$1.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1.VerticalOrigin.BOTTOM;
+      }
+    },
+
+    // 外部配置的symbol
+    setConfigSymbol: function (entity, symbol) {
+      if (entity.polygon) {
+        var name = entity.properties.OBJECTID;
+        var color = this.colorHash[name];
+        if (!color) {
+          color = Cesium$1.Color.fromRandom({
+            minimumGreen: 0.75,
+            maximumBlue: 0.75,
+            alpha: this._opacity,
+          });
+          this.colorHash[name] = color;
+        }
+        entity.polygon.material = color;
+        entity.polygon.outline = true;
+        entity.polygon.outlineColor = Cesium$1.Color.WHITE;
+      } else if (entity.polyline) {
+        var name = entity.properties.OBJECTID;
+        var color = this.colorHash[name];
+        if (!color) {
+          color = Cesium$1.Color.fromRandom({
+            minimumGreen: 0.75,
+            maximumBlue: 0.75,
+            alpha: this._opacity,
+          });
+          this.colorHash[name] = color;
+        }
+        entity.polyline.material = color;
+        entity.polyline.width = 2;
+      } else if (entity.billboard) {
+        entity.billboard.scale = 0.5;
+        entity.billboard.horizontalOrigin = Cesium$1.HorizontalOrigin.CENTER;
+        entity.billboard.verticalOrigin = Cesium$1.VerticalOrigin.BOTTOM;
+      }
+    },
+    //外部配置的symbol
+    setConfigSymbol: function (entity, symbol) {
+      var attr = entity.properties;
+      var styleOpt = symbol.styleOptions;
+
+      if (symbol.styleField) {
+        //存在多个symbol,按styleField进行分类
+        var styleFieldVal = attr[symbol.styleField];
+        var styleOptField = symbol.styleFieldOptions[styleFieldVal];
+        if (styleOptField != null) {
+          styleOpt = clone(styleOpt);
+          styleOpt = $$1.extend(styleOpt, styleOptField);
+        }
+      }
+      styleOpt = styleOpt || {};
+
+      this._opacity = styleOpt.opacity || 1; //透明度
+
+      if (entity.polygon) {
+        style2Entity$7(styleOpt, entity.polygon);
+        //加上线宽
+        if (styleOpt.outlineWidth && styleOpt.outlineWidth > 1) {
+          entity.polygon.outline = false;
+
+          var newopt = {
+            color: styleOpt.outlineColor,
+            width: styleOpt.outlineWidth,
+            opacity: styleOpt.outlineOpacity,
+            lineType: "solid",
+            outline: false,
+          };
+          var polyline = style2Entity$8(newopt);
+          polyline.positions = entity.polygon.hierarchy._value.positions;
+          this.dataSource.entities.add({
+            polyline: polyline,
+          });
+        }
+
+        //是建筑物时
+        if (this.config.buildings) {
+          var floor = Number(attr[this.config.buildings.cloumn] || 1); //层数
+          var height = Number(this.config.buildings.height || 5); //层高
+
+          entity.polygon.extrudedHeight = floor * height;
+        }
+      } else if (entity.polyline) {
+        style2Entity$8(styleOpt, entity.polyline);
+      } else if (entity.billboard) {
+        entity.billboard.heightReference =
+          Cesium$1.HeightReference.RELATIVE_TO_GROUND;
+        AttrEntity(styleOpt, entity.billboard);
+
+        //加上文字标签
+        if (styleOpt.label && styleOpt.label.field) {
+          styleOpt.label.heightReference =
+            Cesium$1.HeightReference.RELATIVE_TO_GROUND;
+
+          entity.label = style2Entity$4(styleOpt.label);
+          entity.label.text = attr[styleOpt.label.field];
+        }
+      }
+    },
+  });
+
+  /*
+   * @Description: ArcGIS矢量服务分块加载图层
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-20 16:53:37
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-29 13:17:17
+   */
+  var ArcFeatureGridLayer = CustomFeatureGridLayer.extend({
+    // 获取网格内的数据，callback为回调方法，参数传数据数组
+    getDataForGrid: function (opts, callback) {
+      let that = this;
+      let url = this.config.url;
+      if (this.config.layers && this.config.layers.length > 0) {
+        url += "/" + this.config.layers[0];
+      }
+
+      let query = L.esri.query({
+        url: url,
+      });
+
+      // 网格
+      let bounds = L.latLngBounds(
+        L.latLng(opts.rectangle.ymin, opts.rectangle.xmin),
+        L.latLng(opts.rectangle.ymax, opts.rectangle.xmax)
+      );
+
+      query.within(bounds);
+
+      if (this.config.where) {
+        query.where(this.config.where);
+      }
+
+      query.run((error, featureCollection, response) => {
+        if (!that._visible || !that._cacheGrid[opts.key]) {
+          return; // 异步请求结束时，如果已经卸载了网格，就直接退出
+        }
+
+        if (error != null && error.code > 0) {
+          console.log("arcgis服务访问出错" + error.message);
+          return;
+        }
+
+        if (featureCollection == undefined || featureCollection == null) {
+          return; // 数据为空
+        }
+
+        if (featureCollection.type == "Feature") {
+          featureCollection = {
+            type: "FeatureCollection",
+            features: [featureCollection],
+          };
+
+          callback(featureCollection.features);
+        }
+      });
+    },
+
+    // 根据数据创造entity
+    createEntity: function (opts, item, callback) {
+      let that = this;
+      let dataSource = Cesium$1.GeoJsonDataSource.load(item, {
+        clampToGround: true,
+      });
+
+      dataSource
+        .then((dataSource) => {
+          if (that.checkHasBreak[opts.key]) {
+            return; // 异步请求结束时，如果已经卸载了网格就直接跳出。
+          }
+
+          if (dataSource.entities.values.length == 0) {
+            return null;
+          }
+
+          let entity = dataSource.entities.values[0];
+          entity._id = that.config.id + "_" + opts.key + "_" + entity.id;
+
+          that._addEntity(entity, callback);
+        })
+        .otherwise((error) => {
+          that.showError("服务出错", error);
+        });
+
+      return null;
+    },
+
+    _addEntity: function (entity, callback) {
+      let that = this;
+      // 样式
+      let symbol = this.config.symbol;
+      if (typeof symbol === "function") {
+        symbol(entity, entity.properties); // 回调方法
+      } else if (symbol == "default") {
+        this.setDefSymbol(entity);
+      } else {
+        this.setConfigSymbol(entity, symbol);
+      }
+
+      // popup弹窗
+      if (this.config.columns || this.config.popup) {
+        entity.popup = {
+          html: function (entity) {
+            return that.viewer.card.popup.getPopupForConfig(
+              that.config,
+              entity.properties
+            );
+          },
+          anchor: this.config.popupAnchor || [0, -15],
+        };
+      }
+
+      if (this.config.tooltip) {
+        entity.tooltip = {
+          html: function (entity) {
+            return that.viewer.card.popup.getPopupForConfig(
+              {
+                popup: that.config.tooltip,
+              },
+              entity.properties
+            );
+          },
+          anchor: this.config.tooltipAnchor || [0, -15],
+        };
+      }
+
+      this.dataSource.entities.add(entity);
+      callback(entity);
+    },
+  });
+
+  /*
+   * @Description: 图层类
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-09-09 10:39:53
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-11 09:08:22
+   */
+
+  /*
+   * @Description:
+   * @version:
+   * @Author: 宁四凯
+   * @Date: 2020-08-28 10:49:10
+   * @LastEditors: 宁四凯
+   * @LastEditTime: 2020-09-29 16:08:22
+   */
+
+  function initMap(id, config, options) {
+    //============模块内部私有属性及方法============
+
+    //类内部使用
+    var viewer;
+    var viewerDivId;
+    var configData;
+    var crs; //坐标系
+
+    viewerDivId = id;
+    configData = config;
+
+    //如果options未设置时的默认参数
+    var defOptions = {
+      animation: false, //是否创建动画小器件，左下角仪表
+      timeline: false, //是否显示时间线控件
+      fullscreenButton: true, //右下角全屏按钮
+      vrButton: false, //右下角vr虚拟现实按钮
+      geocoder: false, //是否显示地名查找控件
+      sceneModePicker: false, //是否显示投影方式控件
+      homeButton: true, //回到默认视域按钮
+      navigationHelpButton: true, //是否显示帮助信息控件
+      navigationInstructionsInitiallyVisible: false, //在用户明确单击按钮之前是否自动显示
+
+      infoBox: true, //是否显示点击要素之后显示的信息
+      selectionIndicator: false, //选择模型是是否显示绿色框,
+      shouldAnimate: true,
+      showRenderLoopErrors: true, //是否显示错误弹窗信息
+
+      baseLayerPicker: false, //地图底图
+    };
+
+    //config中可以配置map所有options
+    for (var key in configData) {
+      if (
+        key === "crs" ||
+        key === "controls" ||
+        key === "minZoom" ||
+        key === "maxZoom" ||
+        key === "center" ||
+        key === "style" ||
+        key === "terrain" ||
+        key === "basemaps" ||
+        key === "operationalLayers"
+      )
+        continue;
+      defOptions[key] = configData[key];
+    }
+
+    //赋默认值（如果已存在设置值跳过）
+    if (options == null) options = {};
+    for (var i in defOptions) {
+      if (!options.hasOwnProperty(i)) {
+        options[i] = defOptions[i];
+      }
+    }
+
+    //一些默认值的修改【by 木遥】
+    Cesium$1.BingMapsApi.defaultKey =
+      "AtkX3zhnRe5fyGuLU30uZw8r3sxdBDnpQly7KfFTCB2rGlDgXBG3yr-qEiQEicEc"; //，默认 key
+    if (Cesium$1.Ion)
+      Cesium$1.Ion.defaultAccessToken =
+        configData.ionToken ||
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NjM5MjMxOS1lMWVkLTQyNDQtYTM4Yi0wZjA4ZDMxYTlmNDMiLCJpZCI6MTQ4MiwiaWF0IjoxNTI4Njc3NDQyfQ.vVoSexHMqQhKK5loNCv6gCA5d5_z3wE2M0l_rWnIP_w";
+    Cesium$1.AnimationViewModel.defaultTicks = configData.animationTicks || [
+      0.1,
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      5.0,
+      10.0,
+      15.0,
+      30.0,
+      60.0,
+      120.0,
+      300.0,
+      600.0,
+      900.0,
+      1800.0,
+      3600.0,
+    ];
+
+    //坐标系
+    configData.crs = configData.crs || "3857";
+    crs = configData.crs;
+
+    //自定义搜索栏Geocoder
+    if (options.geocoder === true) {
+      options.geocoder = new _GaodePOIGeocoder.GaodePOIGeocoder(
+        options.geocoderConfig
+      );
+    }
+
+    //地形
+    if (configData.terrain && configData.terrain.visible) {
+      options.terrainProvider = getTerrainProvider$$1();
+    }
+
+    //地图底图图层预处理
+    var hasRemoveImagery = false;
+    if (options.baseLayerPicker) {
+      //有baseLayerPicker插件时
+      if (!options.imageryProviderViewModels)
+        options.imageryProviderViewModels = getImageryProviderArr();
+      if (!options.terrainProviderViewModels)
+        options.terrainProviderViewModels = getTerrainProviderViewModelsArr();
+    } else {
+      //无baseLayerPicker插件时,按内部规则
+      if (options.imageryProvider == null) {
+        hasRemoveImagery = true;
+        options.imageryProvider = Cesium$1.createTileMapServiceImageryProvider({
+          url: Cesium$1.buildModuleUrl("Assets/Textures/NaturalEarthII"),
+        });
+      }
+    }
+
+    //地球初始化
+    viewer = new Cesium$1.Viewer(id, options);
+    viewer.cesiumWidget.creditContainer.style.display = "none"; //去cesium logo
+
+    //====绑定方法到viewer上====
+    viewer.mars = {
+      popup: Popup,
+      tooltip: Tooltip$1,
+      keyboard: function keyboard(isBind) {
+        if (isBind) bind$1(viewer);
+        else unbind(viewer);
+      },
+      centerAt: centerAt,
+      getConfig: getConfig,
+      getLayer: getLayer,
+      changeBaseMap: changeBaseMap,
+      hasTerrain: hasTerrain,
+      updateTerrainProvider: updateTerrainProvider,
+      isFlyAnimation: isFlyAnimation,
+      openFlyAnimation: openFlyAnimation,
+      rotateAnimation: rotateAnimation,
+      getCrs: getCrs,
+      point2map: point2map,
+      point2wgs: point2wgs,
+      destroy: destroy$$1,
+
+      //地图底图图层
+    };
+    if (hasRemoveImagery) {
+      var imageryLayerCollection = viewer.imageryLayers;
+      var length = imageryLayerCollection.length;
+      for (var i = 0; i < length; i++) {
+        var layer = imageryLayerCollection.get(0);
+        imageryLayerCollection.remove(layer, true);
+      }
+    }
+
+    //默认定位地点相关设置，默认home键和初始化镜头视角
+    if (viewer.homeButton) {
+      viewer.homeButton.viewModel.command.beforeExecute.addEventListener(
+        function (commandInfo) {
+          centerAt();
+          commandInfo.cancel = true;
+        }
+      );
+    }
+    centerAt(null, {
+      duration: 0,
+    });
+
+    var orderLayers = []; //计算order
+
+    //没baseLayerPicker插件时才按内部规则处理。
+    if (!options.baseLayerPicker) {
+      var layersCfg = configData.basemaps;
+      if (layersCfg && layersCfg.length > 0) {
+        for (var i = 0; i < layersCfg.length; i++) {
+          var item = layersCfg[i];
+          if (item.visible && item.crs) crs = item.crs;
+
+          createLayer(item, viewer, config.serverURL, options.layerToMap);
+
+          orderLayers.push(item);
+          if (item.type == "group" && item.layers) {
+            for (var idx = 0; idx < item.layers.length; idx++) {
+              var childitem = item.layers[idx];
+              orderLayers.push(childitem);
+            }
+          }
+        }
+      }
+    }
+
+    //可叠加图层
+    var layersCfg = configData.operationalLayers;
+    if (layersCfg && layersCfg.length > 0) {
+      for (var i = 0; i < layersCfg.length; i++) {
+        var item = layersCfg[i];
+        createLayer(item, viewer, config.serverURL, options.layerToMap);
+
+        orderLayers.push(item);
+        if (item.type == "group" && item.layers) {
+          for (var idx = 0; idx < item.layers.length; idx++) {
+            var childitem = item.layers[idx];
+            orderLayers.push(childitem);
+          }
+        }
+      }
+    }
+    //计算 顺序字段,
+    for (var i = 0; i < orderLayers.length; i++) {
+      var item = orderLayers[i];
+
+      //计算层次顺序
+      var order = Number(item.order);
+      if (isNaN(order)) order = i;
+      item.order = order;
+
+      //图层的处理
+      if (item._layer != null) {
+        item._layer.setZIndex(order);
+      }
+    }
+
+    //切换场景
+    var lastCameraView;
+    viewer.scene.morphStart.addEventListener(function (event) {
+      //切换场景前事件
+      lastCameraView = point.getCameraView(viewer);
+    });
+
+    viewer.scene.morphComplete.addEventListener(function (event) {
+      //切换场景后事件
+      setTimeout(function () {
+        centerAt(lastCameraView, {
+          duration: 2,
+        });
+      }, 100);
+    });
+
+    //地图自定义控件 （兼容旧版controls参数）
+    if (configData.navigation) {
+      //导航工具栏
+      addNavigationWidget(configData.navigation);
+    }
+    if (configData.location) {
+      //鼠标提示
+      addLocationWidget(configData.location);
+    }
+
+    if (options.geocoder) {
+      options.geocoder.viewer = viewer;
+    }
+
+    // 绑定popup
+    init$2(viewer);
+    // 绑定tooltip
+    init$1(viewer);
+
+    //地球一些属性设置
+    var scene = viewer.scene;
+    scene.globe.baseColor = new Cesium$1.Color.fromCssColorString(
+      configData.baseColor || "#546a53"
+    ); //默认背景色
+    if (configData.style) {
+      //深度监测
+      scene.globe.depthTestAgainstTerrain = configData.style.testTerrain;
+
+      //光照渲染（阳光照射区域高亮）
+      scene.globe.enableLighting = configData.style.lighting;
+
+      //大气渲染
+      scene.skyAtmosphere.show = configData.style.atmosphere;
+      scene.globe.showGroundAtmosphere = configData.style.atmosphere;
+
+      //雾化效果
+      scene.fog.enabled = configData.style.fog;
+    }
+
+    //限制缩放级别
+    scene.screenSpaceCameraController.maximumZoomDistance =
+      configData.maxZoom || 20000000; //变焦时相机位置的最大值（以米为单位）
+    scene.screenSpaceCameraController.minimumZoomDistance =
+      configData.minZoom || 1; //变焦时相机位置的最小量级（以米为单位）。默认为1.0。
+
+    //scene.screenSpaceCameraController.enableCollisionDetection = true;    //启用地形相机碰撞检测。
+    //scene.screenSpaceCameraController.minimumCollisionTerrainHeight = 1;  //在测试与地形碰撞之前摄像机必须达到的最小高度。
+
+    //解决Cesium显示画面模糊的问题 https://zhuanlan.zhihu.com/p/41794242
+    viewer._cesiumWidget._supportsImageRenderingPixelated = Cesium$1.FeatureDetection.supportsImageRenderingPixelated();
+    viewer._cesiumWidget._forceResize = true;
+    if (Cesium$1.FeatureDetection.supportsImageRenderingPixelated()) {
+      var _dpr = window.devicePixelRatio;
+      // 适度降低分辨率
+      while (_dpr >= 2.0) {
+        _dpr /= 2.0;
+      }
+      viewer.resolutionScale = _dpr;
+    }
+
+    //解决限定相机进入地下 https://github.com/AnalyticalGraphicsInc/cesium/issues/5837
+    viewer.camera.changed.addEventListener(function () {
+      if (
+        viewer.camera._suspendTerrainAdjustment &&
+        viewer.scene.mode === Cesium$1.SceneMode.SCENE3D
+      ) {
+        viewer.camera._suspendTerrainAdjustment = false;
+        viewer.camera._adjustHeightForTerrain();
+      }
+    });
+
+    //鼠标滚轮缩放美化样式
+    if (configData.mouseZoom && isPCBroswer()) {
+      $$1("#" + viewerDivId).append(
+        '<div class="cesium-mousezoom"><div class="zoomimg"/></div>'
+      );
+      var handler = new Cesium$1.ScreenSpaceEventHandler(scene.canvas);
+      handler.setInputAction(function (evnet) {
+        $$1(".cesium-mousezoom").addClass("cesium-mousezoom-visible");
+        setTimeout(function () {
+          $$1(".cesium-mousezoom").removeClass("cesium-mousezoom-visible");
+        }, 200);
+      }, Cesium$1.ScreenSpaceEventType.WHEEL);
+      handler.setInputAction(function (evnet) {
+        $$1(".cesium-mousezoom").css({
+          top: evnet.endPosition.y + "px",
+          left: evnet.endPosition.x + "px",
+        });
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
+    }
+
+    function destroy$$1() {
+      viewer.mars.tooltip.destroy();
+      viewer.mars.tooltip.destroy();
+    }
+
+    //获取指定图层 keyName默认为名称
+    function getLayer(key, keyName) {
+      if (keyName == null) keyName = "name";
+
+      var layersCfg = configData.basemaps;
+      if (layersCfg && layersCfg.length > 0) {
+        for (var i = 0; i < layersCfg.length; i++) {
+          var item = layersCfg[i];
+          if (item == null || item[keyName] != key) continue;
+          return item._layer;
+        }
+      }
+
+      layersCfg = configData.operationalLayers;
+      if (layersCfg && layersCfg.length > 0) {
+        for (var i = 0; i < layersCfg.length; i++) {
+          var item = layersCfg[i];
+          if (item == null || item[keyName] != key) continue;
+          return item._layer;
+        }
+      }
+      return null;
+    }
+
+    function getConfig() {
+      return clone(configData);
+    }
+
+    var stkTerrainProvider;
+
+    function getTerrainProvider$$1() {
+      if (stkTerrainProvider == null) {
+        var cfg = configData.terrain;
+        if (cfg.url) {
+          if (configData.serverURL) {
+            cfg.url = cfg.url.replace("$serverURL$", configData.serverURL);
+          }
+          cfg.url = cfg.url
+            .replace("$hostname$", location.hostname)
+            .replace("$host$", location.host);
+        }
+
+        stkTerrainProvider = getTerrainProvider(cfg);
+      }
+      return stkTerrainProvider;
+    }
+
+    function hasTerrain() {
+      if (stkTerrainProvider == null) return false;
+      return viewer.terrainProvider != getEllipsoidTerrain();
+    }
+
+    function updateTerrainProvider(isStkTerrain) {
+      if (isStkTerrain) {
+        viewer.terrainProvider = getTerrainProvider$$1();
+      } else {
+        viewer.terrainProvider = getEllipsoidTerrain();
+      }
+    }
+
+    function changeBaseMap(idorName) {
+      var basemaps = viewer.gisdata.config.basemaps;
+      for (var i = 0; i < basemaps.length; i++) {
+        var item = basemaps[i];
+        if (item.type == "group" && item.layers == null) continue;
+        if (item._layer == null) continue;
+
+        if (idorName == item.name || idorName == item.id)
+          item._layer.setVisible(true);
+        else item._layer.setVisible(false);
+      }
+    }
+
+    //获取自定义底图切换
+    function getImageryProviderArr() {
+      var providerViewModels = [];
+      window._temp_createImageryProvider = _layer.createImageryProvider;
+
+      var layersCfg = configData.basemaps;
+      if (layersCfg && layersCfg.length > 0) {
+        for (var i = 0; i < layersCfg.length; i++) {
+          var item = layersCfg[i];
+          if (item.type == "group" && item.layers == null) continue;
+
+          var funStr =
+            "window._temp_basemaps" +
+            i +
+            " = function () {\
+            var item = " +
+            JSON.stringify(item) +
+            ';\
+            if (item.type == "group") {\
+                var arrVec = [];\
+                for (var index = 0; index < item.layers.length; index++) {\
+                    var temp = window._temp_createImageryProvider(item.layers[index]);\
+                    if (temp == null) continue;\
+                    arrVec.push(temp);\
+                }\
+                return arrVec;\
+            }\
+            else {\
+                return window._temp_createImageryProvider(item);\
+            } \
+        }';
+          eval(funStr);
+
+          var imgModel = new Cesium$1.ProviderViewModel({
+            name: item.name || "未命名",
+            tooltip: item.name || "未命名",
+            iconUrl: item.icon || "",
+            creationFunction: eval("window._temp_basemaps" + i),
+          });
+          providerViewModels.push(imgModel);
+        }
+      }
+      return providerViewModels;
+    }
+
+    function getTerrainProviderViewModelsArr() {
+      return [
+        new Cesium$1.ProviderViewModel({
+          name: "无地形",
+          iconUrl: Cesium$1.buildModuleUrl(
+            "Widgets/Images/TerrainProviders/Ellipsoid.png"
+          ),
+          tooltip: "WGS84标准椭球，即 EPSG:4326",
+          category: "",
+          creationFunction: function creationFunction() {
+            return new Cesium$1.EllipsoidTerrainProvider({
+              ellipsoid: Cesium$1.Ellipsoid.WGS84,
+            });
+          },
+        }),
+        new Cesium$1.ProviderViewModel({
+          name: "有地形",
+          iconUrl: Cesium$1.buildModuleUrl(
+            "Widgets/Images/TerrainProviders/CesiumWorldTerrain.png"
+          ),
+          tooltip: "提供的高分辨率全球地形",
+          category: "",
+          creationFunction: function creationFunction() {
+            return getTerrainProvider$$1();
+          },
+        }),
+      ];
+    }
+
+    function centerAt(centeropt, options) {
+      if (options == null) options = {};
+      else if (isNumber(options))
+        options = {
+          duration: options,
+        }; //兼容旧版本
+
+      if (centeropt == null) {
+        //让镜头飞行（动画）到配置默认区域
+        options.isWgs84 = true;
+        centeropt = configData.extent || configData.center;
+      }
+
+      if (centeropt.xmin && centeropt.xmax && centeropt.ymin && centeropt.ymax) {
+        //使用extent配置
+        var xmin = centeropt.xmin;
+        var xmax = centeropt.xmax;
+        var ymin = centeropt.ymin;
+        var ymax = centeropt.ymax;
+
+        if (options.isWgs84) {
+          //坐标转换为wgs
+          var pt1 = point2map({
+            x: xmin,
+            y: ymin,
+          });
+          xmin = pt1.x;
+          ymin = pt1.y;
+
+          var pt2 = point2map({
+            x: xmax,
+            y: ymax,
+          });
+          xmax = pt2.x;
+          ymax = pt2.y;
+        }
+
+        var rectangle = Cesium$1.Rectangle.fromDegrees(xmin, ymin, xmax, ymax);
+        viewer.camera.flyTo({
+          destination: rectangle,
+          duration: options.duration,
+          complete: options.complete,
+        });
+      } else {
+        //使用xyz
+        if (options.isWgs84) centeropt = point2map(centeropt);
+
+        var height = options.minz || 2500;
+        if (viewer.camera.positionCartographic.height < height)
+          height = viewer.camera.positionCartographic.height;
+        if (centeropt.z != null && centeropt.z != 0) height = centeropt.z;
+
+        viewer.camera.flyTo({
+          destination: Cesium$1.Cartesian3.fromDegrees(
+            centeropt.x,
+            centeropt.y,
+            height
+          ), //经度、纬度、高度
+          orientation: {
+            heading: Cesium$1.Math.toRadians(centeropt.heading || 0), //绕垂直于地心的轴旋转
+            pitch: Cesium$1.Math.toRadians(centeropt.pitch || -90), //绕纬度线旋转
+            roll: Cesium$1.Math.toRadians(centeropt.roll || 0), //绕经度线旋转
+          },
+          duration: options.duration,
+          complete: options.complete,
+        });
+      }
+    }
+
+    //开场动画
+    var _isFlyAnimation = false;
+
+    function isFlyAnimation() {
+      return _isFlyAnimation;
+    }
+
+    function openFlyAnimation(endfun, centeropt) {
+      var view = centeropt || point.getCameraView(viewer); //默认为原始视角
+
+      _isFlyAnimation = true;
+      viewer.camera.setView({
+        destination: Cesium$1.Cartesian3.fromDegrees(-85.16, 13.71, 23000000.0),
+      });
+      viewer.camera.flyTo({
+        destination: Cesium$1.Cartesian3.fromDegrees(view.x, view.y, 23000000.0),
+        duration: 2,
+        easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
+        complete: function complete() {
+          var z = (view.z || 90000) * 1.2 + 8000;
+          if (z > 23000000) z = 23000000;
+
+          viewer.camera.flyTo({
+            destination: Cesium$1.Cartesian3.fromDegrees(view.x, view.y, z),
+            complete: function complete() {
+              centerAt(view, {
+                duration: 2,
+                complete: function complete() {
+                  _isFlyAnimation = false;
+                  if (endfun) endfun();
+                },
+              });
+            },
+          });
+        },
+      });
+    }
+    //旋转地球
+    function rotateAnimation(endfun, duration) {
+      var first = point.getCameraView(viewer); //默认为原始视角
+      var duration3 = duration / 3;
+
+      //动画 1/3
+      viewer.camera.flyTo({
+        destination: Cesium$1.Cartesian3.fromDegrees(
+          first.x + 120,
+          first.y,
+          first.z
+        ),
+        orientation: {
+          heading: Cesium$1.Math.toRadians(first.heading),
+          pitch: Cesium$1.Math.toRadians(first.pitch),
+          roll: Cesium$1.Math.toRadians(first.roll),
+        },
+        duration: duration3,
+        easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
+        complete: function complete() {
+          //动画 2/3
+          viewer.camera.flyTo({
+            destination: Cesium$1.Cartesian3.fromDegrees(
+              first.x + 240,
+              first.y,
+              first.z
+            ),
+            orientation: {
+              heading: Cesium$1.Math.toRadians(first.heading),
+              pitch: Cesium$1.Math.toRadians(first.pitch),
+              roll: Cesium$1.Math.toRadians(first.roll),
+            },
+            duration: duration3,
+            easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
+            complete: function complete() {
+              //动画 3/3
+              viewer.camera.flyTo({
+                destination: Cesium$1.Cartesian3.fromDegrees(
+                  first.x,
+                  first.y,
+                  first.z
+                ),
+                orientation: {
+                  heading: Cesium$1.Math.toRadians(first.heading),
+                  pitch: Cesium$1.Math.toRadians(first.pitch),
+                  roll: Cesium$1.Math.toRadians(first.roll),
+                },
+                duration: duration3,
+                easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
+                complete: function complete() {
+                  if (endfun) endfun();
+                },
+              });
+              //动画3/3 end
+            },
+          });
+          //动画2/3 end
+        },
+      });
+      //动画1/3 end
+    }
+
+    //添加“鼠标经纬度提示”控件
+    function addLocationWidget(item) {
+      var inhtml =
+        '<div id="location_mars_jwd"  class="location-bar animation-slide-bottom no-print" ></div>';
+      $$1("#" + viewerDivId).prepend(inhtml);
+
+      if (item.style) $$1("#location_mars_jwd").css(item.style);
+      else {
+        $$1("#location_mars_jwd").css({
+          left: viewer.animation ? "170px" : "0",
+          right: "0",
+          bottom: viewer.timeline ? "25px" : "0",
+        });
+      }
+
+      item.format =
+        item.format ||
+        "<div>视高：{height}米</div><div>俯仰角：{pitch}度</div><div>方向：{heading}度</div><div>海拔：{z}米</div><div>纬度:{y}</div><div>经度:{x}</div>";
+
+      var locationData = {};
+
+      function setXYZ2Data(cartesian) {
+        var cartographic = Cesium$1.Cartographic.fromCartesian(cartesian);
+
+        locationData.z = cartographic.height.toFixed(1);
+
+        var jd = Cesium$1.Math.toDegrees(cartographic.longitude);
+        var wd = Cesium$1.Math.toDegrees(cartographic.latitude);
+
+        switch (item.crs) {
+          default:
+            //和地图一致的原坐标
+            var fixedLen = item.hasOwnProperty("toFixed") ? item.toFixed : 6;
+            locationData.x = jd.toFixed(fixedLen);
+            locationData.y = wd.toFixed(fixedLen);
+            break;
+          case "degree":
+            //度分秒形式
+            locationData.x = formatDegree(jd);
+            locationData.y = formatDegree(wd);
+            break;
+          case "project":
+            //投影坐标
+            var fixedLen = item.hasOwnProperty("toFixed") ? item.toFixed : 0;
+            locationData.x = cartesian.x.toFixed(fixedLen);
+            locationData.y = cartesian.y.toFixed(fixedLen);
+            break;
+
+          case "wgs":
+            //标准wgs84格式坐标
+            var fixedLen = item.hasOwnProperty("toFixed") ? item.toFixed : 6;
+            var wgsPoint = point2wgs({
+              x: jd,
+              y: wd,
+            }); //坐标转换为wgs
+            locationData.x = wgsPoint.x.toFixed(fixedLen);
+            locationData.y = wgsPoint.y.toFixed(fixedLen);
+            break;
+          case "wgs-degree":
+            //标准wgs84格式坐标
+            var wgsPoint = point2wgs({
+              x: jd,
+              y: wd,
+            }); //坐标转换为wgs
+            locationData.x = formatDegree(wgsPoint.x);
+            locationData.y = formatDegree(wgsPoint.y);
+            break;
+        }
+      }
+
+      var handler = new Cesium$1.ScreenSpaceEventHandler(viewer.scene.canvas);
+      handler.setInputAction(function (movement) {
+        var cartesian = getCurrentMousePosition(
+          viewer.scene,
+          movement.endPosition
+        );
+        if (cartesian) {
+          setXYZ2Data(cartesian);
+
+          if (locationData.height == null) {
+            locationData.height = viewer.camera.positionCartographic.height.toFixed(
+              1
+            );
+            locationData.heading = Cesium$1.Math.toDegrees(
+              viewer.camera.heading
+            ).toFixed(0);
+            locationData.pitch = Cesium$1.Math.toDegrees(
+              viewer.camera.pitch
+            ).toFixed(0);
+          }
+
+          var inhtml = template(item.format, locationData);
+          $$1("#location_mars_jwd").html(inhtml);
+        }
+      }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
+
+      //相机移动结束事件
+      viewer.scene.camera.changed.addEventListener(function (event) {
+        locationData.height = viewer.camera.positionCartographic.height.toFixed(
+          1
+        );
+        locationData.heading = Cesium$1.Math.toDegrees(
+          viewer.camera.heading
+        ).toFixed(0);
+        locationData.pitch = Cesium$1.Math.toDegrees(viewer.camera.pitch).toFixed(
+          0
+        );
+
+        if (locationData.x == null) {
+          setXYZ2Data(viewer.camera.position);
+        }
+
+        var inhtml = template(item.format, locationData);
+        $$1("#location_mars_jwd").html(inhtml);
+      });
+    }
+
+    //添加“导航”控件
+    function addNavigationWidget(item) {
+      if (!Cesium$1.viewerCesiumNavigationMixin) return;
+
+      viewer.extend(Cesium$1.viewerCesiumNavigationMixin, {
+        defaultResetView: Cesium$1.Rectangle.fromDegrees(110, 20, 120, 30),
+        enableZoomControls: true,
+      });
+
+      if (viewer.animation) {
+        $$1(".distance-legend").css({
+          left: "150px",
+          bottom: "25px",
+          border: "none",
+          background: "rgba(0, 0, 0, 0)",
+          "z-index": "992",
+        });
+      } else {
+        $$1(".distance-legend").css({
+          left: "-10px",
+          bottom: "-1px",
+          border: "none",
+          background: "rgba(0, 0, 0, 0)",
+          "z-index": "992",
+        });
+      }
+      if (item.legend) $$1(".distance-legend").css(item.legend);
+
+      //$(".navigation-controls").css({
+      //    "right": "5px",
+      //    "bottom": "30px",
+      //    "top": "auto"
+      //});
+      $$1(".navigation-controls").hide();
+
+      if (item.compass) $$1(".compass").css(item.compass);
+      else
+        $$1(".compass").css({
+          top: "10px",
+          left: "10px",
+        });
+    }
+
+    function getCrs() {
+      return crs;
+    }
+
+    function point2map(point) {
+      if (crs == "gcj") {
+        var point_clone = clone(point);
+
+        var newpoint = _pointconvert2.default.wgs2gcj([
+          point_clone.x,
+          point_clone.y,
+        ]);
+        point_clone.x = newpoint[0];
+        point_clone.y = newpoint[1];
+        return point_clone;
+      } else if (crs == "baidu") {
+        var point_clone = clone(point);
+
+        var newpoint = _pointconvert2.default.wgs2bd([
+          point_clone.x,
+          point_clone.y,
+        ]);
+        point_clone.x = newpoint[0];
+        point_clone.y = newpoint[1];
+        return point_clone;
+      } else {
+        return point;
+      }
+    }
+
+    function point2wgs(point) {
+      if (crs == "gcj") {
+        var point_clone = clone(point);
+        var newpoint = _pointconvert2.default.gcj2wgs([
+          point_clone.x,
+          point_clone.y,
+        ]);
+        point_clone.x = newpoint[0];
+        point_clone.y = newpoint[1];
+        return point_clone;
+      } else if (crs == "baidu") {
+        var point_clone = clone(point);
+        var newpoint = _pointconvert2.default.bd2gcj([
+          point_clone.x,
+          point_clone.y,
+        ]);
+        point_clone.x = newpoint[0];
+        point_clone.y = newpoint[1];
+        return point_clone;
+      } else {
+        return point;
+      }
+    }
+
+    return viewer;
+  }
+
+  function createMap(opt) {
+    if (opt.url) {
+      $$1.ajax({
+        type: "get",
+        dataType: "json",
+        url: opt.url,
+        timeout: 0, //永不超时
+        success: function (config) {
+          //map初始化
+          var configData = config.map3d;
+          if (config.serverURL) configData.serverURL = config.serverURL;
+          if (opt.serverURL) configData.serverURL = opt.serverURL;
+
+          createMapByData(opt, configData, config);
+        },
+        error: function error(XMLHttpRequest, textStatus, errorThrown) {
+          console.log("Json文件" + opt.url + "加载失败！");
+          alert("Json文件" + opt.url + "加载失败！");
+        },
+      });
+      return null;
+    } else {
+      if (opt.serverURL && opt.data) opt.data.serverURL = opt.serverURL;
+      return createMapByData(opt, opt.data);
+    }
+  }
+
+  function createMapByData(opt, configData, jsonData) {
+    if (configData == null) {
+      console.log("配置信息不能为空！");
+      return;
+    }
+
+    var viewer = initMap(opt.id, configData, opt);
+
+    //记录到全局变量，其他地方使用
+    var gisdata = {};
+    gisdata.config = configData;
+
+    viewer.gisdata = gisdata;
+
+    if (opt.success) opt.success(viewer, gisdata, jsonData);
+
+    return viewer;
+  }
 
   /*
    * @Description:

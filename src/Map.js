@@ -4,12 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 14:36:49
+ * @LastEditTime: 2020-09-29 16:08:22
  */
 import * as Cesium from "cesium";
 import $ from "jquery";
 import { Tooltip, Popup } from "./widget/index";
 import { FirstPerson, Util, PointUtil } from "./core/index";
+import { Layer } from "./layer/index";
 
 //版权信息
 var copyright = false;
@@ -56,7 +57,7 @@ function initMap(id, config, options) {
       key === "center" ||
       key === "style" ||
       key === "terrain" ||
-      key === "baseMaps" ||
+      key === "basemaps" ||
       key === "operationalLayers"
     )
       continue;
@@ -185,18 +186,13 @@ function initMap(id, config, options) {
 
   //没baseLayerPicker插件时才按内部规则处理。
   if (!options.baseLayerPicker) {
-    var layersCfg = configData.baseMaps;
+    var layersCfg = configData.basemaps;
     if (layersCfg && layersCfg.length > 0) {
       for (var i = 0; i < layersCfg.length; i++) {
         var item = layersCfg[i];
         if (item.visible && item.crs) crs = item.crs;
 
-        (0, _layer.createLayer)(
-          item,
-          viewer,
-          config.serverURL,
-          options.layerToMap
-        );
+        Layer.createLayer(item, viewer, config.serverURL, options.layerToMap);
 
         orderLayers.push(item);
         if (item.type == "group" && item.layers) {
@@ -214,12 +210,7 @@ function initMap(id, config, options) {
   if (layersCfg && layersCfg.length > 0) {
     for (var i = 0; i < layersCfg.length; i++) {
       var item = layersCfg[i];
-      (0, _layer.createLayer)(
-        item,
-        viewer,
-        config.serverURL,
-        options.layerToMap
-      );
+      Layer.createLayer(item, viewer, config.serverURL, options.layerToMap);
 
       orderLayers.push(item);
       if (item.type == "group" && item.layers) {
@@ -378,7 +369,7 @@ function initMap(id, config, options) {
   function getLayer(key, keyName) {
     if (keyName == null) keyName = "name";
 
-    var layersCfg = configData.baseMaps;
+    var layersCfg = configData.basemaps;
     if (layersCfg && layersCfg.length > 0) {
       for (var i = 0; i < layersCfg.length; i++) {
         var item = layersCfg[i];
@@ -435,9 +426,9 @@ function initMap(id, config, options) {
   }
 
   function changeBaseMap(idorName) {
-    var baseMaps = viewer.gisdata.config.baseMaps;
-    for (var i = 0; i < baseMaps.length; i++) {
-      var item = baseMaps[i];
+    var basemaps = viewer.gisdata.config.basemaps;
+    for (var i = 0; i < basemaps.length; i++) {
+      var item = basemaps[i];
       if (item.type == "group" && item.layers == null) continue;
       if (item._layer == null) continue;
 
@@ -452,7 +443,7 @@ function initMap(id, config, options) {
     var providerViewModels = [];
     window._temp_createImageryProvider = _layer.createImageryProvider;
 
-    var layersCfg = configData.baseMaps;
+    var layersCfg = configData.basemaps;
     if (layersCfg && layersCfg.length > 0) {
       for (var i = 0; i < layersCfg.length; i++) {
         var item = layersCfg[i];
@@ -484,7 +475,7 @@ function initMap(id, config, options) {
           name: item.name || "未命名",
           tooltip: item.name || "未命名",
           iconUrl: item.icon || "",
-          creationFunction: eval("window._temp_baseMaps" + i),
+          creationFunction: eval("window._temp_basemaps" + i),
         });
         providerViewModels.push(imgModel);
       }

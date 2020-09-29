@@ -433,7 +433,7 @@ function getPopup(cfg, attr, title) {
     if (countsok == 0) return false;
     return inhtml;
   } else if (
-    (typeof cfg === "undefined" ? "undefined" : _typeof(cfg)) === "object"
+    (typeof cfg === "undefined" ? "undefined" : typeof cfg) === "object"
   ) {
     //对象,type区分逻辑
     switch (cfg.type) {

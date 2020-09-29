@@ -109,7 +109,7 @@ function show(entity, cartesian, position) {
 
   //显示内容
   var inhtml;
-  if (_typeof(entity.tooltip) === "object") {
+  if (typeof entity.tooltip === "object") {
     inhtml = entity.tooltip.html;
     if (entity.tooltip.check) {
       if (!entity.tooltip.check()) {
@@ -136,7 +136,7 @@ function show(entity, cartesian, position) {
   var tooltip = entity.tooltip;
   if (
     tooltip &&
-    (typeof tooltip === "undefined" ? "undefined" : _typeof(tooltip)) ===
+    (typeof tooltip === "undefined" ? "undefined" : typeof tooltip) ===
       "object" &&
     tooltip.anchor
   ) {

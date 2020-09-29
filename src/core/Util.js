@@ -301,7 +301,7 @@ export function getRequestByName(name) {
 export function clone(obj) {
   if (
     null == obj ||
-    "object" != (typeof obj === "undefined" ? "undefined" : _typeof(obj))
+    "object" != (typeof obj === "undefined" ? "undefined" : typeof obj)
   )
     return obj;
 
@@ -322,7 +322,7 @@ export function clone(obj) {
   }
 
   // Handle Object
-  if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object") {
+  if ((typeof obj === "undefined" ? "undefined" : typeof obj) === "object") {
     var copy = {};
     for (var attr in obj) {
       if (attr == "_layer" || attr == "_layers" || attr == "_parent") continue;
