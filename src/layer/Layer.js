@@ -4,13 +4,14 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:23:35
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 09:21:25
+ * @LastEditTime: 2020-09-29 17:01:26
  */
 import * as Cesium from "cesium";
 import { BaseLayer } from "./BaseLayer.js";
 import { GroupLayer } from "./GroupLayer.js";
 import { TileLayer } from "./TileLayer.js";
 import { GraticuleLayer } from "./GraticuleLayer.js";
+import { FeatureGridLayer } from "./FeatureGridLayer";
 import { CustomFeatureGridLayer } from "./CustomFeatureGridLayer.js";
 import { POILayer } from "./POILayer.js";
 import { GeoJsonLayer } from "./GeoJsonLayer.js";
@@ -536,4 +537,21 @@ function createImageryProvider(item, serverURL) {
   return layer;
 }
 
-export { createLayer, createImageryProvider };
+export {
+  createLayer,
+  createImageryProvider,
+  BaseLayer,
+  GroupLayer,
+  TileLayer,
+  GltfLayer,
+  Tiles3dLayer,
+  GeoJsonLayer,
+  FeatureGridLayer,
+  KmlLayer,
+  CzmlLayer,
+  TerrainLayer,
+  DrawLayer,
+  CustomFeatureGridLayer,
+  ArcFeatureLayer,
+  POILayer,
+};

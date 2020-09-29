@@ -4,13 +4,13 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 16:08:22
+ * @LastEditTime: 2020-09-29 16:47:32
  */
 import * as Cesium from "cesium";
 import $ from "jquery";
 import { Tooltip, Popup } from "./widget/index";
 import { FirstPerson, Util, PointUtil } from "./core/index";
-import { Layer } from "./layer/index";
+import * as Layer from "./layer/Layer";
 
 //版权信息
 var copyright = false;

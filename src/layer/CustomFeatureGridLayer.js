@@ -1,4 +1,3 @@
-import { FeatureGridLayer } from "./FeatureGridLayer";
 import * as Cesium from "cesium";
 import {
   AttrPolygon,
@@ -8,13 +7,13 @@ import {
 } from "../attr/index";
 import { Util } from "../core/index";
 import $ from "jquery";
-/*
- * @Description: 分块加载图层基类
+import { FeatureGridLayer } from "./FeatureGridLayer";
+/* @Description: 分块加载图层基类
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-08-20 16:54:59
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 11:10:41
+ * @LastEditTime: 2020-09-29 16:50:57
  */
 export var CustomFeatureGridLayer = FeatureGridLayer.extend({
   _cacheGrid: {}, // 网络缓存，存放矢量对象id集合

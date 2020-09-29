@@ -4,10 +4,10 @@
  * @Author: 宁四凯
  * @Date: 2020-09-01 09:25:31
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 15:38:49
+ * @LastEditTime: 2020-09-29 17:08:50
  */
 import * as Cesium from "cesium";
-import { Draw } from "./draw/index";
+import { Draw } from "./draw/Draw";
 import { DrawEventType } from "./event/index";
 import { style2Entity } from "./attr/AttrLabel";
 import { Util, PointUtil } from "./core/index";

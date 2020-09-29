@@ -4,28 +4,24 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 15:30:40
+ * @LastEditTime: 2020-09-29 17:07:33
  */
 
 import { Tooltip, Util as DrawUtil } from "../core/index";
-
-import {
-  DrawPoint,
-  DrawBillboard,
-  DrawLabel,
-  DrawModel,
-  DrawPolyline,
-  DrawCurve,
-  DrawPolylineVolume,
-  DrawCorridor,
-  DrawRectangle,
-  DrawEllipsoid,
-  DrawWall,
-  DrawPolygon,
-  DrawCircle,
-  DrawPModel,
-} from "./index";
-
+import { DrawPoint } from "./DrawPoint";
+import { DrawBillboard } from "./DrawBillboard";
+import { DrawLabel } from "./DrawLabel";
+import { DrawModel } from "./DrawModel";
+import { DrawPolyline } from "./DrawPolyline";
+import { DrawPolygon } from "./DrawPolygon";
+import { DrawCircle } from "./DrawCircle";
+import { DrawCurve } from "./DrawCurve";
+import { DrawPolylineVolume } from "./DrawPolylineVolume";
+import { DrawCorridor } from "./DrawCorridor";
+import { DrawRectangle } from "./DrawRectangle";
+import { DrawEllipsoid } from "./DrawEllipsoid";
+import { DrawWall } from "./DrawWall";
+import { DrawPModel } from "./DrawPModel";
 import { DrawEventType, EditEventType } from "../event/index";
 
 export var Draw = L.Evented.extend({
