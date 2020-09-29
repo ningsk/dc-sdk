@@ -4,15 +4,16 @@
  * @Author: 宁四凯
  * @Date: 2020-08-20 14:24:48
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 13:16:56
+ * @LastEditTime: 2020-09-29 14:34:06
  */
 import * as Cesium from "cesium";
 import $ from "jquery";
 import { PointUtil, Util } from "../core/index";
 
-var _viewer;
-var _handler;
-var _objPopup = {};
+var viewer;
+var handler;
+var objPopup = {};
+
 var _isOnly = true;
 var _enable = true;
 
@@ -21,56 +22,54 @@ function isOnly(value) {
 }
 
 function setEnable(value) {
-  this._enable = value;
+  _enable = value;
   if (!value) {
-    this.close();
+    close();
   }
 }
 
 function getEnable() {
-  return this._enable;
+  return _enable;
 }
 
-function init() {
+function init(_viewer) {
+  viewer = _viewer;
   // 添加弹出框
   var infoDiv = '<div id="popup-all-view"></div>';
   $("#" + viewer._container.id).append(infoDiv);
-  this._handler = new Cesium.ScreenSpaceEventHandler(this._viewer.scene.canvas);
+  handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
   // 单击事件
-  this._handler.setInputAction(
-    this.mousePickingClick,
+  handler.setInputAction(
+    mousePickingClick,
     Cesium.ScreenSpaceEventType.LEFT_CLICK
   );
   // 移动时间
-  this._viewer.scene.postRender.addEventListener(this._bind2Scene);
+  viewer.scene.postRender.addEventListener(_bind2Scene);
 }
 
 // 鼠标点击事件
 function mousePickingClick(event) {
-  this.removeFeature();
-  if (this._isOnly) {
-    this.close();
+  emoveFeature();
+  if (_isOnly) {
+    close();
   }
-  if (!this._enable) {
+  if (!_enable) {
     return;
   }
   var position = event.position;
-  var pickedObject = this._viewer.scene.pick(position);
+  var pickedObject = viewer.scene.pick(position);
   // 普通entity对象 && viewer.scene.pickPositionSupported
   if (pickedObject && Cesium.defined(pickedObject.id)) {
     var entity = pickedObject.id;
     // popup
     if (Cesium.defined(entity.popup)) {
-      var cartesian = PointUtil.getCurrentMousePosition(
-        this._viewer.scene,
-        position
-      );
+      var cartesian = PointUtil.getCurrentMousePosition(viewer.scene, position);
       //if (entity.billboard || entity.label || entity.point) {
       //    cartesian = pickedObject.primitive.position;
       //} else {
       //   cartesian = getCurrentMousePosition(viewer.scene, position);
       //}
-      this.show(entity, cartesian);
+      show(entity, cartesian);
     }
 
     // 加统一的click处理
@@ -79,23 +78,23 @@ function mousePickingClick(event) {
     }
     return;
   }
-  this.pickImageryLayerFeatures(position);
+  pickImageryLayerFeatures(position);
 }
 
 // 单击瓦片时同时显示要素处理
 var _lastShowFeature;
 
 function removeFeature() {
-  if (this._lastShowFeature == null) {
+  if (_lastShowFeature == null) {
     return;
   }
-  this._viewer.dataSources.remove(this._lastShowFeature);
-  this._lastShowFeature = null;
+  viewer.dataSources.remove(_lastShowFeature);
+  _lastShowFeature = null;
 }
 
 // 瓦片图层上的矢量对象，动态获取
 function pickImageryLayerFeatures(position) {
-  var scene = this._viewer.scene;
+  var scene = viewer.scene;
   var pickRay = scene.camera.getPickRay(position);
   var imageryLayerFeaturePromise = scene.imageryLayers.pickImageryLayerFeatures(
     pickRay,
@@ -122,20 +121,20 @@ function pickImageryLayerFeatures(position) {
 
       // 显示要素
       if (cfg.showClickFeature && feature.data) {
-        this.showFeature(feature.data, cfg.pickFeatureStyle);
+        showFeature(feature.data, cfg.pickFeatureStyle);
       }
 
       // 显示popup
-      var result = this.getPopupForConfig(
+      var result = getPopupForConfig(
         feature.imageryLayer.config,
         feature.properties
       );
       if (result) {
         var cartesian = PointUtil.getCurrentMousePosition(
-          this._viewer.scene,
+          viewer.scene,
           position
         );
-        this.show(
+        show(
           {
             id: "imageryLayerFeaturePromise",
             popup: {
@@ -160,7 +159,7 @@ function pickImageryLayerFeatures(position) {
 }
 
 function showFeature(item, options) {
-  this.removeFeature();
+  removeFeature();
   var feature;
   if (item.geometryType && item.geometryType.indexOf("esri") != -1) {
     // arcgis图层时
@@ -193,8 +192,8 @@ function showFeature(item, options) {
   });
   dataSource
     .then((dataSource) => {
-      this._viewer.dataSources.add(dataSource);
-      this._lastShowFeature = dataSource;
+      viewer.dataSources.add(dataSource);
+      _lastShowFeature = dataSource;
     })
     .otherwise((error) => {
       console.log(error);
@@ -207,12 +206,12 @@ function show(entity, cartesian) {
   var eleId =
     "popup_" +
     ((entity.id || "") + "").replace(new RegExp("[^0-9a-zA-Z_]", "gm"), "_");
-  this.close(eleId);
+  close(eleId);
   // 更新高度
   // if (this._viewer.scene.sampleHeightSupported) {
   //   cartesian = updateHeightForClampToGround(cartesian);
   // }
-  this._objPopup[eleId] = {
+  objPopup[eleId] = {
     id: entity.id,
     popup: entity.popup,
     cartesian: cartesian,
@@ -235,7 +234,7 @@ function show(entity, cartesian) {
   if (!inHtml) {
     return;
   }
-  this._showHtml(inHtml, eleId, entity, cartesian);
+  _showHtml(inHtml, eleId, entity, cartesian);
 }
 
 function _showHtml(inHtml, eleId, entity, cartesian) {
@@ -256,21 +255,21 @@ function _showHtml(inHtml, eleId, entity, cartesian) {
   );
 
   // 计算显示位置
-  var result = this.updateViewPoint(eleId, cartesian, entity.popup);
+  var result = updateViewPoint(eleId, cartesian, entity.popup);
   if (!result) {
-    this.close(eleId);
+    close(eleId);
     return;
   }
 }
 
 function updateViewPoint(eleId, cartesian, popup) {
   var point = Cesium.SceneTransforms.wgs84ToDrawingBufferCoordinates(
-    this._viewer.scene,
+    viewer.scene,
     cartesian
   );
   if (point == null) return false;
   // 判断是否在球的背面
-  var scene = this._viewer.scene;
+  var scene = viewer.scene;
   var cartesianNew;
   if (scene.mode === Cesium.SceneMode.SCENE3D) {
     // 三维模式下
@@ -304,34 +303,34 @@ function updateViewPoint(eleId, cartesian, popup) {
 }
 
 function _bind2Scene() {
-  for (var i in this._objPopup) {
-    var item = this._objPopup[i];
-    var result = this.updateViewPoint(i, item.cartesian, item.popup);
+  for (var i in objPopup) {
+    var item = objPopup[i];
+    var result = updateViewPoint(i, item.cartesian, item.popup);
     if (!result) {
-      this.close(i);
+      close(i);
     }
   }
 }
 
 function close(eleId) {
-  if (!this._isOnly && eleId) {
-    for (var i in this._objPopup) {
-      if (eleId == this._objPopup[i].id || eleId == i) {
+  if (!_isOnly && eleId) {
+    for (var i in objPopup) {
+      if (eleId == objPopup[i].id || eleId == i) {
         $("#" + i).remove();
-        delete this._objPopup[i];
+        delete objPopup[i];
         break;
       }
     }
   } else {
     $("#popup-all-view").empty();
-    this._objPopup = {};
+    objPopup = {};
   }
 }
 
 function destroy() {
-  this.close();
-  this._handler.destroy();
-  this._viewer.scene.postRender.removeEventListener(this._bind2Scene);
+  close();
+  handler.destroy();
+  viewer.scene.postRender.removeEventListener(_bind2Scene);
 }
 
 function template(str, data) {
@@ -352,9 +351,9 @@ function template(str, data) {
 function getPopupForConfig(cfg, attr) {
   var _title = cfg.popupNameField ? attr[cfg.popupNameField] : cfg.name;
   if (cfg.popup) {
-    return this.getPopup(cfg.popup, attr, _title);
+    return getPopup(cfg.popup, attr, _title);
   } else if (cfg.columns) {
-    return this.getPopup(cfg.columns, attr, _title);
+    return getPopup(cfg.columns, attr, _title);
   }
   return false;
 }
@@ -376,10 +375,7 @@ function getPopup(cfg, attr, title) {
       var thisfield = cfg[i];
 
       var col = thisfield.field;
-      if (
-        _typeof(attr[col]) === "object" &&
-        attr[col].hasOwnProperty("getValue")
-      )
+      if (typeof attr[col] === "object" && attr[col].hasOwnProperty("getValue"))
         attr[col] = attr[col].getValue();
       if (typeof attr[col] === "function") continue;
 
@@ -442,7 +438,7 @@ function getPopup(cfg, attr, title) {
     //对象,type区分逻辑
     switch (cfg.type) {
       case "iframe":
-        var _url = _util.template(cfg.url, attr);
+        var _url = Util.template(cfg.url, attr);
 
         var inhtml =
           '<iframe id="ifarm" src="' +
@@ -504,7 +500,7 @@ function getPopup(cfg, attr, title) {
     return inhtml;
   } else {
     //格式化字符串
-    return this.template(cfg, attr);
+    return template(cfg, attr);
   }
 
   return false;

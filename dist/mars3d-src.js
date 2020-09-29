@@ -4026,35 +4026,197 @@
    * @Author: 宁四凯
    * @Date: 2020-08-20 14:24:48
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 13:16:56
+   * @LastEditTime: 2020-09-29 14:34:06
    */
 
+  var viewer$2;
+  var handler$1;
+  var objPopup = {};
+
+  var _isOnly = true;
+  var _enable = true;
+
   function isOnly(value) {
+    _isOnly = value;
   }
 
   function setEnable(value) {
-    this._enable = value;
+    _enable = value;
     if (!value) {
-      this.close();
+      close$1();
     }
   }
 
   function getEnable() {
-    return this._enable;
+    return _enable;
   }
 
-  function init$2() {
+  function init$2(_viewer) {
+    viewer$2 = _viewer;
     // 添加弹出框
     var infoDiv = '<div id="popup-all-view"></div>';
-    $$1("#" + viewer._container.id).append(infoDiv);
-    this._handler = new Cesium$1.ScreenSpaceEventHandler(this._viewer.scene.canvas);
+    $$1("#" + viewer$2._container.id).append(infoDiv);
+    handler$1 = new Cesium$1.ScreenSpaceEventHandler(viewer$2.scene.canvas);
     // 单击事件
-    this._handler.setInputAction(
-      this.mousePickingClick,
+    handler$1.setInputAction(
+      mousePickingClick,
       Cesium$1.ScreenSpaceEventType.LEFT_CLICK
     );
     // 移动时间
-    this._viewer.scene.postRender.addEventListener(this._bind2Scene);
+    viewer$2.scene.postRender.addEventListener(_bind2Scene);
+  }
+
+  // 鼠标点击事件
+  function mousePickingClick(event) {
+    emoveFeature();
+    if (_isOnly) {
+      close$1();
+    }
+    if (!_enable) {
+      return;
+    }
+    var position = event.position;
+    var pickedObject = viewer$2.scene.pick(position);
+    // 普通entity对象 && viewer.scene.pickPositionSupported
+    if (pickedObject && Cesium$1.defined(pickedObject.id)) {
+      var entity = pickedObject.id;
+      // popup
+      if (Cesium$1.defined(entity.popup)) {
+        var cartesian = getCurrentMousePosition(viewer$2.scene, position);
+        //if (entity.billboard || entity.label || entity.point) {
+        //    cartesian = pickedObject.primitive.position;
+        //} else {
+        //   cartesian = getCurrentMousePosition(viewer.scene, position);
+        //}
+        show$1(entity, cartesian);
+      }
+
+      // 加统一的click处理
+      if (entity.click && typeof entity.click === "function") {
+        entity.click(entity, position);
+      }
+      return;
+    }
+    pickImageryLayerFeatures(position);
+  }
+
+  // 单击瓦片时同时显示要素处理
+  var _lastShowFeature;
+
+  function removeFeature() {
+    if (_lastShowFeature == null) {
+      return;
+    }
+    viewer$2.dataSources.remove(_lastShowFeature);
+    _lastShowFeature = null;
+  }
+
+  // 瓦片图层上的矢量对象，动态获取
+  function pickImageryLayerFeatures(position) {
+    var scene = viewer$2.scene;
+    var pickRay = scene.camera.getPickRay(position);
+    var imageryLayerFeaturePromise = scene.imageryLayers.pickImageryLayerFeatures(
+      pickRay,
+      scene
+    );
+    if (!Cesium$1.defined(imageryLayerFeaturePromise)) {
+      return;
+    }
+    Cesium$1.when(
+      imageryLayerFeaturePromise,
+      (features) => {
+        if (!Cesium$1.defined(features)) {
+          features.length === 0;
+        } else {
+          return;
+        }
+
+        // 单击选中的要素对象
+        var feature = features[0];
+        if (feature.imageryLayer == null || feature.imageryLayer.config == null) {
+          return;
+        }
+        var cfg = feature.imageryLayer.config;
+
+        // 显示要素
+        if (cfg.showClickFeature && feature.data) {
+          showFeature(feature.data, cfg.pickFeatureStyle);
+        }
+
+        // 显示popup
+        var result = getPopupForConfig(
+          feature.imageryLayer.config,
+          feature.properties
+        );
+        if (result) {
+          var cartesian = getCurrentMousePosition(
+            viewer$2.scene,
+            position
+          );
+          show$1(
+            {
+              id: "imageryLayerFeaturePromise",
+              popup: {
+                html: result,
+                popup: {
+                  html: result,
+                  anchor: feature.imageryLayer.config.popupAnchor || [0, -12],
+                },
+              },
+            },
+            cartesian
+          );
+        }
+
+        // 加统一的click处理
+        if (cfg.click && typeof cfg.click === "function") {
+          cfg.click(feature.properties, position);
+        }
+      },
+      () => {}
+    );
+  }
+
+  function showFeature(item, options) {
+    removeFeature();
+    var feature;
+    if (item.geometryType && item.geometryType.indexOf("esri") != -1) {
+      // arcgis图层时
+      if (JSON.stringify(item.geometry).length < 10000) {
+        // 屏蔽大数据，页面卡顿
+        feature = L.esri.Util.arcgisToGeoJSON(item.geometry);
+      }
+    } else if (item.geometry && item.geometry.type) {
+      var geojson = L.geoJSON(item.geometry, {
+        coordsToLatLng: (coords) => {
+          if (coords[0] > 180 || coords[0] < -180) {
+            // 需要判断处理数据里面的坐标为4326
+            return L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+          }
+          return L.latLng(coords[1], coords[0], coords[2]);
+        },
+      });
+      feature = geojson.toGeoJSON();
+    }
+
+    if (feature == null) return;
+    options = options || {};
+    var dataSource = Cesium$1.GeoJsonDataSource.load(feature, {
+      clampToGround: true,
+      stroke: new Cesium$1.Color.fromCssColorString(options.stroke || "#ffff00"),
+      strokeWidth: options.strokeWidth || 3,
+      fill: new Cesium$1.Color.fromCssColorString(
+        options.fill || "#ffff00"
+      ).withAlpha(options.fillAlpha || 0.7),
+    });
+    dataSource
+      .then((dataSource) => {
+        viewer$2.dataSources.add(dataSource);
+        _lastShowFeature = dataSource;
+      })
+      .otherwise((error) => {
+        console.log(error);
+      });
   }
 
   // popup 处理
@@ -4063,12 +4225,12 @@
     var eleId =
       "popup_" +
       ((entity.id || "") + "").replace(new RegExp("[^0-9a-zA-Z_]", "gm"), "_");
-    this.close(eleId);
+    close$1(eleId);
     // 更新高度
     // if (this._viewer.scene.sampleHeightSupported) {
     //   cartesian = updateHeightForClampToGround(cartesian);
     // }
-    this._objPopup[eleId] = {
+    objPopup[eleId] = {
       id: entity.id,
       popup: entity.popup,
       cartesian: cartesian,
@@ -4085,37 +4247,126 @@
     if (!inHtml) {
       return;
     }
-    this._showHtml(inHtml, eleId, entity, cartesian);
+    _showHtml(inHtml, eleId, entity, cartesian);
+  }
+
+  function _showHtml(inHtml, eleId, entity, cartesian) {
+    $$1("#popup-all-view").append(
+      '<div id="' +
+        eleId +
+        '" class="cesium-popup">' +
+        '            <a class="cesium-popup-close-button cesium-popup-color" href="javascript:viewer.card.popup.close(\'' +
+        eleId +
+        "')\">×</a>" +
+        '            <div class="cesium-popup-content-wrapper cesium-popup-background">' +
+        '                <div class="cesium-popup-content cesium-popup-color">' +
+        inhtml +
+        "</div>" +
+        "            </div>" +
+        '            <div class="cesium-popup-tip-container"><div class="cesium-popup-tip cesium-popup-background"></div></div>' +
+        "        </div>"
+    );
+
+    // 计算显示位置
+    var result = updateViewPoint(eleId, cartesian, entity.popup);
+    if (!result) {
+      close$1(eleId);
+      return;
+    }
+  }
+
+  function updateViewPoint(eleId, cartesian, popup) {
+    var point = Cesium$1.SceneTransforms.wgs84ToDrawingBufferCoordinates(
+      viewer$2.scene,
+      cartesian
+    );
+    if (point == null) return false;
+    // 判断是否在球的背面
+    var scene = viewer$2.scene;
+    var cartesianNew;
+    if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+      // 三维模式下
+      var pickRay = scene.camera.getPickRay(point);
+      cartesianNew = scene.globe.pick(pickRay, scene);
+    } else {
+      // 二维模式下
+      cartesianNew = scene.camera.pickEllipsoid(point, scene.globe.ellipsoid);
+    }
+    if (cartesianNew) {
+      var len = Cesium$1.Cartesian3.distance(cartesian, cartesianNew);
+      if (len > 10000) return false;
+    }
+
+    // 判断是否在球的背面
+    var $view = $$1("#" + eleId);
+    var x = point.x - $view.width() / 2;
+    var y = point.y - $view.height();
+
+    if (
+      popup &&
+      (typeof popup === "undefined"
+        ? "undefined"
+        : typeof popup === "object" && popup.anchor)
+    ) {
+      x += popup.anchor[0];
+      y += popup.anchor[1];
+    }
+    $view.css("transform", "translate3d(" + x + "px," + y + "px, 0)");
+    return true;
+  }
+
+  function _bind2Scene() {
+    for (var i in objPopup) {
+      var item = objPopup[i];
+      var result = updateViewPoint(i, item.cartesian, item.popup);
+      if (!result) {
+        close$1(i);
+      }
+    }
   }
 
   function close$1(eleId) {
-    if (!this._isOnly && eleId) {
-      for (var i in this._objPopup) {
-        if (eleId == this._objPopup[i].id || eleId == i) {
+    if (!_isOnly && eleId) {
+      for (var i in objPopup) {
+        if (eleId == objPopup[i].id || eleId == i) {
           $$1("#" + i).remove();
-          delete this._objPopup[i];
+          delete objPopup[i];
           break;
         }
       }
     } else {
       $$1("#popup-all-view").empty();
-      this._objPopup = {};
+      objPopup = {};
     }
   }
 
   function destroy$1() {
-    this.close();
-    this._handler.destroy();
-    this._viewer.scene.postRender.removeEventListener(this._bind2Scene);
+    close$1();
+    handler$1.destroy();
+    viewer$2.scene.postRender.removeEventListener(_bind2Scene);
+  }
+
+  function template$1(str, data) {
+    for (var col in data) {
+      var showVal = data[col];
+      if (showVal == null || showVal == "Null" || showVal == "Unknown") {
+        showVal = "";
+      }
+      if (col.substr(0, 1) == "_") {
+        col = col.substring(1); // cesium 内部属性
+      }
+      str = str.replace(new RegExp("{" + col + "}", "gm"), showVal);
+    }
+    return str;
   }
 
   // 通用， 统一配置popup的方式
   function getPopupForConfig(cfg, attr) {
     var _title = cfg.popupNameField ? attr[cfg.popupNameField] : cfg.name;
     if (cfg.popup) {
-      return this.getPopup(cfg.popup, attr, _title);
+      return getPopup(cfg.popup, attr, _title);
     } else if (cfg.columns) {
-      return this.getPopup(cfg.columns, attr, _title);
+      return getPopup(cfg.columns, attr, _title);
     }
     return false;
   }
@@ -4137,10 +4388,7 @@
         var thisfield = cfg[i];
 
         var col = thisfield.field;
-        if (
-          _typeof(attr[col]) === "object" &&
-          attr[col].hasOwnProperty("getValue")
-        )
+        if (typeof attr[col] === "object" && attr[col].hasOwnProperty("getValue"))
           attr[col] = attr[col].getValue();
         if (typeof attr[col] === "function") continue;
 
@@ -4203,7 +4451,7 @@
       //对象,type区分逻辑
       switch (cfg.type) {
         case "iframe":
-          var _url = _util.template(cfg.url, attr);
+          var _url = template(cfg.url, attr);
 
           var inhtml =
             '<iframe id="ifarm" src="' +
@@ -4265,7 +4513,7 @@
       return inhtml;
     } else {
       //格式化字符串
-      return this.template(cfg, attr);
+      return template$1(cfg, attr);
     }
 
     return false;
