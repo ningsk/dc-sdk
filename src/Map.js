@@ -58,7 +58,7 @@ function initMap(id, config, options) {
       key === "style" ||
       key === "terrain" ||
       key === "basemaps" ||
-      key === "operationalLayers"
+      key === "operationallayers"
     )
       continue;
     defOptions[key] = configData[key];
@@ -206,7 +206,7 @@ function initMap(id, config, options) {
   }
 
   //可叠加图层
-  var layersCfg = configData.operationalLayers;
+  var layersCfg = configData.operationallayers;
   if (layersCfg && layersCfg.length > 0) {
     for (var i = 0; i < layersCfg.length; i++) {
       var item = layersCfg[i];
@@ -378,7 +378,7 @@ function initMap(id, config, options) {
       }
     }
 
-    layersCfg = configData.operationalLayers;
+    layersCfg = configData.operationallayers;
     if (layersCfg && layersCfg.length > 0) {
       for (var i = 0; i < layersCfg.length; i++) {
         var item = layersCfg[i];

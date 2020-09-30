@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 14:23:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 17:18:23
+ * @LastEditTime: 2020-09-30 10:34:54
  */
 import * as Cesium from "cesium";
 /**
@@ -25,9 +25,9 @@ export function formatNum(num, digits) {
 export function formatPosition(position) {
   var carto = Cesium.Cartographic.fromCartesian(position);
   var result = {};
-  result.y = this.formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
-  result.x = this.formatNum(Cesium.Math.toDegrees(carto.longitude), 6);
-  result.z = this.formatNum(carto.height, 2);
+  result.y = formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
+  result.x = formatNum(Cesium.Math.toDegrees(carto.longitude), 6);
+  result.z = formatNum(carto.height, 2);
   return result;
 }
 
@@ -51,7 +51,7 @@ export function getMaxHeight(positions, defaultVal) {
       maxHeight = tempCarto.height;
     }
   }
-  return this.formatNum(maxHeight, 2);
+  return formatNum(maxHeight, 2);
 }
 
 /**
@@ -195,7 +195,7 @@ export function getCenter(viewer, isToWgs) {
     bestTarget = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
   }
 
-  var result = this.formatPosition(bestTarget);
+  var result = formatPosition(bestTarget);
   if (isToWgs) {
     result = viewer.mars.point2wgs(result); // 坐标转换为wgs
   }
@@ -342,14 +342,11 @@ export function getCameraView(viewer, isToWgs) {
   var position = camera.positionCartographic;
 
   var bookmark = {};
-  bookmark.y = this.formatNum(Cesium.Math.toDegrees(position.latitude), 6);
-  bookmark.x = this.formatNum(Cesium.Math.toDegrees(position.longitude), 6);
-  bookmark.z = this.formatNum(position.height, 2);
-  bookmark.heading = this.formatNum(
-    Cesium.Math.toDegrees(camera.heading || -90),
-    1
-  );
-  bookmark.pitch = this.formatNum(Cesium.Math.toDegrees(camera.roll || 0), 1);
+  bookmark.y = formatNum(Cesium.Math.toDegrees(position.latitude), 6);
+  bookmark.x = formatNum(Cesium.Math.toDegrees(position.longitude), 6);
+  bookmark.z = formatNum(position.height, 2);
+  bookmark.heading = formatNum(Cesium.Math.toDegrees(camera.heading || -90), 1);
+  bookmark.pitch = formatNum(Cesium.Math.toDegrees(camera.roll || 0), 1);
 
   if (isToWgs) {
     bookmark = viewer.mars.point2wgs(bookmark); // 坐标转换wgs

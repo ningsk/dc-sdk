@@ -1197,7 +1197,7 @@ export function addGeoJsonDefVal(properties) {
 export function cartesians2lonlats(positions) {
   var coordinates = [];
   for (var i = 0, len = positions.length; i < len; i++) {
-    var point = this.cartesian2lonlat(positions[i]);
+    var point = cartesian2lonlat(positions[i]);
     coordinates.push(point);
   }
   return coordinates;
@@ -1221,8 +1221,8 @@ export function lonlats2cartesians(coords, defHeight) {
   var arr = [];
   for (var i = 0, len = coords.length; i < len; i++) {
     var item = coords[i];
-    if (isArray(item[0])) arr.push(this.lonlats2cartesians(item, defHeight));
-    else arr.push(this.lonlat2cartesian(item, defHeight));
+    if (isArray(item[0])) arr.push(lonlats2cartesians(item, defHeight));
+    else arr.push(lonlat2cartesian(item, defHeight));
   }
   return arr;
 }

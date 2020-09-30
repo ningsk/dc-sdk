@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-19 10:35:38
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 17:07:33
+ * @LastEditTime: 2020-09-30 10:16:43
  */
 
 import { Tooltip, Util as DrawUtil } from "../core/index";
@@ -123,7 +123,7 @@ export var Draw = L.Evented.extend({
     attribute = DrawUtil.addGeoJsonDefVal(attribute);
 
     this.stopDraw();
-    var entity = this.drawCtrl[type].activate(attribute, drawOkcallback);
+    var entity = this.drawCtrl[type].activate(attribute, drawOkCallback);
     return entity;
   },
   stopDraw: function () {
