@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-14 13:01:47
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 10:17:43
+ * @LastEditTime: 2020-10-06 15:03:24
  */
 import * as Cesium from "cesium";
 import { Util, Tooltip, Class } from "../core/index";
@@ -86,7 +86,7 @@ export var DrawBase = Class.extend({
         delete this.drawOkCallback;
       }
 
-      this.fire(EventType.DrawCreated, {
+      this.fire(DrawEventType.DrawCreated, {
         drawtype: this.type,
         entity: this.entity,
       });

@@ -8223,7 +8223,7 @@
    * @LastEditTime: 2020-09-09 10:41:46
    */
 
-  var EventType$1 = /*#__PURE__*/Object.freeze({
+  var EventType = /*#__PURE__*/Object.freeze({
     DrawEventType: DrawEventType,
     EditEventType: EditEventType
   });
@@ -8234,7 +8234,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-14 13:01:47
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 10:17:43
+   * @LastEditTime: 2020-10-06 15:03:24
    */
 
   var DrawBase = Class.extend({
@@ -8312,7 +8312,7 @@
           delete this.drawOkCallback;
         }
 
-        this.fire(EventType.DrawCreated, {
+        this.fire(DrawEventType.DrawCreated, {
           drawtype: this.type,
           entity: this.entity,
         });
@@ -15778,7 +15778,7 @@
 
   var draw = {
     util: Util,
-    event: EventType$1,
+    event: EventType,
     dragger: Dragger$1,
     attr: Attr,
   };
