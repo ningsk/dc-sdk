@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-15 14:49:52
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-11 08:54:38
+ * @LastEditTime: 2020-10-19 10:20:49
  */
 import * as Cesium from "cesium";
 import { Util } from "../core/index";
@@ -97,6 +97,33 @@ export function getPositions(entity) {
   var pt1 = Cesium.Cartesian3.fromRadians(re.west, re.south, height);
   var pt2 = Cesium.Cartesian3.fromRadians(re.east, re.north, height);
   return [pt1, pt2];
+}
+
+// 获得外边界坐标
+export function getOutlinePositions(entity) {
+  var positions = getPositions(entity);
+  return [
+    {
+      x: positions[0].x,
+      y: positions[0].y,
+      z: positions[0].z,
+    },
+    {
+      x: positions[1].x,
+      y: positions[0].y,
+      z: positions[0].z,
+    },
+    {
+      x: positions[1].x,
+      y: positions[1].y,
+      z: positions[1].z,
+    },
+    {
+      x: positions[0].x,
+      y: positions[1].y,
+      z: positions[1].z,
+    },
+  ];
 }
 
 // 获取entity的坐标（geojson规范的格式）

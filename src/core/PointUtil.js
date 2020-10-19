@@ -4,7 +4,7 @@
  * @Author: 宁四凯
  * @Date: 2020-08-13 14:23:37
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-30 10:34:54
+ * @LastEditTime: 2020-10-12 09:51:28
  */
 import * as Cesium from "cesium";
 /**
@@ -347,7 +347,7 @@ export function getCameraView(viewer, isToWgs) {
   bookmark.z = formatNum(position.height, 2);
   bookmark.heading = formatNum(Cesium.Math.toDegrees(camera.heading || -90), 1);
   bookmark.pitch = formatNum(Cesium.Math.toDegrees(camera.roll || 0), 1);
-
+  bookmark.roll = formatNum(Cesium.Math.toDegrees(camera.roll || 0), 1);
   if (isToWgs) {
     bookmark = viewer.mars.point2wgs(bookmark); // 坐标转换wgs
   }

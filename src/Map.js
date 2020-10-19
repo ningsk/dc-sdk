@@ -4,12 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-08-28 10:49:10
  * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 16:47:32
+ * @LastEditTime: 2020-10-13 15:55:20
  */
 import * as Cesium from "cesium";
 import $ from "jquery";
 import { Tooltip, Popup } from "./widget/index";
-import { FirstPerson, Util, PointUtil } from "./core/index";
+import { FirstPerson, Util, PointUtil, PointConvert } from "./core/index";
 import * as Layer from "./layer/Layer";
 
 //版权信息
@@ -240,7 +240,7 @@ function initMap(id, config, options) {
   var lastCameraView;
   viewer.scene.morphStart.addEventListener(function (event) {
     //切换场景前事件
-    lastCameraView = point.getCameraView(viewer);
+    lastCameraView = PointUtil.getCameraView(viewer);
   });
 
   viewer.scene.morphComplete.addEventListener(function (event) {
@@ -618,9 +618,8 @@ function initMap(id, config, options) {
       },
     });
   }
-  //旋转地球
   function rotateAnimation(endfun, duration) {
-    var first = point.getCameraView(viewer); //默认为原始视角
+    var first = PointUtil.getCameraView(viewer); //默认为原始视角
     var duration3 = duration / 3;
 
     //动画 1/3
@@ -637,7 +636,7 @@ function initMap(id, config, options) {
       },
       duration: duration3,
       easingFunction: Cesium.EasingFunction.LINEAR_NONE,
-      complete: function complete() {
+      complete: function () {
         //动画 2/3
         viewer.camera.flyTo({
           destination: Cesium.Cartesian3.fromDegrees(
@@ -652,7 +651,7 @@ function initMap(id, config, options) {
           },
           duration: duration3,
           easingFunction: Cesium.EasingFunction.LINEAR_NONE,
-          complete: function complete() {
+          complete: function () {
             //动画 3/3
             viewer.camera.flyTo({
               destination: Cesium.Cartesian3.fromDegrees(
@@ -667,7 +666,7 @@ function initMap(id, config, options) {
               },
               duration: duration3,
               easingFunction: Cesium.EasingFunction.LINEAR_NONE,
-              complete: function complete() {
+              complete: function () {
                 if (endfun) endfun();
               },
             });
@@ -848,20 +847,14 @@ function initMap(id, config, options) {
     if (crs == "gcj") {
       var point_clone = Util.clone(point);
 
-      var newpoint = _pointconvert2.default.wgs2gcj([
-        point_clone.x,
-        point_clone.y,
-      ]);
+      var newpoint = PointConvert.wgs2gcj([point_clone.x, point_clone.y]);
       point_clone.x = newpoint[0];
       point_clone.y = newpoint[1];
       return point_clone;
     } else if (crs == "baidu") {
       var point_clone = Util.clone(point);
 
-      var newpoint = _pointconvert2.default.wgs2bd([
-        point_clone.x,
-        point_clone.y,
-      ]);
+      var newpoint = PointConvert.wgs2bd([point_clone.x, point_clone.y]);
       point_clone.x = newpoint[0];
       point_clone.y = newpoint[1];
       return point_clone;

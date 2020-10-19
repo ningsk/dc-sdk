@@ -1801,7 +1801,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-13 14:23:37
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-30 10:34:54
+   * @LastEditTime: 2020-10-12 09:51:28
    */
   /**
    * 格式化
@@ -2143,7 +2143,7 @@
     bookmark.z = formatNum$1(position.height, 2);
     bookmark.heading = formatNum$1(Cesium$1.Math.toDegrees(camera.heading || -90), 1);
     bookmark.pitch = formatNum$1(Cesium$1.Math.toDegrees(camera.roll || 0), 1);
-
+    bookmark.roll = formatNum$1(Cesium$1.Math.toDegrees(camera.roll || 0), 1);
     if (isToWgs) {
       bookmark = viewer.mars.point2wgs(bookmark); // 坐标转换wgs
     }
@@ -6576,7 +6576,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-15 14:49:52
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-11 08:54:38
+   * @LastEditTime: 2020-10-19 10:20:49
    */
 
   function style2Entity$a(style, entityAttr) {
@@ -6669,6 +6669,33 @@
     return [pt1, pt2];
   }
 
+  // 获得外边界坐标
+  function getOutlinePositions(entity) {
+    var positions = getPositions$a(entity);
+    return [
+      {
+        x: positions[0].x,
+        y: positions[0].y,
+        z: positions[0].z,
+      },
+      {
+        x: positions[1].x,
+        y: positions[0].y,
+        z: positions[0].z,
+      },
+      {
+        x: positions[1].x,
+        y: positions[1].y,
+        z: positions[1].z,
+      },
+      {
+        x: positions[0].x,
+        y: positions[1].y,
+        z: positions[1].z,
+      },
+    ];
+  }
+
   // 获取entity的坐标（geojson规范的格式）
   function getCoordinates$a(entity) {
     var positions = this.getPositions(entity);
@@ -6691,6 +6718,7 @@
   var AttrRectangle = /*#__PURE__*/Object.freeze({
     style2Entity: style2Entity$a,
     getPositions: getPositions$a,
+    getOutlinePositions: getOutlinePositions,
     getCoordinates: getCoordinates$a,
     toGeoJson: toGeoJson$2
   });
@@ -12958,7 +12986,7 @@
    * @Author: 宁四凯
    * @Date: 2020-08-28 10:49:10
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 16:47:32
+   * @LastEditTime: 2020-10-13 15:55:20
    */
 
   function initMap(id, config, options) {
@@ -13186,7 +13214,7 @@
     var lastCameraView;
     viewer.scene.morphStart.addEventListener(function (event) {
       //切换场景前事件
-      lastCameraView = point.getCameraView(viewer);
+      lastCameraView = getCameraView(viewer);
     });
 
     viewer.scene.morphComplete.addEventListener(function (event) {
@@ -13547,9 +13575,8 @@
         },
       });
     }
-    //旋转地球
     function rotateAnimation(endfun, duration) {
-      var first = point.getCameraView(viewer); //默认为原始视角
+      var first = getCameraView(viewer); //默认为原始视角
       var duration3 = duration / 3;
 
       //动画 1/3
@@ -13566,7 +13593,7 @@
         },
         duration: duration3,
         easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
-        complete: function complete() {
+        complete: function () {
           //动画 2/3
           viewer.camera.flyTo({
             destination: Cesium$1.Cartesian3.fromDegrees(
@@ -13581,7 +13608,7 @@
             },
             duration: duration3,
             easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
-            complete: function complete() {
+            complete: function () {
               //动画 3/3
               viewer.camera.flyTo({
                 destination: Cesium$1.Cartesian3.fromDegrees(
@@ -13596,7 +13623,7 @@
                 },
                 duration: duration3,
                 easingFunction: Cesium$1.EasingFunction.LINEAR_NONE,
-                complete: function complete() {
+                complete: function () {
                   if (endfun) endfun();
                 },
               });
@@ -13777,20 +13804,14 @@
       if (crs == "gcj") {
         var point_clone = clone(point);
 
-        var newpoint = _pointconvert2.default.wgs2gcj([
-          point_clone.x,
-          point_clone.y,
-        ]);
+        var newpoint = wgs2gcj([point_clone.x, point_clone.y]);
         point_clone.x = newpoint[0];
         point_clone.y = newpoint[1];
         return point_clone;
       } else if (crs == "baidu") {
         var point_clone = clone(point);
 
-        var newpoint = _pointconvert2.default.wgs2bd([
-          point_clone.x,
-          point_clone.y,
-        ]);
+        var newpoint = wgs2bd([point_clone.x, point_clone.y]);
         point_clone.x = newpoint[0];
         point_clone.y = newpoint[1];
         return point_clone;
@@ -15755,7 +15776,7 @@
    * @Author: 宁四凯
    * @Date: 2020-09-09 10:50:47
    * @LastEditors: 宁四凯
-   * @LastEditTime: 2020-09-29 15:24:39
+   * @LastEditTime: 2020-10-12 09:33:14
    */
 
   // ================  模块对外公开的属性和方法  ======================
