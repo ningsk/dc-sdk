@@ -10,8 +10,7 @@
 # CARD-SDK
 
 基于 cesium 的三维 sdk
-
-sdk 架构还在不断的探索中，建议先 star。
+bug贼多，建议先 star。
 
 使用方法：
 
