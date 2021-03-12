@@ -4,9 +4,9 @@
  * @Author: sueRimn
  * @Date: 2021-03-11 13:12:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 13:31:49
+ * @LastEditTime: 2021-03-12 13:56:06
  */
-let OverlayType = {
+let GraphicType = {
     LABEL: "label",
     LABEL_P: "labelP",
     POINT: "point",
@@ -69,4 +69,4 @@ let OverlayType = {
 
 }
 
-export default OverlayType
+export default GraphicType

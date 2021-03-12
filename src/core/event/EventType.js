@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-11 11:10:19
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 11:29:25
+ * @LastEditTime: 2021-03-12 14:44:02
  */
 import * as Cesium from "cesium";
 
@@ -46,7 +46,7 @@ const SceneEventType = {
     CLOCK_TICK: 'clockTick'
 }
 
-const OverlayEventType = {
+const GraphicEventType = {
     ...BaseEventType,
     CLICK: Cesium.ScreenSpaceEventType.LEFT_CLICK,
     RIGHT_CLICK: Cesium.ScreenSpaceEventType.RIGHT_CLICK,
@@ -83,7 +83,7 @@ export {
     SceneEventType,
     LayerGroupEventType,
     LayerEventType,
-    OverlayEventType,
+    GraphicEventType,
     DrawEventType,
     EditEventType
 }
