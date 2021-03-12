@@ -7,13 +7,7 @@
  * @LastEditTime: 2020-09-28 10:40:51
 -->
 
-# CARD-SDK
+# DC-SDK
 基于 cesium 的三维 sdk  
 
-bug贼多，建议先 star。
-
-使用方法：
-
-```
-yarn add card-sdk
-```
+持续开发中....
