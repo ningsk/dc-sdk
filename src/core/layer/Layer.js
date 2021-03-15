@@ -4,9 +4,9 @@
  * @Author: sueRimn
  * @Date: 2021-03-11 12:32:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 13:08:14
+ * @LastEditTime: 2021-03-15 11:05:12
  */
-import { LayerEventType } from "../event/EventType";
+import { GraphicEventType, LayerEventType } from "../event/EventType";
 import LayerEvent from "../event/LayerEvent";
 import State from '../state/State';
 import Util from "../util/Util";
@@ -126,18 +126,18 @@ class Layer {
     }
 
     /**
-     * The layer add overlay
-     * @param overlay
+     * The layer add graphic
+     * @param graphic
      * @private
      */
-    _addOverlay(overlay) {
+    _addGraphic(graphic) {
         if (
-            overlay &&
-            overlay.overlayEvent &&
-            !this._cache.hasOwnProperty(overlay.overlayId)
+            graphic &&
+            graphic.graphicEvent &&
+            !this._cache.hasOwnProperty(graphic.graphicId)
         ) {
-            overlay.overlayEvent.fire(OverlayEventType.ADD, this)
-            this._cache[overlay.overlayId] = overlay
+            graphic.graphicEvent.fire(GraphicEventType.ADD, this)
+            this._cache[graphic.graphicId] = graphic
             if (this._state === State.CLEARED) {
                 this._state = State.ADDED
             }
@@ -145,88 +145,88 @@ class Layer {
     }
 
     /**
-     * The layer remove overlay
-     * @param overlay
+     * The layer remove graphic
+     * @param graphic
      * @private
      */
-    _removeOverlay(overlay) {
+    _removeGraphic(graphic) {
         if (
-            overlay &&
-            overlay.overlayEvent &&
-            this._cache.hasOwnProperty(overlay.overlayId)
+            graphic &&
+            graphic.graphicEvent &&
+            this._cache.hasOwnProperty(graphic.graphicId)
         ) {
-            overlay.overlayEvent.fire(OverlayEventType.REMOVE, this)
-            delete this._cache[overlay.overlayId]
+            graphic.graphicEvent.fire(GraphicEventType.REMOVE, this)
+            delete this._cache[graphic.graphicId]
         }
     }
 
     /**
-     * Add overlay
-     * @param overlay
+     * Add graphic
+     * @param graphic
      * @returns {Layer}
      */
-    addOverlay(overlay) {
-        this._addOverlay(overlay)
+    addGraphic(graphic) {
+        this._addGraphic(graphic)
         return this
     }
 
     /**
-     * Add overlays
-     * @param overlays
+     * Add graphics
+     * @param graphics
      * @returns {Layer}
      */
-    addOverlays(overlays) {
-        if (Array.isArray(overlays)) {
-            overlays.forEach(item => {
-                this._addOverlay(item)
+    addGraphics(graphics) {
+        if (Array.isArray(graphics)) {
+            graphics.forEach(item => {
+                this._addGraphic(item)
             })
         }
         return this
     }
 
     /**
-     * Remove overlay
-     * @param overlay
+     * Remove graphic
+     * @param graphic
      * @returns {Layer}
      */
-    removeOverlay(overlay) {
-        this._removeOverlay(overlay)
+    removeGraphic(graphic) {
+        this._removeGraphic(graphic)
         return this
     }
 
     /**
-     * Returns the overlay by overlayId
-     * @param overlayId
+     * Returns the graphic by graphicId
+     * @param graphicId
      * @returns {*|undefined}
      */
-    getOverlay(overlayId) {
-        return this._cache[overlayId] || undefined
+    getGraphic(graphicId) {
+        return this._cache[graphicId] || undefined
     }
 
     /**
-     * Returns the overlay by bid
+     * Returns the graphic by bid
      * @param id
      * @returns {any}
      */
-    getOverlayById(id) {
-        let overlay = undefined
+    getGraphicById(id) {
+        let graphic = undefined
         Object.keys(this._cache).forEach(key => {
             if (this._cache[key].id === id) {
-                overlay = this._cache[key]
+                graphic = this._cache[key]
             }
         })
-        return overlay
+        return graphic
     }
 
     /**
-     * Returns the overlays by attrName and AttrVal
+     * Returns the graphic by attrName and AttrVal
      * @param attrName
      * @param attrVal
      * @returns {[]}
      */
-    getOverlaysByAttr(attrName, attrVal) {
+    getGraphicByAttr(attrName, attrVal) {
         let result = []
-        this.eachOverlay(item => {
+        this.eachGraphic(item => {
             if (item.attr[attrName] === attrVal) {
                 result.push(item)
             }
@@ -235,12 +235,12 @@ class Layer {
     }
 
     /**
-     * Iterate through each overlay and pass it as an argument to the callback function
+     * Iterate through each graphic and pass it as an argument to the callback function
      * @param method
      * @param context
      * @returns {Layer}
      */
-    eachOverlay(method, context) {
+    eachGraphic(method, context) {
         Object.keys(this._cache).forEach(key => {
             method && method.call(context || this, this._cache[key])
         })
@@ -248,10 +248,10 @@ class Layer {
     }
 
     /**
-     * Returns all overlays
+     * Returns all graphics
      * @returns {[]}
      */
-    getOverlays() {
+    getGraphics() {
         let result = []
         Object.keys(this._cache).forEach(key => {
             result.push(this._cache[key])
@@ -260,7 +260,7 @@ class Layer {
     }
 
     /**
-     * Clears all overlays
+     * Clears all graphics
      * Subclasses need to be overridden
      */
     clear() { }

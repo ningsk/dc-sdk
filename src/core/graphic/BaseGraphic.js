@@ -2,32 +2,37 @@
  * @Description: 
  * @version: 
  * @Author: sueRimn
- * @Date: 2021-03-12 14:28:47
+ * @Date: 2021-03-15 10:14:22
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 14:55:49
+ * @LastEditTime: 2021-03-15 10:55:16
  */
-import { GraphicEventType } from "../../event/EventType"
-import GraphicEvent from "../../event/GraphicEvent"
-import Util from '../../util/Util'
 
-class BaseEntity {
+import { GraphicEventType } from "../event/EventType";
+import GraphicEvent from "../event/GraphicEvent";
+import { Util } from "../util";
+import State from "../state/State"
+import GraphicType from "./GraphicType";
+
+
+class BaseGraphic {
     constructor() {
         this._id = Util.uuid()
-        this._bid = Util.uuid() // Business id
+        this._bid = Util.uuid()
         this._delegate = undefined
         this._layer = undefined
         this._state = undefined
         this._show = true
         this._style = {}
-        this._attr = {}
+        this._arr = {}
         this._allowDrillPicking = false
+        this._contextMenu = []
         this._graphicEvent = new GraphicEvent()
         this.type = undefined
         this.on(GraphicEventType.ADD, this._onAdd, this)
         this.on(GraphicEventType.REMOVE, this._onRemove, this)
     }
 
-    get overlayId() {
+    get graphicId() {
         return this._id
     }
 
@@ -43,7 +48,6 @@ class BaseEntity {
     set show(show) {
         this._show = show
         this._delegate && (this._delegate.show = this._show)
-        return this
     }
 
     get show() {
@@ -64,64 +68,41 @@ class BaseEntity {
         return this
     }
 
-    get allowDrillPicking() {
-        return this._allowDrillPicking
-    }
-
     get graphicEvent() {
         return this._graphicEvent
-    }
-
-    get delegate() {
-        return this._delegate
     }
 
     get state() {
         return this._state
     }
 
-    /**
-     * The hook for mount layer
-     * Subclasses need to be overridden
-     * @private
-     */
-    _mountedHook() { }
+    set contextMenu(menu) {
+        this._contextMenu = menu
+        return this
+    }
 
-    /**
-     * The hook for added
-     * @returns {boolean}
-     * @private
-     */
+    _mountedHook() {}
+
     _addedHook() {
         if (!this._delegate) {
             return false
         }
         this._delegate.layerId = this._layer?.layerId
-        this._delegate.overlayId = this._id
+        this._delegate.graphicId = this._id
     }
 
-    /**
-     * The hook for removed
-     * Subclasses need to be overridden
-     * @private
-     */
-    _removedHook() { }
+    _removeHook() {}
 
-    /**
-     * Add handler
-     * @param layer
-     * @private
-     */
     _onAdd(layer) {
-        if (!layer || !this._delegate) {
-            return
+        if (!layer) {
+            return 
         }
         this._layer = layer
         this._mountedHook && this._mountedHook()
         // for Entity
-        if (this._layer?.delegate?.entities) {
+        if (this._layer?._delegate?.entities && this._delegate) {
             this._layer.delegate.entities.add(this._delegate)
-        } else if (this._layer?.delegate?.add) {
+        } else if (this._layer?.delegate?.add && this._delegate) {
             // for Primitive
             this._layer.delegate.add(this._delegate)
         }
@@ -131,12 +112,10 @@ class BaseEntity {
 
     /**
      * Remove handler
-     * @private
+     * @returns 
      */
     _onRemove() {
-        if (!this._layer || !this._delegate) {
-            return
-        }
+        if (!this._layer || !this._delegate) return
         // for Entity
         if (this._layer?.delegate?.entities) {
             this._layer.delegate.entities.remove(this._delegate)
@@ -144,110 +123,88 @@ class BaseEntity {
             // for Primitive
             this._layer.delegate.remove(this._delegate)
         }
-        this._removedHook && this._removedHook()
+        this._removeHook && this._removeHook()
         this._state = State.REMOVED
     }
 
-    /**
-     * Sets Text with Style
-     * @param text
-     * @param textStyle
-     * @returns {Overlay}
-     */
     setLabel(text, textStyle) {
-        this._delegate &&
-            (this._delegate.label = {
-                ...textStyle,
-                text: text
-            })
+        this._delegate && (this._delegate.label = {
+            ...textStyle,
+            text: text
+        })
         return this
     }
 
-    /**
-     * Sets style
-     * @param style
-     * @returns {Overlay}
-     */
     setStyle(style) {
         return this
     }
 
     /**
      * Removes from layer
-     * @returns {Overlay}
+     * @returns 
      */
     remove() {
         if (this._layer) {
-            this._layer.removeOverlay(this)
+            this._layer.removeGraphic(this)
         }
         return this
     }
 
     /**
      * adds to layer
-     * @param layer
-     * @returns {Overlay}
+     * @param {*} layer 
+     * @returns 
      */
     addTo(layer) {
-        if (layer && layer.addOverlay) {
-            layer.addOverlay(this)
+        if (layer && layer.addGraphic) {
+            layer.addGraphic(this)
         }
         return this
     }
 
     /**
      * Subscribe event
-     * @param type
-     * @param callback
-     * @param context
-     * @returns {Overlay}
+     * @param {*} type 
+     * @param {*} callback 
+     * @param {*} context 
      */
     on(type, callback, context) {
-        this._overlayEvent.on(type, callback, context || this)
+        this._graphicEvent.on(type, callback, context || this)
         return this
     }
 
     /**
      * Unsubscribe event
-     * @param type
-     * @param callback
-     * @param context
-     * @returns {Overlay}
+     * @param {*} type 
+     * @param {*} callback 
+     * @param {*} context 
      */
     off(type, callback, context) {
-        this._overlayEvent.off(type, callback, context || this)
+        this._graphicEvent.off(type, callback, context || this)
         return this
     }
 
     /**
      * Trigger subscription event
-     * @param type
-     * @param params
-     * @returns {Overlay}
+     * @param {*} type 
+     * @param {*} params 
+     * @returns 
      */
     fire(type, params) {
-        this._overlayEvent.fire(type, params)
+        this._graphicEvent.fire(type, params)
         return this
     }
 
-    /**
-     *
-     * @param type
-     */
     static registerType(type) {
         if (type) {
-            OverlayType[type.toLocaleUpperCase()] = type.toLocaleLowerCase()
+            GraphicType[type.toLocaleUpperCase()] = type.toLocaleUpperCase()
         }
     }
 
-    /**
-     *
-     * @param type
-     * @returns {*|undefined}
-     */
-    static getOverlayType(type) {
-        return OverlayType[type.toLocaleUpperCase()] || undefined
+    static getGraphicType(type) {
+        return GraphicType[type.toLocaleUpperCase()] || undefined
     }
+
 }
 
-export default BaseEntity
+export default BaseGraphic
