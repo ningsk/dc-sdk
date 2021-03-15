@@ -4,9 +4,10 @@
  * @Author: sueRimn
  * @Date: 2021-03-11 11:10:19
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 14:44:02
+ * @LastEditTime: 2021-03-15 14:24:33
  */
 import * as Cesium from "cesium";
+
 
 const BaseEventType = {
     ADD: 'add',
@@ -46,31 +47,15 @@ const SceneEventType = {
     CLOCK_TICK: 'clockTick'
 }
 
-const GraphicEventType = {
+const OverlayEventType = {
     ...BaseEventType,
     CLICK: Cesium.ScreenSpaceEventType.LEFT_CLICK,
     RIGHT_CLICK: Cesium.ScreenSpaceEventType.RIGHT_CLICK,
     DB_CLICK: Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+    MOUSE_MOVE: Cesium.ScreenSpaceEventType.MOUSE_MOVE,
     MOUSE_OVER: 'mouseover',
-    MOUSE_OUT: 'mouseout'
-}
-
-const DrawEventType = {
-    DRAW_ADD_POINT: "drawAddPoint",
-    DRAW_CREATED: "drawCreated",
-    DRAW_MOUSE_MOVE: "drawMouseMove",
-    DRAW_REMOVE_POINT: "drawRemovePoint",
-    DRAW_START: "drawStart"
-}
-
-const EditEventType = {
-    EDIT_MOUSE_DOWN: "editMouseDown",
-    EDIT_MOUSE_MOVE: "editMouseMove",
-    EDIT_MOVE_POINT: "editMovePoint",
-    EDIT_REMOVE_POINT: "editRemovePoint",
-    EDIT_START: "editStart",
-    EDIT_STOP: "editStop",
-    EDIT_STYLE: "editStyle"
+    MOUSE_OUT: 'mouseout',
+    POSITION_UPDATE: 'positionUpdate'
 }
 
 const LayerGroupEventType = BaseEventType
@@ -83,7 +68,5 @@ export {
     SceneEventType,
     LayerGroupEventType,
     LayerEventType,
-    GraphicEventType,
-    DrawEventType,
-    EditEventType
+    OverlayEventType
 }
