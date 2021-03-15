@@ -3,8 +3,8 @@
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 13:12:14
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-03-15 14:44:40
  */
 import rollupGitVersion from "rollup-plugin-git-version";
 import json from "rollup-plugin-json";
@@ -16,29 +16,26 @@ let release;
 
 // Skip the git branch+rev in the banner when doing a release build
 if (process.env.NODE_ENV === "release") {
-  release = true;
+    release = true;
 } else {
-  release = false;
-  const branch = gitRev.branch();
-  const rev = gitRev.short();
-  version += "+" + branch + "." + rev;
+    release = false;
+    const branch = gitRev.branch();
+    const rev = gitRev.short();
+    version += "+" + branch + "." + rev;
 }
 
 export default {
-  input: "src/index.js",
-  external: ["jquery", "turf", "cesium"],
-  output: [
-    {
-      file: pkg.main,
-      format: "umd",
-      name: "mars3d",
-      globals: {
-        jquery: "$",
-        cesium: "Cesium",
-        leaflet: "L",
-        "esri-leaflet": "L.esri",
-      },
-    },
-  ],
-  plugins: [release ? json() : rollupGitVersion()],
+    input: "src/index.js",
+    external: ["turf", "cesium"],
+    output: [
+        {
+            file: pkg.main,
+            format: "umd",
+            name: "DC",
+            globals: {
+                cesium: "Cesium",
+            },
+        },
+    ],
+    plugins: [release ? json() : rollupGitVersion()],
 };

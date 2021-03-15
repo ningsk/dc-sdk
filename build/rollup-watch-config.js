@@ -3,8 +3,8 @@
  * @version:
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 13:15:37
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-03-15 14:44:59
  */
 import rollupGitVersion from "rollup-plugin-git-version";
 import json from "rollup-plugin-json";
@@ -26,17 +26,14 @@ if (process.env.NODE_ENV === "release") {
 
 export default {
   input: "src/index.js",
-  external: ["jquery", "turf", "cesium"],
+  external: ["turf", "cesium"],
   output: [
     {
       file: pkg.main,
       format: "umd",
-      name: "mars3d",
+      name: "DC",
       globals: {
-        jquery: "$",
         cesium: "Cesium",
-        leaflet: "L",
-        "esri-leaflet": "L.esri",
       },
     },
   ],
