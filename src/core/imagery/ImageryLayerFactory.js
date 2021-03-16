@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 09:01:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 09:18:16
+ * @LastEditTime: 2021-03-16 10:03:15
  */
 import ImageryType from './ImageryType'
 import AmapImageryProvider from './provider/AmapImageryProvider'
@@ -116,6 +116,27 @@ class ImageryLayerFactory {
     }
 
     /**
+     * Create mapbox image layer
+     * @param  options 
+     * @returns {module: cesium.MapboxImageryProvider}
+     */
+    static createMapboxImageryLayer(options) {
+        return new Cesium.MapboxImageryProvider(options)
+    }
+
+
+    /**
+     * Create mapboxStyle image layer
+     * @param  options 
+     * @returns 
+     */
+    static createMapboxStyleImageryLayer(options) {
+        return new Cesium.MapboxStyleImageryProvider(options)
+    }
+
+
+
+    /**
      * Create Imagery Layer
      * @param type
      * @param options
@@ -157,6 +178,11 @@ class ImageryLayerFactory {
             case ImageryType.COORD:
                 imageryLayer = this.createCoordImageryLayer(options)
                 break
+            case ImageryType.MAPBOX:
+                imageryLayer = this.createMapboxImageryLayer(options)
+                break
+            case ImageryType.MAPBOX_STYLE:
+                imageryLayer = this.createMapboxStyleImageryLayer(options)        
             default:
                 break
         }

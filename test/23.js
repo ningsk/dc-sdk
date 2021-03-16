@@ -308,7 +308,7 @@ exports.createImageryProvider = function (item, serverURL) {
     }
 
     var layer;
-    switch (opts.type_new || opts.type) {
+    switch (opts.type) {
         //===============地图底图==================== 
         case "single":
         case "image":
