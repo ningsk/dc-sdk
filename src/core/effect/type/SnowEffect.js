@@ -4,13 +4,13 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 10:17:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 10:47:55
+ * @LastEditTime: 2021-03-16 18:50:39
  */
 import * as Cesium from "cesium"
 import State from "../../state/State"
 import Util from "../../util/Util"
 
-const SnowShader = require("../../material/shader/effect/SnowShader.glsl")
+import SnowShader from "../../material/shader/effect/SnowShader.glsl"
 
 class SnowEffect {
     constructor() {

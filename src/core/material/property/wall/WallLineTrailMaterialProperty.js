@@ -4,13 +4,13 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 12:19:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 12:19:27
+ * @LastEditTime: 2021-03-16 18:34:00
  */
 import MaterialProperty from '../../MaterialProperty'
 
 import * as Cesium from "cesium"
 
-const IMG = require('../../../images/space_line.png')
+import IMG from '../../../images/space_line.png'
 
 class WallLineTrailMaterialProperty extends MaterialProperty {
   constructor(options = {}) {

@@ -4,11 +4,12 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 17:11:57
+ * @LastEditTime: 2021-03-16 18:47:25
  */
 import rollupGitVersion from "rollup-plugin-git-version";
-import resolve from "rollup-plugin-node-resolve"
-import commonjs from "rollup-plugin-commonjs"
+import resolve from "@rollup/plugin-node-resolve"
+import image from "@rollup/plugin-image"
+import glsl from "rollup-plugin-glslify"
 import json from "rollup-plugin-json";
 import gitRev from "git-rev-sync";
 import pkg from "../package.json";
@@ -39,5 +40,5 @@ export default {
       },
     },
   ],
-  plugins: [release ? json() : rollupGitVersion(), resolve(), commonjs()],
+  plugins: [release ? json() : rollupGitVersion(), resolve(), image(), glsl()],
 };

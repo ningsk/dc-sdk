@@ -1,24 +1,17 @@
-/*
- * @Description: 雨天效果 
- * @version: 
- * @Author: sueRimn
- * @Date: 2021-03-12 10:50:07
- * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 18:50:55
- */
 import * as Cesium from "cesium"
+
+import SnowShader from '../../material/shader/weather/SnowShader.glsl'
 import State from "../../state/State"
 import Util from "../../util/Util"
-import RainShader from '../../material/shader/weather/RainShader.glsl'
 
-class RainEffect {
+class Snow {
     constructor() {
         this._id = Util.uuid()
         this._viewer = undefined
         this._delegate = undefined
         this._enable = false
         this._speed = 10.0
-        this.type = 'rain'
+        this.type = 'snow'
         this._state = State.INITIALIZED
     }
 
@@ -52,7 +45,7 @@ class RainEffect {
     _createPostProcessStage() {
         this._delegate = new Cesium.PostProcessStage({
             name: this._id,
-            fragmentShader: RainShader,
+            fragmentShader: SnowShader,
             uniforms: {
                 speed: this._speed
             }
@@ -63,7 +56,7 @@ class RainEffect {
     /**
      *
      * @param viewer
-     * @returns {Rain}
+     * @returns {Snow}
      */
     addTo(viewer) {
         if (!viewer) {
@@ -75,4 +68,4 @@ class RainEffect {
     }
 }
 
-export default RainEffect
+export default Snow

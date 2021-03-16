@@ -1,10 +1,10 @@
 /*
- * @Description: 雾天效果 
+ * @Descripttion: 
  * @version: 
  * @Author: sueRimn
- * @Date: 2021-03-12 10:47:13
+ * @Date: 2021-03-16 18:53:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 18:49:43
+ * @LastEditTime: 2021-03-16 18:56:31
  */
 import * as Cesium from "cesium"
 import State from "../../state/State"
@@ -13,7 +13,7 @@ import Util from "../../util/Util"
 
 import FogShader from '../../material/shader/weather/FogShader.glsl'
 
-class FogEffect {
+class Fog {
     constructor() {
         this._id = Util.uuid()
         this._viewer = undefined
@@ -99,4 +99,4 @@ class FogEffect {
     }
 }
 
-export default FogEffect
+export default Fog

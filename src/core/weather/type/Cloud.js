@@ -1,18 +1,11 @@
-/*
- * @Description: 云效果 
- * @version: 
- * @Author: sueRimn
- * @Date: 2021-03-12 10:34:39
- * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 18:51:15
- */
+import * as Cesium from "cesium"
+import State from "../../state/State"
+import Util from "../../util/Util"
 
-import State from "../../state/State";
-import Util from "../../util/Util";
 
 import IMG from '../../images/cloud.jpg'
 
-class CloudEffect {
+class Cloud {
     constructor() {
         this._id = Util.uuid()
         this._viewer = undefined
@@ -122,4 +115,4 @@ class CloudEffect {
     }
 }
 
-export default CloudEffect
+export default Cloud

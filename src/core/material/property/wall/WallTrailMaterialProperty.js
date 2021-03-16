@@ -4,13 +4,13 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 12:19:41
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 12:20:03
+ * @LastEditTime: 2021-03-16 18:34:28
  */
 import MaterialProperty from '../../MaterialProperty'
 
 import * as Cesium from "cesium"
 
-const IMG = require('../../../images/fence.png')
+import IMG from '../../../images/fence.png'
 
 class WallTrailMaterialProperty extends MaterialProperty {
     constructor(options = {}) {

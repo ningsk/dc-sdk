@@ -4,13 +4,13 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 11:56:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 11:57:13
+ * @LastEditTime: 2021-03-16 18:33:17
  */
 import MaterialProperty from '../../MaterialProperty'
 
 import * as Cesium from "cesium"
 
-const IMG = require('../../../images/lighting.png')
+import IMG from '../../../images/lighting.png'
 
 class PolylineLightingTrailMaterialProperty extends MaterialProperty {
     constructor(options = {}) {

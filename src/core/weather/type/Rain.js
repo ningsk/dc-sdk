@@ -1,17 +1,20 @@
 /*
- * @Description: 雨天效果 
+ * @Description: 
  * @version: 
  * @Author: sueRimn
- * @Date: 2021-03-12 10:50:07
+ * @Date: 2021-03-16 18:53:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 18:50:55
+ * @LastEditTime: 2021-03-16 18:57:15
  */
 import * as Cesium from "cesium"
+
 import State from "../../state/State"
 import Util from "../../util/Util"
+
+
 import RainShader from '../../material/shader/weather/RainShader.glsl'
 
-class RainEffect {
+class Rain {
     constructor() {
         this._id = Util.uuid()
         this._viewer = undefined
@@ -75,4 +78,4 @@ class RainEffect {
     }
 }
 
-export default RainEffect
+export default Rain

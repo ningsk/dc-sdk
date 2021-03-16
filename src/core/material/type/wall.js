@@ -4,13 +4,13 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 12:21:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 12:24:23
+ * @LastEditTime: 2021-03-16 18:46:33
  */
 import * as Cesium from "cesium"
 
-const WallImageTrailMaterial = require('../shader/wall/WallImageTrailMaterial.glsl')
-const WallLineTrailMaterial = require('../shader/wall/WallLineTrailMaterial.glsl')
-const WallTrailMaterial = require('../shader/wall/WallTrailMaterial.glsl')
+import WallImageTrailMaterial from '../shader/wall/WallImageTrailMaterial.glsl'
+import WallLineTrailMaterial from '../shader/wall/WallLineTrailMaterial.glsl'
+import WallTrailMaterial from '../shader/wall/WallTrailMaterial.glsl'
 
 /**
  * WallImageTrail

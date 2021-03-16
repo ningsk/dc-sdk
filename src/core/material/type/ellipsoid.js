@@ -4,12 +4,12 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 12:21:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 12:23:11
+ * @LastEditTime: 2021-03-16 18:40:15
  */
 import * as Cesium from "cesium"
 
-const EllipsoidElectricMaterial = require('../shader/ellipsoid/EllipsoidElectricMaterial.glsl')
-const EllipsoidTrailMaterial = require('../shader/ellipsoid/EllipsoidTrailMaterial.glsl')
+import EllipsoidElectricMaterial  from '../shader/ellipsoid/EllipsoidElectricMaterial.glsl'
+import EllipsoidTrailMaterial from '../shader/ellipsoid/EllipsoidTrailMaterial.glsl'
 
 /**
  * EllipsoidElectric

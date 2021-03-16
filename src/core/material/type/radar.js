@@ -4,12 +4,12 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 12:21:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 12:23:51
+ * @LastEditTime: 2021-03-16 18:59:55
  */
 import * as Cesium from "cesium"
-const RadarLineMaterial = require('../shader/radar/RadarLineMaterial.glsl')
-const RadarSweepMaterial = require('../shader/radar/RadarSweepMaterial.glsl')
-const RadarWaveMaterial = require('../shader/radar/RadarWaveMaterial.glsl')
+import RadarLineMaterial from '../shader/radar/RadarLineMaterial.glsl'
+import RadarSweepMaterial from '../shader/radar/RadarSweepMaterial.glsl'
+import RadarWaveMaterial from '../shader/radar/RadarWaveMaterial.glsl'
 
 /**
  * RadarLine
