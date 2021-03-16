@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-11 11:18:45
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 15:26:58
+ * @LastEditTime: 2021-03-16 14:01:43
  */
 
 import {
@@ -24,10 +24,13 @@ import {
     PolylineVolume,
     Rectangle,
     Wall
-} from './entity'
+} from './entity/index'
 
 import OverlayType from './OverlayType'
 import Overlay from './Ovelay'
+
+import Model  from './model/Model'
+import Tileset from './model/Tileset'
 
 export {
     Billboard,
@@ -46,6 +49,8 @@ export {
     PolylineVolume,
     Rectangle,
     Wall,
+    Model,
+    Tileset
 }
 
 export {

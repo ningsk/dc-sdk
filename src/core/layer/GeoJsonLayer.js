@@ -4,12 +4,12 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 09:51:13
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:29:56
+ * @LastEditTime: 2021-03-16 13:40:52
  */
 import State from '../state/State'
 import Layer from './Layer'
 import VectorLayer from './VectorLayer'
-import { Billboard, Polyline, Polygon, Model } from '../overlay'
+import { Billboard, Polyline, Polygon, Model } from '../overlay/index'
 
 import Cesium from "cesium"
 

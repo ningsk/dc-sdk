@@ -4,11 +4,11 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 10:14:22
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:08:45
+ * @LastEditTime: 2021-03-16 13:44:38
  */
 
-import { Util } from '../utils'
-import { OverlayEventType, OverlayEvent } from '../event'
+import { Util } from '../util/index'
+import { OverlayEventType, OverlayEvent } from '../event/index'
 import State from '../state/State'
 import OverlayType from './OverlayType'
 

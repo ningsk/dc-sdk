@@ -4,15 +4,15 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:19:39
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:20:01
+ * @LastEditTime: 2021-03-16 14:02:32
  */
-import { Util } from '../../utils'
+import { Util } from '../../util/index'
 import State from '../../state/State'
 import Transform from '../../transform/Transform'
 import Parse from '../../parse/Parse'
-import Overlay from '../Overlay'
-
+import Overlay from '../Ovelay'
 import Cesium from "cesium"
+
 
 class Model extends Overlay {
     constructor(position, modelUrl) {

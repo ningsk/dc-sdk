@@ -4,13 +4,13 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:17:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:18:05
+ * @LastEditTime: 2021-03-16 13:55:19
  */
-import { Util } from '../../utils'
+import { Util } from '../../util/index'
 import State from '../../state/State'
 import Transform from '../../transform/Transform'
 import Parse from '../../parse/Parse'
-import Overlay from '../Overlay'
+import Overlay from '../Ovelay'
 
 import Cesium from "cesium"
 

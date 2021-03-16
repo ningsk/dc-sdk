@@ -1,8 +1,11 @@
-/**
- * @Author: Caven
- * @Date: 2020-06-06 14:18:00
+/*
+ * @Description: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-03-15 13:55:23
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-03-16 14:19:02
  */
-
 const refresh = `
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">

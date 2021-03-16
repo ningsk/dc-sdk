@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-11 17:23:31
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 17:54:17
+ * @LastEditTime: 2021-03-16 14:08:21
  */
 import Things from './Things'
 
@@ -35,3 +35,5 @@ class Underground extends Things {
 
 
 }
+
+export default Underground

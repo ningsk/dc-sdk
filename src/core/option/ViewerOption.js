@@ -4,9 +4,9 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:34:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:34:40
+ * @LastEditTime: 2021-03-16 13:44:10
  */
-import { Util } from '../utils'
+import { Util } from '../util/index'
 
 import Cesium from "cesium"
 class ViewerOption {

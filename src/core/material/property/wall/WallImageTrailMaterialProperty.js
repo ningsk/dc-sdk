@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-12 12:18:31
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 12:18:54
+ * @LastEditTime: 2021-03-16 13:31:37
  */
 import MaterialProperty from '../../MaterialProperty'
 
@@ -19,8 +19,8 @@ class WallImageTrailMaterialProperty extends MaterialProperty {
         this._repeatSubscription = undefined
         this.image = options.image
         this.repeat = new Cesium.Cartesian2(
-            options.repeat?.x || 1,
-            options.repeat?.y || 1
+            options.repeat.x || 1,
+            options.repeat.y || 1
         )
     }
 

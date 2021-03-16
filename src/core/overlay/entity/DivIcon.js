@@ -4,15 +4,15 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:17:01
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:17:24
+ * @LastEditTime: 2021-03-16 13:57:03
  */
-import { DomUtil, Util } from '../../utils'
-import { MouseEventType } from '../../event'
-import { isBetween } from '../../math'
+import { DomUtil, Util } from '../../util/index'
+import { MouseEventType } from '../../event/index'
+import { isBetween } from '../../math/index'
 import Transform from '../../transform/Transform'
 import Parse from '../../parse/Parse'
 import State from '../../state/State'
-import Overlay from '../Overlay'
+import Overlay from '../Ovelay'
 
 class DivIcon extends Overlay {
     constructor(position, content) {

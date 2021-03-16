@@ -4,9 +4,11 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:44:59
+ * @LastEditTime: 2021-03-16 17:11:57
  */
 import rollupGitVersion from "rollup-plugin-git-version";
+import resolve from "rollup-plugin-node-resolve"
+import commonjs from "rollup-plugin-commonjs"
 import json from "rollup-plugin-json";
 import gitRev from "git-rev-sync";
 import pkg from "../package.json";
@@ -37,5 +39,5 @@ export default {
       },
     },
   ],
-  plugins: [release ? json() : rollupGitVersion()],
+  plugins: [release ? json() : rollupGitVersion(), resolve(), commonjs()],
 };

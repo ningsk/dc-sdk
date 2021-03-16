@@ -4,10 +4,10 @@
  * @Author: sueRimn
  * @Date: 2021-03-11 12:32:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:22:35
+ * @LastEditTime: 2021-03-16 13:40:26
  */
-import { Util } from '../utils'
-import { LayerEventType, OverlayEventType, LayerEvent } from '../event'
+import { Util } from '../util/index'
+import { LayerEventType, OverlayEventType, LayerEvent } from '../event/index'
 import State from '../state/State'
 import LayerType from './LayerType'
 

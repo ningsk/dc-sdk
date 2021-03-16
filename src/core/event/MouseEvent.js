@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:26:01
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:26:20
+ * @LastEditTime: 2021-03-16 13:30:05
  */
 import { MouseEventType } from './EventType'
 import Event from './Event'
@@ -192,7 +192,7 @@ class MouseEvent extends Event {
     _raiseEvent(type, mouseInfo = {}) {
         let event = undefined
         let targetInfo = this._getTargetInfo(mouseInfo.target)
-        let overlay = targetInfo?.overlay
+        let overlay = targetInfo.overlay
         // get Overlay Event
         if (overlay && overlay.overlayEvent) {
             event = overlay.overlayEvent.getEvent(type)
@@ -213,10 +213,10 @@ class MouseEvent extends Event {
         if (overlay && overlay.allowDrillPicking) {
             let drillInfos = this._getDrillInfos(mouseInfo.windowPosition)
             drillInfos.forEach(drillInfo => {
-                let dillOverlay = drillInfo?.overlay
+                let dillOverlay = drillInfo.overlay
                 if (
-                    dillOverlay?.overlayId !== overlay.overlayId &&
-                    dillOverlay?.overlayEvent
+                    dillOverlay.overlayId !== overlay.overlayId &&
+                    dillOverlay.overlayEvent
                 ) {
                     event = dillOverlay.overlayEvent.getEvent(type)
                     event &&

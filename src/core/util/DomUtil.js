@@ -1,8 +1,3 @@
-/**
- * @Author: Caven
- * @Date: 2019-12-31 17:50:13
- */
-
 import Util from './Util'
 
 /**
@@ -186,7 +181,7 @@ class DomUtil {
      * @returns {HTMLDivElement|NodeListOf<ChildNode>}
      */
     static parseDom(domStr, withWrapper, className) {
-        withWrapper = withWrapper ?? false
+        withWrapper = withWrapper ? true : false
         let el = document.createElement('div')
         el.className = className || ''
         el.innerHTML = domStr

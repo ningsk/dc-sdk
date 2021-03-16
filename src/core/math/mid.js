@@ -4,12 +4,12 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:12:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:15:39
+ * @LastEditTime: 2021-03-16 14:16:56
  */
 
 import Position from '../position/Position'
 import Transform from '../transform/Transform'
-const { Cesium } = DC.Namespace
+import * as Cesium from "cesium"
 
 export default function mid(startPosition, endPosition) {
     if (startPosition instanceof Position) {

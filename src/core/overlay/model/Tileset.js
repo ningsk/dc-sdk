@@ -4,13 +4,13 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:20:19
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:20:56
+ * @LastEditTime: 2021-03-16 14:02:14
  */
 import Parse from '../../parse/Parse'
 import State from '../../state/State'
-import Overlay from '../Overlay'
-
+import Overlay from '../Ovelay'
 import Cesium from "cesium"
+
 
 class Tileset extends Overlay {
     constructor(url, options = {}) {

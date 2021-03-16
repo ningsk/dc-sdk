@@ -4,12 +4,12 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:12:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:14:55
+ * @LastEditTime: 2021-03-16 14:17:09
  */
 import Transform from '../transform/Transform'
 import Position from '../position/Position'
 
-const { Cesium } = DC.Namespace
+import * as Cesium from "cesium"
 
 export default function heading(startPosition, endPosition) {
     let heading = 0

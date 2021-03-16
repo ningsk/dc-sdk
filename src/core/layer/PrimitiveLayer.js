@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 09:30:08
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 09:34:01
+ * @LastEditTime: 2021-03-16 14:07:38
  */
 
 import Cesium from 'cesium'
@@ -32,3 +32,5 @@ class PrimitiveLayer extends Layer {
 }
 
 Layer.registerType('primitive')
+
+export default PrimitiveLayer

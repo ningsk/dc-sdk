@@ -4,10 +4,10 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:31:11
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:31:30
+ * @LastEditTime: 2021-03-16 13:42:14
  */
 import State from '../state/State'
-import { Label } from '../overlay'
+import { Label } from '../overlay/index'
 import Layer from './Layer'
 
 import Cesium from "cesium"

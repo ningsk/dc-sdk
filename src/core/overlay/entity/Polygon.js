@@ -4,16 +4,16 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:11:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:16:11
+ * @LastEditTime: 2021-03-16 13:58:34
  */
-import { Util } from '../../utils'
-import { center, area } from '../../math'
+import { Util } from '../../util/index'
+import { center, area } from '../../math/index'
 import State from '../../state/State'
 import Transform from '../../transform/Transform'
 import Parse from '../../parse/Parse'
-import Overlay from '../Overlay'
 
 import Cesium from "cesium"
+import Overlay from '../Ovelay'
 
 class Polygon extends Overlay {
     constructor(positions) {

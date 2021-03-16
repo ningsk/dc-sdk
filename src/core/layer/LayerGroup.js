@@ -4,11 +4,11 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:23:42
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:23:53
+ * @LastEditTime: 2021-03-16 13:41:33
  */
-import { Util } from '../../core/utils'
+import { Util } from '../util/index'
 import State from '../state/State'
-import { LayerGroupEventType, LayerGroupEvent } from '../event'
+import { LayerGroupEventType, LayerGroupEvent } from '../event/index'
 import Layer from './Layer'
 
 class LayerGroup {

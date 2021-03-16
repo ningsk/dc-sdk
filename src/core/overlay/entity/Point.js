@@ -4,15 +4,15 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 10:16:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:10:00
+ * @LastEditTime: 2021-03-16 13:58:07
  */
-import { Util } from '../../utils'
+import { Util } from '../../util/index'
 import State from '../../state/State'
 import Transform from '../../transform/Transform'
 import Parse from '../../parse/Parse'
-import Overlay from '../Overlay'
 
 import * as Cesium from "cesium"
+import Overlay from '../Ovelay'
 
 const DEF_STYLE = {
   pixelSize: 8,

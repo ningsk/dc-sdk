@@ -4,10 +4,10 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 09:37:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 09:50:03
+ * @LastEditTime: 2021-03-16 13:41:55
  */
 
-import { DomUtil } from "leaflet";
+import { DomUtil } from '../util/index'
 import State from "../state/State";
 import Transform from "../transform/Transform";
 import Layer from "./Layer";

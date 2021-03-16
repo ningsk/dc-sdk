@@ -4,14 +4,14 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:10:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 14:10:51
+ * @LastEditTime: 2021-03-16 13:57:37
  */
-import { Util } from '../../utils'
+import { Util } from '../../util/index'
 import State from '../../state/State'
 import Transform from '../../transform/Transform'
 import Parse from '../../parse/Parse'
-import Overlay from '../Overlay'
 import Cesium from "cesium"
+import Overlay from '../Ovelay'
 
 class Label extends Overlay {
     constructor(position, text) {
