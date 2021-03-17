@@ -1,6 +1,6 @@
 {
   "name": "@ningsk/dc-sdk",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "基于cesium的三维sdk",
   "main": "dist/dc-src.js",
   "module": "dist/dc-src.esm.js",

@@ -24,6 +24,7 @@ import { DomUtil } from '../util/index'
 
 import { Transform } from '../transform/index'
 import createWidgets from '../widget'
+import Parse from '../parse/Parse.js'
 import * as Cesium from "cesium"
 
 const DEF_OPTS = {

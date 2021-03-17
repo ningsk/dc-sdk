@@ -4753,7 +4753,7 @@
    * @LastEditTime: 2021-03-15 10:57:44
    */
 
-  class Parse$1 {
+  class Parse {
       /**
        * Parses all kinds of coordinates to position
        * @param position
@@ -5130,7 +5130,7 @@
       constructor(position, icon) {
           super();
           this._delegate = new Cesium__default['default'].Entity({ billboard: {} });
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._icon = icon;
           this._size = [32, 32];
           this.type = Overlay.getOverlayType('billboard');
@@ -5138,7 +5138,7 @@
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform$1.transformWGS84ToCartesian(
               this._position
           );
@@ -5234,7 +5234,7 @@
   class Box extends Overlay {
       constructor(position, length, width, height) {
           super();
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._length = length;
           this._width = width;
           this._height = height;
@@ -5252,7 +5252,7 @@
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform$1.transformWGS84ToCartesian(this._position);
           this._delegate.orientation = Cesium$1.Transforms.headingPitchRollQuaternion(
               Transform$1.transformWGS84ToCartesian(this._position),
@@ -5330,7 +5330,7 @@
       constructor(center, radius) {
           super();
           this._delegate = new Cesium__default['default'].Entity({ polygon: {} });
-          this._center = Parse$1.parsePosition(center);
+          this._center = Parse.parsePosition(center);
           this._radius = +radius || 0;
           this._rotateAmount = 0;
           this._stRotation = 0;
@@ -5339,7 +5339,7 @@
       }
 
       set center(center) {
-          this._center = Parse$1.parsePosition(center);
+          this._center = Parse.parsePosition(center);
           this._delegate.polygon.hierarchy = this._computeHierarchy();
           return this
       }
@@ -5434,14 +5434,14 @@
   class Corridor extends Overlay {
       constructor(positions) {
           super();
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate = new Cesium__default['default'].Entity({ corridor: {} });
           this.type = Overlay.getOverlayType('corridor');
           this._state = State$1.INITIALIZED;
       }
 
       set positions(positions) {
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate.corridor.positions = Transform.transformWGS84ArrayToCartesianArray(
               this._positions
           );
@@ -5518,7 +5518,7 @@
 
       constructor(position, length, topRadius, bottomRadius) {
           super();
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._length = +length || 0;
           this._topRadius = +topRadius || 0;
           this._bottomRadius = +bottomRadius || 0;
@@ -5529,7 +5529,7 @@
 
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform.transformWGS84ToCartesian(
               this._position
           );
@@ -5981,7 +5981,7 @@
       constructor(position, content) {
           super();
           this._delegate = DomUtil.create('div', 'div-icon');
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.setAttribute('id', this._id);
           Util$1.merge(this._delegate.style, {
               position: 'absolute',
@@ -6004,7 +6004,7 @@
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           return this
       }
 
@@ -6161,7 +6161,7 @@
   class Ellipse extends Overlay {
       constructor(position, semiMajorAxis, semiMinorAxis) {
           super();
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._semiMajorAxis = +semiMajorAxis || 0;
           this._semiMinorAxis = +semiMinorAxis || 0;
           this._delegate = new Cesium__default['default'].Entity({ ellipse: {} });
@@ -6170,7 +6170,7 @@
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform$1.transformWGS84ToCartesian(
               this._position
           );
@@ -6250,7 +6250,7 @@
   class Ellipsoid extends Overlay {
       constructor(position, radius) {
           super();
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._radius = radius || { x: 10, y: 10, z: 10 };
           this._delegate = new Cesium__default['default'].Entity({ ellipsoid: {} });
           this.type = Overlay.getOverlayType('ellipsoid');
@@ -6258,7 +6258,7 @@
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform$1.transformWGS84ToCartesian(
               this._position
           );
@@ -6330,14 +6330,14 @@
       constructor(position, text) {
           super();
           this._delegate = new Cesium__default['default'].Entity({ label: {} });
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._text = text;
           this.type = Overlay.getOverlayType('label');
           this._state = State$1.INITIALIZED;
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform$1.transformWGS84ToCartesian(
               this._position
           );
@@ -6429,7 +6429,7 @@
   class Plane extends Overlay {
       constructor(position, width, height, plane = {}) {
           super();
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._width = +width || 0;
           this._height = +height || 0;
           if (plane.normal && typeof plane.normal === 'string') {
@@ -6459,7 +6459,7 @@
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform$1.transformWGS84ToCartesian(
               this._position
           );
@@ -6565,13 +6565,13 @@
     constructor(position) {
       super();
       this._delegate = new Cesium$1.Entity({ point: {} });
-      this._position = Parse$1.parsePosition(position);
+      this._position = Parse.parsePosition(position);
       this.type = Overlay.getOverlayType('point');
       this._state = State$1.INITIALIZED;
     }
 
     set position(position) {
-      this._position = Parse$1.parsePosition(position);
+      this._position = Parse.parsePosition(position);
       this._delegate.position = Transform$1.transformWGS84ToCartesian(
         this._position
       );
@@ -6643,14 +6643,14 @@
       constructor(positions) {
           super();
           this._delegate = new Cesium__default['default'].Entity({ polygon: {} });
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._holes = [];
           this.type = Overlay.getOverlayType('polygon');
           this._state = State$1.INITIALIZED;
       }
 
       set positions(positions) {
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate.polygon.hierarchy = this._computeHierarchy();
           return this
       }
@@ -6661,7 +6661,7 @@
 
       set holes(holes) {
           if (holes && holes.length) {
-              this._holes = holes.map(item => Parse$1.parsePositions(item));
+              this._holes = holes.map(item => Parse.parsePositions(item));
               this._delegate.polygon.hierarchy = this._computeHierarchy();
           }
           return this
@@ -6769,14 +6769,14 @@
   class Polyline extends Overlay {
       constructor(positions) {
           super();
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate = new Cesium__default['default'].Entity({ polyline: {} });
           this.type = Overlay.getOverlayType('polyline');
           this._state = State$1.INITIALIZED;
       }
 
       set positions(positions) {
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate.polyline.positions = Transform$1.transformWGS84ArrayToCartesianArray(
               this._positions
           );
@@ -6867,7 +6867,7 @@
   class PolylineVolume extends Overlay {
       constructor(positions, shape) {
           super();
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._shape = shape || [];
           this._delegate = new Cesium__default['default'].Entity({ polylineVolume: {} });
           this.type = Overlay.getOverlayType('polyline_volume');
@@ -6875,7 +6875,7 @@
       }
 
       set positions(positions) {
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate.polylineVolume.positions = Transform$1.transformWGS84ArrayToCartesianArray(
               this._positions
           );
@@ -6968,14 +6968,14 @@
   class Rectangle extends Overlay {
       constructor(positions) {
           super();
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate = new Cesium__default['default'].Entity({ rectangle: {} });
           this.type = Overlay.getOverlayType('rectangle');
           this._state = State$1.INITIALIZED;
       }
 
       set positions(positions) {
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate.rectangle.coordinates = Cesium__default['default'].Rectangle.fromCartesianArray(
               Transform$1.transformWGS84ArrayToCartesianArray(this._positions)
           );
@@ -7032,14 +7032,14 @@
   class Wall extends Overlay {
       constructor(positions) {
           super();
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate = new Cesium__default['default'].Entity({ wall: {} });
           this.type = Overlay.getOverlayType('wall');
           this._state = State$1.INITIALIZED;
       }
 
       set positions(positions) {
-          this._positions = Parse$1.parsePositions(positions);
+          this._positions = Parse.parsePositions(positions);
           this._delegate.wall.positions = Transform$1.transformWGS84ArrayToCartesianArray(
               this._positions
           );
@@ -7119,7 +7119,7 @@
       constructor(position, modelUrl) {
           super();
           this._delegate = new Cesium__default['default'].Entity({ model: {} });
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._modelUrl = modelUrl;
           this._rotateAmount = 0;
           this.type = Overlay.getOverlayType('model');
@@ -7127,7 +7127,7 @@
       }
 
       set position(position) {
-          this._position = Parse$1.parsePosition(position);
+          this._position = Parse.parsePosition(position);
           this._delegate.position = Transform$1.transformWGS84ToCartesian(
               this._position
           );
@@ -7316,7 +7316,7 @@
        * @returns {Tileset}
        */
       setPosition(position) {
-          position = Parse$1.parsePosition(position);
+          position = Parse.parsePosition(position);
           this.readyPromise.then(tileset => {
               let modelMatrix = Cesium__default['default'].Transforms.eastNorthUpToFixedFrame(
                   Cesium__default['default'].Cartesian3.fromDegrees(position.lng, position.lat, position.alt)
@@ -7822,6 +7822,174 @@
   }
 
   Layer.registerType('kml');
+
+  const DEF_OPT = {
+    size: 18,
+    pixelRange: 40,
+    gradient: {
+      0.0001: Cesium$1.Color.DEEPSKYBLUE,
+      0.001: Cesium$1.Color.GREEN,
+      0.01: Cesium$1.Color.ORANGE,
+      0.1: Cesium$1.Color.RED
+    },
+    fontSize: 12,
+    fontColor: Cesium$1.Color.BLACK,
+    style: 'circle'
+  };
+
+  class ClusterLayer extends Layer {
+    constructor(id, options = {}) {
+      super(id);
+      this._delegate = new Cesium$1.CustomDataSource(id);
+      this._options = {
+        ...DEF_OPT,
+        ...options
+      };
+      this._delegate.clustering.enabled = true;
+      this._delegate.clustering.clusterEvent.addEventListener(
+        this._clusterEventHandler,
+        this
+      );
+      this._delegate.clustering.pixelRange = this._options.pixelRange;
+      this.type = Layer.getLayerType('cluster');
+      this._state = State$1.INITIALIZED;
+    }
+
+    set enableCluster(enableCluster) {
+      this._delegate.clustering.enabled = enableCluster;
+      return this
+    }
+
+    /**
+     *
+     * @param color
+     * @param numLength
+     * @returns {*}
+     * @private
+     */
+    _drawCircle(color, numLength) {
+      let size = this._options.size * (numLength + 1);
+      let key = color.toCssColorString() + '-' + size;
+      if (!this._cache[key]) {
+        let canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        let context2D = canvas.getContext('2d');
+        context2D.save();
+        context2D.scale(size / 24, size / 24); //Added to auto-generated code to scale up to desired size.
+        context2D.fillStyle = color.withAlpha(0.2).toCssColorString(); //Modified from auto-generated code.
+        context2D.beginPath();
+        context2D.arc(12, 12, 9, 0, 2 * Math.PI);
+        context2D.closePath();
+        context2D.fill();
+        context2D.beginPath();
+        context2D.arc(12, 12, 6, 0, 2 * Math.PI);
+        context2D.fillStyle = color.toCssColorString();
+        context2D.fill();
+        context2D.closePath();
+        context2D.restore();
+        this._cache[key] = canvas.toDataURL();
+      }
+      return this._cache[key]
+    }
+
+    /**
+     *
+     * @param color
+     * @param numLength
+     * @returns {*}
+     * @private
+     */
+    _drawClustering(color, numLength) {
+      let size = this._options.size * (numLength + 1);
+      let key = color.toCssColorString() + '-' + size;
+      let startAngle = -Math.PI / 12;
+      let angle = Math.PI / 2;
+      let intervalAngle = Math.PI / 6;
+      if (!this._cache[key]) {
+        let canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        let context2D = canvas.getContext('2d');
+        context2D.save();
+        context2D.scale(size / 24, size / 24); //Added to auto-generated code to scale up to desired size.
+        context2D.beginPath();
+        context2D.arc(12, 12, 6, 0, 2 * Math.PI);
+        context2D.fillStyle = color.toCssColorString();
+        context2D.fill();
+        context2D.closePath();
+        context2D.lineWidth = 2;
+        for (let i = 0; i < 3; i++) {
+          context2D.beginPath();
+          context2D.arc(12, 12, 8, startAngle, startAngle + angle, false);
+          context2D.strokeStyle = color.withAlpha(0.4).toCssColorString();
+          context2D.stroke();
+          context2D.arc(12, 12, 11, startAngle, startAngle + angle, false);
+          context2D.strokeStyle = color.withAlpha(0.2).toCssColorString();
+          context2D.stroke();
+          context2D.closePath();
+          startAngle = startAngle + angle + intervalAngle;
+        }
+        context2D.restore();
+        this._cache[key] = canvas.toDataURL();
+      }
+      return this._cache[key]
+    }
+
+    /**
+     *
+     * @param {*} clusteredEntities
+     * @param {*} cluster
+     */
+    _clusterEventHandler(clusteredEntities, cluster) {
+      if (!this._delegate.clustering.enabled) {
+        return
+      }
+      cluster.billboard.show = true;
+      cluster.label.font = `bold ${this._options.fontSize}px sans-serif`;
+      cluster.label.fillColor = this._options.fontColor;
+      cluster.label.disableDepthTestDistance = Number.POSITIVE_INFINITY;
+      if (this._delegate.entities.values.length) {
+        let allCount = this._delegate.entities.values.length || 0;
+        for (let key in this._options.gradient) {
+          if (clusteredEntities.length >= allCount * key) {
+            let numLength = String(clusteredEntities.length).length;
+            if (this._options.style === 'circle') {
+              cluster.billboard.image = this._drawCircle(
+                this._options.gradient[key],
+                numLength
+              );
+            } else {
+              cluster.billboard.image = this._drawClustering(
+                this._options.gradient[key],
+                numLength
+              );
+            }
+            cluster.label.show = true;
+            if (numLength === 1) {
+              cluster.label.pixelOffset = new Cesium$1.Cartesian2(-2, 3);
+            } else {
+              cluster.label.pixelOffset = new Cesium$1.Cartesian2(
+                -5 * (numLength - 1),
+                5
+              );
+            }
+          } else if (clusteredEntities.length <= 1) {
+            cluster.label.show = false;
+          }
+        }
+      }
+    }
+
+    clear() {
+      this._delegate.entities.removeAll();
+      this._cache = {};
+      this._state = State$1.CLEARED;
+      return this
+    }
+  }
+
+  Layer.registerType('cluster');
 
   var czm_cellular = "#define GLSLIFY 1\n/***@license*Cellular noise(\"Worley noise\")in 2D in GLSL.*Copyright(c)Stefan Gustavson 2011-04-19. All rights reserved.*This code is released under the conditions of the MIT license.*See LICENSE file for details.*/vec3 _czm_permute289(vec3 x){return mod((34.0*x+1.0)*x,289.0);}/***DOC_TBA**Implemented by Stefan Gustavson,and distributed under the MIT License.{@link http:**@name czm_cellular*@glslFunction**@see Stefan Gustavson's chapter,<i>Procedural Textures in GLSL</i>,in<a href=\"http:*/vec2 czm_cellular(vec2 P){\n#define K 0.142857142857\n#define Ko 0.428571428571\n#define jitter 1.0\nvec2 Pi=mod(floor(P),289.0);vec2 Pf=fract(P);vec3 oi=vec3(-1.0,0.0,1.0);vec3 of=vec3(-0.5,0.5,1.5);vec3 px=_czm_permute289(Pi.x+oi);vec3 p=_czm_permute289(px.x+Pi.y+oi);vec3 ox=fract(p*K)-Ko;vec3 oy=mod(floor(p*K),7.0)*K-Ko;vec3 dx=Pf.x+0.5+jitter*ox;vec3 dy=Pf.y-of+jitter*oy;vec3 d1=dx*dx+dy*dy;p=_czm_permute289(px.y+Pi.y+oi);ox=fract(p*K)-Ko;oy=mod(floor(p*K),7.0)*K-Ko;dx=Pf.x-0.5+jitter*ox;dy=Pf.y-of+jitter*oy;vec3 d2=dx*dx+dy*dy;p=_czm_permute289(px.z+Pi.y+oi);ox=fract(p*K)-Ko;oy=mod(floor(p*K),7.0)*K-Ko;dx=Pf.x-1.5+jitter*ox;dy=Pf.y-of+jitter*oy;vec3 d3=dx*dx+dy*dy;vec3 d1a=min(d1,d2);d2=max(d1,d2);d2=min(d2,d3);d1=min(d1a,d2);d2=max(d1a,d2);d1.xy=(d1.x<d1.y)? d1.xy : d1.yx;d1.xz=(d1.x<d1.z)? d1.xz : d1.zx;d1.yz=min(d1.yz,d2.yz);d1.y=min(d1.y,d1.z);d1.y=min(d1.y,d2.x);return sqrt(d1.xy);}"; // eslint-disable-line
 
@@ -12893,6 +13061,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
   exports.CircleSpiralMaterialProperty = CircleSpiralMaterialProperty;
   exports.CircleVaryMaterialProperty = CircleVaryMaterialProperty;
   exports.CircleWaveMaterialProperty = CircleWaveMaterialProperty;
+  exports.ClusterLayer = ClusterLayer;
   exports.CoordTransform = CoordTransform;
   exports.Corridor = Corridor;
   exports.Cylinder = Cylinder;
@@ -12926,7 +13095,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
   exports.OverlayEvent = OverlayEvent;
   exports.OverlayEventType = OverlayEventType;
   exports.OverlayType = OverlayType;
-  exports.Parse = Parse$1;
+  exports.Parse = Parse;
   exports.Plane = Plane;
   exports.PlotUtil = PlotUtil;
   exports.Point = Point;
