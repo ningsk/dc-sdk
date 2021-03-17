@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-03-16 10:31:03
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 13:27:51
+ * @LastEditTime: 2021-03-17 15:17:59
  */
 
 import {
@@ -23,7 +23,7 @@ import {
 import { DomUtil } from '../util/index'
 
 import { Transform } from '../transform/index'
-
+import createWidgets from '../widget'
 import * as Cesium from "cesium"
 
 const DEF_OPTS = {
@@ -55,7 +55,7 @@ class Viewer {
         }) // Initialize the viewer
 
         // register events
-        new MouseEvent()
+        new MouseEvent(this)
 
         this._viewerEvent = new ViewerEvent() // Register viewer events
         this._sceneEvent = new SceneEvent(this) // Register scene events

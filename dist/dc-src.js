@@ -10257,12 +10257,2080 @@
   }
 
   /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:52
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 10:50:57
+   */
+  let WidgetType = {};
+
+  class Widget {
+    constructor() {
+      this._viewer = undefined;
+      this._enable = false;
+      this._wrapper = undefined;
+      this._ready = false;
+      this.type = undefined;
+    }
+
+    set enable(enable) {
+      if (this._enable === enable) {
+        return this
+      }
+      this._enable = enable;
+      this._state = this._enable ? State$1.ENABLED : State$1.DISABLED;
+      this._enableHook && this._enableHook();
+      return this
+    }
+
+    get enable() {
+      return this._enable
+    }
+
+    get state() {
+      return this._state
+    }
+
+    /**
+     * mount content
+     * @private
+     */
+    _mountContent() {}
+
+    /**
+     * binds event
+     * @private
+     */
+    _bindEvent() {}
+
+    /**
+     * Unbinds event
+     * @private
+     */
+    _unbindEvent() {}
+
+    /**
+     * When enable modifies the hook executed, the subclass copies it as required
+     * @private
+     */
+    _enableHook() {
+      !this._ready && this._mountContent();
+      if (this._enable) {
+        !this._wrapper.parentNode &&
+          this._viewer.dcContainer.appendChild(this._wrapper);
+        this._bindEvent();
+      } else {
+        this._unbindEvent();
+        this._wrapper.parentNode &&
+          this._viewer.dcContainer.removeChild(this._wrapper);
+      }
+    }
+
+    /**
+     * Updating the Widget location requires subclass overrides
+     * @param windowCoord
+     * @private
+     */
+    _updateWindowCoord(windowCoord) {}
+
+    /**
+     * Hook for installed
+     * @private
+     */
+    _installHook() {}
+
+    /**
+     * Installs to viewer
+     * @param viewer
+     */
+    install(viewer) {
+      this._viewer = viewer;
+      /**
+       * do installHook
+       */
+      this._installHook && this._installHook();
+      this._state = State$1.INSTALLED;
+    }
+
+    /**
+     * Setting  wrapper
+     * @param wrapper
+     * @returns {Widget}
+     */
+    setWrapper(wrapper) {
+      return this
+    }
+
+    /**
+     * Setting widget content
+     * @param content
+     * @returns {Widget}
+     */
+    setContent(content) {
+      if (content && typeof content === 'string') {
+        this._wrapper.innerHTML = content;
+      } else if (content && content instanceof Element) {
+        while (this._wrapper.hasChildNodes()) {
+          this._wrapper.removeChild(this._wrapper.firstChild);
+        }
+        this._wrapper.appendChild(content);
+      }
+      return this
+    }
+
+    /**
+     * hide widget
+     */
+    hide() {
+      this._wrapper &&
+        (this._wrapper.style.cssText = `
+    visibility:hidden;
+    `);
+    }
+
+    /**
+     * Registers type
+     * @param type
+     */
+    static registerType(type) {
+      if (type) {
+        WidgetType[type.toLocaleUpperCase()] = type.toLocaleLowerCase();
+      }
+    }
+
+    /**
+     *
+     * @param type
+     */
+    static getWidgetType(type) {
+      return WidgetType[type.toLocaleUpperCase()] || undefined
+    }
+  }
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:18:22
+   */
+  const logo = `
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+2Yf2xVZxnHP89py9qliPe0BUTqBrunuDEBx8QfcxuwRYcxM3HO7Y8JZUNKTweKmWyaGDBZYtwSMmnvuXRKcEMzt0WmwdllE1nclkgsyUaIUM4ZNmKihfbcDjbCpPc85rT3QG1677ltb5UlPf+e932e7/f5vu/zPO8jfMA/+YDjZ4rA/1vBKQWmFBgWAXOnex0Bu4FPAf8Evu3b1vOFgnTZHKHa1LEVgZTtEoLv9NkLfpMjs03hfMa2VucjcdkQSKTdVkGq/ebk2ghswjmxSMh2+Lb10cufgOO9AHRk7OSTw8Gajqu+beUN9GWjgJnq2qZi3JqxrRURATPtbka5w7etL066AjXprmUaGDdhyCI0WAhyHeAjHFPoMgI9lDWyr/Y3X9udD4yZcg8j2qMiewVZhmpjoeiHdiakgJny6tXQLaJ8FZiTA/auCD2q9IBWozILYdZF0KoHBXb2tTT8fDQiNanjjSpyCxr83W9ZsC0uTY+bQE3Ke1BFtwD14dkVpMNQOk63JL1RgbV13RYYxkqEO0S5AfQPasiOzAZrXxzIkqfR8LwixlaBfYEYT2aar/ld0SC2HplmzqzchKHfQpkLfD0u15eUgOl4z4DeiwY/LCSxmXIf8FusXXnP+1DReg5YCGz2beuJooMwbOGYjpDpuPuBlSrcl2m2fjncYV3KS2bJ3heSSqRcW4QUBgv9DdZfCwEzHffPwKfjAjLhLJRw3DaBltEkr3G8jYp+H5gdZFnRv9F6NZH2bso0J98oJqoJxz0gsFyRppF1IG5/UQok0t69ovoMsNu3rfsvVcqumwXje8AqlFcC1Uf7H2z4U5zTkf9n/vTErIELAy+D1BplFTf2Nl0d9kFFfbEE5rR3Xvl+dsbrCvUGZZ/vted3hZYTjrdK0N8DZxR5NGMnHy/KY55FCcdbL2j7WI9SLIEo46jqw5mWhsdC/2bK+xwS7BMkm1X9Qn9Lw5sTAX9JUbdT0HmixvasBq8FlVVHzqyr9yeUhUzHC1Pk9b6dvHow8mnvelRfEEgi+jW/ueHXpQAf2sjVltb/tqdvgfEySqvfkjw50ldhBQ5ouXnMe0+U5/ps6xuD0XeOt4OsV3gkY1s/LhX4Qds73A9Rxr8QeUNEn1aoRfkscLcKbZlma+OYCHy41V1ulHEgyjy1jrc0QDtBXvPt5C2lBB/ZMh33Z8ADw3ugMEsZQn1fs5UcE4EonytlizP2/MNR9Et9dIaDqkl7m1T1J/8eYOa7m6zTQ6q7YeKo8m3rY2MlkBLBLq8om33qm/N7wt4cOOjb1mcmI/q5BHEPor+KimBN2v2RKo+Iysa+lmTb2AjkCkwkp5k6/oML5Zo+27Sgd7IIRMc2LIiGESwPe65CqbXgJTZT3k5EmyIFJgv0cLtmyhtSAMK7sA70dd9uuDmf7xgC7maE7dEd+J8QyF3iQV8i+/3m5O3jrgOJtq4viWG8OJmX9mIRaz36CcrKHxLITSB0t283XGxbxqdAmJfLeQfY5dvWuslQYO72k1Xnqt5/CA2+CzId9ALIId+2wvwf+8W3Eo7bA1T4tmXGWhvDgrrUkeqAikbEuF/hk8CbKnJQVJtGa9fHp4Dj/gMYnMmI6tp879gx4A6r7Vwp18YAWTPYjsBJgXTV+dNPnKus2wuyZGDaFQvjeqDIZ14FEk7YWLFUIWwX7hKkPJALKwpNFQoRCXsoUdaANjLUInSKIXsGtGLPO/ZVmZqUt1pFnxKRx/qakw8XG5RRCSRS7mABi/Jv7sGyY+R7IM5JTXvXx4MBY6UIYdtxF1AO+iJq7PFbks9G+4e9B67FYEncK26433wETolQN7wfMR33JSAcMBV8hNc4b9+uol9G9VZgSc7ZKcIBQJZfhK+1kcSjFxno477dEE46iv5GJWA67pHQgoGs6bWThyJrpuN1g14VXbLa9u6PZIPsUgkGbhQxblDkNtArh9ZLN8JvA9U/XlE9fX/P6tnvjYYqehOHE44+27qzaOS5hXkUOL5FRIZaZeUVhDOonkWkH9gAVAJngekjHB5V0b2GUbGvr2newUJgctPnaCrxkm9bq8YKfjBM+TaZjnu3CMtVWQwsC1PppbVyLhfpEwodUPbsQFnl0bNNc+J7pJFzoZjxTByp2DowaGDrgfLaurmLVINz06undXevnXf+Yms95GEckzn+hgZPFzM+LESiOAJ5LAw9cIL1IPcAM3JHrgfhLdDDiswSdDHIoksm9C8Ce3RAnvI3WWfiIhz3f0IEIuOJ9rdnGEFwp6p+BeQaoA50JoRHjT6gV5VODXh+tCwUB3LSFJiI41LtLYkCpQIzHjtTBMYTtVLumVKglNEcj63/AIrz7E/FBbRAAAAAAElFTkSuQmCC
+`;
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:17:44
+   */
+  const compass_outer = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="162px" height="162px" viewBox="0 0 162 162" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>compass-outer</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+        <g id="compass-outer" fill-rule="nonzero">
+            <path d="M80.8410544,161.682109 C36.1937731,161.682109 0,125.488336 0,80.8410544 C0,36.1937731 36.1937731,0 80.8410544,0 C125.488336,0 161.682109,36.1937731 161.682109,80.8410544 C161.682109,125.488336 125.488336,161.682109 80.8410544,161.682109 Z M81.1836011,134.620909 C110.696211,134.620909 134.620909,110.696211 134.620909,81.1836011 C134.620909,51.6709916 110.696211,27.7462941 81.1836011,27.7462941 C51.6709916,27.7462941 27.7462941,51.6709916 27.7462941,81.1836011 C27.7462941,110.696211 51.6709916,134.620909 81.1836011,134.620909 Z" id="Oval-108"></path>
+            <circle id="Oval-74" fill="#FFFFFF" cx="129.493683" cy="127.952092" r="1.54159147"></circle>
+            <circle id="Oval-74-Copy-3" fill="#FFFFFF" cx="129.493683" cy="35.4566038" r="1.54159147"></circle>
+            <circle id="Oval-74-Copy-5" fill="#FFFFFF" cx="30.8318294" cy="127.952092" r="1.54159147"></circle>
+            <circle id="Oval-74-Copy-4" fill="#FFFFFF" cx="30.8318294" cy="35.4566038" r="1.54159147"></circle>
+            <polygon id="N" fill="#FFFFFF" points="84.9318072 23.1238721 84.9318072 13.1321362 82.5623385 13.1321362 82.5623385 19.2984646 77.951866 13.1321362 75.7108625 13.1321362 75.7108625 23.1238721 78.0946053 23.1238721 78.0946053 16.9718176 82.6908037 23.1238721"></polygon>
+            <polygon id="Line" fill="#FFFFFF" points="143.368007 82.1093476 152.617555 82.1093476 152.617555 81.2993476 143.368007 81.2993476"></polygon>
+            <polygon id="Line-Copy-8" fill="#FFFFFF" points="9.24954884 82.1093476 18.4990976 82.1093476 18.4990976 81.2993476 9.24954884 81.2993476"></polygon>
+            <polygon id="Line" fill="#FFFFFF" points="81.2993476 143.368007 81.2993476 152.617555 82.1093476 152.617555 82.1093476 143.368007"></polygon>
+        </g>
+    </g>
+</svg>
+`;
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:17:37
+   */
+  const compass_inner = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>compass-inner</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+        <g id="compass-inner" fill-rule="nonzero">
+            <path d="M8.5,16.5 C4.081722,16.5 0.5,12.918278 0.5,8.5 C0.5,4.081722 4.081722,0.5 8.5,0.5 C12.918278,0.5 16.5,4.081722 16.5,8.5 C16.5,12.918278 12.918278,16.5 8.5,16.5 Z M8.5,15.5 C12.3659932,15.5 15.5,12.3659932 15.5,8.5 C15.5,4.63400675 12.3659932,1.5 8.5,1.5 C4.63400675,1.5 1.5,4.63400675 1.5,8.5 C1.5,12.3659932 4.63400675,15.5 8.5,15.5 Z" id="Oval-96"></path>
+            <path d="M9.92599835,7.09066832 C12.7122872,9.87695712 14.3709388,12.5452228 13.4497471,13.4664145 C12.5285555,14.3876061 9.86028979,12.7289545 7.074001,9.94266568 C4.2877122,7.15637688 2.62906055,4.48811119 3.55025221,3.56691953 C4.47144386,2.64572788 7.13970955,4.30437952 9.92599835,7.09066832 Z M9.21889157,7.7977751 C6.92836458,5.50724811 4.52075769,4.01062761 4.25735899,4.27402631 C3.99396029,4.53742501 5.49058078,6.9450319 7.78110778,9.2355589 C10.0716348,11.5260859 12.4792417,13.0227064 12.7426404,12.7593077 C13.0060391,12.495909 11.5094186,10.0883021 9.21889157,7.7977751 Z" id="Oval-96-Copy-2"></path>
+            <path d="M9.92599835,9.94266568 C7.13970955,12.7289545 4.47144386,14.3876061 3.55025221,13.4664145 C2.62906055,12.5452228 4.2877122,9.87695712 7.074001,7.09066832 C9.86028979,4.30437952 12.5285555,2.64572788 13.4497471,3.56691953 C14.3709388,4.48811119 12.7122872,7.15637688 9.92599835,9.94266568 Z M9.21889157,9.2355589 C11.5094186,6.9450319 13.0060391,4.53742501 12.7426404,4.27402631 C12.4792417,4.01062761 10.0716348,5.50724811 7.78110778,7.7977751 C5.49058078,10.0883021 3.99396029,12.495909 4.25735899,12.7593077 C4.52075769,13.0227064 6.92836458,11.5260859 9.21889157,9.2355589 Z" id="Oval-96-Copy-3"></path>
+            <path d="M15.1464466,1.1464466 L14.3453364,1.94755684 L13.9608692,2.33202401 L14.667976,3.03913077 L15.0524431,2.65466362 L15.8535534,1.8535534 L15.1464466,1.1464466 Z M2.29760014,13.995293 L1.85311902,14.4397742 L1.004311,15.2885822 L1.71141776,15.995689 L2.56022581,15.146881 L3.00470698,14.7023998 L2.29760014,13.995293 Z" id="Line"></path>
+            <circle id="Oval-432" cx="16" cy="1" r="1"></circle>
+            <circle id="Oval-432-Copy" cx="1" cy="16" r="1"></circle>
+        </g>
+    </g>
+</svg>
+`;
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:17:52
+   */
+  const compass_rotation_marker = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="53px" height="53px" viewBox="0 0 53 53" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.3 (16044) - http://www.bohemiancoding.com/sketch -->
+    <title>compass-rotation-marker</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="compass-rotation-marker">
+            <path d="M52.4399986,26.2199993 C52.4399986,11.7390936 40.7009051,0 26.2199993,0 C11.7390936,0 0,11.7390936 0,26.2199993 C0,40.7009051 11.7390936,52.4399986 26.2199993,52.4399986 C40.7009051,52.4399986 52.4399986,40.7009051 52.4399986,26.2199993 Z" id="rotator" stroke-opacity="0.135841259" stroke="#E2A549" stroke-width="9" opacity="0.201434235"></path>
+            <path d="M0,26.2199993 C0,11.7390936 11.7390936,0 26.2199993,0 L26.2199993,9 C16.7096563,9 9,16.7096563 9,26.2199993" id="Shape" opacity="0.634561567" fill="#4990E2"></path>
+        </g>
+    </g>
+</svg>
+`;
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:18:03
+   */
+  const decrease = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="50px" height="6px" viewBox="0 0 50 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.3 (16044) - http://www.bohemiancoding.com/sketch -->
+    <title>decrease</title>
+    <path d="M46.6183575,0.657894737 L3.30112724,0.657894737 C1.44927539,0.657894737 0,1.66880618 0,2.96052632 C0,4.25224645 1.44927539,5.26315789 3.30112724,5.26315789 L46.6988728,5.26315789 C48.5507246,5.26315789 50,4.25224645 50,2.96052632 C49.9194847,1.66880618 48.4702093,0.657894737 46.6183575,0.657894737 L46.6183575,0.657894737 L46.6183575,0.657894737 Z" id="Shape"></path>
+</svg>
+`;
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:19:27
+   */
+  const increase = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.3 (16044) - http://www.bohemiancoding.com/sketch -->
+    <title>increase</title>
+    <path d="M0,25 C0,25.3514939 0.131810207,25.659051 0.373462207,25.900703 C0.615114207,26.142355 0.922671379,26.2741652 1.27416517,26.2741652 L23.7258348,26.2741652 L23.7258348,48.7258348 C23.7258348,49.0773286 23.857645,49.3848858 24.099297,49.6265378 C24.3189807,49.8462214 24.6485061,50 25,50 C25.7029877,50 26.2741652,49.4288225 26.2741652,48.7258348 L26.2741652,26.2741652 L48.7258348,26.2741652 C49.4288225,26.2741652 50,25.7029877 50,25 C50,24.2970123 49.4288225,23.7258348 48.7258348,23.7258348 L26.2741652,23.7258348 L26.2741652,1.27416517 C26.2741652,0.571177517 25.7029877,0 25,0 C24.2970123,0 23.7258348,0.571177517 23.7258348,1.27416517 L23.7258348,23.7258348 L1.27416517,23.7258348 C0.571177517,23.7258348 0,24.2970123 0,25 L0,25 L0,25 L0,25 Z" id="Shape"></path>
+</svg>
+`;
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:19:02
+   */
+  const refresh = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.3 (16044) - http://www.bohemiancoding.com/sketch -->
+    <title>refresh</title>
+    <path d="M48.2758621,0 C47.2844828,0 46.5086207,0.775193846 46.5086207,1.76571923 L46.5086207,12.2308355 C42.0689655,4.78036173 34.0086207,0 25,0 C11.2068965,0 0,11.1972438 0,25.0215332 C0,38.8458226 11.2068965,50 25,50 C38.7931035,50 50,38.8027562 50,25.0215332 C50,24.0310078 49.2241379,23.2558139 48.2327587,23.2558139 C47.2413793,23.2558139 46.4655172,24.0310078 46.4655172,25.0215332 C46.4655172,36.8647717 36.8103448,46.5116279 24.9568965,46.5116279 C13.1034483,46.5116279 3.49137933,36.8217054 3.49137933,24.9784668 C3.49137933,13.1352283 13.1465517,3.48837212 25,3.48837212 C33.4913793,3.48837212 41.0775862,8.44099913 44.5258621,16.0206718 L32.1551724,16.0206718 C31.1637931,16.0206718 30.3879311,16.7958657 30.3879311,17.7863911 C30.3879311,18.7769164 31.1637931,19.5521103 32.1551724,19.5521103 L48.2327587,19.5521103 C49.2241379,19.5521103 50,18.7769164 50,17.7863911 L50,1.72265288 C50,0.775193846 49.2241379,0 48.2758621,0 L48.2758621,0 L48.2758621,0 Z" id="Shape"></path>
+</svg>
+`;
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:18:50
+   */
+  const splitter = `
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="19px" height="28px" viewBox="0 0 19 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <path d="M0.6551724,2.3448276 L0.6551724,25.6551724 C0.6551724,26.6454761 1.4579722,27.4482759 2.4482759,27.4482759 C3.4385796,27.4482759 4.2413793,26.6454761 4.2413793,25.6551724 L4.2413793,2.3448276 C4.2413793,1.3545239 3.4385796,0.5517241 2.4482759,0.5517241 C1.4579722,0.5517241 0.6551724,1.3545239 0.6551724,2.3448276 L0.6551724,2.3448276 Z M7.6551724,2.3448276 L7.6551724,25.6551724 C7.6551724,26.6454761 8.4579722,27.4482759 9.4482759,27.4482759 C10.4385796,27.4482759 11.2413793,26.6454761 11.2413793,25.6551724 L11.2413793,2.3448276 C11.2413793,1.3545239 10.4385796,0.5517241 9.4482759,0.5517241 C8.4579722,0.5517241 7.6551724,1.3545239 7.6551724,2.3448276 L7.6551724,2.3448276 Z M14.6551724,2.3448276 L14.6551724,25.6551724 C14.6551724,26.6454761 15.4579722,27.4482759 16.4482759,27.4482759 C17.4385796,27.4482759 18.2413793,26.6454761 18.2413793,25.6551724 L18.2413793,2.3448276 C18.2413793,1.3545239 17.4385796,0.5517241 16.4482759,0.5517241 C15.4579722,0.5517241 14.6551724,1.3545239 14.6551724,2.3448276 L14.6551724,2.3448276 Z" id="splitter"></path>
+</svg>
+`;
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 13:55:23
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 14:18:12
+   */
+
+  const Icon = {
+    logo,
+    compass_outer,
+    compass_inner,
+    compass_rotation_marker,
+    decrease,
+    increase,
+    refresh,
+    splitter
+  };
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-16 10:50:08
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 13:47:26
+   */
+
+  class Attribution extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-attribution');
+          this._wrapper.style.cssText = `
+      position: absolute;
+      left: 2px;
+      bottom: 2px;
+      font-size: 14px;
+      color: #a7a7a7;
+      padding: 2px 5px;
+      border-radius: 2px;
+      user-select: none;
+      display:flex;
+    `;
+          this._config = undefined;
+          this.type = Widget.getWidgetType('attribution');
+          this._state = State$1.INSTALLED;
+      }
+
+      _installHook() {
+          let logo = DomUtil.create('img', '', this._wrapper);
+          logo.src = Icon.logo;
+          let a = DomUtil.create('a', '', this._wrapper);
+          a.innerHTML = '数字视觉';
+          a.href = 'javascript:void(0)';
+          a.onclick = () => {
+              window.open('https://www.dvgis.cn');
+          };
+          a.style.cssText = `color:#a7a7a7;font-size:14px`;
+          this.enable = true;
+      }
+  }
+
+  Widget.registerType('attribution');
+
+  class ContextMenu extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-context-menu');
+          this._ulEl = undefined;
+          this._handler = undefined;
+          this._overlay = undefined;
+          this._position = undefined;
+          this._wgs84Position = undefined;
+          this._surfacePosition = undefined;
+          this._wgs84SurfacePosition = undefined;
+          this._windowPosition = undefined;
+          this._config = {};
+          this._defaultMenu = [
+              {
+                  label: '飞到默认位置',
+                  callback: e => {
+                      this._viewer.camera.flyHome(1.5);
+                  },
+                  context: this
+              },
+              {
+                  label: '取消飞行',
+                  callback: e => {
+                      this._viewer.camera.cancelFlight();
+                  },
+                  context: this
+              }
+          ];
+          this._overlayMenu = [];
+          this.type = Widget.getWidgetType('contextmenu');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set DEFAULT_MENU(menus) {
+          this._defaultMenu = menus;
+          return this
+      }
+
+      set config(config) {
+          this._config = config;
+          config.customClass && this._setCustomClass();
+          return this
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'contextMenu', {
+              value: this,
+              writable: false
+          });
+          this._handler = new Cesium$1.ScreenSpaceEventHandler(this._viewer.canvas);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _bindEvent() {
+          this._handler.setInputAction(movement => {
+              this._onRightClick(movement);
+          }, Cesium$1.ScreenSpaceEventType.RIGHT_CLICK);
+
+          this._handler.setInputAction(movement => {
+              this._onClick(movement);
+          }, Cesium$1.ScreenSpaceEventType.LEFT_CLICK);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _unbindEvent() {
+          this._handler.removeInputAction(Cesium$1.ScreenSpaceEventType.RIGHT_CLICK);
+          this._handler.removeInputAction(Cesium$1.ScreenSpaceEventType.LEFT_CLICK);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          this._ulEl = DomUtil.create('ul', 'menu-list', this._wrapper);
+          this._ready = true;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountMenu() {
+          while (this._ulEl.hasChildNodes()) {
+              this._ulEl.removeChild(this._ulEl.firstChild);
+          }
+          // Add menu item
+          if (this._overlayMenu && this._overlayMenu.length) {
+              this._overlayMenu.forEach(item => {
+                  this._addMenuItem(item.label, item.callback, item.context || this);
+              });
+          }
+
+          if (this._defaultMenu && this._defaultMenu.length) {
+              this._defaultMenu.forEach(item => {
+                  this._addMenuItem(item.label, item.callback, item.context || this);
+              });
+          }
+      }
+
+      /**
+       *
+       * @param movement
+       * @private
+       */
+      _onRightClick(movement) {
+          if (!this._enable) {
+              return
+          }
+          this._overlay = undefined;
+          let scene = this._viewer.scene;
+          this._windowPosition = movement.position;
+          this._updateWindowCoord(movement.position);
+          let target = scene.pick(movement.position);
+          if (scene.pickPositionSupported) {
+              this._position = scene.pickPosition(movement.position);
+          }
+          if (this._position) {
+              let c = Cesium$1.Ellipsoid.WGS84.cartesianToCartographic(this._position);
+              if (c) {
+                  this._wgs84Position = {
+                      lng: Cesium$1.Math.toDegrees(c.longitude),
+                      lat: Cesium$1.Math.toDegrees(c.latitude),
+                      alt: c.height
+                  };
+              }
+          }
+          if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+              let ray = scene.camera.getPickRay(movement.position);
+              this._surfacePosition = scene.globe.pick(ray, scene);
+          } else {
+              this._surfacePosition = scene.camera.pickEllipsoid(
+                  movement.position,
+                  Cesium$1.Ellipsoid.WGS84
+              );
+          }
+
+          if (this._surfacePosition) {
+              let c = Cesium$1.Ellipsoid.WGS84.cartesianToCartographic(
+                  this._surfacePosition
+              );
+              if (c) {
+                  this._wgs84SurfacePosition = {
+                      lng: Cesium$1.Math.toDegrees(c.longitude),
+                      lat: Cesium$1.Math.toDegrees(c.latitude),
+                      alt: c.height
+                  };
+              }
+          }
+          // for Entity
+          if (target && target.id && target.id instanceof Cesium$1.Entity) {
+              let layer = this._viewer
+                  .getLayers()
+                  .filter(item => item.layerId === target.id.layerId)[0];
+              if (layer && layer.getOverlay) {
+                  this._overlay = layer.getOverlay(target.id.overlayId);
+              }
+          }
+          // for Cesium3DTileFeature
+          if (target && target instanceof Cesium$1.Cesium3DTileFeature) {
+              let layer = this._viewer
+                  .getLayers()
+                  .filter(item => item.layerId === target.tileset.layerId)[0];
+              if (layer && layer.getOverlay) {
+                  this._overlay = layer.getOverlay(target.tileset.overlayId);
+              }
+          }
+          this._overlayMenu = this._overlay?.contextMenu || [];
+          this._mountMenu();
+      }
+      /**
+       *
+       * @param movement
+       * @private
+       */
+      _onClick(movement) {
+          this.hide();
+      }
+
+      /**
+       *
+       * @param windowCoord
+       * @private
+       */
+      _updateWindowCoord(windowCoord) {
+          this._wrapper.style.cssText = `
+    visibility:visible;
+    z-index:1;
+    transform:translate3d(${Math.round(windowCoord.x)}px,${Math.round(
+            windowCoord.y
+        )}px, 0);
+    `;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _setCustomClass() {
+          DomUtil.setClass(
+              this._wrapper,
+              `dc-context-menu ${this._config.customClass}`
+          );
+      }
+
+      /**
+       *
+       * @param label
+       * @param method
+       * @param context
+       * @returns {ContextMenu}
+       * @private
+       */
+      _addMenuItem(label, method, context) {
+          if (!label || !method) {
+              return this
+          }
+          let menu = DomUtil.create('li', 'menu-item', null);
+          let a = DomUtil.create('a', '', menu);
+          a.innerHTML = label;
+          a.href = 'javascript:void(0)';
+          let self = this;
+          if (method) {
+              a.onclick = () => {
+                  method.call(context, {
+                      windowPosition: self._windowPosition,
+                      position: self._position,
+                      wgs84Position: self._wgs84Position,
+                      surfacePosition: self._surfacePosition,
+                      wgs84SurfacePosition: self._wgs84SurfacePosition,
+                      overlay: self._overlay
+                  });
+                  self.hide();
+              };
+          }
+          this._ulEl.appendChild(menu);
+          return this
+      }
+  }
+
+  Widget.registerType('contextmenu');
+
+  class LocationBar extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-location-bar');
+          this._mouseEl = undefined;
+          this._cameraEl = undefined;
+          this.type = Widget.getWidgetType('location_bar');
+          this._state = State$1.INITIALIZED;
+          this._lastUpdate = Cesium$1.getTimestamp();
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'locationBar', {
+              value: this,
+              writable: false
+          });
+      }
+
+      /**
+       *
+       * @private
+       */
+      _bindEvent() {
+          this._viewer.on(MouseEventType.MOUSE_MOVE, this._moveHandler, this);
+          this._viewer.on(SceneEventType.CAMERA_CHANGED, this._cameraHandler, this);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _unbindEvent() {
+          this._viewer.off(MouseEventType.MOUSE_MOVE, this._moveHandler, this);
+          this._viewer.off(SceneEventType.CAMERA_CHANGED, this._cameraHandler, this);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          this._mouseEl = DomUtil.create('div', 'mouse-location', this._wrapper);
+          this._cameraEl = DomUtil.create('div', 'camera-location', this._wrapper);
+          this._ready = true;
+      }
+
+      /**
+       *
+       * @param e
+       * @private
+       */
+      _moveHandler(e) {
+          let now = Cesium$1.getTimestamp();
+          if (now < this._lastUpdate + 300) {
+              return
+          }
+          this._lastUpdate = now;
+          let ellipsoid = Cesium$1.Ellipsoid.WGS84;
+          let cartographic = e.surfacePosition
+              ? ellipsoid.cartesianToCartographic(e.surfacePosition)
+              : undefined;
+          let lng = +Cesium$1.Math.toDegrees(cartographic?.longitude || 0);
+          let lat = +Cesium$1.Math.toDegrees(cartographic?.latitude || 0);
+          let alt = cartographic
+              ? +this._viewer.scene.globe.getHeight(cartographic)
+              : 0;
+          this._mouseEl.innerHTML = `
+      <span>经度：${lng.toFixed(8)}</span>
+      <span>纬度：${lat.toFixed(8)}</span>
+      <span>海拔：${alt.toFixed(2)} 米</span>`;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _cameraHandler() {
+          let now = Cesium$1.getTimestamp();
+          if (now < this._lastUpdate + 300) {
+              return
+          }
+          this._lastUpdate = now;
+          let cameraPosition = this._viewer.cameraPosition;
+          this._cameraEl.innerHTML = `
+      <span>视角：${(+cameraPosition.pitch).toFixed(2)}</span>
+      <span>视高：${(+cameraPosition.alt).toFixed(2)} 米</span>
+    `;
+      }
+  }
+
+  Widget.registerType('location_bar');
+
+  class MapSplit extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-slider');
+          this._baseLayer = undefined;
+          this._moveActive = false;
+          this.type = Widget.getWidgetType('map_split');
+          this._state = State$1.INITIALIZED;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'mapSplit', {
+              value: this,
+              writable: false
+          });
+      }
+
+      /**
+       *
+       * @private
+       */
+      _bindEvent() {
+          this._viewer.scene.imagerySplitPosition = 0.5;
+          this._wrapper.style.left = '50%';
+      }
+
+      /**
+       *
+       * @private
+       */
+      _unbindEvent() {
+          if (this._baseLayer) {
+              this._viewer.scene.imagerySplitPosition =
+                  this._baseLayer.splitDirection > 0 ? 1 : 0;
+          } else {
+              this._viewer.scene.imagerySplitPosition = 0;
+          }
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          let splitter = DomUtil.parseDom(Icon.splitter, true, 'splitter');
+          this._wrapper.appendChild(splitter);
+          let handler = new Cesium$1.ScreenSpaceEventHandler(splitter);
+          let self = this;
+          handler.setInputAction(() => {
+              self._moveActive = true;
+          }, Cesium$1.ScreenSpaceEventType.LEFT_DOWN);
+          handler.setInputAction(() => {
+              self._moveActive = true;
+          }, Cesium$1.ScreenSpaceEventType.PINCH_START);
+
+          handler.setInputAction(movement => {
+              self._moveHandler(movement);
+          }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
+
+          handler.setInputAction(movement => {
+              self._moveHandler(movement);
+          }, Cesium$1.ScreenSpaceEventType.PINCH_MOVE);
+
+          handler.setInputAction(() => {
+              self._moveActive = false;
+          }, Cesium$1.ScreenSpaceEventType.LEFT_UP);
+          handler.setInputAction(() => {
+              self._moveActive = false;
+          }, Cesium$1.ScreenSpaceEventType.PINCH_END);
+          this._ready = true;
+      }
+
+      /**
+       *
+       * @param movement
+       * @private
+       */
+      _moveHandler(movement) {
+          if (!this._moveActive || !this._enable) {
+              return
+          }
+          let relativeOffset = movement.endPosition.x;
+          let splitPosition =
+              (this._wrapper.offsetLeft + relativeOffset) /
+              this._wrapper.parentElement.offsetWidth;
+          this._wrapper.style.left = 100.0 * splitPosition + '%';
+          this._viewer.scene.imagerySplitPosition = splitPosition;
+      }
+
+      /**
+       *
+       * @param baseLayer
+       * @param splitDirection
+       * @returns {MapSplit}
+       */
+      addBaseLayer(baseLayer, splitDirection = 1) {
+          if (!this._viewer || !this._enable) {
+              return this
+          }
+          if (baseLayer) {
+              this._baseLayer && this._viewer.imageryLayers.remove(this._baseLayer);
+              this._baseLayer = this._viewer.imageryLayers.addImageryProvider(baseLayer);
+              this._baseLayer.splitDirection = splitDirection || 0;
+              this._viewer.scene.imagerySplitPosition =
+                  this._wrapper.offsetLeft / this._wrapper.parentElement.offsetWidth;
+          }
+          return this
+      }
+  }
+
+  Widget.registerType('map_split');
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-16 10:50:09
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 13:48:25
+   */
+
+  class MapSwitch extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-map-switch');
+          this._config = undefined;
+          this._cache = [];
+          this.type = Widget.getWidgetType('map_switch');
+          this._state = State$1.INITIALIZED;
+      }
+
+      /**
+       * Override the superclass function
+       * @private
+       */
+      _enableHook() {
+          !this._wrapper.parentNode &&
+              this._viewer &&
+              this._viewer.dcContainer.appendChild(this._wrapper);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'mapSwitch', {
+              value: this,
+              writable: false
+          });
+          this.enable = true;
+          let self = this;
+          this._wrapper.onmouseover = () => {
+              let width = 80;
+              if (self._cache.length > 0) {
+                  width = self._cache.length * 85;
+              }
+              this._wrapper.style.width = `${width}px`;
+          };
+          this._wrapper.onmouseout = () => {
+              self._wrapper.style.width = `80px`;
+          };
+      }
+
+      _addItem(map) {
+          let mapEl = DomUtil.create('div', 'map-item', this._wrapper);
+          let index = this._cache.length ? this._cache.length - 1 : 0;
+          index === 0 && DomUtil.addClass(mapEl, 'active');
+          mapEl.setAttribute('data-index', String(index));
+          mapEl.onclick = e => {
+              let old = document.getElementsByClassName('map-item active');
+              if (old && old.length) {
+                  old[0].className = 'map-item';
+              }
+              if (this._viewer) {
+                  e.target.className = 'map-item active';
+                  this._viewer.changeBaseLayer(+e.target.getAttribute('data-index') || 0);
+              }
+          };
+          if (map.iconUrl) {
+              mapEl.style.cssText = `
+       background:url(${map.iconUrl});
+    `;
+          }
+          let span = DomUtil.create('span', '', mapEl);
+          span.innerHTML = map.name || '地图';
+      }
+
+      /**
+       * add map
+       * @param map
+       */
+      addMap(map = {}) {
+          if (this._enable) {
+              this._cache.push(map);
+              this._addItem(map);
+              if (this._cache.length > 1) {
+                  this._wrapper.style.visibility = 'visible';
+              }
+          }
+      }
+  }
+
+  Widget.registerType('map_switch');
+
+  class Popup extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-popup');
+          this._config = { customClass: '' };
+          this._position = undefined;
+          this.type = Widget.getWidgetType('popup');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set config(config) {
+          this._config = config;
+          config.customClass && this._setCustomClass();
+      }
+
+      /**
+       * binds event
+       * @private
+       */
+      _bindEvent() {
+          if (this._viewer && this._wrapper) {
+              let self = this;
+              let scene = this._viewer.scene;
+              scene.postRender.addEventListener(() => {
+                  if (
+                      self._position &&
+                      self._enable &&
+                      self._updateWindowCoord &&
+                      self._wrapper.style.visibility === 'visible'
+                  ) {
+                      let windowCoord = Cesium$1.SceneTransforms.wgs84ToWindowCoordinates(
+                          scene,
+                          self._position
+                      );
+                      windowCoord && self._updateWindowCoord(windowCoord);
+                  }
+              });
+          }
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          this._wrapper.style.visibility = 'hidden';
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          this.enable = true;
+          this._bindEvent();
+          Object.defineProperty(this._viewer, 'popup', {
+              value: this,
+              writable: false
+          });
+      }
+
+      /**
+       *
+       * @param windowCoord
+       * @private
+       */
+      _updateWindowCoord(windowCoord) {
+          let x = windowCoord.x - this._wrapper.offsetWidth / 2;
+          let y = windowCoord.y - this._wrapper.offsetHeight;
+          if (this._config && this._config.position === 'left') {
+              x = windowCoord.x - this._wrapper.offsetWidth;
+          } else if (this._config && this._config.position === 'right') {
+              x = windowCoord.x;
+          }
+          this._wrapper.style.cssText = `
+    visibility:visible;
+    z-index:1;
+    transform:translate3d(${Math.round(x)}px,${Math.round(y)}px, 0);
+    `;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _setCustomClass() {
+          DomUtil.setClass(this._wrapper, `dc-popup ${this._config.customClass}`);
+      }
+
+      /**
+       * Setting  wrapper
+       * @param wrapper
+       * @returns {Widget}
+       */
+      setWrapper(wrapper) {
+          if (wrapper && wrapper instanceof Element) {
+              this._wrapper = wrapper;
+              DomUtil.addClass(this._wrapper, 'dc-popup');
+          }
+          return this
+      }
+
+      /**
+       *
+       * Setting widget position
+       * @param {*} position
+       *
+       */
+      setPosition(position) {
+          this._position = position;
+          this._wrapper &&
+              (this._wrapper.style.cssText = `
+    visibility:visible;
+    `);
+          return this
+      }
+
+      /**
+       *
+       * @param {*} position
+       * @param {*} content
+       */
+      showAt(position, content) {
+          this.setPosition(position).setContent(content);
+          return this
+      }
+  }
+
+  Widget.registerType('popup');
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-16 10:50:09
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 13:48:41
+   */
+
+  class Tooltip extends Widget {
+    constructor() {
+      super();
+      this._wrapper = DomUtil.create('div', 'dc-tool-tip');
+      this._ready = true;
+      this.type = Widget.getWidgetType('tooltip');
+      this._state = State$1.INITIALIZED;
+    }
+
+    /**
+     *
+     * @private
+     */
+    _installHook() {
+      Object.defineProperty(this._viewer, 'tooltip', {
+        value: this,
+        writable: false
+      });
+    }
+
+    /**
+     *
+     * @param {*} windowCoord
+     *
+     */
+    _updateWindowCoord(windowCoord) {
+      let x = windowCoord.x + 10;
+      let y = windowCoord.y - this._wrapper.offsetHeight / 2;
+      this._wrapper.style.cssText = `
+    visibility:visible;
+    z-index:1;
+    transform:translate3d(${Math.round(x)}px,${Math.round(y)}px, 0);
+    `;
+    }
+
+    /**
+     *
+     * @param {*} position
+     * @param {*} content
+     *
+     */
+    showAt(position, content) {
+      if (!this._enable) {
+        return this
+      }
+
+      position && this._updateWindowCoord(position);
+      this.setContent(content);
+      return this
+    }
+  }
+
+  Widget.registerType('tooltip');
+
+  const DEF_OPTS$1 = {
+      animation: false,
+      baseLayerPicker: false,
+      imageryProvider: false,
+      fullscreenButton: false,
+      geocoder: false,
+      homeButton: false,
+      infoBox: false,
+      sceneModePicker: false,
+      selectionIndicator: false,
+      timeline: false,
+      navigationHelpButton: false,
+      navigationInstructionsInitiallyVisible: false,
+      creditContainer: undefined
+  };
+
+  class HawkeyeMap extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-hawkeye-map', null);
+          this._wrapper.setAttribute('id', Util$1.uuid());
+          this._baseLayers = [];
+          this._map = undefined;
+          this.type = Widget.getWidgetType('hawkeye_map');
+          this._state = State$1.INITIALIZED;
+      }
+
+      get baseLayers() {
+          return this._baseLayers
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          let map = new Cesium$1.Viewer(this._wrapper, {
+              ...DEF_OPTS$1,
+              sceneMode: Cesium$1.SceneMode.SCENE2D
+          });
+          map.imageryLayers.removeAll();
+          map.cesiumWidget.creditContainer.style.display = 'none';
+          map.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+              Cesium$1.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+          );
+          map.scene.backgroundColor = Cesium$1.Color.TRANSPARENT;
+          Util$1.merge(map.scene.screenSpaceCameraController, {
+              enableRotate: false,
+              enableTranslate: false,
+              enableZoom: false,
+              enableTilt: false,
+              enableLook: false,
+              maximumZoomDistance: 40489014.0
+          });
+          this._map = map;
+
+          this._ready = true;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _bindEvent() {
+          this._viewer.on(SceneEventType.CAMERA_CHANGED, this._syncMap, this);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _unbindEvent() {
+          this._viewer.off(SceneEventType.CAMERA_CHANGED, this._syncMap, this);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'hawkeyeMap', {
+              value: this,
+              writable: false
+          });
+          this._viewer.camera.percentageChanged = 0.01;
+      }
+
+      /**
+       *
+       * @returns {boolean}
+       * @private
+       */
+      _syncMap() {
+          let viewCenter = new Cesium$1.Cartesian2(
+              Math.floor(this._viewer.canvas.clientWidth / 2),
+              Math.floor(this._viewer.canvas.clientHeight / 2)
+          );
+          let worldPosition = this._viewer.scene.camera.pickEllipsoid(viewCenter);
+          if (!worldPosition) {
+              return false
+          }
+          let distance = Cesium$1.Cartesian3.distance(
+              worldPosition,
+              this._viewer.scene.camera.positionWC
+          );
+          this._map.scene.camera.lookAt(
+              worldPosition,
+              new Cesium$1.Cartesian3(0.0, 0.0, distance)
+          );
+      }
+
+      /**
+       *
+       * @param baseLayer
+       * @returns {HawkeyeMap}
+       */
+      addBaseLayer(baseLayer) {
+          if (!this._map || !this._enable) {
+              return this
+          }
+          if (baseLayer) {
+              if (this._baseLayers && this._baseLayers.length) {
+                  this._map.imageryLayers.removeAll();
+              }
+              if (!Array.isArray(baseLayer)) {
+                  baseLayer = [baseLayer];
+              }
+              baseLayer.forEach(item => {
+                  this._baseLayers.push(this._map.imageryLayers.addImageryProvider(item));
+              });
+          }
+          return this
+      }
+  }
+
+  Widget.registerType('hawkeye_map');
+
+  class Compass extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', `dc-compass`);
+          this._compassRectangle = undefined;
+          this._outRing = undefined;
+          this._gyro = undefined;
+          this._rotation_marker = undefined;
+          this._orbitCursorAngle = 0;
+          this._orbitCursorOpacity = 0.0;
+          this._orbitLastTimestamp = 0;
+          this._orbitFrame = undefined;
+          this._orbitIsLook = false;
+          this._rotateInitialCursorAngle = undefined;
+          this._rotateFrame = undefined;
+          this._mouseMoveHandle = undefined;
+          this._mouseUpHandle = undefined;
+          this.type = Widget.getWidgetType('compass');
+          this._state = State$1.INITIALIZED;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'compass', {
+              value: this,
+              writable: false
+          });
+          this._wrapper.onmousedown = e => {
+              this._handleMouseDown(e);
+          };
+          this._wrapper.ondblclick = e => {
+              this._handleDoubleClick(e);
+          };
+      }
+
+      /**
+       *
+       * @private
+       */
+      _bindEvent() {
+          this._viewer.on(SceneEventType.POST_RENDER, this._postRenderHandler, this);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _unbindEvent() {
+          this._viewer.off(SceneEventType.POST_RENDER, this._postRenderHandler, this);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _postRenderHandler() {
+          let heading = this._viewer.camera.heading;
+          this._outRing &&
+              (this._outRing.style.cssText = `
+      transform : rotate(-${heading}rad);
+      -webkit-transform : rotate(-${heading}rad);
+      `);
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          DomUtil.create('div', 'out-ring-bg', this._wrapper);
+          this._outRing = DomUtil.parseDom(Icon.compass_outer, true, 'out-ring');
+          this._wrapper.appendChild(this._outRing);
+          this._gyro = DomUtil.parseDom(Icon.compass_inner, true, 'gyro');
+          this._wrapper.appendChild(this._gyro);
+          this._rotation_marker = DomUtil.parseDom(
+              Icon.compass_rotation_marker,
+              true,
+              'rotation_marker'
+          );
+          this._wrapper.appendChild(this._rotation_marker);
+          this._rotation_marker.style.visibility = 'hidden';
+          this._ready = true;
+      }
+
+      _handleMouseDown(e) {
+          let scene = this._viewer.scene;
+          if (scene.mode === Cesium$1.SceneMode.MORPHING) {
+              return true
+          }
+          this._compassRectangle = e.currentTarget.getBoundingClientRect();
+          let maxDistance = this._compassRectangle.width / 2.0;
+          let vector = this._getVector(e);
+          let distanceFraction = Cesium$1.Cartesian2.magnitude(vector) / maxDistance;
+          if (distanceFraction < 50 / 145) {
+              this._orbit(vector);
+          } else if (distanceFraction < 1.0) {
+              this._rotate(vector);
+          } else {
+              return true
+          }
+      }
+
+      _handleDoubleClick(event) {
+          let scene = this._viewer.scene;
+          let camera = scene.camera;
+          let sscc = scene.screenSpaceCameraController;
+          if (scene.mode === Cesium$1.SceneMode.MORPHING || !sscc.enableInputs) {
+              return true
+          }
+          if (
+              scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW &&
+              !sscc.enableTranslate
+          ) {
+              return
+          }
+          if (
+              scene.mode === Cesium$1.SceneMode.SCENE3D ||
+              scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW
+          ) {
+              if (!sscc.enableLook) {
+                  return
+              }
+              if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+                  if (!sscc.enableRotate) {
+                      return
+                  }
+              }
+          }
+          let center = this._getCameraFocus(true);
+          if (!center) {
+              return
+          }
+          let cameraPosition = scene.globe.ellipsoid.cartographicToCartesian(
+              camera.positionCartographic
+          );
+          let surfaceNormal = scene.globe.ellipsoid.geodeticSurfaceNormal(center);
+          let focusBoundingSphere = new Cesium$1.BoundingSphere(center, 0);
+          camera.flyToBoundingSphere(focusBoundingSphere, {
+              offset: new Cesium$1.HeadingPitchRange(
+                  0,
+                  Cesium$1.Math.PI_OVER_TWO -
+                  Cesium$1.Cartesian3.angleBetween(surfaceNormal, camera.directionWC),
+                  Cesium$1.Cartesian3.distance(cameraPosition, center)
+              ),
+              duration: 1.5
+          });
+      }
+
+      _getCameraFocus(inWorldCoordinates) {
+          let result = new Cesium$1.Cartesian3();
+          let scene = this._viewer.scene;
+          let camera = scene.camera;
+          if (scene.mode === Cesium$1.SceneMode.MORPHING) {
+              return undefined
+          }
+          if (this._viewer.delegate.trackedEntity) {
+              result = this._viewer.delegate.trackedEntity.position.getValue(
+                  this._viewer.clock.currentTime
+              );
+          } else {
+              let rayScratch = new Cesium$1.Ray();
+              rayScratch.origin = camera.positionWC;
+              rayScratch.direction = camera.directionWC;
+              result = scene.globe.pick(rayScratch, scene);
+          }
+          if (!result) {
+              return undefined
+          }
+          if (
+              scene.mode === Cesium$1.SceneMode.SCENE2D ||
+              scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW
+          ) {
+              result = camera.worldToCameraCoordinatesPoint(result);
+              let unprojectedScratch = new Cesium$1.Cartographic();
+              if (inWorldCoordinates) {
+                  result = scene.globe.ellipsoid.cartographicToCartesian(
+                      scene.mapProjection.unproject(result, unprojectedScratch)
+                  );
+              }
+          } else {
+              if (!inWorldCoordinates) {
+                  result = camera.worldToCameraCoordinatesPoint(result);
+              }
+          }
+          return result
+      }
+
+      _orbit(vector) {
+          let scene = this._viewer.scene;
+          let sscc = scene.screenSpaceCameraController;
+          let camera = scene.camera;
+          if (scene.mode === Cesium$1.SceneMode.MORPHING || !sscc.enableInputs) {
+              return
+          }
+          switch (scene.mode) {
+              case Cesium$1.SceneMode.COLUMBUS_VIEW:
+                  if (sscc.enableLook) {
+                      break
+                  }
+                  if (!sscc.enableTranslate || !sscc.enableTilt) {
+                      return
+                  }
+                  break
+              case Cesium$1.SceneMode.SCENE3D:
+                  if (sscc.enableLook) {
+                      break
+                  }
+                  if (!sscc.enableTilt || !sscc.enableRotate) {
+                      return
+                  }
+                  break
+              case Cesium$1.SceneMode.SCENE2D:
+                  if (!sscc.enableTranslate) {
+                      return
+                  }
+                  break
+          }
+
+          this._mouseMoveHandle = e => {
+              this._orbitMouseMoveFunction(e);
+          };
+          this._mouseUpHandle = () => {
+              this._orbitMouseUpFunction();
+          };
+
+          document.removeEventListener('mousemove', this._mouseMoveHandle, false);
+          document.removeEventListener('mouseup', this._mouseUpHandle, false);
+
+          this._orbitLastTimestamp = Cesium$1.getTimestamp();
+
+          if (this._viewer.delegate.trackedEntity) {
+              this._orbitFrame = undefined;
+              this._orbitIsLook = false;
+          } else {
+              let center = this._getCameraFocus(true);
+
+              if (!center) {
+                  this._orbitFrame = Cesium$1.Transforms.eastNorthUpToFixedFrame(
+                      camera.positionWC,
+                      scene.globe.ellipsoid
+                  );
+                  this._orbitIsLook = true;
+              } else {
+                  this._orbitFrame = Cesium$1.Transforms.eastNorthUpToFixedFrame(
+                      center,
+                      scene.globe.ellipsoid
+                  );
+                  this._orbitIsLook = false;
+              }
+          }
+
+          this._rotation_marker.style.visibility = 'visible';
+          this._gyro.className += ' gyro-active';
+          document.addEventListener('mousemove', this._mouseMoveHandle, false);
+          document.addEventListener('mouseup', this._mouseUpHandle, false);
+          this._viewer.clock.onTick.addEventListener(this._orbitTickFunction, this);
+          this._updateAngleAndOpacity(vector, this._compassRectangle.width);
+      }
+
+      _orbitTickFunction(e) {
+          let scene = this._viewer.scene;
+          let camera = this._viewer.camera;
+          let timestamp = Cesium$1.getTimestamp();
+          let deltaT = timestamp - this._orbitLastTimestamp;
+          let rate = ((this._orbitCursorOpacity - 0.5) * 2.5) / 1000;
+          let distance = deltaT * rate;
+          let angle = this._orbitCursorAngle + Cesium$1.Math.PI_OVER_TWO;
+          let x = Math.cos(angle) * distance;
+          let y = Math.sin(angle) * distance;
+          let oldTransform;
+
+          if (this._orbitFrame) {
+              oldTransform = Cesium$1.Matrix4.clone(camera.transform);
+              camera.lookAtTransform(this._orbitFrame);
+          }
+
+          if (scene.mode === Cesium$1.SceneMode.SCENE2D) {
+              camera.move(
+                  new Cesium$1.Cartesian3(x, y, 0),
+                  (Math.max(scene.canvas.clientWidth, scene.canvas.clientHeight) / 100) *
+                  camera.positionCartographic.height *
+                  distance
+              );
+          } else {
+              if (this._orbitIsLook) {
+                  camera.look(Cesium$1.Cartesian3.UNIT_Z, -x);
+                  camera.look(camera.right, -y);
+              } else {
+                  camera.rotateLeft(x);
+                  camera.rotateUp(y);
+              }
+          }
+          if (this._orbitFrame && oldTransform) {
+              camera.lookAtTransform(oldTransform);
+          }
+          this._orbitLastTimestamp = timestamp;
+      }
+
+      _updateAngleAndOpacity(vector, compassWidth) {
+          let angle = Math.atan2(-vector.y, vector.x);
+          this._orbitCursorAngle = Cesium$1.Math.zeroToTwoPi(
+              angle - Cesium$1.Math.PI_OVER_TWO
+          );
+          let distance = Cesium$1.Cartesian2.magnitude(vector);
+          let maxDistance = compassWidth / 2.0;
+          let distanceFraction = Math.min(distance / maxDistance, 1.0);
+          this._orbitCursorOpacity = 0.5 * distanceFraction * distanceFraction + 0.5;
+          this._rotation_marker.style.cssText = `
+      transform: rotate(-${this._orbitCursorAngle}rad);
+      opacity: ${this._orbitCursorOpacity}`;
+      }
+
+      _orbitMouseMoveFunction(e) {
+          this._updateAngleAndOpacity(
+              this._getVector(e),
+              this._compassRectangle.width
+          );
+      }
+
+      _orbitMouseUpFunction() {
+          document.removeEventListener('mousemove', this._mouseMoveHandle, false);
+          document.removeEventListener('mouseup', this._mouseUpHandle, false);
+          this._viewer.clock.onTick.removeEventListener(this._orbitTickFunction, this);
+          this._mouseMoveHandle = undefined;
+          this._mouseUpHandle = undefined;
+          this._rotation_marker.style.visibility = 'hidden';
+          this._gyro.className = this._gyro.className.replace(' gyro-active', '');
+      }
+
+      _rotate(vector) {
+          let scene = this._viewer.scene;
+          let camera = scene.camera;
+          let sscc = scene.screenSpaceCameraController;
+          if (
+              scene.mode === Cesium$1.SceneMode.MORPHING ||
+              scene.mode === Cesium$1.SceneMode.SCENE2D ||
+              !sscc.enableInputs
+          ) {
+              return
+          }
+          if (
+              !sscc.enableLook &&
+              (scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW ||
+                  (scene.mode === Cesium$1.SceneMode.SCENE3D && !sscc.enableRotate))
+          ) {
+              return
+          }
+          this._mouseMoveHandle = e => {
+              this._rotateMouseMoveFunction(e);
+          };
+          this._mouseUpHandle = () => {
+              this._rotateMouseUpFunction();
+          };
+          document.removeEventListener('mousemove', this._mouseMoveHandle, false);
+          document.removeEventListener('mouseup', this._mouseUpHandle, false);
+          this._rotateInitialCursorAngle = Math.atan2(-vector.y, vector.x);
+          if (this._viewer.delegate.trackedEntity) {
+              this._rotateFrame = undefined;
+          } else {
+              let center = this._getCameraFocus(true);
+              if (
+                  !center ||
+                  (scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW &&
+                      !sscc.enableLook &&
+                      !sscc.enableTranslate)
+              ) {
+                  this._rotateFrame = Cesium$1.Transforms.eastNorthUpToFixedFrame(
+                      camera.positionWC,
+                      scene.globe.ellipsoid
+                  );
+              } else {
+                  this._rotateFrame = Cesium$1.Transforms.eastNorthUpToFixedFrame(
+                      center,
+                      scene.globe.ellipsoid
+                  );
+              }
+          }
+          let oldTransform;
+          if (this._rotateFrame) {
+              oldTransform = Cesium$1.Matrix4.clone(camera.transform);
+              camera.lookAtTransform(this._rotateFrame);
+          }
+          this._rotateInitialCameraAngle = -camera.heading;
+          if (this._rotateFrame && oldTransform) {
+              camera.lookAtTransform(oldTransform);
+          }
+          document.addEventListener('mousemove', this._mouseMoveHandle, false);
+          document.addEventListener('mouseup', this._mouseUpHandle, false);
+      }
+
+      _rotateMouseMoveFunction(e) {
+          let camera = this._viewer.camera;
+          let vector = this._getVector(e);
+          let angle = Math.atan2(-vector.y, vector.x);
+          let angleDifference = angle - this._rotateInitialCursorAngle;
+          let newCameraAngle = Cesium$1.Math.zeroToTwoPi(
+              this._rotateInitialCameraAngle - angleDifference
+          );
+          let oldTransform;
+          if (this._rotateFrame) {
+              oldTransform = Cesium$1.Matrix4.clone(camera.transform);
+              camera.lookAtTransform(this._rotateFrame);
+          }
+          let currentCameraAngle = -camera.heading;
+          camera.rotateRight(newCameraAngle - currentCameraAngle);
+          if (this._rotateFrame && oldTransform) {
+              camera.lookAtTransform(oldTransform);
+          }
+      }
+
+      _rotateMouseUpFunction() {
+          document.removeEventListener('mousemove', this._mouseMoveHandle, false);
+          document.removeEventListener('mouseup', this._mouseUpHandle, false);
+          this._mouseMoveHandle = undefined;
+          this._mouseUpHandle = undefined;
+      }
+
+      _getVector(e) {
+          let compassRectangle = this._compassRectangle;
+          let center = new Cesium$1.Cartesian2(
+              (compassRectangle.right - compassRectangle.left) / 2.0,
+              (compassRectangle.bottom - compassRectangle.top) / 2.0
+          );
+          let clickLocation = new Cesium$1.Cartesian2(
+              e.clientX - compassRectangle.left,
+              e.clientY - compassRectangle.top
+          );
+          let vector = new Cesium$1.Cartesian2();
+          Cesium$1.Cartesian2.subtract(clickLocation, center, vector);
+          return vector
+      }
+  }
+
+  Widget.registerType('compass');
+
+  const geodesic = new Cesium$1.EllipsoidGeodesic();
+
+  const BASE = [1, 2, 3, 5];
+
+  const DIS = [
+    ...BASE,
+    ...BASE.map(item => item * 10),
+    ...BASE.map(item => item * 100),
+    ...BASE.map(item => item * 1000),
+    ...BASE.map(item => item * 10000),
+    ...BASE.map(item => item * 100000),
+    ...BASE.map(item => item * 1000000)
+  ];
+
+  class DistanceLegend extends Widget {
+    constructor() {
+      super();
+      this._wrapper = DomUtil.create('div', 'dc-distance-legend');
+      this._labelEl = undefined;
+      this._scaleBarEl = undefined;
+      this._lastUpdate = Cesium$1.getTimestamp();
+      this.type = Widget.getWidgetType('distance_legend');
+      this._state = State$1.INITIALIZED;
+    }
+
+    /**
+     *
+     * @private
+     */
+    _installHook() {
+      Object.defineProperty(this._viewer, 'distanceLegend', {
+        value: this,
+        writable: false
+      });
+    }
+
+    /**
+     *
+     * @private
+     */
+    _bindEvent() {
+      this._viewer.on(SceneEventType.POST_RENDER, this._updateContent, this);
+    }
+
+    /**
+     *
+     * @private
+     */
+    _unbindEvent() {
+      this._viewer.off(SceneEventType.POST_RENDER, this._updateContent, this);
+    }
+
+    /**
+     *
+     * @param scene
+     * @param time
+     * @returns
+     * @private
+     */
+    _updateContent(scene, time) {
+      let now = Cesium$1.getTimestamp();
+      if (now < this._lastUpdate + 250) {
+        return
+      }
+      if (!this._labelEl || !this._scaleBarEl) {
+        return
+      }
+      this._lastUpdate = now;
+      let width = scene.canvas.width;
+      let height = scene.canvas.height;
+      let left = scene.camera.getPickRay(
+        new Cesium$1.Cartesian2((width / 2) | 0, height - 1)
+      );
+      let right = scene.camera.getPickRay(
+        new Cesium$1.Cartesian2((1 + width / 2) | 0, height - 1)
+      );
+      let leftPosition = scene.globe.pick(left, scene);
+      let rightPosition = scene.globe.pick(right, scene);
+      if (!leftPosition || !rightPosition) {
+        return
+      }
+      geodesic.setEndPoints(
+        scene.globe.ellipsoid.cartesianToCartographic(leftPosition),
+        scene.globe.ellipsoid.cartesianToCartographic(rightPosition)
+      );
+      let pixelDistance = geodesic.surfaceDistance;
+      let maxBarWidth = 100;
+      let distance = 0;
+      for (let i = DIS.length - 1; i >= 0; --i) {
+        if (DIS[i] / pixelDistance < maxBarWidth) {
+          distance = DIS[i];
+          break
+        }
+      }
+      if (distance) {
+        this._wrapper.style.visibility = 'visible';
+        this._labelEl.innerHTML =
+          distance >= 1000 ? `${distance / 1000} km` : `${distance} m`;
+        let barWidth = (distance / pixelDistance) | 0;
+        this._scaleBarEl.style.cssText = `width: ${barWidth}px; left: ${(125 -
+        barWidth) /
+        2}px;`;
+      }
+    }
+
+    /**
+     *
+     * @private
+     */
+    _mountContent() {
+      this._labelEl = DomUtil.create('div', 'label', this._wrapper);
+      this._scaleBarEl = DomUtil.create('div', 'scale-bar', this._wrapper);
+      this._wrapper.style.visibility = 'hidden';
+      this._ready = true;
+    }
+  }
+
+  Widget.registerType('distance_legend');
+
+  class ZoomController extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-zoom-controller');
+          this._zoomInEl = undefined;
+          this._zoomOutEl = undefined;
+          this._refreshEl = undefined;
+          this.type = Widget.getWidgetType('zoom_controller');
+          this._state = State$1.INITIALIZED;
+      }
+
+      /**
+       *
+       * @param scene
+       * @returns {Cartesian3}
+       * @private
+       */
+      _getCameraFocus(scene) {
+          const ray = new Cesium$1.Ray(
+              scene.camera.positionWC,
+              scene.camera.directionWC
+          );
+          const intersections = Cesium$1.IntersectionTests.rayEllipsoid(
+              ray,
+              Cesium$1.Ellipsoid.WGS84
+          );
+          if (intersections) {
+              return Cesium$1.Ray.getPoint(ray, intersections.start)
+          }
+          // Camera direction is not pointing at the globe, so use the ellipsoid horizon point as
+          // the focal point.
+          return Cesium$1.IntersectionTests.grazingAltitudeLocation(
+              ray,
+              Cesium$1.Ellipsoid.WGS84
+          )
+      }
+
+      /**
+       *
+       * @param camera
+       * @param focus
+       * @param scalar
+       * @returns {Cartesian3}
+       * @private
+       */
+      _getCameraPosition(camera, focus, scalar) {
+          const cartesian3Scratch = new Cesium$1.Cartesian3();
+          let direction = Cesium$1.Cartesian3.subtract(
+              focus,
+              camera.position,
+              cartesian3Scratch
+          );
+          let movementVector = Cesium$1.Cartesian3.multiplyByScalar(
+              direction,
+              scalar,
+              cartesian3Scratch
+          );
+          return Cesium$1.Cartesian3.add(
+              camera.position,
+              movementVector,
+              cartesian3Scratch
+          )
+      }
+
+      /**
+       *
+       * @returns {boolean}
+       * @private
+       */
+      _zoomIn() {
+          let scene = this._viewer.scene;
+          let camera = scene.camera;
+          let sscc = scene.screenSpaceCameraController;
+          if (
+              scene.mode === Cesium$1.SceneMode.MORPHING ||
+              !sscc.enableInputs ||
+              scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW
+          ) {
+              return true
+          } else if (scene.mode === Cesium$1.SceneMode.SCENE2D) {
+              camera.zoomIn(camera.positionCartographic.height * 0.5);
+          } else if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+              let focus = this._getCameraFocus(scene);
+              let cameraPosition = this._getCameraPosition(camera, focus, 1 / 2);
+              camera.flyTo({
+                  destination: cameraPosition,
+                  orientation: {
+                      heading: camera.heading,
+                      pitch: camera.pitch,
+                      roll: camera.roll
+                  },
+                  duration: 0.5,
+                  convert: false
+              });
+          }
+      }
+
+      /**
+       *
+       * @private
+       */
+      _refresh() {
+          this._viewer.camera.flyHome(1.5);
+      }
+
+      /**
+       *
+       * @returns {boolean}
+       * @private
+       */
+      _zoomOut() {
+          let scene = this._viewer.scene;
+          let camera = scene.camera;
+          let sscc = scene.screenSpaceCameraController;
+          if (
+              scene.mode === Cesium$1.SceneMode.MORPHING ||
+              !sscc.enableInputs ||
+              scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW
+          ) {
+              return true
+          } else if (scene.mode === Cesium$1.SceneMode.SCENE2D) {
+              camera.zoomOut(camera.positionCartographic.height);
+          } else if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+              let focus = this._getCameraFocus(scene);
+              let cameraPosition = this._getCameraPosition(camera, focus, -1);
+              camera.flyTo({
+                  destination: cameraPosition,
+                  orientation: {
+                      heading: camera.heading,
+                      pitch: camera.pitch,
+                      roll: camera.roll
+                  },
+                  duration: 0.5,
+                  convert: false
+              });
+          }
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'zoomController', {
+              value: this,
+              writable: false
+          });
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          this._zoomInEl = DomUtil.parseDom(compass_inner.increase, true, 'zoom-in');
+          this._refreshEl = DomUtil.parseDom(compass_inner.refresh, true, 'refresh');
+          this._zoomOutEl = DomUtil.parseDom(compass_inner.decrease, true, 'zoom-out');
+          this._wrapper.appendChild(this._zoomInEl);
+          this._wrapper.appendChild(this._refreshEl);
+          this._wrapper.appendChild(this._zoomOutEl);
+          let self = this;
+          this._zoomInEl.onclick = e => {
+              self._zoomIn();
+          };
+          this._refreshEl.onclick = e => {
+              self._refresh();
+          };
+          this._zoomOutEl.onclick = e => {
+              self._zoomOut();
+          };
+          this._ready = true;
+      }
+  }
+
+  Widget.registerType('zoom_controller');
+
+  class LoadingMask extends Widget {
+      constructor() {
+          super();
+          this._wrapper = DomUtil.create('div', 'dc-loading-mask');
+          this.type = Widget.getWidgetType('loading_mask');
+          this._state = State$1.INITIALIZED;
+      }
+
+      /**
+       *
+       * @private
+       */
+      _installHook() {
+          Object.defineProperty(this._viewer, 'loadingMask', {
+              value: this,
+              writable: false
+          });
+      }
+
+      /**
+       *
+       * @private
+       */
+      _mountContent() {
+          let el = DomUtil.parseDom(
+              `
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    `,
+              true,
+              'loading'
+          );
+          this._wrapper.appendChild(el);
+          this._ready = true;
+      }
+  }
+
+  Widget.registerType('loading_mask');
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-16 10:50:09
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-16 10:53:22
+   */
+
+  function createWidgets() {
+      return {
+          attribution: new Attribution(),
+          popup: new Popup(),
+          contextMenu: new ContextMenu(),
+          tooltip: new Tooltip(),
+          mapSwitch: new MapSwitch(),
+          mapSplit: new MapSplit(),
+          locationBar: new LocationBar(),
+          hawkeyeMap: new HawkeyeMap(),
+          compass: new Compass(),
+          distanceLegend: new DistanceLegend(),
+          zoomController: new ZoomController(),
+          loadingMask: new LoadingMask()
+      }
+  }
+
+  /*
    * @Description: 
    * @version: 
    * @Author: sueRimn
    * @Date: 2021-03-16 10:31:03
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:27:51
+   * @LastEditTime: 2021-03-17 15:17:59
    */
 
   const DEF_OPTS = {
@@ -10294,7 +12362,7 @@
           }); // Initialize the viewer
 
           // register events
-          new MouseEvent();
+          new MouseEvent(this);
 
           this._viewerEvent = new ViewerEvent(); // Register viewer events
           this._sceneEvent = new SceneEvent(this); // Register scene events
@@ -10812,212 +12880,6 @@
       }
 
   }
-
-  /*
-   * @Descripttion: 
-   * @version: 
-   * @Author: sueRimn
-   * @Date: 2021-03-15 13:55:52
-   * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 10:50:57
-   */
-  let WidgetType = {};
-
-  class Widget {
-    constructor() {
-      this._viewer = undefined;
-      this._enable = false;
-      this._wrapper = undefined;
-      this._ready = false;
-      this.type = undefined;
-    }
-
-    set enable(enable) {
-      if (this._enable === enable) {
-        return this
-      }
-      this._enable = enable;
-      this._state = this._enable ? State$1.ENABLED : State$1.DISABLED;
-      this._enableHook && this._enableHook();
-      return this
-    }
-
-    get enable() {
-      return this._enable
-    }
-
-    get state() {
-      return this._state
-    }
-
-    /**
-     * mount content
-     * @private
-     */
-    _mountContent() {}
-
-    /**
-     * binds event
-     * @private
-     */
-    _bindEvent() {}
-
-    /**
-     * Unbinds event
-     * @private
-     */
-    _unbindEvent() {}
-
-    /**
-     * When enable modifies the hook executed, the subclass copies it as required
-     * @private
-     */
-    _enableHook() {
-      !this._ready && this._mountContent();
-      if (this._enable) {
-        !this._wrapper.parentNode &&
-          this._viewer.dcContainer.appendChild(this._wrapper);
-        this._bindEvent();
-      } else {
-        this._unbindEvent();
-        this._wrapper.parentNode &&
-          this._viewer.dcContainer.removeChild(this._wrapper);
-      }
-    }
-
-    /**
-     * Updating the Widget location requires subclass overrides
-     * @param windowCoord
-     * @private
-     */
-    _updateWindowCoord(windowCoord) {}
-
-    /**
-     * Hook for installed
-     * @private
-     */
-    _installHook() {}
-
-    /**
-     * Installs to viewer
-     * @param viewer
-     */
-    install(viewer) {
-      this._viewer = viewer;
-      /**
-       * do installHook
-       */
-      this._installHook && this._installHook();
-      this._state = State$1.INSTALLED;
-    }
-
-    /**
-     * Setting  wrapper
-     * @param wrapper
-     * @returns {Widget}
-     */
-    setWrapper(wrapper) {
-      return this
-    }
-
-    /**
-     * Setting widget content
-     * @param content
-     * @returns {Widget}
-     */
-    setContent(content) {
-      if (content && typeof content === 'string') {
-        this._wrapper.innerHTML = content;
-      } else if (content && content instanceof Element) {
-        while (this._wrapper.hasChildNodes()) {
-          this._wrapper.removeChild(this._wrapper.firstChild);
-        }
-        this._wrapper.appendChild(content);
-      }
-      return this
-    }
-
-    /**
-     * hide widget
-     */
-    hide() {
-      this._wrapper &&
-        (this._wrapper.style.cssText = `
-    visibility:hidden;
-    `);
-    }
-
-    /**
-     * Registers type
-     * @param type
-     */
-    static registerType(type) {
-      if (type) {
-        WidgetType[type.toLocaleUpperCase()] = type.toLocaleLowerCase();
-      }
-    }
-
-    /**
-     *
-     * @param type
-     */
-    static getWidgetType(type) {
-      return WidgetType[type.toLocaleUpperCase()] || undefined
-    }
-  }
-
-  /*
-   * @Descripttion: 
-   * @version: 
-   * @Author: sueRimn
-   * @Date: 2021-03-16 10:50:08
-   * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:47:26
-   */
-
-  Widget.registerType('attribution');
-
-  Widget.registerType('contextmenu');
-
-  Widget.registerType('location_bar');
-
-  Widget.registerType('map_split');
-
-  /*
-   * @Descripttion: 
-   * @version: 
-   * @Author: sueRimn
-   * @Date: 2021-03-16 10:50:09
-   * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:48:25
-   */
-
-  Widget.registerType('map_switch');
-
-  Widget.registerType('popup');
-
-  /*
-   * @Descripttion: 
-   * @version: 
-   * @Author: sueRimn
-   * @Date: 2021-03-16 10:50:09
-   * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:48:41
-   */
-
-  Widget.registerType('tooltip');
-
-  Widget.registerType('hawkeye_map');
-
-  Widget.registerType('compass');
-
-  new Cesium$1.EllipsoidGeodesic();
-
-  Widget.registerType('distance_legend');
-
-  Widget.registerType('zoom_controller');
-
-  Widget.registerType('loading_mask');
 
   exports.Billboard = Billboard;
   exports.Box = Box;
