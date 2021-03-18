@@ -4,13 +4,14 @@
  * @Author: 宁四凯
  * @Date: 2020-09-10 16:36:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 18:36:25
+ * @LastEditTime: 2021-03-18 10:59:18
  */
 import rollupGitVersion from "rollup-plugin-git-version";
 import resolve from "@rollup/plugin-node-resolve"
 import image from "@rollup/plugin-image"
 import glsl from "rollup-plugin-glslify"
 import json from "rollup-plugin-json";
+import copy from "rollup-plugin-copy";
 import gitRev from "git-rev-sync";
 import pkg from "../package.json";
 
@@ -29,7 +30,7 @@ if (process.env.NODE_ENV === "release") {
 
 export default {
     input: "src/index.js",
-    external: ["turf", "cesium"],
+    external: ["cesium"],
     output: [
         {
             file: pkg.main,
@@ -37,8 +38,18 @@ export default {
             name: "DC",
             globals: {
                 cesium: "Cesium",
-            },
+            }
         },
     ],
-    plugins: [release ? json() : rollupGitVersion(), resolve(), image(), glsl()],
+    plugins: [release ? json() : rollupGitVersion(),
+    copy({
+        targets: [
+            {src: 'node_modules/cesium/Build/Cesium/*', dest: "dist/resources"},
+            {src: 'node_modules/cesium/Build/Cesium/Widgets/widgets.css', dest: 'dist/resources' },
+        ],
+        copyOnce: true
+    }),
+    resolve(),
+    image(),
+    glsl()],
 };

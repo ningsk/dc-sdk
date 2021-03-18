@@ -4,46 +4,52 @@
  * @Author: sueRimn
  * @Date: 2021-03-15 14:45:58
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 14:05:52
+ * @LastEditTime: 2021-03-18 11:02:18
  */
 
-export { default as Util } from './core/util/Util'
-export { default as DomUtil } from './core/util/DomUtil'
-export { default as LogUtil } from './core/util/Log'
-export { default as PlotUtil } from './core/util/PlotUtil'
+export { default as Util } from './util/Util'
+export { default as DomUtil } from './util/DomUtil'
+export { default as LogUtil } from './util/Log'
+export { default as PlotUtil } from './util/PlotUtil'
 
-export * from './core/event/index'
+export * from './event/index'
 
-export { default as Effect } from './core/effect/Effect'
+export { default as Effect } from './effect/Effect'
 
-export { default as ImageryLayerFactory } from './core/imagery/ImageryLayerFactory'
+export { default as ImageryLayerFactory } from './imagery/ImageryLayerFactory'
 
-export { default as ImageryType } from './core/imagery/ImageryType'
+export { default as ImageryType } from './imagery/ImageryType'
 
-export * from './core/layer/index'
+export * from './layer/index'
 
-export * from './core/material/index'
+export * from './material/index'
 
-export * from './core/math/index'
+export * from './math/index'
 
-export * from './core/option/index'
+export * from './option/index'
 
-export * from './core/overlay/index'
+export * from './overlay/index'
 
-export { default as Parse } from './core/parse/Parse'
+export { default as Parse } from './parse/Parse'
 
-export { default as Position } from './core/position/Position'
+export { default as Position } from './position/Position'
 
-export { default as State } from './core/state/State'
+export { default as State } from './state/State'
 
-export * from './core/terrain/index'
+export * from './terrain/index'
 
-export * from './core/things/index'
+export * from './things/index'
 
-export { default as Transform } from './core/transform/Transform'
-export { default as CoordTransform } from './core/transform/CoordTransform'
+export { default as Transform } from './transform/Transform'
+export { default as CoordTransform } from './transform/CoordTransform'
 
-export { default as Viewer } from './core/viewer/Viewer'
+export { default as Viewer } from './viewer/Viewer'
 
 
-export * from "./core/widget/index"
+export * from "./widget/index"
+
+export * from "./thirdpart/index"
+
+export * from './namespace'
+
+delete window.Cesium

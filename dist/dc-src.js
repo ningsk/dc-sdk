@@ -924,7 +924,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-11 11:10:19
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 14:24:33
+   * @LastEditTime: 2021-03-18 11:06:34
    */
 
 
@@ -934,11 +934,11 @@
   };
 
   const MouseEventType = {
-      CLICK: Cesium$1.ScreenSpaceEventType.LEFT_CLICK,
-      RIGHT_CLICK: Cesium$1.ScreenSpaceEventType.RIGHT_CLICK,
-      DB_CLICK: Cesium$1.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
-      MOUSE_MOVE: Cesium$1.ScreenSpaceEventType.MOUSE_MOVE,
-      WHEEL: Cesium$1.ScreenSpaceEventType.WHEEL,
+      CLICK: Cesium__default['default'].ScreenSpaceEventType.LEFT_CLICK,
+      RIGHT_CLICK: Cesium__default['default'].ScreenSpaceEventType.RIGHT_CLICK,
+      DB_CLICK: Cesium__default['default'].ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+      MOUSE_MOVE: Cesium__default['default'].ScreenSpaceEventType.MOUSE_MOVE,
+      WHEEL: Cesium__default['default'].ScreenSpaceEventType.WHEEL,
       MOUSE_OVER: 'mouseover',
       MOUSE_OUT: 'mouseout'
   };
@@ -948,11 +948,11 @@
       REMOVE_LAYER: 'removeLayer',
       ADD_EFFECT: 'addEffect',
       REMOVE_EFFECT: 'removeEffect',
-      CLICK: Cesium$1.ScreenSpaceEventType.LEFT_CLICK,
-      RIGHT_CLICK: Cesium$1.ScreenSpaceEventType.RIGHT_CLICK,
-      DB_CLICK: Cesium$1.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
-      MOUSE_MOVE: Cesium$1.ScreenSpaceEventType.MOUSE_MOVE,
-      WHEEL: Cesium$1.ScreenSpaceEventType.WHEEL
+      CLICK: Cesium__default['default'].ScreenSpaceEventType.LEFT_CLICK,
+      RIGHT_CLICK: Cesium__default['default'].ScreenSpaceEventType.RIGHT_CLICK,
+      DB_CLICK: Cesium__default['default'].ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+      MOUSE_MOVE: Cesium__default['default'].ScreenSpaceEventType.MOUSE_MOVE,
+      WHEEL: Cesium__default['default'].ScreenSpaceEventType.WHEEL
   };
 
   const SceneEventType = {
@@ -968,10 +968,10 @@
 
   const OverlayEventType = {
       ...BaseEventType,
-      CLICK: Cesium$1.ScreenSpaceEventType.LEFT_CLICK,
-      RIGHT_CLICK: Cesium$1.ScreenSpaceEventType.RIGHT_CLICK,
-      DB_CLICK: Cesium$1.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
-      MOUSE_MOVE: Cesium$1.ScreenSpaceEventType.MOUSE_MOVE,
+      CLICK: Cesium__default['default'].ScreenSpaceEventType.LEFT_CLICK,
+      RIGHT_CLICK: Cesium__default['default'].ScreenSpaceEventType.RIGHT_CLICK,
+      DB_CLICK: Cesium__default['default'].ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+      MOUSE_MOVE: Cesium__default['default'].ScreenSpaceEventType.MOUSE_MOVE,
       MOUSE_OVER: 'mouseover',
       MOUSE_OUT: 'mouseout',
       POSITION_UPDATE: 'positionUpdate'
@@ -1104,7 +1104,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 14:26:01
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:30:05
+   * @LastEditTime: 2021-03-18 11:07:47
    */
 
   /**
@@ -1410,7 +1410,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 14:27:42
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 14:27:59
+   * @LastEditTime: 2021-03-18 11:08:31
    */
 
   class ViewerEvent extends Event {
@@ -1579,7 +1579,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 14:25:01
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 14:25:14
+   * @LastEditTime: 2021-03-18 11:07:22
    */
 
   class LayerGroupEvent extends Event {
@@ -1605,7 +1605,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-11 12:50:33
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-11 12:53:19
+   * @LastEditTime: 2021-03-18 11:06:57
    */
 
   class LayerEvent extends Event {
@@ -1617,7 +1617,7 @@
       _registerEvent() {
           Object.keys(LayerEventType).forEach(key => {
               let type = LayerEventType[key];
-              this._cache[type] = new Cesium$1.Event();
+              this._cache[type] = new Cesium__default['default'].Event();
           });
       }
 
@@ -1629,8 +1629,8 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 14:43:27
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 14:16:15
-   */
+   * @LastEditTime: 2021-03-18 11:08:08
+  */
 
   class OverlayEvent extends Event {
       constructor() {
@@ -1644,7 +1644,7 @@
       _registerEvent() {
           Object.keys(OverlayEventType).forEach(key => {
               let type = OverlayEventType[key];
-              this._cache[type] = new Cesium$1.Event();
+              this._cache[type] = new Cesium__default['default'].Event();
           });
       }
   }
@@ -1677,7 +1677,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 09:19:30
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-12 10:54:28
+   * @LastEditTime: 2021-03-18 10:57:59
    */
 
   class BlackAndWhiteEffect {
@@ -1695,7 +1695,7 @@
           this._enable = enable;
           if (enable && this._viewer && !this._delegate) this._createPostProcessStage();
           this._delegate && (this._delegate.enabled = enable);
-          return this 
+          return this
       }
 
       get enable() {
@@ -1722,7 +1722,7 @@
        * @private
        */
       _createPostProcessStage() {
-          this._delegate = Cesium$1.PostProcessStageLibrary.createBlackAndWhiteStage();
+          this._delegate = Cesium__default['default'].PostProcessStageLibrary.createBlackAndWhiteStage();
           if (this._delegate) {
               this._delegate.uniforms.gradations = this._gradations;
               this._viewer.scene.postProcessStages.add(this._delegate);
@@ -1883,7 +1883,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 10:56:35
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-12 10:59:24
+   * @LastEditTime: 2021-03-18 10:56:45
    */
 
   class BrightnessEffect {
@@ -1935,7 +1935,7 @@
        * @private
        */
       _createPostProcessStage() {
-          this._delegate = Cesium$1.PostProcessStageLibrary.createBrightnessStage();
+          this._delegate = Cesium__default['default'].PostProcessStageLibrary.createBrightnessStage();
           if (this._delegate) {
               this._delegate.uniforms.brightness = this._intensity;
               this._viewer.scene.postProcessStages.add(this._delegate);
@@ -2084,7 +2084,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 11:03:41
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-12 11:05:00
+   * @LastEditTime: 2021-03-18 11:04:16
    */
 
 
@@ -2107,7 +2107,7 @@
           if (
               enable &&
               this._viewer &&
-              Cesium$1.PostProcessStageLibrary.isDepthOfFieldSupported(
+              Cesium__default['default'].PostProcessStageLibrary.isDepthOfFieldSupported(
                   this._viewer.scene
               ) &&
               !this._delegate
@@ -2177,7 +2177,7 @@
        * @private
        */
       _createPostProcessStage() {
-          this._delegate = Cesium$1.PostProcessStageLibrary.createDepthOfFieldStage();
+          this._delegate = Cesium__default['default'].PostProcessStageLibrary.createDepthOfFieldStage();
           if (this._delegate) {
               this._delegate.uniforms.focalDistance = this._focalDistance;
               this._delegate.uniforms.delta = this._delta;
@@ -2210,7 +2210,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 10:47:13
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 18:49:43
+   * @LastEditTime: 2021-03-18 11:05:00
    */
 
   class FogEffect {
@@ -2220,7 +2220,7 @@
           this._delegate = undefined;
           this._enable = false;
           this._fogByDistance = { near: 10, nearValue: 0, far: 2000, farValue: 1.0 };
-          this._color = new Cesium$1.Color(0, 0, 0, 1);
+          this._color = new Cesium__default['default'].Color(0, 0, 0, 1);
           this.type = 'fog';
           this._state = State$1.INITIALIZED;
       }
@@ -2241,7 +2241,7 @@
       set fogByDistance(fogByDistance) {
           this._fogByDistance = fogByDistance;
           this._delegate &&
-              (this._delegate.uniforms.fogByDistance = new Cesium$1.Cartesian4(
+              (this._delegate.uniforms.fogByDistance = new Cesium__default['default'].Cartesian4(
                   this._fogByDistance?.near || 10,
                   this._fogByDistance?.nearValue || 0.0,
                   this._fogByDistance?.far || 2000,
@@ -2268,11 +2268,11 @@
        * @private
        */
       _createPostProcessStage() {
-          this._delegate = new Cesium$1.PostProcessStage({
+          this._delegate = new Cesium__default['default'].PostProcessStage({
               name: this._id,
               fragmentShader: FogShader,
               uniforms: {
-                  fogByDistance: new Cesium$1.Cartesian4(
+                  fogByDistance: new Cesium__default['default'].Cartesian4(
                       this._fogByDistance?.near || 10,
                       this._fogByDistance?.nearValue || 0.0,
                       this._fogByDistance?.far || 200,
@@ -2305,7 +2305,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 11:00:46
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-12 11:02:25
+   * @LastEditTime: 2021-03-18 11:05:18
    */
 
   class NightVisionEffect {
@@ -2344,7 +2344,7 @@
        * @private
        */
       _createPostProcessStage() {
-          this._delegate = Cesium$1.PostProcessStageLibrary.createNightVisionStage();
+          this._delegate = Cesium__default['default'].PostProcessStageLibrary.createNightVisionStage();
           if (this._delegate) {
               this._viewer.scene.postProcessStages.add(this._delegate);
           }
@@ -2373,7 +2373,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 10:50:07
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 18:50:55
+   * @LastEditTime: 2021-03-18 11:05:41
    */
 
   class RainEffect {
@@ -2415,7 +2415,7 @@
        * @private
        */
       _createPostProcessStage() {
-          this._delegate = new Cesium$1.PostProcessStage({
+          this._delegate = new Cesium__default['default'].PostProcessStage({
               name: this._id,
               fragmentShader: RainShader,
               uniforms: {
@@ -2448,7 +2448,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-12 10:17:07
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 18:50:39
+   * @LastEditTime: 2021-03-18 11:06:03
    */
 
   class SnowEffect {
@@ -2485,7 +2485,7 @@
        * @private
        */
       _createPostProcessStage() {
-          this._delegate = new Cesium$1.PostProcessStage({
+          this._delegate = new Cesium__default['default'].PostProcessStage({
               name: this._id,
               fragmentShader: SnowShader,
               uniforms: {
@@ -2783,35 +2783,36 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:15:55
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:16:23
+   * @LastEditTime: 2021-03-18 11:11:37
    */
 
-  class AmapMercatorTilingScheme extends Cesium$1.WebMercatorTilingScheme {
+
+  class AmapMercatorTilingScheme extends Cesium__default['default'].WebMercatorTilingScheme {
       constructor(options) {
           super(options);
-          let projection = new Cesium$1.WebMercatorProjection();
+          let projection = new Cesium__default['default'].WebMercatorProjection();
           this._projection.project = function (cartographic, result) {
               result = CoordTransform.WGS84ToGCJ02(
-                  Cesium$1.Math.toDegrees(cartographic.longitude),
-                  Cesium$1.Math.toDegrees(cartographic.latitude)
+                  Cesium__default['default'].Math.toDegrees(cartographic.longitude),
+                  Cesium__default['default'].Math.toDegrees(cartographic.latitude)
               );
               result = projection.project(
-                  new Cesium$1.Cartographic(
-                      Cesium$1.Math.toRadians(result[0]),
-                      Cesium$1.Math.toRadians(result[1])
+                  new Cesium__default['default'].Cartographic(
+                      Cesium__default['default'].Math.toRadians(result[0]),
+                      Cesium__default['default'].Math.toRadians(result[1])
                   )
               );
-              return new Cesium$1.Cartesian2(result.x, result.y)
+              return new Cesium__default['default'].Cartesian2(result.x, result.y)
           };
           this._projection.unproject = function (cartesian, result) {
               let cartographic = projection.unproject(cartesian);
               result = CoordTransform.GCJ02ToWGS84(
-                  Cesium$1.Math.toDegrees(cartographic.longitude),
-                  Cesium$1.Math.toDegrees(cartographic.latitude)
+                  Cesium__default['default'].Math.toDegrees(cartographic.longitude),
+                  Cesium__default['default'].Math.toDegrees(cartographic.latitude)
               );
-              return new Cesium$1.Cartographic(
-                  Cesium$1.Math.toRadians(result[0]),
-                  Cesium$1.Math.toRadians(result[1])
+              return new Cesium__default['default'].Cartographic(
+                  Cesium__default['default'].Math.toRadians(result[0]),
+                  Cesium__default['default'].Math.toRadians(result[1])
               )
           };
       }
@@ -2823,8 +2824,9 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:15:01
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:15:28
+   * @LastEditTime: 2021-03-18 11:09:33
    */
+
 
   const IMG_URL$3 =
       'https://webst{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}';
@@ -2834,7 +2836,7 @@
 
   const LOAD_MARK_URL =
       'https://webst{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}';
-  class AmapImageryProvider extends Cesium$1.UrlTemplateImageryProvider {
+  class AmapImageryProvider extends Cesium__default['default'].UrlTemplateImageryProvider {
       constructor(options = {}) {
           options['url'] = options.style === 'img' ? IMG_URL$3 : options.style === 'load' ? LOAD_MARK_URL : ELEC_URL$2;
           options['subdomains'] = options.subdomains || ['01', '02', '03', '04'];
@@ -3353,18 +3355,18 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:16:54
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:17:22
+   * @LastEditTime: 2021-03-18 11:12:06
    */
 
-  class BaiduMercatorTilingScheme extends Cesium$1.WebMercatorTilingScheme {
+  class BaiduMercatorTilingScheme extends Cesium__default['default'].WebMercatorTilingScheme {
       constructor(options) {
           super(options);
           let projection = new BaiduMercatorProjection();
           this._projection.project = function (cartographic, result) {
               result = result || {};
               result = CoordTransform.WGS84ToGCJ02(
-                  Cesium$1.Math.toDegrees(cartographic.longitude),
-                  Cesium$1.Math.toDegrees(cartographic.latitude)
+                  Cesium__default['default'].Math.toDegrees(cartographic.longitude),
+                  Cesium__default['default'].Math.toDegrees(cartographic.latitude)
               );
               result = CoordTransform.GCJ02ToBD09(result[0], result[1]);
               result[0] = Math.min(result[0], 180);
@@ -3375,7 +3377,7 @@
                   lng: result[0],
                   lat: result[1]
               });
-              return new Cesium$1.Cartesian2(result.x, result.y)
+              return new Cesium__default['default'].Cartesian2(result.x, result.y)
           };
           this._projection.unproject = function (cartesian, result) {
               result = result || {};
@@ -3385,9 +3387,9 @@
               });
               result = CoordTransform.BD09ToGCJ02(result.lng, result.lat);
               result = CoordTransform.GCJ02ToWGS84(result[0], result[1]);
-              return new Cesium$1.Cartographic(
-                  Cesium$1.Math.toRadians(result[0]),
-                  Cesium$1.Math.toRadians(result[1])
+              return new Cesium__default['default'].Cartographic(
+                  Cesium__default['default'].Math.toRadians(result[0]),
+                  Cesium__default['default'].Math.toRadians(result[1])
               )
           };
           this.resolutions = options.resolutions || [];
@@ -3408,8 +3410,8 @@
           const north = ((y = -y) + 1) * tileWidth;
           const south = y * tileWidth;
 
-          if (!Cesium$1.defined(result)) {
-              return new Cesium$1.Rectangle(west, south, east, north)
+          if (!Cesium__default['default'].defined(result)) {
+              return new Cesium__default['default'].Rectangle(west, south, east, north)
           }
 
           result.west = west;
@@ -3428,19 +3430,19 @@
        */
       positionToTileXY(position, level, result) {
           const rectangle = this._rectangle;
-          if (!Cesium$1.Rectangle.contains(rectangle, position)) {
+          if (!Cesium__default['default'].Rectangle.contains(rectangle, position)) {
               return undefined
           }
           const projection = this._projection;
           const webMercatorPosition = projection.project(position);
-          if (!Cesium$1.defined(webMercatorPosition)) {
+          if (!Cesium__default['default'].defined(webMercatorPosition)) {
               return undefined
           }
           const tileWidth = this.resolutions[level];
           const xTileCoordinate = Math.floor(webMercatorPosition.x / tileWidth);
           const yTileCoordinate = -Math.floor(webMercatorPosition.y / tileWidth);
-          if (!Cesium$1.defined(result)) {
-              return new Cesium$1.Cartesian2(xTileCoordinate, yTileCoordinate)
+          if (!Cesium__default['default'].defined(result)) {
+              return new Cesium__default['default'].Cartesian2(xTileCoordinate, yTileCoordinate)
           }
           result.x = xTileCoordinate;
           result.y = yTileCoordinate;
@@ -3454,7 +3456,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:14:14
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:14:40
+   * @LastEditTime: 2021-03-18 11:10:00
    */
 
   const IMG_URL$2 =
@@ -3491,19 +3493,19 @@
               }
               this._tilingScheme = new BaiduMercatorTilingScheme({
                   resolutions,
-                  rectangleSouthwestInMeters: new Cesium$1.Cartesian2(
+                  rectangleSouthwestInMeters: new Cesium__default['default'].Cartesian2(
                       -20037726.37,
                       -12474104.17
                   ),
-                  rectangleNortheastInMeters: new Cesium$1.Cartesian2(
+                  rectangleNortheastInMeters: new Cesium__default['default'].Cartesian2(
                       20037726.37,
                       12474104.17
                   )
               });
           } else {
-              this._tilingScheme = new Cesium$1.WebMercatorTilingScheme({
-                  rectangleSouthwestInMeters: new Cesium$1.Cartesian2(-33554054, -33746824),
-                  rectangleNortheastInMeters: new Cesium$1.Cartesian2(33554054, 33746824)
+              this._tilingScheme = new Cesium__default['default'].WebMercatorTilingScheme({
+                  rectangleSouthwestInMeters: new Cesium__default['default'].Cartesian2(-33554054, -33746824),
+                  rectangleNortheastInMeters: new Cesium__default['default'].Cartesian2(33554054, 33746824)
               });
           }
           this._rectangle = this._tilingScheme.rectangle;
@@ -3522,7 +3524,7 @@
 
       get tileWidth() {
           if (!this.ready) {
-              throw new Cesium$1.DeveloperError(
+              throw new Cesium__default['default'].DeveloperError(
                   'tileWidth must not be called before the imagery provider is ready.'
               )
           }
@@ -3531,7 +3533,7 @@
 
       get tileHeight() {
           if (!this.ready) {
-              throw new Cesium$1.DeveloperError(
+              throw new Cesium__default['default'].DeveloperError(
                   'tileHeight must not be called before the imagery provider is ready.'
               )
           }
@@ -3540,7 +3542,7 @@
 
       get maximumLevel() {
           if (!this.ready) {
-              throw new Cesium$1.DeveloperError(
+              throw new Cesium__default['default'].DeveloperError(
                   'maximumLevel must not be called before the imagery provider is ready.'
               )
           }
@@ -3549,7 +3551,7 @@
 
       get minimumLevel() {
           if (!this.ready) {
-              throw new Cesium$1.DeveloperError(
+              throw new Cesium__default['default'].DeveloperError(
                   'minimumLevel must not be called before the imagery provider is ready.'
               )
           }
@@ -3558,7 +3560,7 @@
 
       get tilingScheme() {
           if (!this.ready) {
-              throw new Cesium$1.DeveloperError(
+              throw new Cesium__default['default'].DeveloperError(
                   'tilingScheme must not be called before the imagery provider is ready.'
               )
           }
@@ -3567,7 +3569,7 @@
 
       get rectangle() {
           if (!this.ready) {
-              throw new Cesium$1.DeveloperError(
+              throw new Cesium__default['default'].DeveloperError(
                   'rectangle must not be called before the imagery provider is ready.'
               )
           }
@@ -3597,7 +3599,7 @@
        */
       requestImage(x, y, level) {
           if (!this.ready) {
-              throw new Cesium$1.DeveloperError(
+              throw new Cesium__default['default'].DeveloperError(
                   'requestImage must not be called before the imagery provider is ready.'
               )
           }
@@ -3617,7 +3619,7 @@
                   .replace('{x}', String(x - xTiles / 2))
                   .replace('{y}', String(yTiles / 2 - y - 1));
           }
-          return Cesium$1.ImageryProvider.loadImage(this, url)
+          return Cesium__default['default'].ImageryProvider.loadImage(this, url)
       }
   }
 
@@ -3629,8 +3631,9 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:12:46
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:13:56
+   * @LastEditTime: 2021-03-18 11:10:32
    */
+
   const ELEC_URL$1 =
       'http://mt{s}.google.cn/vt/lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=Galile';
 
@@ -3640,7 +3643,7 @@
   const TER_URL =
       'http://mt{s}.google.cn/vt/lyrs=t@131,r@227000000&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}&s=Galile';
 
-  class GoogleImageryProvider extends Cesium$1.UrlTemplateImageryProvider {
+  class GoogleImageryProvider extends Cesium__default['default'].UrlTemplateImageryProvider {
       constructor(options = {}) {
           options['url'] =
               options.style === 'img'
@@ -3661,13 +3664,13 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:11:05
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:13:09
+   * @LastEditTime: 2021-03-18 11:10:52
    */
 
   const MAP_URL =
       'https://t{s}.tianditu.gov.cn/DataServer?T={style}_w&x={x}&y={y}&l={z}&tk={key}';
 
-  class TdtImageryProvider extends Cesium$1.UrlTemplateImageryProvider {
+  class TdtImageryProvider extends Cesium__default['default'].UrlTemplateImageryProvider {
       constructor(options = {}) {
           super({
               url: MAP_URL.replace(/\{style\}/g, options.style || 'vec').replace(
@@ -3675,7 +3678,7 @@
                   options.key || ''
               ),
               subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
-              tilingScheme: new Cesium$1.WebMercatorTilingScheme(),
+              tilingScheme: new Cesium__default['default'].WebMercatorTilingScheme(),
               maximumLevel: 18
           });
       }
@@ -3689,7 +3692,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:06:27
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:13:20
+   * @LastEditTime: 2021-03-18 11:11:09
    */
 
   const IMG_URL =
@@ -3698,7 +3701,7 @@
   const ELEC_URL =
       'https://rt{s}.map.gtimg.com/tile?z={z}&x={x}&y={reverseY}&styleid={style}&scene=0&version=347';
 
-  class TencentImageryProvider extends Cesium$1.UrlTemplateImageryProvider {
+  class TencentImageryProvider extends Cesium__default['default'].UrlTemplateImageryProvider {
       constructor(options = {}) {
           let url = options.style === 'img' ? IMG_URL : ELEC_URL;
           options['url'] = url.replace('{style}', options.style || 1);
@@ -3725,7 +3728,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:01:51
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 10:03:15
+   * @LastEditTime: 2021-03-18 11:12:36
    */
 
   class ImageryLayerFactory {
@@ -3780,7 +3783,7 @@
        * @returns {module:cesium.ArcGisMapServerImageryProvider}
        */
       static createArcGisImageryLayer(options) {
-          return new Cesium$1.ArcGisMapServerImageryProvider(options)
+          return new Cesium__default['default'].ArcGisMapServerImageryProvider(options)
       }
 
       /**
@@ -3789,7 +3792,7 @@
        * @returns {module:cesium.SingleTileImageryProvider}
        */
       static createSingleTileImageryLayer(options) {
-          return new Cesium$1.SingleTileImageryProvider(options)
+          return new Cesium__default['default'].SingleTileImageryProvider(options)
       }
 
       /**
@@ -3798,7 +3801,7 @@
        * @returns {module:cesium.WebMapServiceImageryProvider}
        */
       static createWMSImageryLayer(options) {
-          return new Cesium$1.WebMapServiceImageryProvider(options)
+          return new Cesium__default['default'].WebMapServiceImageryProvider(options)
       }
 
       /**
@@ -3807,7 +3810,7 @@
        * @returns {module:cesium.WebMapTileServiceImageryProvider}
        */
       static createWMTSImageryLayer(options) {
-          return new Cesium$1.WebMapTileServiceImageryProvider(options)
+          return new Cesium__default['default'].WebMapTileServiceImageryProvider(options)
       }
 
       /**
@@ -3816,7 +3819,7 @@
        * @returns {module:cesium.UrlTemplateImageryProvider}
        */
       static createXYZImageryLayer(options) {
-          return new Cesium$1.UrlTemplateImageryProvider(options)
+          return new Cesium__default['default'].UrlTemplateImageryProvider(options)
       }
 
       /**
@@ -3825,7 +3828,7 @@
        * @returns {module:cesium.TileCoordinatesImageryProvider}
        */
       static createCoordImageryLayer(options) {
-          return new Cesium$1.TileCoordinatesImageryProvider(options)
+          return new Cesium__default['default'].TileCoordinatesImageryProvider(options)
       }
 
       /**
@@ -3834,7 +3837,7 @@
        * @returns {module: cesium.MapboxImageryProvider}
        */
       static createMapboxImageryLayer(options) {
-          return new Cesium$1.MapboxImageryProvider(options)
+          return new Cesium__default['default'].MapboxImageryProvider(options)
       }
 
 
@@ -3844,7 +3847,7 @@
        * @returns 
        */
       static createMapboxStyleImageryLayer(options) {
-          return new Cesium$1.MapboxStyleImageryProvider(options)
+          return new Cesium__default['default'].MapboxStyleImageryProvider(options)
       }
 
 
@@ -3919,7 +3922,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-11 12:32:06
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:40:26
+   * @LastEditTime: 2021-03-18 10:54:10
    */
 
   class Layer {
@@ -4230,7 +4233,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 14:23:42
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:41:33
+   * @LastEditTime: 2021-03-18 10:55:08
    */
 
   class LayerGroup {
@@ -4371,7 +4374,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 10:05:59
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 10:09:03
+   * @LastEditTime: 2021-03-18 11:16:08
    */
 
   class VectorLayer extends Layer {
@@ -4605,10 +4608,11 @@
    * @Author: sueRimn
    * @Date: 2021-03-11 14:48:12
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-12 16:06:01
+   * @LastEditTime: 2021-03-18 11:17:02
    */
 
-  const WMP = new Cesium$1.WebMercatorProjection();
+
+  const WMP = new Cesium__default['default'].WebMercatorProjection();
 
   class Transform$1 {
       /**
@@ -4618,12 +4622,12 @@
        */
       static transformCartesianToWGS84(cartesian) {
           if (cartesian) {
-              let cartographic = Cesium$1.Ellipsoid.WGS84.cartesianToCartographic(
+              let cartographic = Cesium__default['default'].Ellipsoid.WGS84.cartesianToCartographic(
                   cartesian
               );
               return new Position(
-                  Cesium$1.Math.toDegrees(cartographic.longitude),
-                  Cesium$1.Math.toDegrees(cartographic.latitude),
+                  Cesium__default['default'].Math.toDegrees(cartographic.longitude),
+                  Cesium__default['default'].Math.toDegrees(cartographic.latitude),
                   cartographic.height
               )
           }
@@ -4637,13 +4641,13 @@
        */
       static transformWGS84ToCartesian(position) {
           return position
-              ? Cesium$1.Cartesian3.fromDegrees(
+              ? Cesium__default['default'].Cartesian3.fromDegrees(
                   position.lng,
                   position.lat,
                   position.alt,
-                  Cesium$1.Ellipsoid.WGS84
+                  Cesium__default['default'].Ellipsoid.WGS84
               )
-              : Cesium$1.Cartesian3.ZERO
+              : Cesium__default['default'].Cartesian3.ZERO
       }
 
       /**
@@ -4653,12 +4657,12 @@
        */
       static transformWGS84ToCartographic(position) {
           return position
-              ? Cesium$1.Cartographic.fromDegrees(
+              ? Cesium__default['default'].Cartographic.fromDegrees(
                   position.lng,
                   position.lat,
                   position.alt
               )
-              : Cesium$1.Cartographic.ZERO
+              : Cesium__default['default'].Cartographic.ZERO
       }
 
       /**
@@ -4690,7 +4694,7 @@
        */
       static transformWGS84ToMercator(position) {
           let mp = WMP.project(
-              Cesium$1.Cartographic.fromDegrees(position.lng, position.lat, position.alt)
+              Cesium__default['default'].Cartographic.fromDegrees(position.lng, position.lat, position.alt)
           );
           return new Position(mp.x, mp.y, mp.z)
       }
@@ -4702,11 +4706,11 @@
        */
       static transformMercatorToWGS84(position) {
           let mp = WMP.unproject(
-              new Cesium$1.Cartesian3(position.lng, position.lat, position.alt)
+              new Cesium__default['default'].Cartesian3(position.lng, position.lat, position.alt)
           );
           return new Position(
-              Cesium$1.Math.toDegrees(mp.longitude),
-              Cesium$1.Math.toDegrees(mp.latitude),
+              Cesium__default['default'].Math.toDegrees(mp.longitude),
+              Cesium__default['default'].Math.toDegrees(mp.latitude),
               mp.height
           )
       }
@@ -4720,11 +4724,11 @@
       static transformWindowToWGS84(position, viewer) {
           let scene = viewer.scene;
           let cartesian;
-          if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+          if (scene.mode === Cesium__default['default'].SceneMode.SCENE3D) {
               let ray = scene.camera.getPickRay(position);
               cartesian = scene.globe.pick(ray, scene);
           } else {
-              cartesian = scene.camera.pickEllipsoid(position, Cesium$1.Ellipsoid.WGS84);
+              cartesian = scene.camera.pickEllipsoid(position, Cesium__default['default'].Ellipsoid.WGS84);
           }
           return this.transformCartesianToWGS84(cartesian)
       }
@@ -4737,7 +4741,7 @@
        */
       static transformWGS84ToWindow(position, viewer) {
           let scene = viewer.scene;
-          return Cesium$1.SceneTransforms.wgs84ToWindowCoordinates(
+          return Cesium__default['default'].SceneTransforms.wgs84ToWindowCoordinates(
               scene,
               this.transformWGS84ToCartesian(position)
           )
@@ -4864,7 +4868,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 10:14:22
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:44:38
+   * @LastEditTime: 2021-03-18 10:54:44
    */
 
   class Overlay {
@@ -5974,7 +5978,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 14:17:01
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:57:03
+   * @LastEditTime: 2021-03-18 10:59:41
    */
 
   class DivIcon extends Overlay {
@@ -7453,13 +7457,781 @@
 
   Overlay.registerType('tileset');
 
+  class CustomBillboard extends Overlay {
+      constructor(position, icon) {
+          super();
+          this._delegate = new Cesium$1.Entity({ billboard: {} });
+          this._position = Parse.parsePosition(position);
+          this._icon = icon;
+          this._size = [32, 32];
+          this.type = Overlay.getOverlayType('custom_billboard');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set position(position) {
+          this._position = Parse.parsePosition(position);
+          this._delegate.position = Transform$1.transformWGS84ToCartesian(
+              this._position
+          );
+          return this
+      }
+
+      get position() {
+          return this._position
+      }
+
+      set icon(icon) {
+          this._icon = icon;
+          this._delegate.billboard.image = this._icon;
+          return this
+      }
+
+      get icon() {
+          return this._icon
+      }
+
+      set size(size) {
+          if (!Array.isArray(size)) {
+              throw new Error('Billboard: the size invalid')
+          }
+          this._size = size;
+          this._delegate.billboard.width = this._size[0] || 32;
+          this._delegate.billboard.height = this._size[1] || 32;
+          return this
+      }
+
+      get size() {
+          return this._size
+      }
+
+      _mountedHook() {
+          /**
+           * set the location
+           */
+          this.position = this._position;
+          /**
+           *  initialize the Overlay parameter
+           */
+          this.icon = this._icon;
+          this.size = this._size;
+      }
+
+      /**
+       * Sets label
+       * @param text
+       * @param textStyle
+       * @returns {CustomBillboard}
+       */
+      setLabel(text, textStyle) {
+          this._delegate.label = {
+              ...textStyle,
+              text: text
+          };
+          return this
+      }
+
+      /**
+       * Sets Style
+       * @param style
+       * @returns {CustomBillboard}
+       */
+      setStyle(style) {
+          if (!style || Object.keys(style).length === 0) {
+              return this
+          }
+          delete style['image'] && delete style['width'] && delete style['height'];
+          this._style = style;
+          Util$1.merge(this._delegate.billboard, this._style);
+          return this
+      }
+
+      /**
+       * Sets VLine style
+       * @param style
+       * @returns {CustomBillboard}
+       */
+      setVLine(style = {}) {
+          if (this._position.alt > 0 && !this._delegate.polyline) {
+              let position = this._position.copy();
+              position.alt = style.height || 0;
+              this._delegate.polyline = {
+                  ...style,
+                  positions: Transform$1.transformWGS84ArrayToCartesianArray([
+                      position,
+                      this._position
+                  ])
+              };
+          }
+          return this
+      }
+
+      /**
+       * @param {*} radius
+       * @param {*} style
+       * @param {*} rotateAmount
+       */
+      setBottomCircle(radius, style = {}, rotateAmount = 0) {
+          let stRotation = 0;
+          let amount = rotateAmount;
+          this._delegate.ellipse = {
+              ...style,
+              semiMajorAxis: radius,
+              semiMinorAxis: radius,
+              stRotation: new Cesium$1.CallbackProperty(time => {
+                  stRotation += amount;
+                  if (stRotation >= 360 || stRotation <= -360) {
+                      stRotation = 0;
+                  }
+                  return stRotation
+              })
+          };
+          return this
+      }
+  }
+
+  Overlay.registerType('custom_billboard');
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 09:49:46
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 09:50:50
+   */
+
+  class CustomLabel extends Overlay {
+      constructor(position, text) {
+          super();
+          this._delegate = new Cesium$1.Entity({ label: {} });
+          this._position = Parse.parsePosition(position);
+          this._text = text;
+          this.type = Overlay.getOverlayType('custom_label');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set position(position) {
+          this._position = Parse.parsePosition(position);
+          this._delegate.position = Transform$1.transformWGS84ToCartesian(
+              this._position
+          );
+          return this
+      }
+
+      get position() {
+          return this._position
+      }
+
+      set text(text) {
+          this._text = text;
+          this._delegate.label.text = this._text;
+          return this
+      }
+
+      get text() {
+          return this._text
+      }
+
+      _mountedHook() {
+          /**
+           * set the location
+           */
+          this.position = this._position;
+          /**
+           *  initialize the Overlay parameter
+           */
+          this.text = this._text;
+      }
+
+      /**
+       *
+       * @param {*} style
+       */
+      setStyle(style) {
+          if (!style || Object.keys(style).length === 0) {
+              return this
+          }
+          delete style['text'];
+          this._style = style;
+          Util$1.merge(this._delegate.label, this._style);
+          return this
+      }
+
+      /**
+       * Sets  VLine style
+       * @param style
+       * @returns {CustomLabel}
+       */
+      setVLine(style = {}) {
+          if (this._position.alt > 0 && !this._delegate.polyline) {
+              let position = this._position.copy();
+              position.alt = style.height || 0;
+              this._delegate.polyline = {
+                  ...style,
+                  positions: Transform$1.transformWGS84ArrayToCartesianArray([
+                      position,
+                      this._position
+                  ])
+              };
+          }
+          return this
+      }
+
+      /**
+       * Sets bottom circle
+       * @param radius
+       * @param style
+       * @param rotateAmount
+       * @returns {CustomLabel}
+       */
+      setBottomCircle(radius, style = {}, rotateAmount = 0) {
+          let stRotation = 0;
+          let amount = rotateAmount;
+          this._delegate.ellipse = {
+              ...style,
+              semiMajorAxis: radius,
+              semiMinorAxis: radius,
+              stRotation: new Cesium$1.CallbackProperty(time => {
+                  stRotation += amount;
+                  if (stRotation >= 360 || stRotation <= -360) {
+                      stRotation = 0;
+                  }
+                  return stRotation
+              })
+          };
+          return this
+      }
+  }
+
+  Overlay.registerType('custom_label');
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 09:45:54
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 09:46:20
+   */
+
+
+  class ElecEllipsoidPrimitive extends Overlay {
+      constructor(position, radius) {
+          super();
+          this._position = Parse.parsePosition(position);
+          this._radius = radius || { x: 10, y: 10, z: 10 };
+          this._delegate = new Cesium$1.Primitive({
+              geometryInstances: new Cesium$1.GeometryInstance({
+                  geometry: {}
+              })
+          });
+          this.type = Overlay.getOverlayType('elec_ellipsoid_primitive');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set position(position) {
+          this._position = Parse.parsePosition(position);
+          this._delegate.geometryInstances.modelMatrix = Cesium$1.Transforms.eastNorthUpToFixedFrame(
+              Transform$1.transformWGS84ToCartesian(this._position)
+          );
+          return this
+      }
+
+      get position() {
+          return this._position
+      }
+
+      set radius(radius) {
+          this._radius = radius;
+          this._delegate.geometryInstances.geometry = new Cesium$1.EllipsoidGeometry({
+              radii: this._radius,
+              maximumCone: Cesium$1.Math.PI_OVER_TWO
+          });
+          return this
+      }
+
+      get radius() {
+          return this._radius
+      }
+
+      /**
+       *
+       * @private
+       */
+      _setAppearance() {
+          if (!this._style) {
+              return
+          }
+          this._delegate.appearance = new Cesium$1.MaterialAppearance({
+              material: Cesium$1.Material.fromType('EllipsoidElectric', {
+                  color: this._style?.color || Cesium$1.Color.GREEN,
+                  speed: this._style?.speed || 5
+              })
+          });
+      }
+
+      _mountedHook() {
+          /**
+           *  set the radius
+           */
+          this.radius = this._radius;
+
+          /**
+           *  set the position
+           */
+          this.position = this._position;
+
+          /**
+           * set the appearance
+           */
+          !this._delegate.appearance && this._setAppearance();
+      }
+
+      /**
+       * Sets Style
+       * @param style
+       * @returns {ElecEllipsoidPrimitive}
+       */
+      setStyle(style = {}) {
+          if (Object.keys(style).length === 0) {
+              return this
+          }
+          this._style = style;
+          this._setAppearance();
+          return this
+      }
+  }
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 09:45:05
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 09:45:39
+   */
+
+  class FlowLinePrimitive extends Overlay {
+      constructor(positions, width = 1) {
+          super();
+          this._positions = Parse.parsePositions(positions);
+          this._width = width;
+          this._delegate = new Cesium$1.Primitive({
+              geometryInstances: new Cesium$1.GeometryInstance({
+                  geometry: {}
+              })
+          });
+          this.type = Overlay.getOverlayType('flow_line_primitive');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set positions(positions) {
+          this._positions = Parse.parsePositions(positions);
+          this._delegate.geometryInstances.geometry = new Cesium$1.PolylineGeometry({
+              positions: Transform$1.transformWGS84ArrayToCartesianArray(this._positions),
+              width: this._width
+          });
+          return this
+      }
+
+      get positions() {
+          return this._positions
+      }
+
+      /**
+       *
+       * @private
+       */
+      _setAppearance() {
+          this._delegate.appearance = new Cesium$1.PolylineMaterialAppearance({
+              material: Cesium$1.Material.fromType('PolylineFlow', {
+                  color: this._style?.color || new Cesium$1.Color(1.0, 0.0, 0.0, 0.7),
+                  speed: this._style?.speed || 1,
+                  percent: this._style?.percent || 0.03,
+                  gradient: this._style?.gradient || 0.1
+              })
+          });
+      }
+
+      _mountedHook() {
+          /**
+           *  set the positions
+           */
+          this.positions = this._positions;
+          /**
+           * set the appearance
+           */
+          !this._delegate.appearance && this._setAppearance();
+      }
+
+      /**
+       * Sets Style
+       * @param style
+       * @returns {FlowLinePrimitive}
+       */
+      setStyle(style = {}) {
+          if (Object.keys(style).length === 0) {
+              return this
+          }
+          this._style = style;
+          style.classificationType &&
+              (this._delegate.classificationType = this._style.classificationType);
+          this._setAppearance();
+          return this
+      }
+  }
+
+  Overlay.registerType('flow_line_primitive');
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 09:44:25
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 09:44:53
+   */
+
+  class ScanCirclePrimitive extends Overlay {
+      constructor(position, radius) {
+          super();
+          this._position = Parse.parsePosition(position);
+          this._radius = radius;
+          this._delegate = new Cesium$1.GroundPrimitive({
+              geometryInstances: new Cesium$1.GeometryInstance({
+                  geometry: {}
+              })
+          });
+          this.type = Overlay.getOverlayType('scan_circle_primitive');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set position(position) {
+          this._position = Parse.parsePosition(position);
+          this._delegate.geometryInstances.geometry = new Cesium$1.EllipseGeometry({
+              center: Transform$1.transformWGS84ToCartesian(this._position),
+              semiMajorAxis: this._radius,
+              semiMinorAxis: this._radius
+          });
+          return this
+      }
+
+      get position() {
+          return this._position
+      }
+
+      set radius(radius) {
+          this._radius = radius;
+          this._delegate.geometryInstances.geometry.semiMajorAxis = this._radius;
+          this._delegate.geometryInstances.geometry.semiMinorAxis = this._radius;
+          return this
+      }
+
+      get radius() {
+          return this._radius
+      }
+
+      /**
+       *
+       * @private
+       */
+      _setAppearance() {
+          if (!this._style) {
+              return
+          }
+          this._delegate.appearance = new Cesium$1.MaterialAppearance({
+              material: Cesium$1.Material.fromType('CircleScan', {
+                  color: this._style?.color || Cesium$1.Color.WHITE,
+                  speed: this._style?.speed || 10
+              })
+          });
+      }
+
+      _mountedHook() {
+          /**
+           *  set the position
+           */
+          this.position = this._position;
+
+          /**
+           * set the appearance
+           */
+          !this._delegate.appearance && this._setAppearance();
+      }
+
+      /**
+       * Sets Style
+       * @param style
+       * @returns {ScanCirclePrimitive}
+       */
+      setStyle(style = {}) {
+          if (Object.keys(style).length === 0) {
+              return this
+          }
+          this._style = style;
+          style.classificationType &&
+              (this._delegate.classificationType = this._style.classificationType);
+          this._setAppearance();
+          return this
+      }
+  }
+
+  Overlay.registerType('scan_circle_primitive');
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 09:43:47
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 09:44:13
+   */
+
+  class TrailLinePrimitive extends Overlay {
+      constructor(positions, width = 1) {
+          super();
+          this._positions = Parse.parsePositions(positions);
+          this._width = width;
+          this._delegate = new Cesium$1.Primitive({
+              geometryInstances: new Cesium$1.GeometryInstance({
+                  geometry: {}
+              })
+          });
+          this.type = Overlay.getOverlayType('trail_line_primitive');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set positions(positions) {
+          this._positions = Parse.parsePositions(positions);
+          this._delegate.geometryInstances.geometry = new Cesium$1.PolylineGeometry({
+              positions: Transform$1.transformWGS84ArrayToCartesianArray(this._positions),
+              width: this._width
+          });
+          return this
+      }
+
+      get positions() {
+          return this._positions
+      }
+
+      /**
+       *
+       * @private
+       */
+      _setAppearance() {
+          this._delegate.appearance = new Cesium$1.PolylineMaterialAppearance({
+              material: Cesium$1.Material.fromType('PolylineTrail', {
+                  color: this._style?.color || new Cesium$1.Color(1.0, 0.0, 0.0, 0.7),
+                  speed: this._style?.speed || 5
+              })
+          });
+      }
+
+      _mountedHook() {
+          /**
+           *  set the positions
+           */
+          this.positions = this._positions;
+          /**
+           * set the appearance
+           */
+          !this._delegate.appearance && this._setAppearance();
+      }
+
+      /**
+       * Sets Style
+       * @param style
+       * @returns {TrailLinePrimitive}
+       */
+      setStyle(style = {}) {
+          if (Object.keys(style).length === 0) {
+              return this
+          }
+          this._style = style;
+          style.classificationType &&
+              (this._delegate.classificationType = this._style.classificationType);
+          this._setAppearance();
+          return this
+      }
+  }
+
+  Overlay.registerType('trail_line_primitive');
+
+  /*
+   * @Descripttion: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 09:43:11
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 09:43:31
+   */
+
+  class VideoPrimitive extends Overlay {
+      constructor(positions, video) {
+          super();
+          this._positions = Parse.parsePositions(positions);
+          this._delegate = new Cesium$1.GroundPrimitive({
+              geometryInstances: new Cesium$1.GeometryInstance({
+                  geometry: {}
+              })
+          });
+          this._video = video;
+          this.type = Overlay.getOverlayType('video_primitive');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set positions(positions) {
+          this._positions = Parse.parsePositions(positions);
+          this._delegate.geometryInstances.geometry = Cesium$1.PolygonGeometry.fromPositions(
+              {
+                  positions: Transform$1.transformWGS84ArrayToCartesianArray(
+                      this._positions
+                  ),
+                  vertexFormat: Cesium$1.EllipsoidSurfaceAppearance.VERTEX_FORMAT
+              }
+          );
+          return this
+      }
+
+      get positions() {
+          return this._positions
+      }
+
+      set video(video) {
+          this._video = video;
+          this._setAppearance();
+          return this
+      }
+
+      get video() {
+          return this._video
+      }
+
+      /**
+       *
+       * @private
+       */
+      _setAppearance() {
+          this._delegate.appearance = new Cesium$1.EllipsoidSurfaceAppearance({
+              material: Cesium$1.Material.fromType('Image', {
+                  image: this._video
+              })
+          });
+      }
+
+      _mountedHook() {
+          /**
+           *  set the positions
+           */
+          this.positions = this._positions;
+          this.video = this._video;
+      }
+  }
+
+  Overlay.registerType('video_primitive');
+
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 09:23:02
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 09:42:34
+   */
+  class WaterPrimitive extends Overlay {
+      constructor(positions) {
+          super();
+          this._positions = Parse.parsePositions(positions);
+          this._delegate = new Cesium$1.GroundPrimitive({
+              geometryInstances: new Cesium$1.GeometryInstance({
+                  geometry: {}
+              }),
+              asynchronous: true
+          });
+
+          this.type = Overlay.getOverlayType('water_primitive');
+          this._state = State$1.INITIALIZED;
+      }
+
+      set positions(positions) {
+          this._positions = Parse.parsePositions(positions);
+          this._delegate.geometryInstances.geometry = Cesium$1.PolygonGeometry.fromPositions(
+              {
+                  positions: Transform$1.transformWGS84ArrayToCartesianArray(
+                      this._positions
+                  ),
+                  height: this._style?.height,
+                  extrudedHeight: this._style?.extrudedHeight,
+                  closeTop: this._style?.closeTop,
+                  closeBottom: this._style?.closeBottom,
+                  vertexFormat: Cesium$1.EllipsoidSurfaceAppearance.VERTEX_FORMAT
+              }
+          );
+          return this
+      }
+
+      get positions() {
+          return this._positions
+      }
+
+      _setApperance() {
+          if (!this._style) {
+              return
+          }
+          this._delegate.appearance = new Cesium$1.EllipsoidSurfaceAppearance({
+              material: Cesium$1.Material.fromType('Water', {
+                  baseWaterColor:
+                      this._style?.baseWaterColor || new Cesium$1.Color(0.2, 0.3, 0.6, 1.0),
+                  blendColor:
+                      this._style?.blendColor || new Cesium$1.Color(0.0, 1.0, 0.699, 1.0),
+                  specularMap: this._style?.specularMap || Cesium$1.Material.DefaultImageId,
+                  normalMap: this._style?.normalMap || Cesium$1.Material.DefaultImageId,
+                  frequency: this._style?.frequency || 1000.0,
+                  animationSpeed: this._style?.animationSpeed || 0.01,
+                  amplitude: this._style?.amplitude || 10,
+                  specularIntensity: this._style?.specularIntensity || 0.5
+              })
+          });
+      }
+
+      _mountedHook() {
+          /**
+           *  set the positions
+           */
+          this.positions = this._positions;
+          /**
+           * set the appearance
+           */
+          !this._delegate.appearance && this._setAppearance();
+      }
+
+      /**
+       * Sets Style
+       * @param style
+       * @returns {WaterPrimitive}
+       */
+      setStyle(style) {
+          if (Object.keys(style).length === 0) {
+              return this
+          }
+          this._style = style;
+          if (this._style?.classificationType) {
+              this._delegate.classificationType = this._style.classificationType;
+          }
+          this._setAppearance();
+          return this
+      }
+  }
+
+  Overlay.registerType('water_primitive');
+
   /*
    * @Description: 
    * @version: 
    * @Author: sueRimn
    * @Date: 2021-03-15 09:51:13
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:40:52
+   * @LastEditTime: 2021-03-18 11:13:48
    */
 
   class GeoJsonLayer extends Layer {
@@ -7664,7 +8436,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 14:31:11
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 13:42:14
+   * @LastEditTime: 2021-03-18 11:14:41
    */
 
   class LabelLayer extends Layer {
@@ -7702,7 +8474,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:30:08
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-16 14:07:38
+   * @LastEditTime: 2021-03-18 11:15:09
    */
 
   class PrimitiveLayer extends Layer {
@@ -7733,8 +8505,9 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 09:34:23
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 09:37:10
+   * @LastEditTime: 2021-03-18 11:15:37
    */
+
   class TilesetLayer extends Layer {
       constructor(id) {
           super(id);
@@ -7782,7 +8555,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-15 14:30:35
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-15 14:30:47
+   * @LastEditTime: 2021-03-18 11:14:21
    */
 
   class KmlLayer extends Layer {
@@ -7824,169 +8597,169 @@
   Layer.registerType('kml');
 
   const DEF_OPT = {
-    size: 18,
-    pixelRange: 40,
-    gradient: {
-      0.0001: Cesium$1.Color.DEEPSKYBLUE,
-      0.001: Cesium$1.Color.GREEN,
-      0.01: Cesium$1.Color.ORANGE,
-      0.1: Cesium$1.Color.RED
-    },
-    fontSize: 12,
-    fontColor: Cesium$1.Color.BLACK,
-    style: 'circle'
+      size: 18,
+      pixelRange: 40,
+      gradient: {
+          0.0001: Cesium__default['default'].Color.DEEPSKYBLUE,
+          0.001: Cesium__default['default'].Color.GREEN,
+          0.01: Cesium__default['default'].Color.ORANGE,
+          0.1: Cesium__default['default'].Color.RED
+      },
+      fontSize: 12,
+      fontColor: Cesium__default['default'].Color.BLACK,
+      style: 'circle'
   };
 
   class ClusterLayer extends Layer {
-    constructor(id, options = {}) {
-      super(id);
-      this._delegate = new Cesium$1.CustomDataSource(id);
-      this._options = {
-        ...DEF_OPT,
-        ...options
-      };
-      this._delegate.clustering.enabled = true;
-      this._delegate.clustering.clusterEvent.addEventListener(
-        this._clusterEventHandler,
-        this
-      );
-      this._delegate.clustering.pixelRange = this._options.pixelRange;
-      this.type = Layer.getLayerType('cluster');
-      this._state = State$1.INITIALIZED;
-    }
-
-    set enableCluster(enableCluster) {
-      this._delegate.clustering.enabled = enableCluster;
-      return this
-    }
-
-    /**
-     *
-     * @param color
-     * @param numLength
-     * @returns {*}
-     * @private
-     */
-    _drawCircle(color, numLength) {
-      let size = this._options.size * (numLength + 1);
-      let key = color.toCssColorString() + '-' + size;
-      if (!this._cache[key]) {
-        let canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        let context2D = canvas.getContext('2d');
-        context2D.save();
-        context2D.scale(size / 24, size / 24); //Added to auto-generated code to scale up to desired size.
-        context2D.fillStyle = color.withAlpha(0.2).toCssColorString(); //Modified from auto-generated code.
-        context2D.beginPath();
-        context2D.arc(12, 12, 9, 0, 2 * Math.PI);
-        context2D.closePath();
-        context2D.fill();
-        context2D.beginPath();
-        context2D.arc(12, 12, 6, 0, 2 * Math.PI);
-        context2D.fillStyle = color.toCssColorString();
-        context2D.fill();
-        context2D.closePath();
-        context2D.restore();
-        this._cache[key] = canvas.toDataURL();
+      constructor(id, options = {}) {
+          super(id);
+          this._delegate = new Cesium__default['default'].CustomDataSource(id);
+          this._options = {
+              ...DEF_OPT,
+              ...options
+          };
+          this._delegate.clustering.enabled = true;
+          this._delegate.clustering.clusterEvent.addEventListener(
+              this._clusterEventHandler,
+              this
+          );
+          this._delegate.clustering.pixelRange = this._options.pixelRange;
+          this.type = Layer.getLayerType('cluster');
+          this._state = State$1.INITIALIZED;
       }
-      return this._cache[key]
-    }
 
-    /**
-     *
-     * @param color
-     * @param numLength
-     * @returns {*}
-     * @private
-     */
-    _drawClustering(color, numLength) {
-      let size = this._options.size * (numLength + 1);
-      let key = color.toCssColorString() + '-' + size;
-      let startAngle = -Math.PI / 12;
-      let angle = Math.PI / 2;
-      let intervalAngle = Math.PI / 6;
-      if (!this._cache[key]) {
-        let canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        let context2D = canvas.getContext('2d');
-        context2D.save();
-        context2D.scale(size / 24, size / 24); //Added to auto-generated code to scale up to desired size.
-        context2D.beginPath();
-        context2D.arc(12, 12, 6, 0, 2 * Math.PI);
-        context2D.fillStyle = color.toCssColorString();
-        context2D.fill();
-        context2D.closePath();
-        context2D.lineWidth = 2;
-        for (let i = 0; i < 3; i++) {
-          context2D.beginPath();
-          context2D.arc(12, 12, 8, startAngle, startAngle + angle, false);
-          context2D.strokeStyle = color.withAlpha(0.4).toCssColorString();
-          context2D.stroke();
-          context2D.arc(12, 12, 11, startAngle, startAngle + angle, false);
-          context2D.strokeStyle = color.withAlpha(0.2).toCssColorString();
-          context2D.stroke();
-          context2D.closePath();
-          startAngle = startAngle + angle + intervalAngle;
-        }
-        context2D.restore();
-        this._cache[key] = canvas.toDataURL();
+      set enableCluster(enableCluster) {
+          this._delegate.clustering.enabled = enableCluster;
+          return this
       }
-      return this._cache[key]
-    }
 
-    /**
-     *
-     * @param {*} clusteredEntities
-     * @param {*} cluster
-     */
-    _clusterEventHandler(clusteredEntities, cluster) {
-      if (!this._delegate.clustering.enabled) {
-        return
-      }
-      cluster.billboard.show = true;
-      cluster.label.font = `bold ${this._options.fontSize}px sans-serif`;
-      cluster.label.fillColor = this._options.fontColor;
-      cluster.label.disableDepthTestDistance = Number.POSITIVE_INFINITY;
-      if (this._delegate.entities.values.length) {
-        let allCount = this._delegate.entities.values.length || 0;
-        for (let key in this._options.gradient) {
-          if (clusteredEntities.length >= allCount * key) {
-            let numLength = String(clusteredEntities.length).length;
-            if (this._options.style === 'circle') {
-              cluster.billboard.image = this._drawCircle(
-                this._options.gradient[key],
-                numLength
-              );
-            } else {
-              cluster.billboard.image = this._drawClustering(
-                this._options.gradient[key],
-                numLength
-              );
-            }
-            cluster.label.show = true;
-            if (numLength === 1) {
-              cluster.label.pixelOffset = new Cesium$1.Cartesian2(-2, 3);
-            } else {
-              cluster.label.pixelOffset = new Cesium$1.Cartesian2(
-                -5 * (numLength - 1),
-                5
-              );
-            }
-          } else if (clusteredEntities.length <= 1) {
-            cluster.label.show = false;
+      /**
+       *
+       * @param color
+       * @param numLength
+       * @returns {*}
+       * @private
+       */
+      _drawCircle(color, numLength) {
+          let size = this._options.size * (numLength + 1);
+          let key = color.toCssColorString() + '-' + size;
+          if (!this._cache[key]) {
+              let canvas = document.createElement('canvas');
+              canvas.width = size;
+              canvas.height = size;
+              let context2D = canvas.getContext('2d');
+              context2D.save();
+              context2D.scale(size / 24, size / 24); //Added to auto-generated code to scale up to desired size.
+              context2D.fillStyle = color.withAlpha(0.2).toCssColorString(); //Modified from auto-generated code.
+              context2D.beginPath();
+              context2D.arc(12, 12, 9, 0, 2 * Math.PI);
+              context2D.closePath();
+              context2D.fill();
+              context2D.beginPath();
+              context2D.arc(12, 12, 6, 0, 2 * Math.PI);
+              context2D.fillStyle = color.toCssColorString();
+              context2D.fill();
+              context2D.closePath();
+              context2D.restore();
+              this._cache[key] = canvas.toDataURL();
           }
-        }
+          return this._cache[key]
       }
-    }
 
-    clear() {
-      this._delegate.entities.removeAll();
-      this._cache = {};
-      this._state = State$1.CLEARED;
-      return this
-    }
+      /**
+       *
+       * @param color
+       * @param numLength
+       * @returns {*}
+       * @private
+       */
+      _drawClustering(color, numLength) {
+          let size = this._options.size * (numLength + 1);
+          let key = color.toCssColorString() + '-' + size;
+          let startAngle = -Math.PI / 12;
+          let angle = Math.PI / 2;
+          let intervalAngle = Math.PI / 6;
+          if (!this._cache[key]) {
+              let canvas = document.createElement('canvas');
+              canvas.width = size;
+              canvas.height = size;
+              let context2D = canvas.getContext('2d');
+              context2D.save();
+              context2D.scale(size / 24, size / 24); //Added to auto-generated code to scale up to desired size.
+              context2D.beginPath();
+              context2D.arc(12, 12, 6, 0, 2 * Math.PI);
+              context2D.fillStyle = color.toCssColorString();
+              context2D.fill();
+              context2D.closePath();
+              context2D.lineWidth = 2;
+              for (let i = 0; i < 3; i++) {
+                  context2D.beginPath();
+                  context2D.arc(12, 12, 8, startAngle, startAngle + angle, false);
+                  context2D.strokeStyle = color.withAlpha(0.4).toCssColorString();
+                  context2D.stroke();
+                  context2D.arc(12, 12, 11, startAngle, startAngle + angle, false);
+                  context2D.strokeStyle = color.withAlpha(0.2).toCssColorString();
+                  context2D.stroke();
+                  context2D.closePath();
+                  startAngle = startAngle + angle + intervalAngle;
+              }
+              context2D.restore();
+              this._cache[key] = canvas.toDataURL();
+          }
+          return this._cache[key]
+      }
+
+      /**
+       *
+       * @param {*} clusteredEntities
+       * @param {*} cluster
+       */
+      _clusterEventHandler(clusteredEntities, cluster) {
+          if (!this._delegate.clustering.enabled) {
+              return
+          }
+          cluster.billboard.show = true;
+          cluster.label.font = `bold ${this._options.fontSize}px sans-serif`;
+          cluster.label.fillColor = this._options.fontColor;
+          cluster.label.disableDepthTestDistance = Number.POSITIVE_INFINITY;
+          if (this._delegate.entities.values.length) {
+              let allCount = this._delegate.entities.values.length || 0;
+              for (let key in this._options.gradient) {
+                  if (clusteredEntities.length >= allCount * key) {
+                      let numLength = String(clusteredEntities.length).length;
+                      if (this._options.style === 'circle') {
+                          cluster.billboard.image = this._drawCircle(
+                              this._options.gradient[key],
+                              numLength
+                          );
+                      } else {
+                          cluster.billboard.image = this._drawClustering(
+                              this._options.gradient[key],
+                              numLength
+                          );
+                      }
+                      cluster.label.show = true;
+                      if (numLength === 1) {
+                          cluster.label.pixelOffset = new Cesium__default['default'].Cartesian2(-2, 3);
+                      } else {
+                          cluster.label.pixelOffset = new Cesium__default['default'].Cartesian2(
+                              -5 * (numLength - 1),
+                              5
+                          );
+                      }
+                  } else if (clusteredEntities.length <= 1) {
+                      cluster.label.show = false;
+                  }
+              }
+          }
+      }
+
+      clear() {
+          this._delegate.entities.removeAll();
+          this._cache = {};
+          this._state = State$1.CLEARED;
+          return this
+      }
   }
 
   Layer.registerType('cluster');
@@ -10331,7 +11104,7 @@
    * @Author: sueRimn
    * @Date: 2021-03-11 17:09:55
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-11 17:50:09
+   * @LastEditTime: 2021-03-18 10:58:36
    */
   class Things extends Event{
 
@@ -11064,7 +11837,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
           this._cameraEl = undefined;
           this.type = Widget.getWidgetType('location_bar');
           this._state = State$1.INITIALIZED;
-          this._lastUpdate = Cesium$1.getTimestamp();
+          this._lastUpdate = Cesium__default['default'].getTimestamp();
       }
 
       /**
@@ -11112,17 +11885,17 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
        * @private
        */
       _moveHandler(e) {
-          let now = Cesium$1.getTimestamp();
+          let now = Cesium__default['default'].getTimestamp();
           if (now < this._lastUpdate + 300) {
               return
           }
           this._lastUpdate = now;
-          let ellipsoid = Cesium$1.Ellipsoid.WGS84;
+          let ellipsoid = Cesium__default['default'].Ellipsoid.WGS84;
           let cartographic = e.surfacePosition
               ? ellipsoid.cartesianToCartographic(e.surfacePosition)
               : undefined;
-          let lng = +Cesium$1.Math.toDegrees(cartographic?.longitude || 0);
-          let lat = +Cesium$1.Math.toDegrees(cartographic?.latitude || 0);
+          let lng = +Cesium__default['default'].Math.toDegrees(cartographic?.longitude || 0);
+          let lat = +Cesium__default['default'].Math.toDegrees(cartographic?.latitude || 0);
           let alt = cartographic
               ? +this._viewer.scene.globe.getHeight(cartographic)
               : 0;
@@ -11137,7 +11910,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
        * @private
        */
       _cameraHandler() {
-          let now = Cesium$1.getTimestamp();
+          let now = Cesium__default['default'].getTimestamp();
           if (now < this._lastUpdate + 300) {
               return
           }
@@ -11202,29 +11975,29 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
       _mountContent() {
           let splitter = DomUtil.parseDom(Icon.splitter, true, 'splitter');
           this._wrapper.appendChild(splitter);
-          let handler = new Cesium$1.ScreenSpaceEventHandler(splitter);
+          let handler = new Cesium__default['default'].ScreenSpaceEventHandler(splitter);
           let self = this;
           handler.setInputAction(() => {
               self._moveActive = true;
-          }, Cesium$1.ScreenSpaceEventType.LEFT_DOWN);
+          }, Cesium__default['default'].ScreenSpaceEventType.LEFT_DOWN);
           handler.setInputAction(() => {
               self._moveActive = true;
-          }, Cesium$1.ScreenSpaceEventType.PINCH_START);
+          }, Cesium__default['default'].ScreenSpaceEventType.PINCH_START);
 
           handler.setInputAction(movement => {
               self._moveHandler(movement);
-          }, Cesium$1.ScreenSpaceEventType.MOUSE_MOVE);
+          }, Cesium__default['default'].ScreenSpaceEventType.MOUSE_MOVE);
 
           handler.setInputAction(movement => {
               self._moveHandler(movement);
-          }, Cesium$1.ScreenSpaceEventType.PINCH_MOVE);
+          }, Cesium__default['default'].ScreenSpaceEventType.PINCH_MOVE);
 
           handler.setInputAction(() => {
               self._moveActive = false;
-          }, Cesium$1.ScreenSpaceEventType.LEFT_UP);
+          }, Cesium__default['default'].ScreenSpaceEventType.LEFT_UP);
           handler.setInputAction(() => {
               self._moveActive = false;
-          }, Cesium$1.ScreenSpaceEventType.PINCH_END);
+          }, Cesium__default['default'].ScreenSpaceEventType.PINCH_END);
           this._ready = true;
       }
 
@@ -11391,7 +12164,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
                       self._updateWindowCoord &&
                       self._wrapper.style.visibility === 'visible'
                   ) {
-                      let windowCoord = Cesium$1.SceneTransforms.wgs84ToWindowCoordinates(
+                      let windowCoord = Cesium__default['default'].SceneTransforms.wgs84ToWindowCoordinates(
                           scene,
                           self._position
                       );
@@ -11590,16 +12363,16 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
        * @private
        */
       _mountContent() {
-          let map = new Cesium$1.Viewer(this._wrapper, {
+          let map = new Cesium__default['default'].Viewer(this._wrapper, {
               ...DEF_OPTS$1,
-              sceneMode: Cesium$1.SceneMode.SCENE2D
+              sceneMode: Cesium__default['default'].SceneMode.SCENE2D
           });
           map.imageryLayers.removeAll();
           map.cesiumWidget.creditContainer.style.display = 'none';
           map.cesiumWidget.screenSpaceEventHandler.removeInputAction(
-              Cesium$1.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+              Cesium__default['default'].ScreenSpaceEventType.LEFT_DOUBLE_CLICK
           );
-          map.scene.backgroundColor = Cesium$1.Color.TRANSPARENT;
+          map.scene.backgroundColor = Cesium__default['default'].Color.TRANSPARENT;
           Util$1.merge(map.scene.screenSpaceCameraController, {
               enableRotate: false,
               enableTranslate: false,
@@ -11647,7 +12420,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
        * @private
        */
       _syncMap() {
-          let viewCenter = new Cesium$1.Cartesian2(
+          let viewCenter = new Cesium__default['default'].Cartesian2(
               Math.floor(this._viewer.canvas.clientWidth / 2),
               Math.floor(this._viewer.canvas.clientHeight / 2)
           );
@@ -11655,13 +12428,13 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
           if (!worldPosition) {
               return false
           }
-          let distance = Cesium$1.Cartesian3.distance(
+          let distance = Cesium__default['default'].Cartesian3.distance(
               worldPosition,
               this._viewer.scene.camera.positionWC
           );
           this._map.scene.camera.lookAt(
               worldPosition,
-              new Cesium$1.Cartesian3(0.0, 0.0, distance)
+              new Cesium__default['default'].Cartesian3(0.0, 0.0, distance)
           );
       }
 
@@ -12266,22 +13039,22 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
        * @private
        */
       _getCameraFocus(scene) {
-          const ray = new Cesium$1.Ray(
+          const ray = new Cesium__default['default'].Ray(
               scene.camera.positionWC,
               scene.camera.directionWC
           );
-          const intersections = Cesium$1.IntersectionTests.rayEllipsoid(
+          const intersections = Cesium__default['default'].IntersectionTests.rayEllipsoid(
               ray,
-              Cesium$1.Ellipsoid.WGS84
+              Cesium__default['default'].Ellipsoid.WGS84
           );
           if (intersections) {
-              return Cesium$1.Ray.getPoint(ray, intersections.start)
+              return Cesium__default['default'].Ray.getPoint(ray, intersections.start)
           }
           // Camera direction is not pointing at the globe, so use the ellipsoid horizon point as
           // the focal point.
-          return Cesium$1.IntersectionTests.grazingAltitudeLocation(
+          return Cesium__default['default'].IntersectionTests.grazingAltitudeLocation(
               ray,
-              Cesium$1.Ellipsoid.WGS84
+              Cesium__default['default'].Ellipsoid.WGS84
           )
       }
 
@@ -12294,18 +13067,18 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
        * @private
        */
       _getCameraPosition(camera, focus, scalar) {
-          const cartesian3Scratch = new Cesium$1.Cartesian3();
-          let direction = Cesium$1.Cartesian3.subtract(
+          const cartesian3Scratch = new Cesium__default['default'].Cartesian3();
+          let direction = Cesium__default['default'].Cartesian3.subtract(
               focus,
               camera.position,
               cartesian3Scratch
           );
-          let movementVector = Cesium$1.Cartesian3.multiplyByScalar(
+          let movementVector = Cesium__default['default'].Cartesian3.multiplyByScalar(
               direction,
               scalar,
               cartesian3Scratch
           );
-          return Cesium$1.Cartesian3.add(
+          return Cesium__default['default'].Cartesian3.add(
               camera.position,
               movementVector,
               cartesian3Scratch
@@ -12322,14 +13095,14 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
           let camera = scene.camera;
           let sscc = scene.screenSpaceCameraController;
           if (
-              scene.mode === Cesium$1.SceneMode.MORPHING ||
+              scene.mode === Cesium__default['default'].SceneMode.MORPHING ||
               !sscc.enableInputs ||
-              scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW
+              scene.mode === Cesium__default['default'].SceneMode.COLUMBUS_VIEW
           ) {
               return true
-          } else if (scene.mode === Cesium$1.SceneMode.SCENE2D) {
+          } else if (scene.mode === Cesium__default['default'].SceneMode.SCENE2D) {
               camera.zoomIn(camera.positionCartographic.height * 0.5);
-          } else if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+          } else if (scene.mode === Cesium__default['default'].SceneMode.SCENE3D) {
               let focus = this._getCameraFocus(scene);
               let cameraPosition = this._getCameraPosition(camera, focus, 1 / 2);
               camera.flyTo({
@@ -12363,14 +13136,14 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
           let camera = scene.camera;
           let sscc = scene.screenSpaceCameraController;
           if (
-              scene.mode === Cesium$1.SceneMode.MORPHING ||
+              scene.mode === Cesium__default['default'].SceneMode.MORPHING ||
               !sscc.enableInputs ||
-              scene.mode === Cesium$1.SceneMode.COLUMBUS_VIEW
+              scene.mode === Cesium__default['default'].SceneMode.COLUMBUS_VIEW
           ) {
               return true
-          } else if (scene.mode === Cesium$1.SceneMode.SCENE2D) {
+          } else if (scene.mode === Cesium__default['default'].SceneMode.SCENE2D) {
               camera.zoomOut(camera.positionCartographic.height);
-          } else if (scene.mode === Cesium$1.SceneMode.SCENE3D) {
+          } else if (scene.mode === Cesium__default['default'].SceneMode.SCENE3D) {
               let focus = this._getCameraFocus(scene);
               let cameraPosition = this._getCameraPosition(camera, focus, -1);
               camera.flyTo({
@@ -12498,7 +13271,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
    * @Author: sueRimn
    * @Date: 2021-03-16 10:31:03
    * @LastEditors: sueRimn
-   * @LastEditTime: 2021-03-17 15:17:59
+   * @LastEditTime: 2021-03-18 11:17:42
    */
 
   const DEF_OPTS = {
@@ -12524,7 +13297,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
               throw new Error('Viewer: the id is empty')
           }
 
-          this._delegate = new Cesium$1.Viewer(id, {
+          this._delegate = new Cesium__default['default'].Viewer(id, {
               ...DEF_OPTS,
               ...options
           }); // Initialize the viewer
@@ -12542,7 +13315,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
               document.getElementById(id)
           ); // Register the custom container
 
-          this._baseLayerPicker = new Cesium$1.BaseLayerPickerViewModel({
+          this._baseLayerPicker = new Cesium__default['default'].BaseLayerPickerViewModel({
               globe: this._delegate.scene.globe
           }); // Initialize the baseLayer picker
 
@@ -12608,9 +13381,9 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
       get cameraPosition() {
           let position = Transform$1.transformMercatorToWGS84(this.camera.positionWC);
           if (position) {
-              position.heading = Cesium$1.Math.toDegrees(this.camera.heading);
-              position.pitch = Cesium$1.Math.toDegrees(this.camera.pitch);
-              position.roll = Cesium$1.Math.toDegrees(this.camera.roll);
+              position.heading = Cesium__default['default'].Math.toDegrees(this.camera.heading);
+              position.pitch = Cesium__default['default'].Math.toDegrees(this.camera.pitch);
+              position.roll = Cesium__default['default'].Math.toDegrees(this.camera.roll);
           }
           return position
       }
@@ -12739,7 +13512,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
               return this
           }
           this._baseLayerPicker.imageryProviderViewModels.push(
-              new Cesium$1.ProviderViewModel({
+              new Cesium__default['default'].ProviderViewModel({
                   name: options.name || '地图',
                   creationFunction: () => {
                       return baseLayers
@@ -12777,7 +13550,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
               return this
           }
           this._baseLayerPicker.terrainProviderViewModels.push(
-              new Cesium$1.ProviderViewModel({
+              new Cesium__default['default'].ProviderViewModel({
                   name: '地形',
                   creationFunction: () => {
                       return terrain
@@ -12811,7 +13584,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
       removeTerrain() {
           this._baseLayerPicker.terrainProviderViewModels = [];
           this._baseLayerPicker.selectedTerrain = undefined;
-          this._delegate.terrainProvider = new Cesium$1.EllipsoidTerrainProvider();
+          this._delegate.terrainProvider = new Cesium__default['default'].EllipsoidTerrainProvider();
           return this
       }
 
@@ -12948,9 +13721,9 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
           this.camera.flyTo({
               destination: Transform$1.transformWGS84ToCartesian(position),
               orientation: {
-                  heading: Cesium$1.Math.toRadians(position.heading),
-                  pitch: Cesium$1.Math.toRadians(position.pitch),
-                  roll: Cesium$1.Math.toRadians(position.roll)
+                  heading: Cesium__default['default'].Math.toRadians(position.heading),
+                  pitch: Cesium__default['default'].Math.toRadians(position.pitch),
+                  roll: Cesium__default['default'].Math.toRadians(position.roll)
               },
               complete: completeCallback,
               duration: duration
@@ -13049,6 +13822,55 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
 
   }
 
+  /*
+   * @Description: 
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-18 10:08:07
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 10:11:02
+   */
+
+  ({
+      Cartesian2: Cesium__default['default'].Cartesian2,
+      Cartesian3: Cesium__default['default'].Cartesian3,
+      SceneMode: Cesium__default['default'].SceneMode,
+      HeightReference: Cesium__default['default'].HeightReference,
+      HorizontalOrigin: Cesium__default['default'].HorizontalOrigin,
+      VerticalOrigin: Cesium__default['default'].VerticalOrigin,
+      ClassificationType: Cesium__default['default'].ClassificationType,
+      ShadowMode: Cesium__default['default'].ShadowMode,
+      TilesetStyle: Cesium__default['default'].Cesium3DTileStyle,
+      CallbackProperty: Cesium__default['default'].CallbackProperty,
+      JulianDate: Cesium__default['default'].JulianDate,
+      Color: Cesium__default['default'].Color,
+      Rect: Cesium__default['default'].Rectangle,
+      ColorMaterialProperty: Cesium__default['default'].ColorMaterialProperty,
+      ImageMaterialProperty: Cesium__default['default'].ImageMaterialProperty,
+      PolylineDashMaterialProperty: Cesium__default['default'].PolylineDashMaterialProperty,
+      PolylineGlowMaterialProperty: Cesium__default['default'].PolylineGlowMaterialProperty,
+      PolylineOutlineMaterialProperty: Cesium__default['default'].PolylineOutlineMaterialProperty,
+      PolylineArrowMaterialProperty: Cesium__default['default'].PolylineArrowMaterialProperty,
+      writeTextToCanvas: Cesium__default['default'].writeTextToCanvas
+  });
+
+  /*
+   * @Description: c
+   * @version: 
+   * @Author: sueRimn
+   * @Date: 2021-03-15 14:45:58
+   * @LastEditors: sueRimn
+   * @LastEditTime: 2021-03-18 11:02:18
+   */
+
+  delete window.Cesium;
+
+  Object.defineProperty(exports, 'Cesium', {
+    enumerable: true,
+    get: function () {
+      return Cesium__default['default'];
+    }
+  });
   exports.Billboard = Billboard;
   exports.Box = Box;
   exports.CameraOption = CameraOption;
@@ -13064,15 +13886,19 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
   exports.ClusterLayer = ClusterLayer;
   exports.CoordTransform = CoordTransform;
   exports.Corridor = Corridor;
+  exports.CustomBillboard = CustomBillboard;
+  exports.CustomLabel = CustomLabel;
   exports.Cylinder = Cylinder;
   exports.DivIcon = DivIcon;
   exports.DomUtil = DomUtil;
   exports.Effect = Effect;
+  exports.ElecEllipsoidPrimitive = ElecEllipsoidPrimitive;
   exports.Ellipse = Ellipse;
   exports.Ellipsoid = Ellipsoid;
   exports.EllipsoidElectricMaterialProperty = EllipsoidElectricMaterialProperty;
   exports.EllipsoidTrailMaterialProperty = EllipsoidTrailMaterialProperty;
   exports.Event = Event;
+  exports.FlowLinePrimitive = FlowLinePrimitive;
   exports.GeoJsonLayer = GeoJsonLayer;
   exports.HtmlLayer = HtmlLayer;
   exports.ImageryLayerFactory = ImageryLayerFactory;
@@ -13114,6 +13940,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
   exports.RadarSweepMaterialProperty = RadarSweepMaterialProperty;
   exports.RadarWaveMaterialProperty = RadarWaveMaterialProperty;
   exports.Rectangle = Rectangle;
+  exports.ScanCirclePrimitive = ScanCirclePrimitive;
   exports.SceneEvent = SceneEvent;
   exports.SceneEventType = SceneEventType;
   exports.State = State$1;
@@ -13123,10 +13950,12 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
   exports.Tileset = Tileset;
   exports.TilesetLayer = TilesetLayer;
   exports.TopoJsonLayer = TopoJsonLayer;
+  exports.TrailLinePrimitive = TrailLinePrimitive;
   exports.Transform = Transform$1;
   exports.Underground = Underground;
   exports.Util = Util$1;
   exports.VectorLayer = VectorLayer;
+  exports.VideoPrimitive = VideoPrimitive;
   exports.Viewer = Viewer;
   exports.ViewerEvent = ViewerEvent;
   exports.ViewerEventType = ViewerEventType;
@@ -13136,6 +13965,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAG5ElEQVRoQ+
   exports.WallLineTrailMaterialProperty = WallLineTrailMaterialProperty;
   exports.WallTrailMaterialProperty = WallTrailMaterialProperty;
   exports.WaterMaterialProperty = WaterMaterialProperty;
+  exports.WaterPrimitive = WaterPrimitive;
   exports.area = area;
   exports.bounds = bounds;
   exports.center = center;

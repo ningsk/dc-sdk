@@ -10,4 +10,30 @@
 # DC-SDK
 基于 cesium 的三维 sdk  
 
-持续开发中....
+## 安装
+
+**YARN**
+
+```
+yarn add @ningsk/dc-sdk
+```
+
+## 设置
+
+```
+//webpack.config.js
+const path = require('path')
+const CopywebpackPlugin = require('copy-webpack-plugin')
+const dcDist = "./node_modules/@ningsk/"
+module.exports = {
+  // other settings
+  plugins:[
+    new CopyWebpackPlugin([
+      {  
+        from: path.join(dcDist, 'dc-sdk/dist/resources'),
+        to: 'libs/dc-sdk/resources' 
+      }
+    ])
+  ]
+
+```
