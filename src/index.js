@@ -1,75 +1,31 @@
 /*
- * @Description:
+ * @Description: c
  * @version:
- * @Author: 宁四凯
- * @Date: 2020-09-09 10:50:47
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-10-12 09:33:14
+ * @Author: ningsk
+ * @Date: 2021-03-15 14:45:58
+ * @LastEditors: ningsk
+ * @LastEditTime: 2021-03-18 11:02:18
  */
-
-import * as Map from "./Map";
-import * as Layer from "./layer/Layer";
-import { PointConvert, PointUtil as Point, Util, Matrix } from "./core/index";
-import { Measure } from "./Measure";
-import {
-  EllipsoidFadeMaterialProperty,
-  AnimationLineMaterialProperty,
-} from "./material/index";
-
-import { DivPoint } from "./DivPoint";
-
-import * as Attr from "./attr/index";
-
-import * as EventType from "./event/index";
-
-import * as Dragger from "./dom/Dragger";
-
-import * as widget from "./widget/WidgetManager";
-
-import { Draw } from "./draw/Draw";
-
-// ================  模块对外公开的属性和方法  ======================
-var name = "Cesium 三维地球框架";
-
-// 需要new的类
-var version = "0.0.1";
-var author = "dc";
-var website = "http://";
-
-// map
-
-var createMap = Map.createMap;
-var layer = Layer;
-var pointconvert = PointConvert;
-var latlng = Point; // 兼容旧版本
-var point = Point;
-var util = Util;
-var matrix = Matrix;
-
-var draw = {
-  util: Util,
-  event: EventType,
-  dragger: Dragger,
-  attr: Attr,
-};
-
-export {
-  name,
-  version,
-  author,
-  website,
-  createMap,
-  layer,
-  pointconvert,
-  latlng,
-  point,
-  util,
-  matrix,
-  Measure,
-  AnimationLineMaterialProperty,
-  EllipsoidFadeMaterialProperty,
-  DivPoint,
-  Draw,
-  draw,
-  widget,
-};
+export * as Cesium from 'cesium'
+export { default as Util } from './util/Util'
+export { default as DomUtil } from './util/DomUtil'
+export { default as LogUtil } from './util/LogUtil'
+export { default as PlotUtil } from './util/PlotUtil'
+export * from './event/index'
+export { default as Effect } from './effect/Effect'
+export { default as ImageryLayerFactory } from './imagery/ImageryLayerFactory'
+export { default as ImageryType } from './imagery/ImageryType'
+export * from './layer/index'
+export * from './material/index'
+export * from './math/index'
+export * from './option'
+export * from './overlay/index'
+export { default as Parse } from './parse/Parse'
+export { default as Position } from './position/Position'
+export { default as State } from './const/State'
+export * from './terrain/index'
+export { default as Transform } from './transform/Transform'
+export { default as CoordTransform } from './transform/CoordTransform'
+export { default as Map } from './map/Map'
+export { default as Plot } from './plot/Plot'
+export * as const from './const'

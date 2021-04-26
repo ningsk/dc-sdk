@@ -1,12 +1,48 @@
-/*
- * @Description:
- * @version:
- * @Author: 宁四凯
- * @Date: 2020-09-10 11:22:12
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-28 10:36:33
+/**
+ * circle material property
  */
-import { AnimationLineMaterialProperty } from "./property/AnimationLineMaterialProperty";
-import { EllipsoidFadeMaterialProperty } from "./property/EllipsoidFadeMaterialProperty";
 
-export { AnimationLineMaterialProperty, EllipsoidFadeMaterialProperty };
+export { default as CircleBlurMaterialProperty } from './property/circle/CircleBlurMaterialProperty'
+export { default as CircleDiffuseMaterialProperty } from './property/circle/CircleDiffuseMaterialProperty'
+export { default as CircleFadeMaterialProperty } from './property/circle/CircleFadeMaterialProperty'
+export { default as CirclePulseMaterialProperty } from './property/circle/CirclePulseMaterialProperty'
+export { default as CircleScanMaterialProperty } from './property/circle/CircleScanMaterialProperty'
+export { default as CircleSpiralMaterialProperty } from './property/circle/CircleSpiralMaterialProperty'
+export { default as CircleVaryMaterialProperty } from './property/circle/CircleVaryMaterialProperty'
+export { default as CircleWaveMaterialProperty } from './property/circle/CircleWaveMaterialProperty'
+
+/**
+ * ellipsoid material property
+ */
+export { default as EllipsoidElectricMaterialProperty } from './property/ellipsoid/EllipsoidElectricMaterialProperty'
+export { default as EllipsoidTrailMaterialProperty } from './property/ellipsoid/EllipsoidTrailMaterialProperty'
+
+/**
+ * polyline material property
+ */
+
+export { default as PolylineFlickerMaterialProperty } from './property/polyline/PolylineFlickerMaterialProperty'
+export { default as PolylineFlowMaterialProperty } from './property/polyline/PolylineFlowMaterialProperty'
+export { default as PolylineImageTrailMaterialProperty } from './property/polyline/PolylineImageTrailMaterialProperty'
+export { default as PolylineLightingMaterialProperty } from './property/polyline/PolylineLightingMaterialProperty'
+export { default as PolylineLightingTrailMaterialProperty } from './property/polyline/PolylineLightingTrailMaterialProperty'
+export { default as PolylineTrailMaterialProperty } from './property/polyline/PolylineTrailMaterialProperty'
+
+/**
+ * radar material property
+ */
+export { default as RadarLineMaterialProperty } from './property/radar/RadarLineMaterialProperty'
+export { default as RadarSweepMaterialProperty } from './property/radar/RadarSweepMaterialProperty'
+export { default as RadarWaveMaterialProperty } from './property/radar/RadarWaveMaterialProperty'
+
+/**
+ * wall material property
+ */
+export { default as WallImageTrailMaterialProperty } from './property/wall/WallImageTrailMaterialProperty'
+export { default as WallLineTrailMaterialProperty } from './property/wall/WallLineTrailMaterialProperty'
+export { default as WallTrailMaterialProperty } from './property/wall/WallTrailMaterialProperty'
+
+/**
+ * water material property
+ */
+export { default as WaterMaterialProperty } from './property/water/WaterMaterialProperty'

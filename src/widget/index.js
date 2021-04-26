@@ -1,13 +1,27 @@
-/*
- * @Description:
- * @version:
- * @Author: 宁四凯
- * @Date: 2020-09-03 09:43:45
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-29 14:10:50
- */
-import * as WidgetManager from "./WidgetManager";
-import * as Tooltip from "./Tooltip";
-import * as Popup from "./Popup";
+import ContextMenu from './type/ContextMenu'
+import LocationBar from './type/LocationBar'
+import MapSplit from './type/MapSplit'
+import MapSwitch from './type/MapSwitch'
+import Popup from './type/Popup'
+import Tooltip from './type/Tooltip'
+import HawkEyeMap from './type/HawkEyeMap'
+import Compass from './type/Compass'
+import DistanceLegend from './type/DistanceLegend'
+import ZoomController from './type/ZoomController'
+import LoadingMask from './type/LoadingMask'
 
-export { WidgetManager, Tooltip, Popup };
+export default function createWidgets () {
+  return {
+    popup: new Popup(),
+    contextMenu: new ContextMenu(),
+    tooltip: new Tooltip(),
+    mapSwitch: new MapSwitch(),
+    mapSplit: new MapSplit(),
+    locationBar: new LocationBar(),
+    hawkEyeMap: new HawkEyeMap(),
+    compass: new Compass(),
+    distanceLegend: new DistanceLegend(),
+    zoomController: new ZoomController(),
+    loadingMask: new LoadingMask()
+  }
+}

@@ -1,38 +1,43 @@
-/*
- * @Description: Kml格式数据图层
- * @version:
- * @Author: 宁四凯
- * @Date: 2020-08-21 09:06:20
- * @LastEditors: 宁四凯
- * @LastEditTime: 2020-09-08 11:28:12
- */
-import * as Cesium from "cesium";
-import { GeoJsonLayer } from "./GeoJsonLayer";
-export var KmlLayer = GeoJsonLayer.extend({
-  queryData: function () {
-    var that = this;
-    var dataSource = Cesium.KmlDataSource.load(this.config.url, {
-      camera: this.viewer.scene.camera,
-      canvas: this.viewer.scene.canvas,
-      clampToGround: this.config.clampToGround,
-    });
-    dataSource
-      .then((dataSource) => {
-        that.showResult(dataSource);
-      })
-      .otherwise((error) => {
-        that.showError("服务出错", error);
-      });
-  },
+import * as Cesium from 'cesium'
+import State from '../const/State'
+import Layer from './Layer'
 
-  getEntityAttr: function (entity) {
-    var attr = {
-      name: entity._name,
-    };
-    var extendedData = entity._kml.extendedData;
-    for (var key in extendedData) {
-      attr[key] = extendedData[key].value;
+class KmlLayer extends Layer {
+    constructor (id, url, options = {}) {
+        if (!url) {
+            throw new Error('KmlLayer: the url is empty')
+        }
+        super(id)
+        this._delegate = Cesium.KmlDataSource.load(url, options)
+        this.type = Layer.getLayerType('kml')
+        this._state = State.INITIALIZED
     }
-    return attr;
-  },
-});
+
+    set show (show) {
+        this._show = show
+        this._delegate &&
+            this._delegate.then(dataSource => {
+                dataSource.show = this._show
+            })
+    }
+
+    get show () {
+        return this._show
+    }
+
+    eachOverlay (method, context) {
+        if (this._delegate) {
+            this._delegate.then(dataSource => {
+                const entities = dataSource.entities.values
+                entities.forEach(item => {
+                    method.call(context, item)
+                })
+            })
+            return this
+        }
+    }
+}
+
+Layer.registerType('kml')
+
+export default KmlLayer
