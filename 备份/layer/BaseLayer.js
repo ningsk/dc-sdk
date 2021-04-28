@@ -1,143 +1,124 @@
-class BaseLayer extends BaseClass {
-  //========== 构造方法 ==========
-  constructor(viewer, options) {
-    super()
-    _this.viewer = viewer;
-    _this.options = options; //配置的config信息
-
-    _this.name = options.name;
-    _this.hasZIndex = Cesium.defaultValue(options.hasZIndex, false);
-    _this.hasOpacity = Cesium.defaultValue(options.hasOpacity, false);
-    _this._opacity = Cesium.defaultValue(options.opacity, 1);
-    if (options.hasOwnProperty("alpha")) _this._opacity = Number(options.alpha);
-
-    //单体化时，不可调整透明度
-    if (options.dth) {
-      _this.hasOpacity = false;
-
-      options.symbol = options.symbol || {};
-      options.symbol.styleOptions = options.symbol.styleOptions || {};
-      options.symbol.styleOptions.clampToGround = true;
-    }
-
-    _this.create();
-
-    _this._visible = false;
-    if (options.visible) {
-      if (_this.options.visibleTimeout) {
-        setTimeout(function() {
-          _this.visible = true;
-        }, _this.options.visibleTimeout);
-      } else {
-        _this.visible = true;
-      }
-
-      if (options.flyTo) {
-        _this.centerAt(_this.options.flyToDuration || 0);
-      }
-    }
-  }
-  //========== 对外属性 ==========
-
-
-
-
-  //========== 方法==========
-  create() {
-    if (this.options.onCreate) {
-      this.options.onCreate(this.viewer);
-      showError(title, error) {
-        if (!error) error = '未知错误';
-
-        if (this.viewer) this.viewer.cesiumWidget.showErrorPanel(title, undefined, error);
-
-        marslog.warn('layer错误:' + title + error);
-      }
-    }
-  }
-
-  //添加
-
-  add() {
-    this._visible = true;
-    this.options.visible = this._visible;
-
-    if (this.options.onAdd) {
-      this.options.onAdd(this.viewer);
-    }
-    this.fire(_MarsClass2.eventType.add);
-  }
-  //移除
-
-  remove() {
-    this._visible = false;
-    this.options.visible = this._visible;
-
-    if (this.options.onRemove) {
-      this.options.onRemove(this.viewer);
-    }
-    this.fire(_MarsClass2.eventType.remove);
-  }
-  //定位至数据区域
-
-  centerAt(duration) {
-    if (this.options.extent || this.options.center) {
-      this.viewer.mars.centerAt(this.options.extent || this.options.center, {
-        duration: duration,
-        isWgs84: true
-      });
-    } else if (this.options.onCenterAt) {
-      this.options.onCenterAt(duration, this.viewer);
-    }
-  }
-  //设置透明度
-
-  setOpacity(value) {
-    if (this.options.onSetOpacity) {
-      this.options.onSetOpacity(value, this.viewer);
-    }
-  }
-  //设置叠加顺序
-
-  setZIndex(value) {
-    if (this.options.onSetZIndex) {
-      this.options.onSetZIndex(value, this.viewer);
-    }
-  }
-  destroy() {
-    this.visible = false;
-  }
-
-  get visible() {
-    return this._visible;
-  }
-  set visible(val) {
-    if (this._visible == val) return;
-
-    this._visible = val;
-    this.options.visible = val;
-
-    if (val) {
-      if (this.options.msg)(0, _util.msg)(this.options.msg);
-      this.add();
-    } else {
-      this.remove();
-    }
-  }
-  get opacity() {
-    return this._opacity;
-  }
-  set opacity(val) {
-    this.setOpacity(val);
-  }
+import * as Cesium from 'cesium'
+import EventType from '../const/EventType.js'
+import BaseClass from '../base/BaseClass.js'
+import Util from '../util/Util.js'
+import State from '../const/State.js'
+const DEF_OPTIONS = {
+  id: Util.uuid(),
+  pid: -1,
+  name: '未命名',
+  show: true,
+  opactity: 1,
+  center: undefined,
+  flyTo: true, // 加载完成后，是否自动飞行定位到数据所在的区域
+  popup: undefined,
+  tooltip: undefined,
+  contextmenuItems: undefined
 }
-//[静态属性]本类中支持的事件类型常量
+class BaseLayer extends BaseClass {
+  constructor (options = {}) {
+      super()
+      this.setOptions(options)
+      this._delegate = undefined
+      this._map = undefined
+      this._type = undefined
+      this._state = State.INITIALIZED
+      this.on(EventType.addLayer, this._onAdd, this)
+      this.on(EventType.removeLayer, this._onRemove, this)
+  }
+  get id () {
+    return this._id
+  }
+  get uuid () {
+    return this._uuid
+  }
+  get isAdded () {
+    return this._state === State.ADDED
+  }
+  get opactity () {
+    return this._opacity
+  }
+  get state () {
+    return this._state
+  }
+  get show () {
+    return this._show
+  }
+  get type () {
+    return this._type
+  }
+  setOptions (options) {
+      this.options = Util.merge(DEF_OPTIONS, options)
+      this._id = this.options.id
+      this._show = this.options.show
+      this._name = this.options.name
+      this._center = this.options.center
+      this._flyTo = this.options.flyTo
+      this._popup = this.options.popup
+      this._tooltip = this.options.tooltip
+      this._contextmenuItems = this.options.contextmenuItems
+      this._setOptionsHook()
+  }
+  /**
+   * 创建options的钩子方法，每次setOptions的时候都会调用
+   */
+  _setOptionsHook () {}
+  /**
+   * 对象添加到地图上的创建钩子方法 每次add时候都会调用
+   */
+  _addedHook () {}
+  /**
+   * 对象添加到地图前创建的钩子方法，只会调用一次
+   */
+  _mountedHook () {}
+  /**
+   * 对象从地图上移除的创建钩子方法 每次 remove的时候都会调用
+   */
+  _removeHook () {}
+  /**
+   * 图层添加后 回调函数
+   * @param {Object} map
+   */
+  _onAdd (map) {
+    this._addedHook && this._addedHook()
+    this._state = State.ADDED
+  }
+  /**
+   * 图层移除后，回调函数
+   */
+  _onRemove () {
+    this._removeHook && this._removeHook()
+    this._state = State.REMOVED
+  }
 
-BaseLayer.event = {
-  add: EventType.add,
-  remove: EventType.remove,
-  load: EventType.load,
-  click: EventType.click,
-  mouseOver: EventType.mouseOver,
-  mouseOut: EventType.mouseOut
-};
+  /**
+   * 添加到地图上的方法 同 map.addThing
+   * @param {Object} map
+   */
+  addTo (map) {
+    this._map = map
+    if (map && map.addLayer) {
+      map.addLayer(this)
+    }
+    return this
+  }
+  /**
+   * 飞行定位到图层数据所在的视角
+   * @param {Object} options
+   */
+  flyTo (options) {}
+  /**
+   * 入场动画结束后再执行flyTo 直接调用flyTo可能造成入场动画失败
+   */
+  flyToAnimationEnd () {}
+  /**
+   * 从地图中移除layer
+   */
+  remove () {}
+  /**
+   * 删除所有的矢量数据
+   * 超类，需要被重写
+   */
+  clearGraphic () {}
+}
+export default BaseLayer
