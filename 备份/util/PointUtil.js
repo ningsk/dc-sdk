@@ -106,81 +106,7 @@ class PointUtil {
   }
 
 
-  /**
-   * 根据matrix转换矩阵求HeadingPitchRollByMatrix
-   * @param {Cesium.Matrix4} matrix 转换矩阵
-   * @param {Cesium.Ellipsoid} ellipsoid 变换中使用固定坐标系的椭球
-   * @param {Cesium.Transforms.LocalFrameToFixedFrame} fixedFrameTransform  参考系
-   * @returns {Cesium.HeadingPitchRoll} result 可以先实例化返回的Heading Pitch Roll角度对象
-   */
-  static getHeadingPitchRollByMatrix(matrix, ellipsoid = Cesium.Ellipsoid.WGS84, fixedFrameTransform = Cesium.Transforms
-    .eastNorthUpToFixedFrame) {
-    // 计算当前模型中心处的变换矩阵
-    let m1 = fixedFrameTransform(
-      position,
-      ellipsoid,
-      new Cesium.Matrix4()
-    )
 
-    // 矩阵相除
-    let m3 = Cesium.Matrix4.multiply(
-      Cesium.Matrix4.inverse(m1, new Cesium.Matrix4()),
-      matrix,
-      new Cesium.Matrix4()
-    )
-
-    // 得到旋转矩阵
-    let mat3 = Cesium.Matrix3.getRotation(m3, new Cesium.Matrix3())
-    // 计算四元数
-    let q = Cesium.Quaternion.fromRotationMatrix(mat3)
-    // 计算旋转角（弧度）
-    let hpr = Cesium.HeadingPitchRoll.fromQuaternion(q)
-    // 得到角度
-    //let heading = Cesium.Math.toDegrees(hpr.heading);
-    //let pitch = Cesium.Math.toDegrees(hpr.pitch);
-    //let roll = Cesium.Math.toDegrees(hpr.roll);
-    return hpr
-  }
-
-  /**
-   * 根据position位置和orientation四元叔实例求 HeadingPitchRoll方向
-   * @param {Cesium.Cartesian3} position 位置坐标
-   * @param {Cesium.Quaternion} orientation 四元数实例
-   * @param {*} ellipsoid
-   * @param {*} fixedFrameTransform
-   */
-  static getHeadingPitchRollByOrientation(position, orientation, ellipsoid = Cesium.Ellipsoid.WGS84,
-    fixedFrameTransform = Cesium.Transforms.eastNorthUpToFixedFrame) {
-    let matrix = Cesium.Matrix4.fromRotationTranslation(
-      Cesium.Matrix3.fromQuaternion(orientation, matrix3Scratch),
-      position,
-      matrix4Scratch
-    )
-    let hpr = this.getHeadingPitchRollByMatrix(position, matrix)
-    return hpr
-  }
-
-  /**
-   * 获取坐标数组中 最高高程值
-   * @param {*} positions
-   * @param {*} defaultValue
-   */
-  static getMaxHeight(positions, defaultValue) {
-    if (defaultValue == null) defaultValue = 0
-    let maxHeight = defaultValue
-    if (positions == null || positions.length == 0) return maxHeight
-    for (let i = 0; i < positions.length; i++) {
-      let tempCarto = Cesium.Cartographic.fromCartesian(positions[i])
-      if (tempCarto.height > maxHeight) {
-        maxHeight = tempCarto.height
-      }
-    }
-    return formatNum(maxHeight, 2)
-  }
-
-  formatNum(num, digits) {
-    return Number(num.toFixed(digits || 0))
-  }
 
   /**
    *
@@ -235,53 +161,7 @@ class PointUtil {
     if (!target) target = scene.camera.pickEllipsoid(center)
     return target
   }
-  // 根据模型的orientation求方位角
-  static getHeadingPitchRollByOrientation(position, orientation, ellipsoid, fixedFrameTransform) {
-    if (!Cesium.defined(orientation) || !Cesium.defined(position)) return new Cesium.HeadingPitchRoll();
 
-    var matrix = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.fromQuaternion(orientation, matrix3Scratch),
-      position, matrix4Scratch);
-    var hpr = getHeadingPitchRollByMatrix(matrix, ellipsoid, fixedFrameTransform);
-    return hpr;
-  }
-
-  // 根据模型的matrix矩阵求方位角
-  static getHeadingPitchRollByMatrix(matrix, ellipsoid, fixedFrameTransform, result) {
-    return Cesium.Transforms.fixedFrameToHeadingPitchRoll(matrix, ellipsoid, fixedFrameTransform, result);
-  }
-
-  // 根据模型的matrix矩阵求方位角
-  static getHeadingPitchRollByMatrixOld(position, matrix, ellipsoid, fixedFrameTransform) {
-    fixedFrameTransform = fixedFrameTransform || Cesium.Transforms.eastNorthUpToFixedFrame;
-
-    // 计算当前模型中心处的变换矩阵
-    var m1 = fixedFrameTransform(position, ellipsoid, new Cesium.Matrix4());
-    // 矩阵相除
-    var m3 = Cesium.Matrix4.multiply(Cesium.Matrix4.inverse(m1, new Cesium.Matrix4()), matrix, new Cesium.Matrix4());
-    // 得到旋转矩阵
-    var mat3 = Cesium.Matrix4.getMatrix3(m3, new Cesium.Matrix3());
-    // 计算四元数
-    var q = Cesium.Quaternion.fromRotationMatrix(mat3);
-    // 计算旋转角(弧度)
-    var hpr = Cesium.HeadingPitchRoll.fromQuaternion(q);
-    return hpr;
-  }
-
-
-  //求localStart点到localEnd点的方向
-  static getHeadingPitchRollForLine(localStart, localEnd, ellipsoid, fixedFrameTransform) {
-    ellipsoid = ellipsoid || Cesium.Ellipsoid.WGS84;
-
-    var velocity = Cesium.Cartesian3.normalize(Cesium.Cartesian3.subtract(localEnd, localStart, cartesian3),
-      cartesian3);
-    Cesium.Transforms.rotationMatrixFromPositionVelocity(localStart, velocity, ellipsoid, rotationScratch);
-    var modelMatrix = Cesium.Matrix4.fromRotationTranslation(rotationScratch, localStart, matrix4Scratch2);
-
-    Cesium.Matrix4.multiplyTransformation(modelMatrix, Cesium.Axis.Z_UP_TO_X_UP, modelMatrix);
-
-    var hpr = getHeadingPitchRollByMatrix(modelMatrix, ellipsoid, fixedFrameTransform);
-    return hpr;
-  }
 
   //获取点point1绕点center的地面法向量旋转顺时针angle角度后新坐标
   static getRotateCenterPoint(center, point1, angle) {
@@ -308,23 +188,6 @@ class PointUtil {
     return pointNew;
   }
 
-  //求p1指向p2方向线上，距离p1指定len长度的新的点 ，addBS：true时为距离p2
-  static getOnLinePointByLen(p1, p2, len, addBS) {
-    var mtx4 = Cesium.Transforms.eastNorthUpToFixedFrame(p1);
-    var mtx4_inverser = Cesium.Matrix4.inverse(mtx4, new Cesium.Matrix4());
-    p1 = Cesium.Matrix4.multiplyByPoint(mtx4_inverser, p1, new Cesium.Cartesian3());
-    p2 = Cesium.Matrix4.multiplyByPoint(mtx4_inverser, p2, new Cesium.Cartesian3());
-
-    var substrct = Cesium.Cartesian3.subtract(p2, p1, new Cesium.Cartesian3());
-
-    var dis = Cesium.Cartesian3.distance(p1, p2);
-    var scale = len / dis; //求比例
-    if (addBS) scale += 1;
-
-    var newP = Cesium.Cartesian3.multiplyByScalar(substrct, scale, new Cesium.Cartesian3());
-    newP = Cesium.Matrix4.multiplyByPoint(mtx4, newP, new Cesium.Cartesian3());
-    return newP;
-  }
 
   //获取点的offest平移矩阵后点
   static getPositionTranslation(position, offest, degree, type, fixedFrameTransform) {
@@ -351,26 +214,7 @@ class PointUtil {
     return pointCartesian;
   }
 
-  //计算平行线，offset正负决定方向（单位米）
-  static getOffsetLine(positions, offset) {
-    var arrNew = [];
-    for (var i = 1; i < positions.length; i++) {
-      var point1 = positions[i - 1];
-      var point2 = positions[i];
-
-      var dir12 = Cesium.Cartesian3.subtract(point1, point2, new Cesium.Cartesian3());
-      var dir21left = Cesium.Cartesian3.cross(point1, dir12, new Cesium.Cartesian3());
-
-      var p1offset = computedOffsetData(point1, dir21left, offset * 1000);
-      var p2offset = computedOffsetData(point2, dir21left, offset * 1000);
-
-      if (i == 1) {
-        arrNew.push(p1offset);
-      }
-      arrNew.push(p2offset);
-    }
-    return arrNew;
-  }
+  
 
   static computedOffsetData(ori, dir, wid) {
     var currRay = new Cesium.Ray(ori, dir);

@@ -2,6 +2,7 @@ const CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.s
   ''
 )
 class Util {
+  static
   /**
    * 移除数组中指定对象
    * @param { Array }  arr 数组
