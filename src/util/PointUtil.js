@@ -14,9 +14,9 @@ const scratchCartographic2 = new Cesium.Cartographic()
 class PointUtil {
   /**
    * 对坐标（或数组坐标）增加指定的海拔高度
-   * @param {Array<Cesium.Cartesian3>|Cesium.Cartesian3} positions
+   * @param {Array.<Cesium.Cartesian3>|Cesium.Cartesian3} positions
    * @param {Number} [addHeight=0] 增加的海拔高度
-   * @return {Array<Cesium.Cartesian3>|Cesium.Cartesian3} 增加后的坐标数组
+   * @return {Array.<Cesium.Cartesian3>|Cesium.Cartesian3} 增加后的坐标数组
    */
   static addPositionsHeight (positions, addHeight) {
     addHeight = Number(addHeight) || 0
@@ -39,9 +39,9 @@ class PointUtil {
 
   /**
    * 设置坐标中海拔高度为指定的高度值
-   * @param {Array<Cesium.Cartesian3>|Cesium.Cartesian3} positions
+   * @param {Array.<Cesium.Cartesian3>|Cesium.Cartesian3} positions
    * @param {Number} [height=0] 指定的海拔高度
-   * @return {Array<Cesium.Cartesian3>|Cesium.Cartesian3} 指定高度后后的坐标数组
+   * @return {Array.<Cesium.Cartesian3>|Cesium.Cartesian3} 指定高度后后的坐标数组
    */
   static setPositionsHeight (positions, height) {
     height = Number(height) || 0
@@ -60,6 +60,24 @@ class PointUtil {
       const cartesian = Cesium.Cartographic.fromCartesian(positions)
       return Cesium.Cartesian3.fromRadians(cartesian.longitude, cartesian.latitude, height)
     }
+  }
+
+  /**
+   * 获取position的最终value值，因为cesium经常属性或绑定一层，通过该方法可以内部去判断是否有getValue或_value进行获取最终value值
+   * @param {Cesium.Cartesian3}  position
+   * @param {Cesium.JulianDate} [time=Cesium.JulianDate.now()] 指定的时间值
+   */
+  static getPositionValue (position, time) {
+    if (!position) return position
+    let _position
+    if (position instanceof Cesium.Cartesian3) {
+      _position = position
+    } else if (position._value && position._value instanceof Cesium.Cartesian3) {
+      _position = position._value
+    } else if (typeof position.getValue === 'function') {
+      _position = position.getValue(time)
+    }
+    return _position
   }
   /**
    * 获取鼠标当前的屏幕坐标位置的三维Cesium坐标
@@ -203,7 +221,7 @@ class PointUtil {
   }
   /**
    * 获取坐标数组中 最高高程值
-   * @param {Array<Cesium.Cartesian3>} positions 笛卡尔坐标数组
+   * @param {Array.<Cesium.Cartesian3>} positions 笛卡尔坐标数组
    * @param {Number} [defaultValue=0] 默认高程值
    */
   static getMaxHeight (positions, defaultValue = 0) {
@@ -219,7 +237,7 @@ class PointUtil {
   }
   /**
    * 获取坐标数组中 最低高程值
-   * @param {Array<Cesium.Cartesian3>} positions 笛卡尔坐标数组
+   * @param {Array.<Cesium.Cartesian3>} positions 笛卡尔坐标数组
    * @param {Number} [defaultValue=0] 默认高程值
    */
   static getMinHeight (positions, defaultValue = 0) {
@@ -376,7 +394,7 @@ class PointUtil {
    * @param {Boolean} [options.asyn] 是否进行异步精确计算
    * @param {Boolean} [options.has3dtitles='auto'] 事故覅有在3dtiles模型上分析（模型分析较慢，按需开启）,默认内部根据点的位置自动判断（但可能不准）
    * @param {getSurfaceHeight_callback} [options.callback] 异步计算高度完成后回调方法
-   * @param {Array<Object>} [options.objectsToExclude] 排除的不进行贴模型结算的模型对象可以是：primitives，entities或3D Tiles features
+   * @param {Array.<Object>} [options.objectsToExclude] 排除的不进行贴模型结算的模型对象可以是：primitives，entities或3D Tiles features
    * @return {Number|void} 仅仅在async:false时候返回高度值
    */
   static getSurfaceHeight (scene, position, options) {
@@ -401,7 +419,7 @@ class PointUtil {
    * @param {Boolean} [options.asyn] 是否进行异步精确计算
    * @param {Boolean} [options.has3dtitles='auto'] 事故覅有在3dtiles模型上分析（模型分析较慢，按需开启）,默认内部根据点的位置自动判断（但可能不准）
    * @param {getSurfaceHeight_callback} [options.callback] 异步计算高度完成后回调方法
-   * @param {Array<Object>} [options.objectsToExclude] 排除的不进行贴模型结算的模型对象可以是：primitives，entities或3D Tiles features
+   * @param {Array.<Object>} [options.objectsToExclude] 排除的不进行贴模型结算的模型对象可以是：primitives，entities或3D Tiles features
    * @return {Number|void} 仅仅在async:false时候返回高度值
    */
   static getSurface3DTilesetHeight (scene, position, options) {
@@ -440,7 +458,7 @@ class PointUtil {
    * @param {Boolean} [options.asyn] 是否进行异步精确计算
    * @param {Boolean} [options.has3dtitles='auto'] 事故覅有在3dtiles模型上分析（模型分析较慢，按需开启）,默认内部根据点的位置自动判断（但可能不准）
    * @param {getSurfaceHeight_callback} [options.callback] 异步计算高度完成后回调方法
-   * @param {Array<Object>} [options.objectsToExclude] 排除的不进行贴模型结算的模型对象可以是：primitives，entities或3D Tiles features
+   * @param {Array.<Object>} [options.objectsToExclude] 排除的不进行贴模型结算的模型对象可以是：primitives，entities或3D Tiles features
    * @return {Number|void} 仅仅在async:false时候返回高度值
    */
   static getSurfaceTerrainHeight (scene, position, options) {

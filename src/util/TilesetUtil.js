@@ -71,7 +71,7 @@ class TilesetUtil {
   /**
    * 获取坐标点处的3dtiles模型，用于计算贴地时进行判断（和视角有关系，不一定精确）
    * @param {Cesium.Scene} scene 三维地图场景对象，一般用map.scene 或viewer.scene
-   * @param {Cesium.Cartesian3|Array<Cesium.Cartesian>} positions 坐标或坐标数组
+   * @param {Cesium.Cartesian3|Array.<Cesium.Cartesian>} positions 坐标或坐标数组
    * @return {null|Cesium.Cesium3DTileset} 3dtiles模型
    */
   static pick3DTileset (scene, positions) {

@@ -1,6 +1,0 @@
-/* 209 */
-/***/ (function(module, exports) {
-
-module.exports = "attribute vec3 position3DHigh;\nattribute vec3 position3DLow;\nattribute vec3 color;\nattribute vec2 st;\nattribute float batchId;\nuniform mat4 mm;\nuniform mat4 vv;\nuniform vec2 resolution;\nuniform float billWidth;\nvarying vec2 v_st;\nvarying vec3 v_worldPos;\nvec4 transform(mat4 m,mat4 v,vec3 coord) {\n    return m * v * vec4(coord, 1.0);\n}\nvec2 project(vec4 device) {\n    vec3 device_normal = device.xyz / device.w;\n    vec2 clip_pos = (device_normal * 0.5 + 0.5).xy;\n    return clip_pos * resolution;\n}\nvec4 unproject(vec2 screen, float z, float w) {\n    vec2 clip_pos = screen / resolution;\n    vec2 device_normal = clip_pos * 2.0 - 1.0;\n    return vec4(device_normal * w, z, w);\n}\nvoid main() { \n    v_st = st;\n    vec3 currP = position3DHigh.xyz + position3DLow.xyz;\n    v_worldPos = currP;\n    vec4 eyeCurrP = transform(mm,vv,currP);\n    vec2 winCurrP = project(eyeCurrP);\n    vec3 dirEye = czm_viewRotation * color;\n    dirEye = normalize(dirEye);\n    vec2 newWinCurrP = winCurrP + dirEye.xy * billWidth;\n    gl_Position = unproject(newWinCurrP, eyeCurrP.z, eyeCurrP.w);\n    gl_PointSize = billWidth;\n}"
-
-/***/ }),

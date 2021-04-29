@@ -1,2 +1,0 @@
-class TerrainLayer
-export default TerrainLayer
