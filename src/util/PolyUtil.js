@@ -193,6 +193,20 @@ class PolyUtil {
   }
 
   /**
+   * 面内进行贴地或贴模型
+   * @param {Object} [options] 参数如下：
+   * @param {Cesium.Scene} [options.scene] 三维地图场景对象，一般用map.scene或viewer.scene
+   * @param {interPolygon_callback} [options.callback] 异步计算高度完成后的回调方法
+   * @param {Boolean} [options.asyn] 是否进行异步精准计算
+   * @param {Boolean} [options.has3dtiles='auto'] 是否在3dtiles上分析
+   * @param {Array.<Object>} [options.objectsToExclude] 贴模型分析的时候，排除的，不进行贴模型计算的模型对象，可以是primitives。entities或3d tile features
+   * @param {Boolean} [options.onlyPoint=false] true时候值返回结果点，不返回三角网
+   * @return {Object|Void} 仅asyn:false时候返回结果值
+   */
+  static interPolygon (options) {
+
+  }
+  /**
    * 计算两点间的曲线链路的点集（空中曲线）
    * @param {Cesium.Cartesian3} startPoint 开始节点
    * @param {Cesium.Cartesian3} endPoint 结束节点
@@ -252,6 +266,224 @@ class PolyUtil {
   static computeStepSurfaceLine (options) {
 
   }
+
+  /**
+   * 获取圆或椭圆边线上的坐标点数组
+   * @param {Object} [options] 参数对象：
+   * @param {Cesium.Cartesian3} [options.position] 圆中心坐标
+   * @param {Number} [options.radius] 如果是圆的时候，半径（单位：米）
+   * @param {Number} [options.semiMajorAxis] 椭圆时候，长半轴半径（单位：米）
+   * @param {Number} [options.semiMinorAxis] 椭圆时候，短半轴半径（单位：米）
+   * @param {Number} [options.count=1] 象限内点的数量，返回的总数为count* 4
+   * @param {Number} [options.rotation=0] 旋转的角度
+   */
+  static getEllipseOuterPositions (options) {
+    const position = options.position
+    if (!position) return null
+    const count = Cesium.defaultValue(options.count, 1)
+    const semiMajorAxis = Cesium.defaultValue(options.semiMajorAxis, options.radius)
+    const semiMinorAxis = Cesium.defaultValue(options.semiMinorAxis, options.radius)
+    const rotation = Cesium.defaultValue(options.rotation, 0)
+    if (!semiMajorAxis || !semiMinorAxis) return [position, position, position]
+    // 获取椭圆上的坐标点数组
+    const cep = Cesium.EllipseGeometryLibrary.computeEllipsePositions(
+      {
+        center: position,
+        semiMajorAxis: semiMajorAxis, // 长半轴
+        semiMinorAxis: semiMinorAxis, // 短半轴
+        rotation: rotation,
+        granularity: Math.PI / (16 * count)
+      },
+      true,
+      true
+    )
+    const arr = cep.outerPositions
+    const positions = []
+    for (let i = 0, len = arr.length; i < len; i += 3) {
+      // 长半轴上的坐标点
+      const pt = new Cesium.Cartesian3(arr[i], arr[i + 1], arr[i + 2])
+      positions.push(pt)
+    }
+    return positions
+  }
+  /**
+   * 获取矩形（含旋转角度）的边线上的4个顶点坐标点数组
+   * @param {Object} [options] 参数对象：
+   * @param {Cesium.Rectangle} [options.rectangle] 矩形对象
+   * @param {Number} [options.rotation=0] 旋转的角度，弧度值
+   * @param {Number} [options.height=0] 坐标的高度
+   * @param {Number} [options.granularity=Cesium.Math.RADIANS_PER_DEGREE] granularity值
+   * @param {Cesium.Ellipsoid} [options.ellipsoid=Cesium.Ellipsoid.WGS84] 变换中使用固定坐标系的椭球
+   * @return {Array.<Cesium.Cartesian3>} 边线上4个顶点坐标点数组
+   */
+  static getRectangleOuterPositions (options) {
+    const rectangle = options.rectangle
+    const rotation = Cesium.defaultValue(options.rotation, 0.0)
+    const height = Cesium.defaultValue(options.height, 0.0)
+    if (rotation === 0) {
+      return [
+        Cesium.Cartesian3.fromRadians(rectangle.west, rectangle.south, height),
+        Cesium.Cartesian3.fromRadians(rectangle.east, rectangle.south, height),
+        Cesium.Cartesian3.fromRadians(rectangle.east, rectangle.north, height),
+        Cesium.Cartesian3.fromRadians(rectangle.west, rectangle.north, height)
+      ]
+    }
+    const granularity = Cesium.defaultValue(
+      options.granularity,
+      Cesium.Math.RADIANS_PER_DEGREE
+    )
+    const rectangleScratch = new Cesium.Rectangle()
+    const nwScratch = new Cesium.Cartographic()
+    const computedOptions = Cesium.RectangleGeometryLibrary.computeOptions(
+      rectangle,
+      granularity,
+      rotation,
+      0,
+      rectangleScratch,
+      nwScratch
+    )
+    const wHeight = computedOptions.height
+    const wWidth = computedOptions.width
+    const ellipsoid = Cesium.defaultValue(
+      options.ellipsoid,
+      Cesium.Ellipsoid.WGS84
+    )
+    let scratchRectanglePoints = [
+      new Cesium.Cartesian3(),
+      new Cesium.Cartesian3(),
+      new Cesium.Cartesian3(),
+      new Cesium.Cartesian3()
+    ]
+    Cesium.RectangleGeometryLibrary.computePosition(
+      computedOptions,
+      ellipsoid,
+      false,
+      0,
+      0,
+      scratchRectanglePoints[0]
+    )
+    Cesium.RectangleGeometryLibrary.computePosition(
+      computedOptions,
+      ellipsoid,
+      false,
+      0,
+      wWidth - 1,
+      scratchRectanglePoints[1]
+    )
+    Cesium.RectangleGeometryLibrary.computePosition(
+      computedOptions,
+      ellipsoid,
+      false,
+      wHeight - 1,
+      wWidth - 1,
+      scratchRectanglePoints[2]
+    )
+    Cesium.RectangleGeometryLibrary.computePosition(
+      computedOptions,
+      ellipsoid,
+      false,
+      wHeight - 1,
+      0,
+      scratchRectanglePoints[3]
+    )
+    if (height !== 0) {
+      scratchRectanglePoints = PointUtil.setPositionsHeight(
+        scratchRectanglePoints,
+        height
+      )
+    }
+    return scratchRectanglePoints
+  }
+
+  /**
+   * 根据基准面高度，重新计算填挖方体积
+   * @param {VolumeResult} resultInter 插值完的对象
+   * @param {Number} cutHeight 基准面高度
+   * @return {VolumeResult} 重新计算填挖方体积后的对象
+   */
+  static updateVolume (resultInter, cutHeight) {
+    if (!resultInter) return
+    const minHeight = resultInter.minHeight
+    const totalVolume = resultInter.totalVolume
+    if (cutHeight <= minHeight) {
+      resultInter.fillVolume = 0
+      resultInter.digVolume = totalVolume
+      return resultInter
+    }
+    let totalV = 0 // 底部到基准面的总体积
+    let totalBottomV = 0 // 挖方体积
+    for (let i = 0, len = resultInter.list.length; i < len; i++) {
+      const item = resultInter.list[i]
+      // 底部到基准面的总体积
+      totalV += item.area * (cutHeight - minHeight)
+      const pt1 = item.point1
+      const pt2 = item.point2
+      const pt3 = item.point3
+
+      let height1 = pt1.height
+      let height2 = pt2.height
+      let height3 = pt3.height
+      if (height1 < cutHeight) height1 = cutHeight
+      if (height2 < cutHeight) height2 = cutHeight
+      if (height3 < cutHeight) height3 = cutHeight
+      // 挖方体积 （横截面面积 * 3个点的平均高）
+      totalBottomV +=
+        (item.area * (height1 - cutHeight + height2 - cutHeight + height3 - cutHeight)) / 3
+    }
+    resultInter.digVolume = totalBottomV // 挖方体积
+    resultInter.fillVolume = totalV - (totalVolume - totalBottomV) // 填方体积
+    return resultInter
+  }
+
+  /**
+   * 根据 最低底面高度 重新计算填挖方体积
+   * @param {interPolygon_callback} resultInter 插值完的对象
+   * @return {interPolygon_callback} 计算完后的挖填方体积
+   */
+  static updateVolumeByMinHeight (resultInter) {
+    const minHeight = resultInter.minHeight
+    let totalArea = 0 // 总面积(横截面/投影底面)
+    let totalVolume = 0 // 总体积
+    for (let i = 0, len = resultInter.list.length; i < len; i++) {
+      const item = resultInter.list[i]
+      const pt1 = item.point1
+      const pt2 = item.point2
+      const pt3 = item.point3
+      // 横截面面积
+      var bottomArea = this.getAreaOfTriangle(pt1.point, pt2.point, pt3.point)
+      item.area = bottomArea
+      totalArea += bottomArea
+
+      let height1 = pt1.height
+      let height2 = pt2.height
+      let height3 = pt3.height
+      if (height1 < minHeight) height1 = minHeight
+      if (height2 < minHeight) height2 = minHeight
+      if (height3 < minHeight) height3 = minHeight
+      // 挖方体积 （横截面面积 * 3个点的平均高）
+      var cutVolume = bottomArea * (height1 - minHeight + height2 - minHeight + height3 - minHeight) / 3
+      item.cutVolume = cutVolume
+      totalVolume = totalVolume + cutVolume
+    }
+    resultInter.totalArea = totalArea
+    resultInter.totalVolume = totalVolume
+    return resultInter
+  }
+
+  /**
+   * 计算三角形空间面积
+   * @param {Cesium.Cartesian3} pos1
+   * @param {Cesium.Cartesian3}  pos2
+   * @param {Cesium.Cartesian3}  pos3
+   * @return {Number} 面积
+   */
+  static getAreaOfTriangle (pos1, pos2, pos3) {
+    const a = Cesium.Cartesian3.distance(pos1, pos2)
+    const b = Cesium.Cartesian3.distance(pos2, pos3)
+    const c = Cesium.Cartesian3.distance(pos3, pos1)
+    const S = (a + b + c) / 2
+    return Math.sqrt(S * (S - a) * (S - b) * (S - c))
+  }
   /**
    * 异步分段分步计算贴地距离中，每计算完成两个点之间的距离后的回调方法
    * @callback computeStepSurfaceLine_end
@@ -281,7 +513,7 @@ class PolyUtil {
    */
   /**
    * 面内进行贴地（或贴模型）时候，返回三角网等计算结果的回调方法
-   * @callback VolumeResult
+   * @callback PlotUtil~VolumeResult
    * @param {Object} [options] 参数如下
    * @param {Number} [options.granularity] 面内按照splitNum网格数插值的granularity值
    * @param {Number} [options.maxHeight] 面内最大高度
@@ -291,6 +523,7 @@ class PolyUtil {
    * @param {Number} [options.totalVolume] 总体积，执行updateVolumeByMinHeight后赋值
    * @param {Number} [options.digVolume] 挖方体积，执行updateVolume后赋值
    * @param {Number} [options.fillVolume] 填方体积，执行updateVolume后赋值
+   *
    */
 }
 export default PolyUtil
