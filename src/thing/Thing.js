@@ -19,9 +19,6 @@ class Thing {
   get id () {
     return this._bid
   }
-  get delegate () {
-    return this._delegate
-  }
   get state () {
     return this._state
   }
@@ -44,14 +41,25 @@ class Thing {
   _addedHook () {}
   _mountedHook () {}
   _removeHook () {}
+  on (type, callback, context) {
+    this._thingEvent.on(type, callback, context || this)
+  }
+  off (type, callback, context) {
+    this._thingEvent.off(type, callback, context || this)
+  }
+  fire (type, params) {
+    this._thingEvent.fire(type, params)
+  }
+  /**
+   * @param {Map} map
+   * @private
+   */
   _onAdd (map) {
     this._map = map
-    // TODO 相关处理
     this._addedHook && this._addedHook()
     this._state = State.ADDED
   }
   _onRemove () {
-    // TODO 相关处理
     this._removeHook && this._removeHook()
     this._state = State.REMOVED
   }
@@ -66,4 +74,3 @@ class Thing {
     }
   }
 }
-export default Thing
