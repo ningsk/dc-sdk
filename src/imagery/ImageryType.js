@@ -12,7 +12,6 @@ const ImageryType = {
   TDT: 'tdt',
   BAIDU: 'baidu',
   GOOGLE: 'google',
-  TENCENT: 'tencent',
-  MVT: 'mvt'
+  TENCENT: 'tencent'
 }
 export default ImageryType

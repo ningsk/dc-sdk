@@ -5,7 +5,6 @@ import DrawPoint from '@/dc/plot/draw/DrawPoint'
 import DrawPolyline from '@/dc/plot/draw/DrawPolyline'
 import DrawPolygon from '@/dc/plot/draw/DrawPolygon'
 import EditPolyline from '@/dc/plot/edit/EditPolyline'
-import EditPolygon from '@/dc/plot/edit/EditPolygon'
 const IMG_CIRCLE_RED = require('@/dc/images/circle_red.png')
 
 const IMG_CIRCLE_BLUE = require('@/dc/images/circle_blue.png')
@@ -79,9 +78,6 @@ class Plot {
       case OverlayType.POLYLINE:
         this._editWorker = new EditPolyline(overlay)
         break
-      case OverlayType.POLYGON:
-        this._editWorker = new EditPolygon(overlay)
-        break
       default:
         break
     }
@@ -115,6 +111,14 @@ class Plot {
   fire (type, params) {
     this._plotEvent.fire(type, params)
   }
+  _completeCallback (overlay) {
+    this._drawWorker = undefined
+    this._editWorker = undefined
+    this._map.tooltip.enable = false
+    this._overlayLayer.entities.removeAll()
+    this._anchorLayer.entities.removeAll()
+  }
+
   _drawCreatedHandler (overlay) {
     if (this._canEdit) {
       this.edit(overlay)

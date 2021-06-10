@@ -5,6 +5,7 @@ import BaiduImageryProvider from './provider/BaiduImageryProvider'
 import GoogleImageryProvider from './provider/GoogleImageryProvider'
 import TdtImageryProvider from './provider/TdtImageryProvider'
 import TencentImageryProvider from './provider/TencentImageryProvider'
+
 class ImageryLayerFactory {
   /**
    * Create amap image layer
@@ -129,6 +130,7 @@ class ImageryLayerFactory {
   static createMapboxStyleImageryLayer (options) {
     return new Cesium.MapboxStyleImageryProvider(options)
   }
+
   /**
    * Create Imagery Layer
    * @param type

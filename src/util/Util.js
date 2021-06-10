@@ -1,79 +1,11 @@
 const CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(
   ''
 )
+/**
+ *  Some of the code borrows from leaflet
+ * https://github.com/Leaflet/Leaflet/tree/master/src/core
+ */
 class Util {
-  static
-  /**
-   * 移除数组中指定对象
-   * @param { Array }  arr 数组
-   * @param val 需要移除
-   * @return {boolean}
-   */
-  static removeArrayItem (arr, val) {
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] === val) {
-        arr.splice(i, 1)
-        return true
-      }
-    }
-    return false
-  }
-  static download (fileName, blob) {
-    const aLink = document.createElement('a')
-    aLink.download = fileName
-    aLink.href = URL.createObjectURL(blob)
-    document.body.appendChild(aLink)
-    aLink.click()
-    document.body.removeChild(aLink)
-  }
-  static base64Img2Blob (code) {
-    const parts = code.split(';base64,')
-    const contentType = parts[0].split(':')[1]
-    const raw = window.atob(parts[1])
-    const rawLength = raw.length
-
-    const uInt8Array = new Uint8Array(rawLength)
-    for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i)
-    }
-    return new Blob([uInt8Array], {
-      type: contentType
-    })
-  }
-  static downloadBase64Image (name, base64) {
-    const blob = this.base64Img2Blob(base64)
-    this.download(name + '.png', blob)
-  }
-  static downloadFile (fileName, string) {
-    const blob = new Blob([string])
-    this.download(fileName, blob)
-  }
-
-  /**
-   * 格式化经纬度 返回度分秒字符串
-   * @param {Number}  value 京都或纬度值
-   * @return {string} 度分秒字符串，如113°12′34″
-   */
-  static formatDegree (value) {
-    value = Math.abs(value)
-    const v1 = Math.floor(value) // 度
-    const v2 = Math.floor((value - v1) * 60) // 分
-    const v3 = Math.round(((value - v1) * 3600) % 60) // 秒
-    return v1 + '° ' + v2 + "'  " + v3 + '"'
-  }
-
-  /**
-   * 根据高度获取地图层级
-   * @param {Number}  altitude 高度值
-   * @return {number} 地图层级  通常是0-21
-   */
-  static heightToZoom (altitude) {
-    const A = 40487.57
-    const B = 0.00007096758
-    const C = 91610.74
-    const D = -40467.74
-    return Math.round(D + (A - D) / (1 + Math.pow(altitude / C, B)))
-  }
   /**
    * Generates uuid
    * @param prefix
@@ -135,9 +67,6 @@ class Util {
     }
     return obj.options
   }
-  static falseFn () {
-    return false
-  }
 
   /**
    *  @function formatNum(num: Number, digits?: Number): Number
@@ -159,6 +88,19 @@ class Util {
   static trim (str) {
     return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '')
   }
+
+  /**
+   *  Data URI string containing a base64-encoded empty GIF image.
+   * Used as a hack to free memory from unused images on WebKit-powered
+   * mobile devices (by setting image `src` to this string).
+   * @returns {string}
+   */
+  static emptyImageUrl () {
+    return (function () {
+      return 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
+    })()
+  }
+
   /**
    * @function checkPosition(position: Object): Boolean
    * Check position for validity
@@ -172,5 +114,18 @@ class Util {
       position.hasOwnProperty('_alt')
     )
   }
+
+  /**
+   * 根据高度获取地图层级
+   * @param { Number }  altitude
+   */
+  static heightToZoom (altitude) {
+    const A = 40487.57
+    const B = 0.00007096758
+    const C = 91610.74
+    const D = -40467.74
+    return Math.round(D + (A - D) / (1 + Math.pow(altitude / C, B)))
+  }
 }
+
 export default Util

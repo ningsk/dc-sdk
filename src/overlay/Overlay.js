@@ -12,9 +12,7 @@ class Overlay {
     this._state = undefined
     this._show = true
     this._style = {}
-    this._attr = {
-      clampToGround: false
-    }
+    this._attr = {}
     this._allowDrillPicking = false
     this._contextMenu = []
     this._overlayEvent = new OverlayEvent()

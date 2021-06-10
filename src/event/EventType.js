@@ -84,9 +84,7 @@ const PlotEventType = {
 const OverlayEventType = {
   ...BaseEventType
 }
-const GraphicEventType = {
-  ...BaseEventType
-}
+
 const LayerGroupEventType = {
   ...BaseEventType
 }
@@ -98,7 +96,6 @@ export {
   ThingEventType,
   EffectEventType,
   OverlayEventType,
-  GraphicEventType,
   PlotEventType,
   LayerGroupEventType
 }

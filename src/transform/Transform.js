@@ -4,9 +4,6 @@ import Position from '@/dc/position/Position'
 const WMP = new Cesium.WebMercatorProjection()
 
 class Transform {
-  formatNum (num, digits) {
-    return Number(num.toFixed(digits || 0))
-  }
   /**
    * Transforms Cartesian To WGS84
    * @param cartesian
@@ -26,38 +23,6 @@ class Transform {
     return new Position(0, 0)
   }
 
-  /**
-   * 笛卡尔坐标空间坐标转经纬度坐标【用于转geojson】
-   * @param cartesian
-   * @return {null|number[]}
-   */
-  static transformCartesianToLonLat (cartesian) {
-    if (cartesian) {
-      const cartographic = Cesium.Cartographic.fromCartesian(cartesian)
-      if (!cartographic) { return null }
-      const x = this.formatNum(Cesium.Math.toDegrees(cartographic.longitude), 6)
-      const y = this.formatNum(Cesium.Math.toDegrees(cartographic.latitude), 6)
-      const z = this.formatNum(cartographic.height, 2)
-      return [x, y, z]
-    }
-    return null
-  }
-
-  /**
-   * 数组 Cesium笛卡尔空间坐标 转经纬度坐标数组
-   * @param positions
-   * @return {[]}
-   */
-  static transformCartesianToLonLats (positions) {
-    const coordinates = []
-    for (let i = 0, len = positions.length; i < len; i++) {
-      const point = this.transformCartesianToLonLat(positions[i])
-      if (point) {
-        coordinates.push(point)
-      }
-    }
-    return coordinates
-  }
   /**
    * Transforms WGS84 To Cartesian
    * @param position
@@ -156,6 +121,7 @@ class Transform {
     }
     return this.transformCartesianToWGS84(cartesian)
   }
+
   /**
    * Transforms WGS84 To Window
    * @param position

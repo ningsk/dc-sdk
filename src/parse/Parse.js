@@ -75,7 +75,7 @@ class Parse {
     const result = []
     positions = this.parsePositions(positions)
     positions.forEach(item => {
-      result.push([item.lng, item.lat, item.alt])
+      result.push([item.lng, item.lat])
     })
     return result
   }
@@ -89,7 +89,7 @@ class Parse {
     const result = []
     positions = this.parsePositions(positions)
     positions.forEach(item => {
-      result.push([item.lng, item.lat, item.alt])
+      result.push([item.lng, item.lat])
     })
     return [result]
   }

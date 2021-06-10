@@ -1,6 +1,5 @@
 import * as Cesium from 'cesium'
 import DrawPolyline from '@/dc/plot/draw/DrawPolyline'
-import { Polygon, Transform } from '@/dc'
 const DEF_STYLE = {
   material: Cesium.Color.YELLOW.withAlpha(0.6),
   fill: true
@@ -13,13 +12,6 @@ class DrawPolygon extends DrawPolyline {
       ...DEF_STYLE,
       ...style
     }
-  }
-  _mountedOverlay () {
-    this._overlay = new Polygon(
-      Transform.transformCartesianArrayToWGS84Array(this._positions)
-    )
-    this._overlay.attr.clampToGround = !!this._style.clampToGround
-    this._overlay.setStyle(this._style)
   }
   _mountedEntity () {
     this._delegate = new Cesium.Entity({

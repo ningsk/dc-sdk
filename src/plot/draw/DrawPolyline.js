@@ -23,7 +23,6 @@ class DrawPolyline extends Draw {
     this._overlay = new Polyline(
       Transform.transformCartesianArrayToWGS84Array(this._positions)
     )
-    this._overlay.attr.clampToGround = !!this._style.clampToGround
     this._overlay.setStyle(this._style)
   }
   _mountedEntity () {

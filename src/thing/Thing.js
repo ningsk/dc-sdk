@@ -46,10 +46,12 @@ class Thing {
   _removeHook () {}
   _onAdd (map) {
     this._map = map
+    // TODO 相关处理
     this._addedHook && this._addedHook()
     this._state = State.ADDED
   }
   _onRemove () {
+    // TODO 相关处理
     this._removeHook && this._removeHook()
     this._state = State.REMOVED
   }

@@ -8,7 +8,7 @@ class Edit {
     this._delegate = undefined
     this._pickedAnchor = undefined
     this._isMoving = false
-    this._clampToGround = false
+    this._clampToGround = true
     this._tooltip = undefined
     this._anchorLayer = undefined
     this._layer = undefined
@@ -62,7 +62,10 @@ class Edit {
     this._anchors.push(anchor)
   }
   computeMidPosition (p1, p2) {
-    return Cesium.Cartesian3.midpoint(p1, p2, new Cesium.Cartesian3())
+    const c1 = Cesium.Ellipsoid.WGS84.cartesianToCartographic(p1)
+    const c2 = Cesium.Ellipsoid.WGS84.cartesianToCartographic(p2)
+    const cm = new Cesium.EllipsoidGeodesic(c1, c2).interpolateUsingFraction(0.5)
+    return Cesium.Ellipsoid.WGS84.cartographicToCartesian(cm)
   }
   startEdit (plot) {
     this._map = plot.map
@@ -71,6 +74,7 @@ class Edit {
     this._anchorLayer = plot.anchorLayer
     this._plotEvent = plot.plotEvent
     this._options = plot.options
+    this._clampToGround = plot.options.clampToGround ?? true
     this._mountEntity()
     this._mountAnchor()
     this.bindEvent()
